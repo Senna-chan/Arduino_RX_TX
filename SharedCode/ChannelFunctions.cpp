@@ -4,9 +4,9 @@
 
 #include "ChannelFunctions.h"
 
-void mixChannels(uint16_t ch1In, uint16_t ch2In, uint16_t* ch1Out, uint16_t* ch2Out, mixTypes mixType)
+void mixChannels(uint16_t ch1In, uint16_t ch2In, uint16_t* ch1Out, uint16_t* ch2Out, MixTypes mixType)
 {
-	if (mixType == ADDSUBTRACT) {
+	if (mixType == AddSubtract) {
 		if (outside(ch2In, 1480, 1520) && outside(ch1In, 1480, 1520))
 		{
 			int16_t diff = ch1In - 1500;

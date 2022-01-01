@@ -54,48 +54,6 @@ bool CbBtnCommon(void* pvGui,void *pvElemRef,gslc_teTouch eTouch,int16_t nX,int1
     // From the element's ID we can determine which button was pressed.
     switch (pElem->nId) {
 //<Button Enums !Start!>
-      case BTN_START:
-        gslc_SetPageCur(&m_gui, E_PG2);
-        break;
-      case BTN_SETUP_MINMAX:
-        gslc_SetPageCur(&m_gui, E_PG2);
-        break;
-      case BTN_CH_MAPPING:
-        break;
-      case E_ELEM_BTN4:
-        break;
-      case E_ELEM_BTN5:
-        break;
-      case E_ELEM_BTN6:
-        break;
-      case E_ELEM_BTN7:
-        break;
-      case E_ELEM_BTN8:
-        break;
-      case E_ELEM_BTN9:
-        break;
-      case E_ELEM_BTN10:
-        break;
-      case E_ELEM_BTN11:
-        break;
-      case E_ELEM_BTN12:
-        break;
-      case E_ELEM_BTN13:
-        break;
-      case E_ELEM_BTN14:
-        break;
-      case E_ELEM_BTN15:
-        break;
-      case E_ELEM_BTN16:
-        break;
-      case E_ELEM_BTN17:
-        break;
-      case E_ELEM_BTN18:
-        break;
-      case E_ELEM_BTN19:
-        break;
-      case E_ELEM_BTN20:
-        break;
 //<Button Enums !End!>
       default:
         break;
@@ -113,8 +71,26 @@ bool CbBtnCommon(void* pvGui,void *pvElemRef,gslc_teTouch eTouch,int16_t nX,int1
 //<Listbox Callback !End!>
 //<Draw Callback !Start!>
 //<Draw Callback !End!>
-//<Slider Callback !Start!>
-//<Slider Callback !End!>
+
+// Callback function for when a slider's position has been updated
+bool CbSlidePos(void* pvGui,void* pvElemRef,int16_t nPos)
+{
+  gslc_tsGui*     pGui     = (gslc_tsGui*)(pvGui);
+  gslc_tsElemRef* pElemRef = (gslc_tsElemRef*)(pvElemRef);
+  gslc_tsElem*    pElem    = gslc_GetElemFromRef(pGui,pElemRef);
+  int16_t         nVal;
+
+  // From the element's ID we can determine which slider was updated.
+  switch (pElem->nId) {
+//<Slider Enums !Start!>
+
+//<Slider Enums !End!>
+    default:
+      break;
+  }
+
+  return true;
+}
 //<Tick Callback !Start!>
 //<Tick Callback !End!>
 

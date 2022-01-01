@@ -8,24 +8,26 @@ void AnalogFunctions::init()
 	}
 }
 
+void MX_DMA_Init(void)
+{
+	__HAL_RCC_DMA2_CLK_ENABLE();
+	HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 1, 0);
+	HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+}
+
 void AnalogFunctions::initADC()
 {
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)dmaBuffer, 15);
 }
 
-void AnalogFunctions::readChannels()
+extern "C" void ADC_IRQHandler(void)
 {
-	uint32_t microsStart = micros();
-	for(int i = 0; i < CHANNELNUMBERS; i++)
-	{
-		oldChannelData[i] = channelData[i];
-		channelData[i] = analogRead(chPins[i]);
-	}
-	uint32_t totalMicrosReading = micros() - microsStart;
-	uint32_t breakHere = 0;
+	HAL_ADC_IRQHandler(&hadc1);
 }
 
-void AnalogFunctions::readChannelsADC()
+extern "C" void DMA2_Stream0_IRQHandler(void)
 {
+	HAL_DMA_IRQHandler(&hdma_adc1);
 }
 
 void AnalogFunctions::printChangedChannels()

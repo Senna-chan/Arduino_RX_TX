@@ -4,17 +4,37 @@
  Author:	Senna
 */
 
+#include "ADCDMAFunctions.h"
 #include <ArduinoTimer.h>
 ArduinoTimer printADCDataTimer;
 
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 
-void ADC_MspInit(ADC_HandleTypeDef* hadc)
+
+void MX_ADC1_Init(void)
 {
-    GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-    if (hadc->Instance == ADC1)
+    hadc1.Instance = ADC1;
+    hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+    hadc1.Init.Resolution = ADC_RESOLUTION_10B;
+    hadc1.Init.ScanConvMode = ENABLE;
+    hadc1.Init.ContinuousConvMode = ENABLE;
+    hadc1.Init.DiscontinuousConvMode = DISABLE;
+    hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+    hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+    hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+    hadc1.Init.NbrOfConversion = 15;
+    hadc1.Init.DMAContinuousRequests = ENABLE;
+    hadc1.Init.EOCSelection = ADC_EOC_SEQ_CONV;
+
+    if (HAL_ADC_Init(&hadc1) != HAL_OK)
     {
+        Error_Handler();
+    }
+
+    GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+    //if (hadc->Instance == ADC1)
+    //{
         /* USER CODE BEGIN ADC1_MspInit 0 */
 
         /* USER CODE END ADC1_MspInit 0 */
@@ -75,7 +95,7 @@ void ADC_MspInit(ADC_HandleTypeDef* hadc)
             Error_Handler();
         }
 
-        __HAL_LINKDMA(hadc, DMA_Handle, hdma_adc1);
+        __HAL_LINKDMA(&hadc1, DMA_Handle, hdma_adc1);
 
         /* ADC1 interrupt Init */
         HAL_NVIC_SetPriority(ADC_IRQn, 0, 0);
@@ -83,37 +103,13 @@ void ADC_MspInit(ADC_HandleTypeDef* hadc)
         /* USER CODE BEGIN ADC1_MspInit 1 */
 
         /* USER CODE END ADC1_MspInit 1 */
-    }
-
-}
-void MX_ADC1_Init(void)
-{
-    hadc1.Instance = ADC1;
-    hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
-    hadc1.Init.Resolution = ADC_RESOLUTION_10B;
-    hadc1.Init.ScanConvMode = ENABLE;
-    hadc1.Init.ContinuousConvMode = ENABLE;
-    hadc1.Init.DiscontinuousConvMode = DISABLE;
-    hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-    hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-    hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-    hadc1.Init.NbrOfConversion = 15;
-    hadc1.Init.DMAContinuousRequests = ENABLE;
-    hadc1.Init.EOCSelection = ADC_EOC_SEQ_CONV;
-
-    hadc1.MspInitCallback = ADC_MspInit;
-
-    if (HAL_ADC_Init(&hadc1) != HAL_OK)
-    {
-        Error_Handler();
-    }
-
+    //}
 
     ADC_ChannelConfTypeDef sConfig = { 0 };
 
     sConfig.Channel = ADC_CHANNEL_1;
     sConfig.Rank = 1;
-    sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES;
+    sConfig.SamplingTime = ADC_SAMPLETIME_56CYCLES;
     if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
     {
         Error_Handler();
@@ -260,30 +256,15 @@ void setup() {
 
 extern "C" void ADC_IRQHandler(void)
 {
-    /* USER CODE BEGIN ADC_IRQn 0 */
-
-    /* USER CODE END ADC_IRQn 0 */
     HAL_ADC_IRQHandler(&hadc1);
-    /* USER CODE BEGIN ADC_IRQn 1 */
-
-    /* USER CODE END ADC_IRQn 1 */
 }
 
-/**
-  * @brief This function handles DMA2 stream0 global interrupt.
-  */
 extern "C" void DMA2_Stream0_IRQHandler(void)
 {
-    /* USER CODE BEGIN DMA2_Stream0_IRQn 0 */
-
-    /* USER CODE END DMA2_Stream0_IRQn 0 */
     HAL_DMA_IRQHandler(&hdma_adc1);
-    /* USER CODE BEGIN DMA2_Stream0_IRQn 1 */
-
-    /* USER CODE END DMA2_Stream0_IRQn 1 */
 }
 
-// the loop function runs over and over again until power down or reset
+// the loop function runs over and over again until power down or reset=
 void loop() {
   if(Serial.available()){
       char c = Serial.read();

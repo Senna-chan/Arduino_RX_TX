@@ -1,6 +1,7 @@
 // 
 // 
 // 
+#include <GUISlice_HMI.h>
 #include <i2cEncoderLibV2.h>
 #include <Adafruit_MCP23008.h>
 #include "ChannelFunctions.h"
@@ -12,15 +13,17 @@
 #include <Adafruit_MCP23017.h>
 #include <TimedAction.h>
 #include "Structs.h"
-#include "HMIDisplay.h"
+//#include "HMIDisplay.h"
+#include "Arduino_TX_Display_hmi.h"
 #include "SharedVars.h"
-#include "config.h"
-#include "AnalogFunctions.h"
+#include <config.h>
+#include "ADCDMAFunctions.h"
 
-AnalogFunctions af;
 Adafruit_MCP23017 twoWayExpender, calButtonExpender;
 Adafruit_MCP23008 oneWayExpender;
-i2cEncoderLibV2 encoder(0x41);
+
+TwoWire Wire2 = TwoWire(PB10,PB11);
+i2cEncoderLibV2 encoder(&Wire, ENCODER_ADDR);
 bool encoderSettingsIndex = 0;
 long prevSendTime;
 TimedAction CheckBatteryAction; // Checking battery
@@ -89,14 +92,14 @@ void updateValues() {
 	uint8_t oneWay = oneWayExpender.readGPIO();
 
 
-
+	// Used to not overwhelm the serialbus and slow this all down
 	sendChannel++;
 	if (sendChannel == CHANNELNUMBERS) sendChannel = 0;
 
+
 	uint16_t tempCH[24];
 	uint16_t tempCHMAPPED[24];
-	af.readChannels();
-	memcpy(af.channelData, tempCH, 10);
+	memcpy(ADCDMABuffer, tempCH, 10);
 	for(int i = 0; i < 16;i+=2) // Loop over twobool options
 	{
 		if (bitRead(twoWay, i))
@@ -118,8 +121,8 @@ void updateValues() {
 
 
 
-	if (currentPage == 1) { // CalibratePage
-		if (sendChannel == 0)r0p1.setValue(tempCH[0]);
+	//if (currentPage == 1) { // CalibratePage
+		if (sendChannel == 0).setValue(tempCH[0]);
 		if (sendChannel == 1)r1p1.setValue(tempCH[1]);
 		if (sendChannel == 2)r2p1.setValue(tempCH[2]);
 		if (sendChannel == 3)r3p1.setValue(tempCH[3]);
@@ -127,32 +130,36 @@ void updateValues() {
 		if (sendChannel == 5)r5p1.setValue(tempCH[5]);
 		if (sendChannel == 6)r6p1.setValue(tempCH[6]);
 		if (sendChannel == 7)r7p1.setValue(tempCH[7]);
-	}
-	if (currentPage == 1) { // CalibratePage
-		if (sendChannel == 0)o0p1.setValue(settings.model[settings.activeModel].calibration.chOffset[0]);
-		if (sendChannel == 1)o1p1.setValue(settings.model[settings.activeModel].calibration.chOffset[1]);
-		if (sendChannel == 2)o2p1.setValue(settings.model[settings.activeModel].calibration.chOffset[2]);
-		if (sendChannel == 3)o3p1.setValue(settings.model[settings.activeModel].calibration.chOffset[3]);
-	}
+	//}
+	//if (currentPage == 1) { // CalibratePage
+		if (sendChannel == 0)o0p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[0]);
+		if (sendChannel == 1)o1p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[1]);
+		if (sendChannel == 2)o2p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[2]);
+		if (sendChannel == 3)o3p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[3]);
+		if (sendChannel == 4)o4p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[4]);
+		if (sendChannel == 5)o5p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[5]);
+		if (sendChannel == 6)o6p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[6]);
+		if (sendChannel == 6)o7p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[7]);
+	//}
 
 	
 	for (int i = 0; i < CHANNELNUMBERS; i++)
 	{
-		if(between(tempCH[i], settings.model[settings.activeModel].calibration.chMid[i] - settings.deadzone, settings.model[settings.activeModel].calibration.chMid[i] + settings.deadzone))
+		if(between(tempCH[i], settings.model[settings.activeModel].channel_settings.chMid[i] - settings.deadzone, settings.model[settings.activeModel].channel_settings.chMid[i] + settings.deadzone))
 		{
 			tempCH[i] = 1500;
 		}
 		else {
-			if (tempCH[i] < settings.model[settings.activeModel].calibration.chMid[i])
+			if (tempCH[i] < settings.model[settings.activeModel].channel_settings.chMid[i])
 			{
-				tempCH[i] = map(tempCH[i], settings.model[settings.activeModel].calibration.chMin[i], settings.model[settings.activeModel].calibration.chMid[i], 1000, 1500);
+				tempCH[i] = map(tempCH[i], settings.model[settings.activeModel].channel_settings.chMin[i], settings.model[settings.activeModel].channel_settings.chMid[i], 1000, 1500);
 			} 
 			else
 			{
-				tempCH[i] = map(tempCH[i], settings.model[settings.activeModel].calibration.chMid[i], settings.model[settings.activeModel].calibration.chMax[i], 1500, 2000);
+				tempCH[i] = map(tempCH[i], settings.model[settings.activeModel].channel_settings.chMid[i], settings.model[settings.activeModel].channel_settings.chMax[i], 1500, 2000);
 			}
 		}
-		tempCH[i] += settings.model[settings.activeModel].calibration.chOffset[i];
+		tempCH[i] += settings.model[settings.activeModel].channel_settings.chOffset[i];
 		tempCH[i] = constrain(tempCH[i], 1000, 2000);
 	}
 
@@ -165,7 +172,7 @@ void updateValues() {
 	{
 		if(channel_mixing.dest1 != 0 && channel_mixing.dest2 != 0 && channel_mixing.source1 != 0 && channel_mixing.source2 != 0)
 		{
-			mixChannels(tempCHMAPPED[channel_mixing.source1], tempCHMAPPED[channel_mixing.source2], &tempCHMAPPED[channel_mixing.dest1], &tempCHMAPPED[channel_mixing.dest2]);
+			mixChannels(tempCHMAPPED[channel_mixing.source1], tempCHMAPPED[channel_mixing.source2], &tempCHMAPPED[channel_mixing.dest1], &tempCHMAPPED[channel_mixing.dest2], MixTypes::AddSubtract);
 		}
 	}
 
@@ -255,7 +262,7 @@ void setupradio() {
 }
 
 void CheckBattery() {
-	int BatteryVoltage = (analogRead(batPin)  * (3.3 / 4095.0)) * 2;
+	int BatteryVoltage = (ADCDMABuffer[batIndex]  * (3.3 / 1024.0)) * 2;
 	// if (BatteryVoltage < 3.3) {
 	// 	digitalWrite(redLedPin, HIGH);
 	// }
@@ -283,9 +290,9 @@ void loadSettings()
 		delay(1000);
 		for (int i = 0; i < CHANNELNUMBERS; i++)
 		{
-			settings.model[0].calibration.chMin[i] = 0;
-			settings.model[0].calibration.chMax[i] = 4000;
-			settings.model[0].calibration.chOffset[i] = 0;
+			settings.model[0].channel_settings.chMin[i] = 0;
+			settings.model[0].channel_settings.chMax[i] = 4000;
+			settings.model[0].channel_settings.chOffset[i] = 0;
 			settings.model[0].channelMixing[i].source1 = 0;
 			settings.model[0].channelMixing[i].source2 = 0;
 			settings.model[0].channelMixing[i].dest1 = 0;
@@ -324,7 +331,7 @@ void PrintCalValues()
 	Serial.println("ch\tmin\tmax\toffset");
 	for (int i = 0; i < CHANNELNUMBERS; i++)
 	{
-		Serial.printf("ch%d %04d %04d %04d\r\n", i, settings.model[settings.activeModel].calibration.chMin[i], settings.model[settings.activeModel].calibration.chMax[i], settings.model[settings.activeModel].calibration.chOffset[i]);
+		Serial.printf("ch%d %04d %04d %04d\r\n", i, settings.model[settings.activeModel].channel_settings.chMin[i], settings.model[settings.activeModel].channel_settings.chMax[i], settings.model[settings.activeModel].channel_settings.chOffset[i]);
 	}
 	Serial.println();
 }
@@ -349,22 +356,22 @@ void setup()
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, HIGH);
 	Serial.begin(115200);
-	InitGUISlice();
+	initHMI();
 	delay(2000);
 	Serial.println("Starting TX");
-	Serial.print("Size of channel bits ");
+	//Serial.print("Size of channel bits ");
 	initStructs();
 	Wire.setSCL(PB_10);
 	Wire.setSDA(PB_11);
 	Wire.begin();
 	Wire.setClock(400000);
-	Serial.printf("Twoway %s Oneway %s Calc %s\n", I2CDeviceConnected(&Wire, 0x20 + twoWayAddr) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + oneWayAddr) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + calAddr) ? "found" : "not found");
-	twoWayExpender.begin(twoWayAddr, &Wire);
+	Serial.printf("Twoway %s Oneway %s Calc %s\n", I2CDeviceConnected(&Wire, 0x20 + TWOWAYEXPENDER_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + ONEWAYEXPENDER_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + CALEXPENDER_ADDR) ? "found" : "not found");
+	twoWayExpender.begin(TWOWAYEXPENDER_ADDR, &Wire);
 	loadSettings();
 	#pragma region MCP Initing
 
-	twoWayExpender.begin(twoWayAddr, &Wire);
-	while (!I2CDeviceConnected(&Wire, 0x20 + twoWayAddr))
+	twoWayExpender.begin(TWOWAYEXPENDER_ADDR, &Wire);
+	while (!I2CDeviceConnected(&Wire, 0x20 + TWOWAYEXPENDER_ADDR))
 	{
 		Serial.println("2WayExpander not found");
 		digitalWrite(LED_BUILTIN, LOW);
@@ -380,8 +387,8 @@ void setup()
 	twoWayExpender.writeRegister(MCP23017_IPOLA, 0xFF);  // ENABLE REVERSING OF IO. DOES THIS FIX A BUG?
 	twoWayExpender.writeRegister(MCP23017_IPOLB, 0xFF);
 
-	oneWayExpender.begin(oneWayAddr, &Wire);
-	while (!I2CDeviceConnected(&Wire, 0x20 + oneWayAddr))
+	oneWayExpender.begin(ONEWAYEXPENDER_ADDR, &Wire);
+	while (!I2CDeviceConnected(&Wire, 0x20 + ONEWAYEXPENDER_ADDR))
 	{
 		Serial.println("1WayExpander not found");
 		digitalWrite(LED_BUILTIN, LOW);
@@ -393,8 +400,8 @@ void setup()
 	oneWayExpender.write8(MCP23008_GPPU, 0xFF);	// ENABLE PULLUP
 	oneWayExpender.write8(MCP23008_IPOL, 0xFF);  // ENABLE REVERSING OF IO. DOES THIS FIX A BUG?
 
-	calButtonExpender.begin(calAddr, &Wire);
-	while (!I2CDeviceConnected(&Wire, 0x20 + calAddr))
+	calButtonExpender.begin(CALEXPENDER_ADDR, &Wire);
+	while (!I2CDeviceConnected(&Wire, 0x20 + CALEXPENDER_ADDR))
 	{
 		Serial.println("Calibrate button expander not found");
 		digitalWrite(LED_BUILTIN, LOW);
@@ -412,8 +419,9 @@ void setup()
 	calButtonExpender.readGPIOAB(); // Clearing any interrupts that may be active
 	#pragma endregion 
 
-	af.init();
-	pinMode(batPin, INPUT_ANALOG);
+	ADCInit();
+
+	ADCStart();
 
 	memset(&transmitData.bytes, 0, 32);
 	memset(&receiveData.bytes, 0, 32);
@@ -423,7 +431,6 @@ void setup()
 	calButtonsInterrupted = true;
 	setupradio();
 	attachInterrupt(CALEXPENDER_INT_PIN, UpdateCalButtons, FALLING);
-
 	delay(2000);
 	Serial.println("Started");
 }
@@ -497,15 +504,15 @@ void loop()
 		{
 			if (bitRead(buttons, i) && bitRead(buttons, i + 4))
 			{
-				settings.model[settings.activeModel].calibration.chOffset[i] = 0;
+				settings.model[settings.activeModel].channel_settings.chOffset[i] = 0;
 			}
 			else if (bitRead(buttons, i))
 			{
-				settings.model[settings.activeModel].calibration.chOffset[i]++;
+				settings.model[settings.activeModel].channel_settings.chOffset[i]++;
 			}
 			else if (bitRead(buttons, i + 4))
 			{
-				settings.model[settings.activeModel].calibration.chOffset[i]--;
+				settings.model[settings.activeModel].channel_settings.chOffset[i]--;
 			} 
 		}
 		calButtonsInterrupted = false;

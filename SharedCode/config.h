@@ -2,34 +2,45 @@
 
 #include <Arduino.h>
 
-#define CALEXPENDER_INT_PIN	PB4	// Pin on which the calibratebutton expender interrupts
-#define ENCODER_INT_PIN		PB5	// Pin on which the encoder interrupts
-#define ch1Pin				PA1
-#define ch2Pin				PA2
-#define ch3Pin				PA3
-#define ch4Pin				PA4
-#define ch5Pin				PA5
-#define ch6Pin				PA6
-#define ch7Pin				PA7
-#define ch8Pin				PC4
-#define ch9Pin				PC5
-#define ch10Pin				PB0
-#define stick1BTNPin		PE7
-#define stick2BTNPin		PE8
-#define batPin				PB1
-#define CHANNELNUMBERS		10
+
+/**
+ADC1 GPIO Configuration
+PC0     ------> ADC1_IN10
+PC1     ------> ADC1_IN11
+PC2     ------> ADC1_IN12
+PC3     ------> ADC1_IN13
+PA1     ------> ADC1_IN1
+PA2     ------> ADC1_IN2
+PA3     ------> ADC1_IN3
+PA4     ------> ADC1_IN4
+PA5     ------> ADC1_IN5
+PA6     ------> ADC1_IN6
+PA7     ------> ADC1_IN7
+PC4     ------> ADC1_IN14
+PC5     ------> ADC1_IN15
+PB0     ------> ADC1_IN8
+PB1     ------> ADC1_IN9
+*/
 
 
-extern uint16_t chPins[CHANNELNUMBERS];
+// NRF defines
+#define RF_SPI_BUS				SPI1
+#define RF24CS					PB7 // SPI CHIP SELECT
+#define RF24INT					PB8  // NRF IRQ Pin
+#define RF24CE					PB6  //RADIO CHIP ENABLE
 
-#define RF24CS					PB12 // SPI CHIP SELECT
-#define RF24INT					PC7  // NRF IRQ Pin
-#define RF24CE					PC6  //RADIO CHIP ENABLE
+// ADC defines
+#define batIndex				10 // Index in ADCDMA buffer for battery
+#define CHANNELNUMBERS			10 // Amount of RC ADC Channels
+#define DMABUFFERSIZE			15 // Amount of ADC DMA channels
+extern uint16_t ADCDMABuffer[DMABUFFERSIZE];
 
-#define EEPROM_ADDRESS			0x50 // 24LC256 EEPROM Address in i2c bus 
+// I2C defines
+#define CALEXPENDER_INT_PIN		PB0	// Pin on which the calibratebutton expender interrupts
+#define ENCODER_INT_PIN			PB1	// Pin on which the encoder interrupts
+#define ENCODER_ADDR			0x40
+#define EEPROM_ADDR				0x50 // 24LC256 EEPROM Address in i2c bus 
 
-
-
-#define twoWayAddr	 0b001
-#define oneWayAddr	 0b010
-#define calAddr		 0b111
+#define CALEXPENDER_ADDR		0b000
+#define ONEWAYEXPENDER_ADDR		0b000
+#define TWOWAYEXPENDER_ADDR		0b000

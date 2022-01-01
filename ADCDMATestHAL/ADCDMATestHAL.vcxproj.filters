@@ -84,9 +84,6 @@
     <ClInclude Include="__vm\.ADCDMATestHAL.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hal_conf_extra.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\Arduino.h">
       <Filter>src\_micro-api-readonly\core</Filter>
     </ClInclude>

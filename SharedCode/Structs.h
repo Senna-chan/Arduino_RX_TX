@@ -3,14 +3,12 @@
 #include "Arduino.h"
 
 
-extern uint16_t chPins[8];
-
 struct channelConfigs
 {
-	uint16_t chMin[8];		 // Only needed for analog channels
-	uint16_t chMax[8];		 // Only needed for analog channels
-	uint16_t chMid[8];		 // Only needed for analog channels
-	int16_t  chOffset[8];	 // Only needed for analog channels
+	uint16_t chMin[10];		 // Only needed for analog channels
+	uint16_t chMax[10];		 // Only needed for analog channels
+	uint16_t chMid[10];		 // Only needed for analog channels
+	int16_t  chOffset[10];	 // Only needed for analog channels
 	uint16_t chDefaults[24]; // Needed for all channels
 	uint8_t  outputMode[24]; // Output modes for channels
 };
@@ -35,16 +33,17 @@ struct encoderStruct
 struct Model
 {
 	char* name;
+	uint8_t nameSize;
 	channelConfigs channel_settings;
-	byte channelMapping[24];
-	uint32_t channelReversed; // Using only one bit to save room in the EEPROM
+	uint8_t channelMapping[24];
+	uint32_t channelReversed; // Bitmap of all the channels in 4 bytes to save room in the EEPROM
 	channelMixStruct channelMixing[8];
 	encoderStruct encoderSettings[2];
 };
 
 struct Settings
 {
-	byte version;
+	uint16_t version;
 	uint16_t deadzone; // Deadzone is +/- from either center or from minPostion and maxPosition
 	uint8_t activeModel;
 	Model model[8];
@@ -62,7 +61,7 @@ struct bigStruct // Used if we have fancier gear and for RX to controller via Se
 
 union bigUnion
 {
-	byte bytes[64];
+	uint8_t bytes[64];
 	bigStruct big_struct;
 };
 
@@ -79,8 +78,8 @@ struct rxData
 {
 	uint8_t identifier;
 	uint8_t batteryVoltage;
-	float lat;
-	float lon;
+	double lat;
+	double lon;
 	uint16_t speedms;
 };
 
