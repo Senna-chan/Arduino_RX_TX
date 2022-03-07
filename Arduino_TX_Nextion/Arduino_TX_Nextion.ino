@@ -1,6 +1,7 @@
 // 
 // 
 // 
+
 #include <i2cEncoderLibV2.h>
 #include <Adafruit_MCP23008.h>
 #include "ChannelFunctions.h"
@@ -24,7 +25,7 @@ uint16_t chPins[10]{ ch1Pin, ch2Pin, ch3Pin, ch4Pin, ch5Pin, ch6Pin, ch7Pin, ch8
 
 Adafruit_MCP23017 twoWayExpender, calButtonExpender;
 Adafruit_MCP23008 oneWayExpender;
-i2cEncoderLibV2 encoder(0x41);
+i2cEncoderLibV2 encoder(&Wire, 0x41);
 bool encoderSettingsIndex = 0;
 long prevSendTime;
 TimedAction CheckBatteryAction; // Checking battery

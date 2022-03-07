@@ -4,6 +4,9 @@
 
 #include "ADCDMAFunctions.h"
 
+ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
+
 extern "C" void ADC_IRQHandler(void)
 {
     HAL_ADC_IRQHandler(&hadc1);
@@ -16,6 +19,19 @@ extern "C" void DMA2_Stream0_IRQHandler(void)
 
 void ADCInit()
 {
+
+
+    // Init DMA
+    /* DMA controller clock enable */
+    __HAL_RCC_DMA2_CLK_ENABLE();
+
+    /* DMA interrupt init */
+    /* DMA2_Stream0_IRQn interrupt configuration */
+    HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+
+    // Init ADC
+
     hadc1.Instance = ADC1;
     hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
     hadc1.Init.Resolution = ADC_RESOLUTION_10B;
@@ -215,21 +231,13 @@ void ADCInit()
         Error_Handler();
     }
 
-    // Init DMA
-    /* DMA controller clock enable */
-    __HAL_RCC_DMA2_CLK_ENABLE();
-
-    /* DMA interrupt init */
-    /* DMA2_Stream0_IRQn interrupt configuration */
-    HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
-
 
 
 }
 
 void ADCStart()
 {
+    //    HAL_ADC_Start_DMA(&hadc1, (uint32_t*)dmaBuffer, 15);
     HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADCDMABuffer, DMABUFFERSIZE);
 }
 

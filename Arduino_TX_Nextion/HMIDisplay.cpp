@@ -5,105 +5,105 @@ int currentPage = 0;
 
 void emptyCallback(void *ptr){ }
 
-HMIPage page0 = HMI_Page(0, 0, "page0");
-HMI_Button b0p0 = HMI_Button(0, 1, "b0");
-HMI_Button b1p0 = HMI_Button(0, 2, "b1");
-HMI_Button b2p0 = HMI_Button(0, 3, "b2");
+HMIPage page0 = NexPage(0, 0, "page0");
+NexButton b0p0 = NexButton(0, 1, "b0");
+NexButton b1p0 = NexButton(0, 2, "b1");
+NexButton b2p0 = NexButton(0, 3, "b2");
 
-HMI_Page page1 = HMI_Page(1, 0, "page1");
-HMI_Button l0p1 = HMI_Button(1, 1, "l0");
-HMI_Number r0p1 = HMI_Number(1, 2, "r0");
-HMI_Number t0p1 = HMI_Number(1, 3, "t0");
-HMI_Hotspot m0p1 = HMI_Hotspot(1, 4, "m0");
-HMI_Button h0p1 = HMI_Button(1, 5, "h0");
-HMI_Number o0p1 = HMI_Number(1, 6, "o0");
-HMI_Button l1p1 = HMI_Button(1, 7, "l1");
-HMI_Number r1p1 = HMI_Number(1, 8, "r1");
-HMI_Number t1p1 = HMI_Number(1, 9, "t1");
-HMI_Hotspot m1p1 = HMI_Hotspot(1, 10, "m1");
-HMI_Button h1p1 = HMI_Button(1, 11, "h1");
-HMI_Number o1p1 = HMI_Number(1, 12, "o1");
-HMI_Button l2p1 = HMI_Button(1, 13, "l2");
-HMI_Number r2p1 = HMI_Number(1, 14, "r2");
-HMI_Number t2p1 = HMI_Number(1, 15, "t2");
-HMI_Hotspot m2p1 = HMI_Hotspot(1, 16, "m2");
-HMI_Button h2p1 = HMI_Button(1, 17, "h2");
-HMI_Number o2p1 = HMI_Number(1, 18, "o2");
-HMI_Button l3p1 = HMI_Button(1, 19, "l3");
-HMI_Number r3p1 = HMI_Number(1, 20, "r3");
-HMI_Number t3p1 = HMI_Number(1, 21, "t3");
-HMI_Hotspot m3p1 = HMI_Hotspot(1, 22, "m3");
-HMI_Button h3p1 = HMI_Button(1, 23, "h3");
-HMI_Number o3p1 = HMI_Number(1, 24, "o3");
-HMI_Button l4p1 = HMI_Button(1, 25, "l4");
-HMI_Number r4p1 = HMI_Number(1, 26, "r4");
-HMI_Number t4p1 = HMI_Number(1, 27, "t4");
-HMI_Hotspot m4p1 = HMI_Hotspot(1, 28, "m4");
-HMI_Button h4p1 = HMI_Button(1, 29, "h4");
-HMI_Number o4p1 = HMI_Number(1, 30, "o4");
-HMI_Button l5p1 = HMI_Button(1, 31, "l5");
-HMI_Number r5p1 = HMI_Number(1, 32, "r5");
-HMI_Number t5p1 = HMI_Number(1, 33, "t5");
-HMI_Hotspot m5p1 = HMI_Hotspot(1, 34, "m5");
-HMI_Button h5p1 = HMI_Button(1, 35, "h5");
-HMI_Number o5p1 = HMI_Number(1, 36, "o5");
-HMI_Button l6p1 = HMI_Button(1, 37, "l6");
-HMI_Number r6p1 = HMI_Number(1, 38, "r6");
-HMI_Number t6p1 = HMI_Number(1, 39, "t6");
-HMI_Hotspot m6p1 = HMI_Hotspot(1, 40, "m6");
-HMI_Button h6p1 = HMI_Button(1, 41, "h6");
-HMI_Number o6p1 = HMI_Number(1, 42, "o6");
-HMI_Button l7p1 = HMI_Button(1, 43, "l7");
-HMI_Number r7p1 = HMI_Number(1, 44, "r7");
-HMI_Number t7p1 = HMI_Number(1, 45, "t7");
-HMI_Hotspot m7p1 = HMI_Hotspot(1, 46, "m7");
-HMI_Button h7p1 = HMI_Button(1, 47, "h7");
-HMI_Number o7p1 = HMI_Number(1, 48, "o7");
-HMI_Button saveButton0p1 = HMI_Button(1, 49, "saveButton0");
-HMI_Slider deadzone0p1 = HMI_Slider(1, 50, "deadzone0");
-HMI_Text deadzonev0p1 = HMI_Text(1, 51, "deadzonev0");
+NexPage page1 = NexPage(1, 0, "page1");
+NexButton l0p1 = NexButton(1, 1, "l0");
+NexNumber r0p1 = NexNumber(1, 2, "r0");
+NexNumber t0p1 = NexNumber(1, 3, "t0");
+NexHotspot m0p1 = NexHotspot(1, 4, "m0");
+NexButton h0p1 = NexButton(1, 5, "h0");
+NexNumber o0p1 = NexNumber(1, 6, "o0");
+NexButton l1p1 = NexButton(1, 7, "l1");
+NexNumber r1p1 = NexNumber(1, 8, "r1");
+NexNumber t1p1 = NexNumber(1, 9, "t1");
+NexHotspot m1p1 = NexHotspot(1, 10, "m1");
+NexButton h1p1 = NexButton(1, 11, "h1");
+NexNumber o1p1 = NexNumber(1, 12, "o1");
+NexButton l2p1 = NexButton(1, 13, "l2");
+NexNumber r2p1 = NexNumber(1, 14, "r2");
+NexNumber t2p1 = NexNumber(1, 15, "t2");
+NexHotspot m2p1 = NexHotspot(1, 16, "m2");
+NexButton h2p1 = NexButton(1, 17, "h2");
+NexNumber o2p1 = NexNumber(1, 18, "o2");
+NexButton l3p1 = NexButton(1, 19, "l3");
+NexNumber r3p1 = NexNumber(1, 20, "r3");
+NexNumber t3p1 = NexNumber(1, 21, "t3");
+NexHotspot m3p1 = NexHotspot(1, 22, "m3");
+NexButton h3p1 = NexButton(1, 23, "h3");
+NexNumber o3p1 = NexNumber(1, 24, "o3");
+NexButton l4p1 = NexButton(1, 25, "l4");
+NexNumber r4p1 = NexNumber(1, 26, "r4");
+NexNumber t4p1 = NexNumber(1, 27, "t4");
+NexHotspot m4p1 = NexHotspot(1, 28, "m4");
+NexButton h4p1 = NexButton(1, 29, "h4");
+NexNumber o4p1 = NexNumber(1, 30, "o4");
+NexButton l5p1 = NexButton(1, 31, "l5");
+NexNumber r5p1 = NexNumber(1, 32, "r5");
+NexNumber t5p1 = NexNumber(1, 33, "t5");
+NexHotspot m5p1 = NexHotspot(1, 34, "m5");
+NexButton h5p1 = NexButton(1, 35, "h5");
+NexNumber o5p1 = NexNumber(1, 36, "o5");
+NexButton l6p1 = NexButton(1, 37, "l6");
+NexNumber r6p1 = NexNumber(1, 38, "r6");
+NexNumber t6p1 = NexNumber(1, 39, "t6");
+NexHotspot m6p1 = NexHotspot(1, 40, "m6");
+NexButton h6p1 = NexButton(1, 41, "h6");
+NexNumber o6p1 = NexNumber(1, 42, "o6");
+NexButton l7p1 = NexButton(1, 43, "l7");
+NexNumber r7p1 = NexNumber(1, 44, "r7");
+NexNumber t7p1 = NexNumber(1, 45, "t7");
+NexHotspot m7p1 = NexHotspot(1, 46, "m7");
+NexButton h7p1 = NexButton(1, 47, "h7");
+NexNumber o7p1 = NexNumber(1, 48, "o7");
+NexButton saveButton0p1 = NexButton(1, 49, "saveButton0");
+NexSlider deadzone0p1 = NexSlider(1, 50, "deadzone0");
+NexText deadzonev0p1 = NexText(1, 51, "deadzonev0");
 
-HMI_Page page2 = HMI_Page(2, 0, "page2");
-HMI_Number n0p2 = HMI_Number(2, 1, "n0");
-HMI_Number n1p2 = HMI_Number(2, 2, "n1");
-HMI_Number n2p2 = HMI_Number(2, 3, "n2");
-HMI_Number n3p2 = HMI_Number(2, 4, "n3");
-HMI_Number n4p2 = HMI_Number(2, 5, "n4");
-HMI_Number n5p2 = HMI_Number(2, 6, "n5");
-HMI_Number n6p2 = HMI_Number(2, 7, "n6");
-HMI_Number n7p2 = HMI_Number(2, 8, "n7");
-HMI_Text t0p2 = HMI_Text(2, 9, "t0");
-HMI_Text t1p2 = HMI_Text(2, 10, "t1");
-HMI_Text t2p2 = HMI_Text(2, 11, "t2");
-HMI_Text t3p2 = HMI_Text(2, 12, "t3");
-HMI_Text t4p2 = HMI_Text(2, 13, "t4");
-HMI_Text t5p2 = HMI_Text(2, 14, "t5");
-HMI_Text t6p2 = HMI_Text(2, 15, "t6");
-HMI_Text t7p2 = HMI_Text(2, 16, "t7");
-HMI_Text t8p2 = HMI_Text(2, 17, "t8");
-HMI_Text t9p2 = HMI_Text(2, 18, "t9");
-HMI_Button b0p2 = HMI_Button(2, 19, "b0");
-HMI_Text bools0p2 = HMI_Text(2, 20, "bools0");
+NexPage page2 = NexPage(2, 0, "page2");
+NexNumber n0p2 = NexNumber(2, 1, "n0");
+NexNumber n1p2 = NexNumber(2, 2, "n1");
+NexNumber n2p2 = NexNumber(2, 3, "n2");
+NexNumber n3p2 = NexNumber(2, 4, "n3");
+NexNumber n4p2 = NexNumber(2, 5, "n4");
+NexNumber n5p2 = NexNumber(2, 6, "n5");
+NexNumber n6p2 = NexNumber(2, 7, "n6");
+NexNumber n7p2 = NexNumber(2, 8, "n7");
+NexText t0p2 = NexText(2, 9, "t0");
+NexText t1p2 = NexText(2, 10, "t1");
+NexText t2p2 = NexText(2, 11, "t2");
+NexText t3p2 = NexText(2, 12, "t3");
+NexText t4p2 = NexText(2, 13, "t4");
+NexText t5p2 = NexText(2, 14, "t5");
+NexText t6p2 = NexText(2, 15, "t6");
+NexText t7p2 = NexText(2, 16, "t7");
+NexText t8p2 = NexText(2, 17, "t8");
+NexText t9p2 = NexText(2, 18, "t9");
+NexButton b0p2 = NexButton(2, 19, "b0");
+NexText bools0p2 = NexText(2, 20, "bools0");
 
-HMI_Page page3 = HMI_Page(3, 0, "page3");
-HMI_DSButton rev0p3 = HMI_DSButton(3, 1, "rev0");
-HMI_DSButton rev1p3 = HMI_DSButton(3, 2, "rev1");
-HMI_DSButton rev2p3 = HMI_DSButton(3, 3, "rev2");
-HMI_DSButton rev3p3 = HMI_DSButton(3, 4, "rev3");
-HMI_DSButton rev4p3 = HMI_DSButton(3, 5, "rev4");
-HMI_DSButton rev5p3 = HMI_DSButton(3, 6, "rev5");
-HMI_DSButton rev6p3 = HMI_DSButton(3, 7, "rev6");
-HMI_DSButton rev7p3 = HMI_DSButton(3, 8, "rev7");
-HMI_DSButton rev8p3 = HMI_DSButton(3, 9, "rev8");
-HMI_DSButton rev9p3 = HMI_DSButton(3, 10, "rev9");
-HMI_DSButton rev10p3 = HMI_DSButton(3, 11, "rev10");
-HMI_DSButton rev11p3 = HMI_DSButton(3, 12, "rev11");
-HMI_DSButton rev12p3 = HMI_DSButton(3, 13, "rev12");
-HMI_DSButton rev13p3 = HMI_DSButton(3, 14, "rev13");
-HMI_DSButton rev14p3 = HMI_DSButton(3, 15, "rev14");
-HMI_DSButton rev15p3 = HMI_DSButton(3, 16, "rev15");
-HMI_Button saveButton0p3 = HMI_Button(3, 17, "saveButton0");
-HMI_Touch *HMI__listen_list[] = {
+NexPage page3 = NexPage(3, 0, "page3");
+NexDSButton rev0p3 = NexDSButton(3, 1, "rev0");
+NexDSButton rev1p3 = NexDSButton(3, 2, "rev1");
+NexDSButton rev2p3 = NexDSButton(3, 3, "rev2");
+NexDSButton rev3p3 = NexDSButton(3, 4, "rev3");
+NexDSButton rev4p3 = NexDSButton(3, 5, "rev4");
+NexDSButton rev5p3 = NexDSButton(3, 6, "rev5");
+NexDSButton rev6p3 = NexDSButton(3, 7, "rev6");
+NexDSButton rev7p3 = NexDSButton(3, 8, "rev7");
+NexDSButton rev8p3 = NexDSButton(3, 9, "rev8");
+NexDSButton rev9p3 = NexDSButton(3, 10, "rev9");
+NexDSButton rev10p3 = NexDSButton(3, 11, "rev10");
+NexDSButton rev11p3 = NexDSButton(3, 12, "rev11");
+NexDSButton rev12p3 = NexDSButton(3, 13, "rev12");
+NexDSButton rev13p3 = NexDSButton(3, 14, "rev13");
+NexDSButton rev14p3 = NexDSButton(3, 15, "rev14");
+NexDSButton rev15p3 = NexDSButton(3, 16, "rev15");
+NexButton saveButton0p3 = NexButton(3, 17, "saveButton0");
+NexTouch *Nex_listen_list[] = {
 	&page0,
 	&b0p0,
 	&b1p0,
@@ -207,7 +207,7 @@ HMI_Touch *HMI__listen_list[] = {
 #include <eepromi2c_Anything.h>
 void chCalPushEvent(void* ptr)
 {
-	HMI_Touch* obj = (HMI_Touch*)ptr;
+	NexTouch* obj = (NexTouch*)ptr;
 	const char *objName = obj->getObjName();
 	char type = objName[0];
 	byte channel = (byte)objName[1] - 48; // From charNumber to real number
@@ -242,14 +242,14 @@ void saveButtonPushEvent(void* ptr)
 
 void setReverse(void* ptr)
 {
-	HMI_Touch* obj = (HMI_Touch*)ptr;
+	NexTouch* obj = (NexTouch*)ptr;
 	const char* objName = obj->getObjName();
 	char type = objName[0];
 }
 
 void setPagePushEventt(void* ptr)
 {
-	HMI_Page* page = (HMI_Page*)ptr;
+	NexPage* page = (NexPage*)ptr;
 	Serial.println(page->getObjPid());
 	currentPage = page->getObjPid();
 	if(currentPage == 1)
@@ -270,16 +270,16 @@ void deadZoneSliderRelease(void* ptr)
 
 void setPagePushEvent(void *ptr)         
 {                                        
-	HMI_Page *page = (HMI_Page *)ptr;      
+	NexPage *page = (NexPage *)ptr;      
 	Serial.println(page->getObjPid());   
 	currentPage = page->getObjPid();     
 }                                        
                                         
-void InitHMI_tion()
+void InitNextion()
 {
-	if(!HMI_Init())
+	if(!NexInit())
 	{
-		Serial.println("Failed to init HMI_tion display");
+		Serial.println("Failed to init Nextion display");
 		while (1);
 	}
 	page0.attachPush(setPagePushEventt, &page0);

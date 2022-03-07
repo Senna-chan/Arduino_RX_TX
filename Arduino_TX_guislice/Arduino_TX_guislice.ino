@@ -1,7 +1,7 @@
 // 
 // 
 // 
-#include <GUISlice_HMI.h>
+#include <GUISlice_HMI_Lib.h>
 #include <i2cEncoderLibV2.h>
 #include <Adafruit_MCP23008.h>
 #include "ChannelFunctions.h"
@@ -18,6 +18,9 @@
 #include "SharedVars.h"
 #include <config.h>
 #include "ADCDMAFunctions.h"
+#include <ArduinoTimer.h>
+
+bool debugging = true;
 
 Adafruit_MCP23017 twoWayExpender, calButtonExpender;
 Adafruit_MCP23008 oneWayExpender;
@@ -47,10 +50,10 @@ role_e role = role_sender;                                                      
 
 String serialBuffer = "";
 uint16_t sendFailed = 0;
-void check_radio(void)                                // Receiver role: Does nothing!  All the work is in IRQ
+bool tx, fail, rx;
+void check_radio(void)
 {
 	allowSend = true;
-	bool tx, fail, rx;
 	radio.whatHappened(tx, fail, rx);                     // What happened?
 
 	if (tx) {                                         // Have we successfully transmitted?
@@ -66,7 +69,7 @@ void check_radio(void)                                // Receiver role: Does not
 		if (role == role_sender)
 		{
 			if(sendFailed != UINT16_MAX) sendFailed++;
-			//serialBuffer = ("Send:Failed");
+			serialBuffer = ("Send:Failed");
 		}
 		if (role == role_receiver) { Serial.println(F("Ack Payload:Failed")); }
 	}
@@ -87,7 +90,6 @@ void check_radio(void)                                // Receiver role: Does not
 // The big function. Read ADC IOExpenders and makes the radio packet
 void updateValues() {
 
-
 	uint16_t twoWay = twoWayExpender.readGPIOAB();
 	uint8_t oneWay = oneWayExpender.readGPIO();
 
@@ -99,6 +101,7 @@ void updateValues() {
 
 	uint16_t tempCH[24];
 	uint16_t tempCHMAPPED[24];
+	memset(tempCHMAPPED, 0, 24);
 	memcpy(ADCDMABuffer, tempCH, 10);
 	for(int i = 0; i < 16;i+=2) // Loop over twobool options
 	{
@@ -119,27 +122,25 @@ void updateValues() {
 		tempCH[i+16] = bitRead(oneWay, i) ? 1000 : 2000;
 	}
 
-
-
 	//if (currentPage == 1) { // CalibratePage
-		if (sendChannel == 0).setValue(tempCH[0]);
-		if (sendChannel == 1)r1p1.setValue(tempCH[1]);
-		if (sendChannel == 2)r2p1.setValue(tempCH[2]);
-		if (sendChannel == 3)r3p1.setValue(tempCH[3]);
-		if (sendChannel == 4)r4p1.setValue(tempCH[4]);
-		if (sendChannel == 5)r5p1.setValue(tempCH[5]);
-		if (sendChannel == 6)r6p1.setValue(tempCH[6]);
-		if (sendChannel == 7)r7p1.setValue(tempCH[7]);
+		//if (sendChannel == 0)e_d1.setText(tempCH[0]);
+		//if (sendChannel == 1)e_d2.setText(tempCH[1]);
+		//if (sendChannel == 2)e_d3.setText(tempCH[2]);
+		//if (sendChannel == 3)e_d4.setText(tempCH[3]);
+		//if (sendChannel == 4)e_d5.setText(tempCH[4]);
+		//if (sendChannel == 5)e_d6.setText(tempCH[5]);
+		//if (sendChannel == 6)e_d7.setText(tempCH[6]);
+		//if (sendChannel == 7)e_d8.setText(tempCH[7]);
 	//}
 	//if (currentPage == 1) { // CalibratePage
-		if (sendChannel == 0)o0p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[0]);
-		if (sendChannel == 1)o1p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[1]);
-		if (sendChannel == 2)o2p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[2]);
-		if (sendChannel == 3)o3p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[3]);
-		if (sendChannel == 4)o4p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[4]);
-		if (sendChannel == 5)o5p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[5]);
-		if (sendChannel == 6)o6p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[6]);
-		if (sendChannel == 6)o7p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[7]);
+		//if (sendChannel == 0)o0p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[0]);
+		//if (sendChannel == 1)o1p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[1]);
+		//if (sendChannel == 2)o2p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[2]);
+		//if (sendChannel == 3)o3p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[3]);
+		//if (sendChannel == 4)o4p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[4]);
+		//if (sendChannel == 5)o5p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[5]);
+		//if (sendChannel == 6)o6p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[6]);
+		//if (sendChannel == 6)o7p1.setValue(settings.model[settings.activeModel].channel_settings.chOffset[7]);
 	//}
 
 	
@@ -202,27 +203,27 @@ void updateValues() {
 	transmitData.ch_data.channel23 = tempCHMAPPED[22] - 1000;
 	transmitData.ch_data.channel24 = tempCHMAPPED[23] - 1000;
 
-	if (currentPage == 1) { // CalibratePage
-		if (sendChannel == 0)t0p1.setValue(transmitData.ch_data.channel1);
-		if (sendChannel == 1)t1p1.setValue(transmitData.ch_data.channel2);
-		if (sendChannel == 2)t2p1.setValue(transmitData.ch_data.channel3);
-		if (sendChannel == 3)t3p1.setValue(transmitData.ch_data.channel4);
-		if (sendChannel == 4)t4p1.setValue(transmitData.ch_data.channel5);
-		if (sendChannel == 5)t5p1.setValue(transmitData.ch_data.channel6);
-		if (sendChannel == 6)t6p1.setValue(transmitData.ch_data.channel7);
-		if (sendChannel == 7)t7p1.setValue(transmitData.ch_data.channel8);
-	}
+	//if (currentPage == 1) { // CalibratePage
+	//	if (sendChannel == 0)t0p1.setValue(transmitData.ch_data.channel1);
+	//	if (sendChannel == 1)t1p1.setValue(transmitData.ch_data.channel2);
+	//	if (sendChannel == 2)t2p1.setValue(transmitData.ch_data.channel3);
+	//	if (sendChannel == 3)t3p1.setValue(transmitData.ch_data.channel4);
+	//	if (sendChannel == 4)t4p1.setValue(transmitData.ch_data.channel5);
+	//	if (sendChannel == 5)t5p1.setValue(transmitData.ch_data.channel6);
+	//	if (sendChannel == 6)t6p1.setValue(transmitData.ch_data.channel7);
+	//	if (sendChannel == 7)t7p1.setValue(transmitData.ch_data.channel8);
+	//}
 
-	if (currentPage == 2) { // MainScreen
-		if (sendChannel == 0) n0p2.setValue(transmitData.ch_data.channel1);
-		if (sendChannel == 1) n1p2.setValue(transmitData.ch_data.channel2);
-		if (sendChannel == 2) n2p2.setValue(transmitData.ch_data.channel3);
-		if (sendChannel == 3) n3p2.setValue(transmitData.ch_data.channel4);
-		if (sendChannel == 4) n4p2.setValue(transmitData.ch_data.channel5);
-		if (sendChannel == 5) n5p2.setValue(transmitData.ch_data.channel6);
-		if (sendChannel == 6) n6p2.setValue(transmitData.ch_data.channel7);
-		if (sendChannel == 7) n7p2.setValue(transmitData.ch_data.channel8);
-	}
+	//if (currentPage == 2) { // MainScreen
+	//	if (sendChannel == 0) n0p2.setValue(transmitData.ch_data.channel1);
+	//	if (sendChannel == 1) n1p2.setValue(transmitData.ch_data.channel2);
+	//	if (sendChannel == 2) n2p2.setValue(transmitData.ch_data.channel3);
+	//	if (sendChannel == 3) n3p2.setValue(transmitData.ch_data.channel4);
+	//	if (sendChannel == 4) n4p2.setValue(transmitData.ch_data.channel5);
+	//	if (sendChannel == 5) n5p2.setValue(transmitData.ch_data.channel6);
+	//	if (sendChannel == 6) n6p2.setValue(transmitData.ch_data.channel7);
+	//	if (sendChannel == 7) n7p2.setValue(transmitData.ch_data.channel8);
+	//}
 }
 
 void UpdateCalButtons()
@@ -241,23 +242,27 @@ void SendData() {
 	// 	return;
 	// }
 	//Serial.print("Sending");
+	radio.stopListening(); // Be sure to stop listening before writing
 	radio.startWrite(&transmitData, sizeof(transmitData),0);
 	allowSend = false;
+	prevSendTime = micros();
 }
 
 
 void setupradio() {
 	radio.begin();
+	radio.setChannel(40);
 	radio.setPALevel(RF24PA);
 	radio.setDataRate(RF24BR);
 	radio.enableAckPayload();                         // We will be using the Ack Payload feature, so please enable it
 	radio.enableDynamicPayloads();                    // Ack payloads are dynamic payloads
 													  // Open pipes to other node for communication
 	                    // This simple sketch opens a pipe on a single address for these two nodes to 
-	radio.openWritingPipe(address[0]);             // communicate back and forth.  One listens on it, the other talks to it.
-	radio.openReadingPipe(1, address[1]);
+	radio.setAddressWidth(5);
+	radio.openWritingPipe(nrfAddress[0]);             // communicate back and forth.  One listens on it, the other talks to it.
+	radio.openReadingPipe(1, nrfAddress[1]);
+	radio.setCRCLength(rf24_crclength_e::RF24_CRC_16);
 	radio.printDetails();                             // Dump the configuration of the rf unit for debugging
-
 	attachInterrupt(RF24INT, check_radio, FALLING);
 }
 
@@ -291,7 +296,8 @@ void loadSettings()
 		for (int i = 0; i < CHANNELNUMBERS; i++)
 		{
 			settings.model[0].channel_settings.chMin[i] = 0;
-			settings.model[0].channel_settings.chMax[i] = 4000;
+			settings.model[0].channel_settings.chMid[i] = 512;
+			settings.model[0].channel_settings.chMax[i] = 1023;
 			settings.model[0].channel_settings.chOffset[i] = 0;
 			settings.model[0].channelMixing[i].source1 = 0;
 			settings.model[0].channelMixing[i].source2 = 0;
@@ -328,10 +334,10 @@ void loadSettings()
 void PrintCalValues()
 {
 	buttonValues = random(0, UINT16_MAX);
-	Serial.println("ch\tmin\tmax\toffset");
+	Serial.println("ch\tmin\tmid\tmax\toffset");
 	for (int i = 0; i < CHANNELNUMBERS; i++)
 	{
-		Serial.printf("ch%d %04d %04d %04d\r\n", i, settings.model[settings.activeModel].channel_settings.chMin[i], settings.model[settings.activeModel].channel_settings.chMax[i], settings.model[settings.activeModel].channel_settings.chOffset[i]);
+		Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\r\n", i, settings.model[settings.activeModel].channel_settings.chMin[i], settings.model[settings.activeModel].channel_settings.chMid[i],settings.model[settings.activeModel].channel_settings.chMax[i], settings.model[settings.activeModel].channel_settings.chOffset[i]);
 	}
 	Serial.println();
 }
@@ -351,13 +357,16 @@ void configureEncoder()
 
 void setup()
 {	
+	uint32_t startSetup = millis();
 	pinMode(CALEXPENDER_INT_PIN, INPUT_PULLUP);						// Expender Interupt pin
 	pinMode(ENCODER_INT_PIN, INPUT);						// Expender Interupt pin
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, HIGH);
 	Serial.begin(115200);
-	initHMI();
 	delay(2000);
+	HMI.setDebugging(true);
+	HMI.setTracing(true);
+	initHMI();
 	Serial.println("Starting TX");
 	//Serial.print("Size of channel bits ");
 	initStructs();
@@ -365,6 +374,9 @@ void setup()
 	Wire.setSDA(PB_11);
 	Wire.begin();
 	Wire.setClock(400000);
+
+	//scanI2C(&Wire, &Serial);
+
 	Serial.printf("Twoway %s Oneway %s Calc %s\n", I2CDeviceConnected(&Wire, 0x20 + TWOWAYEXPENDER_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + ONEWAYEXPENDER_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + CALEXPENDER_ADDR) ? "found" : "not found");
 	twoWayExpender.begin(TWOWAYEXPENDER_ADDR, &Wire);
 	loadSettings();
@@ -432,11 +444,12 @@ void setup()
 	setupradio();
 	attachInterrupt(CALEXPENDER_INT_PIN, UpdateCalButtons, FALLING);
 	delay(2000);
-	Serial.println("Started");
+	Serial.printf("Started in %d millis\n", millis() - startSetup);
 }
 
 void loop()
 {
+	HMI.loop(hmiObjects);
 	//nexLoop(nex_listen_list);
 	if(encoderInterrupted)
 	{
@@ -541,11 +554,10 @@ void loop()
 
 	if (micros() - prevSendTime >= 10000 || sendDataFlag)
 	{
-		if(micros() - prevSendTime >= 11000)
+		if(micros() - prevSendTime >= 15000)
 		{
-			Serial.println("11000");
+			Serial.println("TXINTLONG");
 		}	
-		prevSendTime = micros();
 		checkAndSend();
 		sendDataFlag = false;
 	}

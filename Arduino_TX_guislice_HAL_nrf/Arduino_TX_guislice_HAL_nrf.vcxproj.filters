@@ -1,0 +1,1337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{a3671d62-7862-48a2-a5e6-ab6373068711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly">
+      <UniqueIdentifier>{f4428b43-b3d7-4d14-a118-9dd88f43f258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core">
+      <UniqueIdentifier>{9149dbdc-bc82-4572-88c3-e61b1743279b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\avr">
+      <UniqueIdentifier>{203c2b64-d208-460a-9a70-2cd05af0b0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32">
+      <UniqueIdentifier>{9f1fe665-6618-49f1-a130-8213c5c5c083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\LL">
+      <UniqueIdentifier>{6b626425-10ca-4d49-81a8-ccd80413d855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\OpenAMP">
+      <UniqueIdentifier>{58de1de1-77c5-4291-b57d-dd51b7fd3aac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\OpenAMP\libmetal">
+      <UniqueIdentifier>{a1ff5e5f-7bc7-4e04-9535-7f8221609f95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\OpenAMP\libmetal\generic">
+      <UniqueIdentifier>{320ad71a-fa68-4076-9708-60148b4f4728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\OpenAMP\libmetal\generic\cortexm">
+      <UniqueIdentifier>{d021fa84-9e36-4335-b6c8-1c8de935b597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\OpenAMP\open-amp">
+      <UniqueIdentifier>{333dec85-ee7f-47a1-8f77-d3b0b722b2f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\OpenAMP\open-amp\remoteproc">
+      <UniqueIdentifier>{04a2918d-f2ea-4463-b146-3ec673694a8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\OpenAMP\open-amp\rpmsg">
+      <UniqueIdentifier>{e647383f-5a07-47fc-86eb-b9c1c6dc64da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\OpenAMP\virtio">
+      <UniqueIdentifier>{783551b6-b2f2-4e38-9a27-28dba084fa37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\usb">
+      <UniqueIdentifier>{ffafe91d-7d92-491c-9880-ae8ce26fdf93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\usb\cdc">
+      <UniqueIdentifier>{09edad63-af9d-462e-8e78-0356d0dd3a4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\stm32\usb\hid">
+      <UniqueIdentifier>{c1fd0e85-5cdc-4689-af96-b523715f89ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries">
+      <UniqueIdentifier>{1d725316-783c-45b5-af28-005ae8a6eee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\BetterHardwareTimer">
+      <UniqueIdentifier>{322a0253-c58e-4284-baef-3a965c1efadd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\Adafruit_MCP23008_library">
+      <UniqueIdentifier>{50e6d89f-8207-4d9d-85a1-08b5ffda9095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\SPI">
+      <UniqueIdentifier>{cfb2a002-2c6a-4697-aaf4-329b512ec8c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\MyHelpers">
+      <UniqueIdentifier>{21478664-4fdc-418d-a9f3-3ec39526793e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\Wire">
+      <UniqueIdentifier>{4def03a2-b71f-49b4-98df-75674601b38c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\Adafruit_MCP23017_Arduino_Library">
+      <UniqueIdentifier>{bfda98d2-2853-4443-9ba7-5125eb8c774e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\TimedAction">
+      <UniqueIdentifier>{a4db05bd-9d2f-42d2-ad87-bee160794bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ArduinoTimer">
+      <UniqueIdentifier>{6f82a573-e853-4396-9a52-4990ad8bbbea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ArduinoDuPPaLib">
+      <UniqueIdentifier>{964aabfb-46a9-47c9-abdb-7b4522349a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\Adafruit_BusIO">
+      <UniqueIdentifier>{b07d8cb0-5f1b-4d37-9ea1-bcf67537c9c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\RF24">
+      <UniqueIdentifier>{a5fee828-14e0-49a3-bddb-d89d3c2a9bd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\RF24\utility">
+      <UniqueIdentifier>{5316db24-b192-43e0-8cf5-7b71a1146c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\eepromi2c_Anything">
+      <UniqueIdentifier>{7b6dbd70-1901-4542-bd6a-f0b3b227b36a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\SrcWrapper">
+      <UniqueIdentifier>{6feb9733-3aa8-45d4-b19a-8166fcc26328}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Arduino_TX_guislice_HAL_nrf.ino" />
+    <None Include="..\..\..\..\Arduino\portable\sketchbook\libraries\BetterHardwareTimer\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\BetterHardwareTimer</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23008_library\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23008_library</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SPI\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\Wire\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23017_Arduino_Library\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23017_Arduino_Library</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoDuPPaLib\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoDuPPaLib</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_BusIO\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_BusIO</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\library.json">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </None>
+    <None Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Arduino_TX_Display_hmi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Arduino.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\binary.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\board.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Client.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\core_debug.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\HardwareSerial.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\HardwareTimer.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\IPAddress.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\itoa.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\pins_arduino.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\pins_arduino_analog.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\pins_arduino_digital.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Print.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Printable.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\RingBuffer.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Server.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Stream.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Tone.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Udp.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\USBSerial.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\utils.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\variant.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\VirtIOSerial.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WCharacter.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WInterrupts.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_analog.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_constants.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_digital.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_private.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_pulse.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_shift.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_time.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WMath.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WSerial.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WString.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\avr\dtostrf.h">
+      <Filter>src\_micro-api-readonly\core\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\avr\pgmspace.h">
+      <Filter>src\_micro-api-readonly\core\avr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\analog.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\backup.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\bootloader.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\clock.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\core_callback.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\digital_io.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\dwt.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\hw_config.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\interrupt.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\lock_resource.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\otp.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\PeripheralPins.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\PinAF_STM32F1.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\pinconfig.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\PinConfigured.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\pinmap.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\PinNames.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\PinNamesTypes.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\PortNames.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\stm32yyxx_hal_conf.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\stm32_def.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\stm32_def_build.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\timer.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\uart.h">
+      <Filter>src\_micro-api-readonly\core\stm32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_adc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_bdma.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_bus.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_comp.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_cordic.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_cortex.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_crc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_crs.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_dac.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_dcache.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_delayblock.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_dlyb.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_dma.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_dma2d.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_dmamux.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_exti.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_fmac.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_fmc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_fmpi2c.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_fsmc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_gpio.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_hrtim.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_hsem.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_i2c.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_icache.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_ipcc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_iwdg.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_lpgpio.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_lptim.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_lpuart.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_mdma.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_opamp.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_pka.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_pwr.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_rcc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_rng.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_rtc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_sdmmc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_spi.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_swpmi.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_system.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_tim.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_ucpd.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_usart.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_usb.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_utils.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\LL\stm32yyxx_ll_wwdg.h">
+      <Filter>src\_micro-api-readonly\core\stm32\LL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\OpenAMP\mbox_ipcc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\OpenAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\OpenAMP\openamp.h">
+      <Filter>src\_micro-api-readonly\core\stm32\OpenAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\OpenAMP\openamp_conf.h">
+      <Filter>src\_micro-api-readonly\core\stm32\OpenAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\OpenAMP\rsc_table.h">
+      <Filter>src\_micro-api-readonly\core\stm32\OpenAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\OpenAMP\virtio_buffer.h">
+      <Filter>src\_micro-api-readonly\core\stm32\OpenAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\OpenAMP\virtio_config.h">
+      <Filter>src\_micro-api-readonly\core\stm32\OpenAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\OpenAMP\virtio_log.h">
+      <Filter>src\_micro-api-readonly\core\stm32\OpenAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\usbd_conf.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\usbd_desc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\usbd_ep_conf.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\usbd_if.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\cdc\cdc_queue.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb\cdc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\cdc\usbd_cdc.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb\cdc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\cdc\usbd_cdc_if.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb\cdc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\hid\usbd_hid_composite.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb\hid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\stm32\usb\hid\usbd_hid_composite_if.h">
+      <Filter>src\_micro-api-readonly\core\stm32\usb\hid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\PinNamesVar.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_ARMED_V1.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_BLACK_F407VX.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_BLUE_F407VE_MINI.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_DISCO_F407VG.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_DIYMORE_F407VGT.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_FK407M1.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_generic.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_PRNTR_V1.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_PRNTR_V2.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\BetterHardwareTimer\src\BetterHardwareTimer.h">
+      <Filter>src\_micro-api-readonly\libraries\BetterHardwareTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23008_library\Adafruit_MCP23008.h">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23008_library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SPI\src\SPI.h">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SPI\src\utility\spi_com.h">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\MyHelpers\MyHelpers.h">
+      <Filter>src\_micro-api-readonly\libraries\MyHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\Wire\src\Wire.h">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\Wire\src\utility\twi.h">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23017_Arduino_Library\Adafruit_MCP23017.h">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23017_Arduino_Library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\TimedAction\TimedAction.h">
+      <Filter>src\_micro-api-readonly\libraries\TimedAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoTimer\ArduinoTimer.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoDuPPaLib\src\i2cEncoderLibV2.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoDuPPaLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoDuPPaLib\src\I2CNavKey.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoDuPPaLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_BusIO\Adafruit_BusIO_Register.h">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_BusIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_BusIO\Adafruit_I2CDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_BusIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_BusIO\Adafruit_I2CRegister.h">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_BusIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_BusIO\Adafruit_SPIDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_BusIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\nRF24L01.h">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\printf.h">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\RF24.h">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\RF24_config.h">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\eepromi2c_Anything\eepromi2c_Anything.h">
+      <Filter>src\_micro-api-readonly\libraries\eepromi2c_Anything</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\SrcWrapper.h">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.Arduino_TX_guislice_HAL_nrf.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Arduino_TX_Display_hmi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\abi.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\board.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\HardwareSerial.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\HardwareTimer.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\hooks.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\IPAddress.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\itoa.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\main.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\new.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\pins_arduino.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Print.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\RingBuffer.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Stream.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\Tone.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\USBSerial.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\VirtIOSerial.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WInterrupts.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_analog.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_digital.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_pulse.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_shift.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\wiring_time.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WMath.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WSerial.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\cores\arduino\WString.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\generic_clock.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\PeripheralPins.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\PeripheralPins_ARMED_V1.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\PeripheralPins_BLACK_F407VX.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\PeripheralPins_BLUE_F407VE_MINI.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\PeripheralPins_FK407M1.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\PeripheralPins_PRNTR_V1.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\PeripheralPins_PRNTR_V2.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_ARMED_V1.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_BLACK_F407VX.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_BLUE_F407VE_MINI.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_DISCO_F407VG.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_DIYMORE_F407VGT.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_FK407M1.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_generic.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T\variant_PRNTR_Vx.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\BetterHardwareTimer\src\BetterHardwareTimer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BetterHardwareTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23008_library\Adafruit_MCP23008.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23008_library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SPI\src\SPI.cpp">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SPI\src\utility\spi_com.c">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\MyHelpers\MyHelpers.cpp">
+      <Filter>src\_micro-api-readonly\libraries\MyHelpers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\Wire\src\Wire.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\Wire\src\utility\twi.c">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23017_Arduino_Library\Adafruit_MCP23017.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23017_Arduino_Library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\TimedAction\TimedAction.cpp">
+      <Filter>src\_micro-api-readonly\libraries\TimedAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoTimer\ArduinoTimer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoDuPPaLib\src\i2cEncoderLibV2.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoDuPPaLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoDuPPaLib\src\I2CNavKey.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoDuPPaLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_BusIO\Adafruit_BusIO_Register.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_BusIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_BusIO\Adafruit_I2CDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_BusIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_BusIO\Adafruit_SPIDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_BusIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\RF24.cpp">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\syscalls.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_adc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_adc_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_can.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_cec.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_comp.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_comp_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_cordic.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_cortex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_crc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_crc_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_cryp.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_cryp_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dac.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dac_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dcache.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dcmi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dcmi_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dfsdm.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dfsdm_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dma.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dma2d.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dma_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dsi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_dts.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_eth.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_eth_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_exti.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_fdcan.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_firewall.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_flash.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_flash_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_flash_ramfunc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_fmac.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_fmpi2c.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_fmpi2c_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_fmpsmbus.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_fmpsmbus_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_gfxmmu.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_gpio.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_gpio_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_gtzc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_hash.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_hash_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_hcd.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_hrtim.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_hsem.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_i2c.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_i2c_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_i2s.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_i2s_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_icache.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_ipcc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_irda.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_iwdg.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_jpeg.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_lcd.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_lptim.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_ltdc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_ltdc_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_mdf.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_mdios.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_mdma.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_mmc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_mmc_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_nand.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_nor.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_opamp.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_opamp_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_ospi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_otfdec.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_pccard.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_pcd.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_pcd_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_pka.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_pssi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_pwr.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_pwr_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_qspi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_ramcfg.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_ramecc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_rcc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_rcc_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_rng.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_rng_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_rtc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_rtc_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_sai.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_sai_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_sd.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_sdadc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_sdram.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_sd_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_smartcard.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_smartcard_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_smbus.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_smbus_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_spdifrx.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_spi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_spi_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_sram.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_subghz.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_swpmi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_tim.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_tim_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_tsc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_uart.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_uart_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_usart.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_usart_ex.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\HAL\stm32yyxx_hal_wwdg.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_adc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_bdma.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_comp.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_cordic.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_crc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_crs.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_dac.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_delayblock.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_dlyb.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_dma.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_dma2d.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_exti.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_fmac.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_fmc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_fmpi2c.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_fsmc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_gpio.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_hrtim.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_i2c.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_icache.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_lpgpio.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_lptim.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_lpuart.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_mdma.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_opamp.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_pka.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_pwr.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_rcc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_rng.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_rtc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_sdmmc.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_spi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_swpmi.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_tim.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_ucpd.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_usart.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_usb.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\LL\stm32yyxx_ll_utils.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\analog.cpp">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\bootloader.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\clock.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\core_callback.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\dwt.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\hw_config.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\interrupt.cpp">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\otp.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\pinmap.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\PortNames.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\stm32_def.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\system_stm32yyxx.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\timer.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\uart.c">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\BetterHardwareTimer\readme.txt">
+      <Filter>src\_micro-api-readonly\libraries\BetterHardwareTimer</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23008_library\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23008_library</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SPI\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\SPI</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\Wire\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\Wire</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23017_Arduino_Library\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23017_Arduino_Library</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23017_Arduino_Library\license.txt">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23017_Arduino_Library</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\Adafruit_MCP23017_Arduino_Library\README.txt">
+      <Filter>src\_micro-api-readonly\libraries\Adafruit_MCP23017_Arduino_Library</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\TimedAction\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\TimedAction</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoDuPPaLib\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoDuPPaLib</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\utility\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\RF24\utility</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

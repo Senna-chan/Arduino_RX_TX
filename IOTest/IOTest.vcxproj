@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{63C4369E-2D7C-40A6-AA12-BB5E14864CFC}</ProjectGuid>
+    <RootNamespace>IOTest</RootNamespace>
+    <ProjectName>IOTest</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>
+    </PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>
+    </PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>
+    </PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>
+    </PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\IOTest;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\libraries\SrcWrapper\src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\avr;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\stm32;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\variants\STM32F4xx\F407V(E-G)T_F417V(E-G)T;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\stm32\LL;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\stm32\usb;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\stm32\OpenAMP;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\stm32\usb\hid;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\stm32\usb\cdc;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Drivers\STM32F4xx_HAL_Driver\Inc;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Drivers\STM32F4xx_HAL_Driver\Src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\STM32F4xx;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Middlewares\ST\STM32_USB_Device_Library\Core\Inc;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Middlewares\ST\STM32_USB_Device_Library\Core\Src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Middlewares\OpenAMP;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Middlewares\OpenAMP\open-amp\lib\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Middlewares\OpenAMP\libmetal\lib\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Middlewares\OpenAMP\virtual_driver;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\CMSIS\Core\Include\;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Drivers\CMSIS\Device\ST\STM32F4xx\Include\;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system\Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\gcc\;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\CMSIS\DSP\Include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\CMSIS\DSP\PrivateInclude;$(ProjectDir)..\..\..\..\..\..\DOCUME~1\MEGA\Projects\ARDUIN~1\ARDUIN~2\IOTest;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\lib\gcc\arm-none-eabi\9.2.1;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\c++\9.2.1\arm-none-eabi;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\c++\9.2.1;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\lib\gcc\arm-none-eabi\9.2.1\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\c++\9.2.1\tr1;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\sys;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\c++\9.2.1\arm-none-eabi\bits;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\c++\4.8.3;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\c++\4.8.3\arm-none-eabi;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\c++\4.8.3\bits;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\arm-none-eabi\include\sys;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\system;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\avr;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\usb;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\10.2.1-1.1\lib\gcc\arm-none-eabi\4.8.3\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\Device\ATMEL\samd21\include\component;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\CMSIS-Atmel\1.2.0\CMSIS\Device\ATMEL\samd21\include\component;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\CMSIS-Atmel\1.2.0\CMSIS\Device\ATMEL\samd21\include\instance;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\CMSIS-Atmel\1.1.0\CMSIS\Device\ATMEL\samd21\include\pio;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\CMSIS-Atmel\1.2.0\CMSIS\Device\ATMEL\samd21\include\component;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\Device\ATMEL\samd21\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\CMSIS\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\Device\ATMEL\samd21\include\component;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\Device\ATMEL\samd21\include\instance;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\Device\ATMEL\samd21\include\pio;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\5.7.0\Device\ATMEL\samd21\include\component;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\CMSIS-Atmel\1.1.0\CMSIS\Device\ATMEL\samd21\include\component;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\CMSIS-Atmel\1.1.0\CMSIS\Device\ATMEL\samd21\include\instance;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\CMSIS-Atmel\1.1.0\CMSIS\Device\ATMEL\samd21\include\pio;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\CMSIS\CMSIS-Atmel\1.1.0\CMSIS\Device\ATMEL\samd21\include\component;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ProjectDir)__vm\.IOTest.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>_VMDEBUG=1;USE_FULL_LL_DRIVER;STM32F4xx;ARDUINO=108013;ARDUINO_BLACK_F407VE;ARDUINO_ARCH_STM32;STM32F407xx;HAL_UART_MODULE_ENABLED;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="VisualMicro" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="IOTest.ino">
+      <FileType>CppCode</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="__vm\.IOTest.vsarduino.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties config.Debug.customdebug_STMicroelectronics_GenF4_debugger_type="hwdebugger" config.Debug.customdebug_STMicroelectronics_GenF4_hwdebugger="bmp" config.Debug.customdebug_STMicroelectronics_GenF4_vm_disable_optimization="vm_disable_opt_all" debug.local.portname="COM8" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

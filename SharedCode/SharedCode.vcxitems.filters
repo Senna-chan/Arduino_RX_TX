@@ -5,13 +5,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SharedVars.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)config.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ChannelFunctions.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)AnalogFunctions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ADCDMAFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Structs.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ChannelFunctions.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)AnalogFunctions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)config.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ADCDMAFunctions.cpp" />
   </ItemGroup>

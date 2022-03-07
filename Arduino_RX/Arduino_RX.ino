@@ -7,9 +7,14 @@
 #include "Structs.h"
 #include "SBUS.h"
 #include "SharedVars.h"
+#include "config.h"
 SPIClass nrfSPI = SPIClass(PB15, PB14, PB13, PB12);
 #define _SPI nrfSPI
 #include <RF24.h>
+
+#undef RF24CE
+#undef RF24CS
+#undef RF24INT
 
 #define RF24CE					PB11 //RADIO CHIP ENABLE
 #define RF24CS					PB12 // SPI CHIP SELECT
@@ -20,7 +25,6 @@ SPIClass nrfSPI = SPIClass(PB15, PB14, PB13, PB12);
 #define SLEDB					PC3
 
 #define BINDPIN					0
-#define BTSERIAL				Serial3
 #define SBUSSERIAL				Serial4
 #define CUSTOMSERIAL			Serial5
 
@@ -31,11 +35,10 @@ HardwareTimer Timer4 = HardwareTimer(TIM4);
 HardwareTimer Timer5 = HardwareTimer(TIM5);
 HardwareTimer Timer8 = HardwareTimer(TIM8);
 
-HardwareSerial Serial3(PB11, PB10);
+
 HardwareSerial Serial4(PC11,PC10);
 HardwareSerial Serial5(PD2,PC12);
 
-RF24 radio = RF24(RF24CE, RF24CS);
 const uint64_t pipe = 0xE8E8F0F0E1LL;
 volatile boolean gotRFDate = false;
 
@@ -121,48 +124,44 @@ void loadSettings()
 	Serial.print("Settings size is ");
 	Serial.println(sizeof(settings));
 	EEPROM.get(0, settings);
-	if (settings.version != SETTINGSVERSION)
+	if (settings.version != SETTINGSVERSION || EEPROMFULLWIPE)
 	{
-		if (EEPROMFULLWIPE) {
-			Serial.printf("Settings are not correct. Current version %d, expected version %d\r\nWiping EEPROM config\r\n", settings.version, SETTINGSVERSION);
-			delay(1000);
-			for (int i = 0; i < 8; i++)
-			{
-				settings.model[0].channel_settings.chMin[i] = 0;
-				settings.model[0].channel_settings.chMax[i] = 4000;
-				settings.model[0].channel_settings.chOffset[i] = 0;
-				settings.model[0].channelMixing[i].source1 = 0;
-				settings.model[0].channelMixing[i].source2 = 0;
-				settings.model[0].channelMixing[i].dest1 = 0;
-				settings.model[0].channelMixing[i].dest2 = 0;
-			}
-			for (int i = 0; i < 24; i++)
-			{
-				settings.model[0].channelMapping[i] = i;
-			}
-			settings.deadzone = 0;
-			settings.model[0].encoderSettings[0].minValue = 0;
-			settings.model[0].encoderSettings[0].maxValue = 10;
-			settings.model[0].encoderSettings[0].curValue = 1;
-			settings.model[0].encoderSettings[0].steps = 1;
-			settings.model[0].encoderSettings[1].division = 1;
-			settings.model[0].encoderSettings[1].minValue = -105;
-			settings.model[0].encoderSettings[1].maxValue = 105;
-			settings.model[0].encoderSettings[1].curValue = 5;
-			settings.model[0].encoderSettings[1].steps = 1;
-			settings.model[0].encoderSettings[1].division = 10;
+		Serial.printf("Settings are not correct or full wipe requested. Current version %d, expected version %d\r\nWiping EEPROM config\r\n", settings.version, SETTINGSVERSION);
+		delay(1000);
+		for (int i = 0; i < 8; i++)
+		{
+			settings.model[0].channel_settings.chMin[i] = 0;
+			settings.model[0].channel_settings.chMid[i] = 512;
+			settings.model[0].channel_settings.chMax[i] = 1023;
+			settings.model[0].channel_settings.chOffset[i] = 0;
+			settings.model[0].channelMixing[i].source1 = 0;
+			settings.model[0].channelMixing[i].source2 = 0;
+			settings.model[0].channelMixing[i].dest1 = 0;
+			settings.model[0].channelMixing[i].dest2 = 0;
+		}
+		for (int i = 0; i < 24; i++)
+		{
+			settings.model[0].channelMapping[i] = i;
+		}
+		settings.deadzone = 0;
+		settings.model[0].encoderSettings[0].minValue = 0;
+		settings.model[0].encoderSettings[0].maxValue = 10;
+		settings.model[0].encoderSettings[0].curValue = 1;
+		settings.model[0].encoderSettings[0].steps = 1;
+		settings.model[0].encoderSettings[1].division = 1;
+		settings.model[0].encoderSettings[1].minValue = -105;
+		settings.model[0].encoderSettings[1].maxValue = 105;
+		settings.model[0].encoderSettings[1].curValue = 5;
+		settings.model[0].encoderSettings[1].steps = 1;
+		settings.model[0].encoderSettings[1].division = 10;
 
-			for (int i = 1; i < 8; i++)
-			{
-				settings.model[i] = settings.model[0];
-			}
-			settings.version = SETTINGSVERSION;
-			settings.activeModel = 0;
-			saveSettings();
+		for (int i = 1; i < 8; i++)
+		{
+			settings.model[i] = settings.model[0];
 		}
-		else {
-			Serial.printf("Settings are not correct. Current version %d, expected version %d\r\nWe can convert the settings here\r\n", settings.version, SETTINGSVERSION);
-		}
+		settings.version = SETTINGSVERSION;
+		settings.activeModel = 0;
+		saveSettings();
 	}
 	activeSettings = settings.model[settings.activeModel];
 }
@@ -279,8 +278,8 @@ void setupTransmitter() {
 	radio.enableAckPayload();                         // We will be using the Ack Payload feature, so please enable it
 	radio.enableDynamicPayloads();                    // Ack payloads are dynamic payloads
 
-	radio.openWritingPipe(address[1]);
-	radio.openReadingPipe(1, address[0]);
+	radio.openWritingPipe(nrfAddress[1]);
+	radio.openReadingPipe(1, nrfAddress[0]);
 	radio.startListening();
 	radio.writeAckPayload(1, &receiveData, sizeof(receiveData));
 	radio.printDetails();
@@ -319,7 +318,6 @@ void setup() {
 	pinMode(SLEDB, OUTPUT);
 
 	CUSTOMSERIAL.begin(500000); // Super fast
-	BTSERIAL.begin(9600); // Super fast
 
 	delay(100);
 	// Channels
@@ -436,11 +434,9 @@ void setup() {
 	delay(100);
 #pragma endregion 
 	setPWM();
-	for(int i = 0; i < 24; i++)
-	{
-		transmitData.bytes[i] = 0;
-		receiveData.bytes[i] = 0;
-	}
+	memset(transmitData.bytes, 0, 24);
+	memset(receiveData.bytes, 0, 24);
+
 	setupTransmitter(); // Do this as last. It is not wanted before the init process
 
 	Serial.println("Started RX");
@@ -459,11 +455,6 @@ void loop() {
 		CUSTOMSERIAL.readBytes(receiveData.bytes, 32);
 	}
 
-	if (BTSERIAL.available() > 0) // We got data from the connected MCU to send to the transmitter
-	{
-		while (BTSERIAL.available() > 0)
-			Serial.write(BTSERIAL.read());
-	}
 
 	//Flight controller code here
 	if (gotRFDate) {

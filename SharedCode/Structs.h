@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Arduino.h"
+#include <eepromi2c_Anything.h>
 
 
 struct channelConfigs
@@ -35,6 +36,7 @@ struct Model
 	char* name;
 	uint8_t nameSize;
 	channelConfigs channel_settings;
+	uint16_t deadzone; // Deadzone is +/- from either center or from minPostion and maxPosition
 	uint8_t channelMapping[24];
 	uint32_t channelReversed; // Bitmap of all the channels in 4 bytes to save room in the EEPROM
 	channelMixStruct channelMixing[8];
@@ -44,7 +46,6 @@ struct Model
 struct Settings
 {
 	uint16_t version;
-	uint16_t deadzone; // Deadzone is +/- from either center or from minPostion and maxPosition
 	uint8_t activeModel;
 	Model model[8];
 };
@@ -146,4 +147,9 @@ union receiveTypes
 extern transmitTypes transmitData;
 extern receiveTypes receiveData;
 
+
+extern Settings settings;
+extern Model activeSettings;
+
 void initStructs();
+void saveSettings();
