@@ -340,3 +340,14 @@ ASALocalRun/
 healthchecksdb
 /Arduino_TX_Display/gui_backup
 __vm/
+/Arduino_TX_Nextion
+/ADCTest
+
+# Eclipse
+.metadata
+.settings
+[Rr]elease
+[Dd]ebug
+.launch
+/STM32IDEWorkSpace/RC_RX
+/Arduino_TX_guislice

@@ -34,39 +34,18 @@ static int16_t HmiIn()
 
 // Save some element references for direct access
 //<Save_References !Start!>
-gslc_tsElemRef* m_pElemSlider2    = NULL;
-gslc_tsElemRef* m_pElemToggle1    = NULL;
-gslc_tsElemRef* m_pElemToggle10   = NULL;
-gslc_tsElemRef* m_pElemToggle11   = NULL;
-gslc_tsElemRef* m_pElemToggle12   = NULL;
-gslc_tsElemRef* m_pElemToggle13   = NULL;
-gslc_tsElemRef* m_pElemToggle14   = NULL;
-gslc_tsElemRef* m_pElemToggle15   = NULL;
-gslc_tsElemRef* m_pElemToggle16   = NULL;
-gslc_tsElemRef* m_pElemToggle17   = NULL;
-gslc_tsElemRef* m_pElemToggle18   = NULL;
-gslc_tsElemRef* m_pElemToggle19   = NULL;
-gslc_tsElemRef* m_pElemToggle2    = NULL;
-gslc_tsElemRef* m_pElemToggle20   = NULL;
-gslc_tsElemRef* m_pElemToggle21   = NULL;
-gslc_tsElemRef* m_pElemToggle22   = NULL;
-gslc_tsElemRef* m_pElemToggle23   = NULL;
-gslc_tsElemRef* m_pElemToggle24   = NULL;
-gslc_tsElemRef* m_pElemToggle3    = NULL;
-gslc_tsElemRef* m_pElemToggle33   = NULL;
-gslc_tsElemRef* m_pElemToggle34   = NULL;
-gslc_tsElemRef* m_pElemToggle35   = NULL;
-gslc_tsElemRef* m_pElemToggle36   = NULL;
-gslc_tsElemRef* m_pElemToggle37   = NULL;
-gslc_tsElemRef* m_pElemToggle38   = NULL;
-gslc_tsElemRef* m_pElemToggle39   = NULL;
-gslc_tsElemRef* m_pElemToggle4    = NULL;
-gslc_tsElemRef* m_pElemToggle40   = NULL;
-gslc_tsElemRef* m_pElemToggle5    = NULL;
-gslc_tsElemRef* m_pElemToggle6    = NULL;
-gslc_tsElemRef* m_pElemToggle7    = NULL;
-gslc_tsElemRef* m_pElemToggle8    = NULL;
-gslc_tsElemRef* m_pElemToggle9    = NULL;
+gslc_tsElemRef* m_pElemSlider4    = NULL;
+gslc_tsElemRef* m_pElemToggle52   = NULL;
+gslc_tsElemRef* m_pElemToggle53   = NULL;
+gslc_tsElemRef* m_pElemToggle54   = NULL;
+gslc_tsElemRef* m_pElemToggle55   = NULL;
+gslc_tsElemRef* m_pElemToggle56   = NULL;
+gslc_tsElemRef* m_pElemToggle57   = NULL;
+gslc_tsElemRef* m_pElemToggle58   = NULL;
+gslc_tsElemRef* m_pElemToggle59   = NULL;
+gslc_tsElemRef* m_pElemToggle60   = NULL;
+gslc_tsElemRef* m_pElemVal4       = NULL;
+gslc_tsElemRef* m_pElemKeyPadNum  = NULL;
 //<Save_References !End!>
 
 // Define debug message function
@@ -95,157 +74,7 @@ bool CbBtnCommon(void* pvGui,void *pvElemRef,gslc_teTouch eTouch,int16_t nX,int1
         break;
       case b3:
         break;
-      case b5:
-        break;
       case b4:
-        break;
-      case rev0:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle1)) {
-          ;
-        }
-        break;
-      case rev1:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle2)) {
-          ;
-        }
-        break;
-      case rev2:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle3)) {
-          ;
-        }
-        break;
-      case rev3:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle4)) {
-          ;
-        }
-        break;
-      case rev4:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle5)) {
-          ;
-        }
-        break;
-      case rev5:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle6)) {
-          ;
-        }
-        break;
-      case rev6:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle7)) {
-          ;
-        }
-        break;
-      case rev7:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle8)) {
-          ;
-        }
-        break;
-      case rev8:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle9)) {
-          ;
-        }
-        break;
-      case rev9:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle10)) {
-          ;
-        }
-        break;
-      case rev10:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle11)) {
-          ;
-        }
-        break;
-      case rev11:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle12)) {
-          ;
-        }
-        break;
-      case rev12:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle13)) {
-          ;
-        }
-        break;
-      case rev13:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle14)) {
-          ;
-        }
-        break;
-      case rev14:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle15)) {
-          ;
-        }
-        break;
-      case rev15:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle16)) {
-          ;
-        }
-        break;
-      case rev16:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle17)) {
-          ;
-        }
-        break;
-      case rev17:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle18)) {
-          ;
-        }
-        break;
-      case rev18:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle19)) {
-          ;
-        }
-        break;
-      case rev19:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle20)) {
-          ;
-        }
-        break;
-      case rev20:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle21)) {
-          ;
-        }
-        break;
-      case rev21:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle22)) {
-          ;
-        }
-        break;
-      case rev22:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle23)) {
-          ;
-        }
-        break;
-      case rev23:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle24)) {
-          ;
-        }
-        break;
-      case saveButton1:
-        break;
-      case b6:
         break;
       case l1:
         break;
@@ -307,57 +136,78 @@ bool CbBtnCommon(void* pvGui,void *pvElemRef,gslc_teTouch eTouch,int16_t nX,int1
         break;
       case h10:
         break;
-      case saveButton0:
+      case backbtncal:
         break;
-      case m0:
+      case savebtncal:
+        break;
+      case drbackbtn:
+        break;
+      case b5:
+        break;
+      case setch1:
+        break;
+      case setch2:
+        break;
+      case setch3:
+        break;
+      case setch4:
+        break;
+      case setch5:
+        break;
+      case setch6:
+        break;
+      case setch7:
+        break;
+      case setch8:
+        break;
+      case setch9:
+        break;
+      case setch10:
+        break;
+      case setch11:
+        break;
+      case setch12:
+        break;
+      case setch13:
+        break;
+      case setch14:
+        break;
+      case setch15:
+        break;
+      case setch16:
+        break;
+      case setch17:
+        break;
+      case setch18:
+        break;
+      case setch19:
+        break;
+      case setch20:
+        break;
+      case setch21:
+        break;
+      case setch22:
+        break;
+      case setch23:
+        break;
+      case setch24:
+        break;
+      case backbtnchs:
+        break;
+      case reverse:
         // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle33)) {
-          ;
-        }
         break;
-      case m11:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle34)) {
-          ;
-        }
+      case detectIO1:
         break;
-      case m12:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle35)) {
-          ;
-        }
+      case detectIO2:
         break;
-      case m13:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle36)) {
-          ;
-        }
+      case defaultval:
+        // Clicked on edit field, so show popup box and associate with this text field
+        gslc_ElemXKeyPadInputAsk(&m_gui, m_pElemKeyPadNum, E_POP_KEYPAD_NUM, m_pElemVal4);
         break;
-      case m14:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle37)) {
-          ;
-        }
+      case savebtnchconf:
         break;
-      case m15:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle38)) {
-          ;
-        }
-        break;
-      case m16:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle39)) {
-          ;
-        }
-        break;
-      case m17:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pElemToggle40)) {
-          ;
-        }
-        break;
-      case E_ELEM_BTN65:
+      case backbtnchconf:
         break;
 //<Button Enums !End!>
       default:
@@ -368,12 +218,59 @@ bool CbBtnCommon(void* pvGui,void *pvElemRef,gslc_teTouch eTouch,int16_t nX,int1
 }
 //<Checkbox Callback !Start!>
 //<Checkbox Callback !End!>
-//<Keypad Callback !Start!>
-//<Keypad Callback !End!>
+// KeyPad Input Ready callback
+bool CbKeypad(void* pvGui, void *pvElemRef, int16_t nState, void* pvData)
+{
+  gslc_tsGui*     pGui     = (gslc_tsGui*)pvGui;
+  gslc_tsElemRef* pElemRef = (gslc_tsElemRef*)(pvElemRef);
+  gslc_tsElem*    pElem    = gslc_GetElemFromRef(pGui,pElemRef);
+
+  // From the pvData we can get the ID element that is ready.
+  int16_t nTargetElemId = gslc_ElemXKeyPadDataTargetIdGet(pGui, pvData);
+  if (nState == XKEYPAD_CB_STATE_DONE) {
+    // User clicked on Enter to leave popup
+    // - If we have a popup active, pass the return value directly to
+    //   the corresponding value field
+    switch (nTargetElemId) {
+//<Keypad Enums !Start!>
+      case defaultval:
+        gslc_ElemXKeyPadInputGet(pGui, m_pElemVal4, pvData);
+	    gslc_PopupHide(&m_gui);
+        break;
+
+//<Keypad Enums !End!>
+      default:
+        break;
+    }
+  } else if (nState == XKEYPAD_CB_STATE_CANCEL) {
+    // User escaped from popup, so don't update values
+    gslc_PopupHide(&m_gui);
+  }
+  return true;
+}
 //<Spinner Callback !Start!>
 //<Spinner Callback !End!>
-//<Listbox Callback !Start!>
-//<Listbox Callback !End!>
+bool CbListbox(void* pvGui, void* pvElemRef, int16_t nSelId)
+{
+  gslc_tsGui*     pGui     = (gslc_tsGui*)(pvGui);
+  gslc_tsElemRef* pElemRef = (gslc_tsElemRef*)(pvElemRef);
+  gslc_tsElem*    pElem    = gslc_GetElemFromRef(pGui, pElemRef);
+  char            acTxt[MAX_STR + 1];
+  
+  if (pElemRef == NULL) {
+    return false;
+  }
+
+  // From the element's ID we can determine which listbox was active.
+  switch (pElem->nId) {
+//<Listbox Enums !Start!>
+
+//<Listbox Enums !End!>
+    default:
+      break;
+  }
+  return true;
+}
 //<Draw Callback !Start!>
 //<Draw Callback !End!>
 
@@ -390,7 +287,7 @@ bool CbSlidePos(void* pvGui,void* pvElemRef,int16_t nPos)
 //<Slider Enums !Start!>
     case deadzone0:
       // Fetch the slider position
-      nVal = gslc_ElemXSliderGetPos(pGui,m_pElemSlider2);
+      nVal = gslc_ElemXSliderGetPos(pGui,m_pElemSlider4);
       break;
 
 //<Slider Enums !End!>
@@ -419,7 +316,6 @@ void setup()
   HMI_SERIAL.begin(115200);
   gslc_InitHmi(&HmiOut, &HmiIn);
 //<HMI Setup Functions !End!>
-
   // ------------------------------------------------
   // Create graphic elements
   // ------------------------------------------------

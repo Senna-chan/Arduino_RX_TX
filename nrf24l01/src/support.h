@@ -32,12 +32,34 @@ static inline void nRF24_CSN_H() {
     HAL_GPIO_WritePin(nRF_csnPort, nRF_csnPin, GPIO_PIN_SET);
 }
 
+static const char* HAL_SPI_StateTypeDef_string_table[8] = {
+    "HAL_SPI_STATE_RESET",
+    "HAL_SPI_STATE_READY",
+    "HAL_SPI_STATE_BUSY",
+    "HAL_SPI_STATE_BUSY_TX",
+    "HAL_SPI_STATE_BUSY_RX",
+    "HAL_SPI_STATE_BUSY_TX_RX",
+    "HAL_SPI_STATE_ERROR",
+    "HAL_SPI_STATE_ABORT",
+};
+
+static const char* HAL_StatusTypeDef_string_table[4] = {
+    "HAL_OK",
+    "HAL_ERROR",
+    "HAL_BUSY",
+    "HAL_TIMEOUT",
+};
+
 
 static inline uint8_t nRF24_LL_RW(uint8_t data) {
     // Wait until TX buffer is empty
     uint8_t result;
-    if(HAL_SPI_TransmitReceive(&nRF_hspi,&data,&result,1,2000)!=HAL_OK) {
-        Error_Handler();
+    auto hal_result = HAL_SPI_TransmitReceive(&nRF_hspi, &data, &result, 1, 2000);
+    int count = 0;
+    while(hal_result != HAL_OK && ++count < 30) {
+        Serial.printf("%2d: HAL_RESULT: %s, SPI_STATE %s\n",count, HAL_StatusTypeDef_string_table[hal_result], HAL_SPI_StateTypeDef_string_table[nRF_hspi.State]);
+        delayMicroseconds(50);
+        hal_result = HAL_SPI_TransmitReceive(&nRF_hspi, &data, &result, 1, 2000);
     };
     return result;
 }

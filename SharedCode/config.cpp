@@ -4,17 +4,15 @@ uint16_t ADCDMABuffer[DMABUFFERSIZE]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 //uint8_t nrfAddress[2][5] = { {0xCC,0xCE,0xCC,0xCE,0xCC} , {0xCE,0xCC,0xCE,0xCC,0xCE } };
 
-uint8_t nrfAddress[] = { 0x11, 0x22,0x33 };
+uint8_t nrfAddress[] = { 0x33, 0x22, 0x11 };
 bool isTransmitter = true;
 
 void common_nRFInit() {
-	isTransmitter = true;
 	nRF24_CE_L();
 	delay(5);
 	if (!nRF24_Check()) {
 		Serial.println("NRF Module not found");
-		delay(2000);
-		return;
+		Error_Handler();
 	}
 
 	nRF24_Init();
@@ -59,7 +57,6 @@ void common_nRFInit() {
 		nRF24_SetOperationalMode(nRF24_MODE_RX);
 	}
 	else {
-		// Configure auto retransmit: 10 retransmissions with pause of 2500s in between
 		nRF24_SetAutoRetr(nRF24_ARD_250us, 3);
 
 

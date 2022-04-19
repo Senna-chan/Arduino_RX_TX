@@ -103,11 +103,14 @@
     <Filter Include="src\_micro-api-readonly\libraries\RF24\utility">
       <UniqueIdentifier>{5316db24-b192-43e0-8cf5-7b71a1146c93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\_micro-api-readonly\libraries\eepromi2c_Anything">
-      <UniqueIdentifier>{7b6dbd70-1901-4542-bd6a-f0b3b227b36a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\_micro-api-readonly\libraries\SrcWrapper">
       <UniqueIdentifier>{6feb9733-3aa8-45d4-b19a-8166fcc26328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\eepromi2c_Anything">
+      <UniqueIdentifier>{725e2f8a-28d4-4531-927c-fae8eedba79a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ArduinoTimerV2">
+      <UniqueIdentifier>{fff3ffc1-57e8-4f60-a7c9-ab973e17a267}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -615,13 +618,19 @@
     <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\RF24\RF24_config.h">
       <Filter>src\_micro-api-readonly\libraries\RF24</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\eepromi2c_Anything\eepromi2c_Anything.h">
-      <Filter>src\_micro-api-readonly\libraries\eepromi2c_Anything</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\SrcWrapper.h">
       <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
     </ClInclude>
     <ClInclude Include="__vm\.Arduino_TX_guislice_HAL_nrf.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\eepromi2c_Anything\eepromi2c_Anything.h">
+      <Filter>src\_micro-api-readonly\libraries\eepromi2c_Anything</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoTimerV2\ArduinoTimerV2.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoTimerV2</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1291,6 +1300,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\SrcWrapper\src\stm32\uart.c">
       <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoTimerV2\ArduinoTimerV2.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoTimerV2</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

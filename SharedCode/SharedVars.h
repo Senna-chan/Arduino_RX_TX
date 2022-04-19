@@ -11,3 +11,6 @@
 
 #define DEBUG 1
 
+extern uint32_t IOExpanderBits;
+extern uint32_t prevIOExpanderBits;
+extern uint16_t rawChannels[24];
