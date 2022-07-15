@@ -6,20 +6,22 @@
 			All non-arduino files created by visual micro and all visual studio project or solution files can be freely deleted and are not required to compile a sketch (do not delete your own code!).
 			Note: debugger breakpoints are stored in '.sln' or '.asln' files, knowledge of last uploaded breakpoints is stored in the upload.vmps.xml file. Both files are required to continue a previous debug session without needing to compile and upload again
 	
-	Hardware: Generic STM32F1 series, Platform=stm32, Package=STMicroelectronics
+	Hardware: Generic STM32F1 series                                                                                                      (STMicroelectronics_GenF1), Platform=stm32, Package=STMicroelectronics
 */
 
 #if defined(_VMICRO_INTELLISENSE)
 
 #ifndef _VSARDUINO_H_
 #define _VSARDUINO_H_
-#define USE_FULL_LL_DRIVER
-#define STM32F1xx
+#define USE_FULL_LL_DRIVER 1
+#define STM32F1xx 1
 #define ARDUINO 108019
-#define ARDUINO_BLUEBUTTON_F103RET
-#define ARDUINO_ARCH_STM32
-#define STM32F103xE
-#define HAL_UART_MODULE_ENABLED
+#define ARDUINO_BLUEBUTTON_F103RET 1
+#define ARDUINO_ARCH_STM32 1
+#define BOARD_NAME "BLUEBUTTON_F103RET"
+#define VARIANT_H "variant_BLUEBUTTON_F103RET.h"
+#define STM32F103xE 1
+#define HAL_UART_MODULE_ENABLED 1
 #define __cplusplus 201103L
 
 #define __inline__
@@ -216,7 +218,7 @@ char* _strndup_r(struct _reent*, const char*, size_t) {}
 
 
 
-#include "arduino.h"
+#include <arduino.h>
 #include <variant_BLUEBUTTON_F103RCT.h> 
 #include <variant_BLUEBUTTON_F103RET.h> 
 #include <variant_generic.h> 

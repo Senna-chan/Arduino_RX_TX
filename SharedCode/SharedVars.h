@@ -1,7 +1,4 @@
 #pragma once
-#include <RF24.h>
-
-#include "Structs.h"
 
 
 #define RC_OUTPUT_DAC 4
@@ -10,6 +7,9 @@
 #define RC_OUTPUT_LTH 0
 
 #define DEBUG 1
+
+#define SETTINGSDATASIZE 27
+#define RFPACKETLENGTH 32
 
 extern uint32_t IOExpanderBits;
 extern uint32_t prevIOExpanderBits;

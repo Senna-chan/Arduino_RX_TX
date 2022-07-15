@@ -4,6 +4,8 @@
 	#include <Arduino.h>
 #endif
 
+#include "SharedVars.h"
+
 #define CTYPE_NONE	0
 #define CTYPE_ADC	-1
 #define CTYPE_IO	1
@@ -20,14 +22,16 @@ typedef struct {
 	uint8_t index;
 } s_channelMapping;
 
+
 typedef struct {
 	uint32_t frequency;
-	uint32_t resolution;
+	uint8_t centerIs0; // Used with combi input for mapping
 } s_pwmConfig;
 
 typedef struct {
 	uint32_t minFrequency;
 	uint32_t maxFrequency;
+	uint8_t centerIs0; // Used with combi input for mapping
 } s_stepperConfig;
 
 typedef struct
@@ -79,19 +83,49 @@ typedef struct
 	Model model[8];
 } Settings;
 
+// Channel data
+#define CHANNELDATAID 			0b0001
+// Settings data packet
+#define SETTINGSDATAID			0b0010
+// Settings data setup packet
+#define SETTINGSDATASETUPID		0b0011
+
+#pragma region RX/TX data structs
+// RX/TX
+typedef struct {
+	uint8_t id : 4;
+	uint8_t RES : 4;
+	// Rest is not needed
+} packetTypeId;
+
+
+// RX
 
 typedef struct
 {
-	uint8_t identifier;
+	uint8_t id;
 	uint8_t batteryVoltage;
 	double lat;
 	double lon;
 	uint16_t speedms;
 } rxData;
 
-#define CHANNELDATAID 			0b0001
-#define SETTINGSDATAID			0b0010
-#define SETTINGSDATASETUPID		0b0011
+typedef struct __attribute__((__packed__)) {
+	uint8_t id : 4;
+	uint8_t RES : 4;
+	uint16_t settingsPacket;
+} rxSettingsDataAck;
+// TX
+
+
+typedef struct __attribute__((__packed__)) {
+	uint8_t id : 4;
+	uint8_t RES : 4;
+	uint16_t packetNumber;
+	uint8_t data[SETTINGSDATASIZE];
+	uint16_t crc;
+} txSettingsData_s;
+
 typedef struct
 {
 	// No bits free
@@ -131,32 +165,48 @@ typedef struct
 typedef union
 {
 	byteDataUnion bytesUnion;
+	packetTypeId packetId;
+	txSettingsData_s settingsData;
 	channelBitSettings ch_data;
 } transmitTypes;
+
 typedef union
 {
 	byteDataUnion bytesUnion;
+	packetTypeId packetId;
+	rxSettingsDataAck settingsDataAck;
 	rxData rx_data;
 } receiveTypes;
+#pragma endregion
+///< Default 1000 to 2000 ms
+#define OUTPUTMODE_RC 	0	
+///< Use CH7/CH8 for DAC1/DAC2 output
+#define OUTPUTMODE_DAC 	4	
+///< Simple HIGH/LOW with the RC timer pin
+#define OUTPUTMODE_IO 	1	
+///< PWM using one of the other timers
+#define OUTPUTMODE_PWM 	2	
+///< PWM steppermode with changing frequency
+#define OUTPUTMODE_STEP	3	
 
-
-#define OUTPUTMODE_RC 	0	///< Default 1000 to 2000 ms
-#define OUTPUTMODE_DAC 	1	///< Use CH7/CH8 for DAC1/DAC2 output
-#define OUTPUTMODE_IO 	2	///< Simple HIGH/LOW
-#define OUTPUTMODE_PWM 	3	///< PWM using one of of the six timer outputs
-#define OUTPUTMODE_STEP	4	///< PWM steppermode with changing frequency
+extern const char* OUTPUTMODE_STR_TABLE[];
 
 typedef struct
 {
-	uint8_t outputMode;
-	uint8_t outputSet;
-	__IO uint32_t* timOutput;
-	uint32_t* miscOutput1;
-	uint32_t* miscOutput2;
+	uint8_t currentOutputMode;
+	uint8_t muxOutputSet;				// If true then we have switched the mux chip to misc outputuint8_t
+	TIM_HandleTypeDef* mainTimer; 		// Used for setting up the timers correctly
+	uint8_t mainTimerCH; 				// Used for setting up the timers correctly
+	__IO uint32_t* timOutput;			// Direct timer output
+	__IO uint32_t* miscOutput;// Used for either DAC or misc timer output
+	TIM_HandleTypeDef* miscTimConf; 	// Used to be able to set misc timer options like frequency and duty
+	uint8_t miscTimCH; 				// Used to be able to set misc timer channel options
+	GPIO_TypeDef* muxGPIO;	// GPIO that the mux selector is on
+	uint8_t muxPIN;						// PIN That the mux selector is on
 } channelOutputConfig;
 
-extern transmitTypes transmitData;
-extern receiveTypes receiveData;
+extern transmitTypes transmitterData;
+extern receiveTypes receiverData;
 
 
 extern Settings settings;

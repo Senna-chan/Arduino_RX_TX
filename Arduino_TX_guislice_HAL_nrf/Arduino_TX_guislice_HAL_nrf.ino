@@ -1,7 +1,8 @@
 // 
 // 
 // 
-#include "Logger.h"
+#include <PlotterLib.h>
+#include <SerialControlLibrary.h>
 #include <eepromi2c_Anything.h>
 #include <BetterHardwareTimer.h>
 #include <GUISlice_HMI_Lib.h>
@@ -22,6 +23,7 @@
 #include <ArduinoTimerV2.h>
 #include "nrf24.h"
 
+SerialControlLibrary scl;
 
 bool debugging = true;
 
@@ -183,6 +185,7 @@ void check_radio(void)
 {
 	if (HAL_GPIO_ReadPin(nRF_csnPort, nRF_csnPin) == GPIO_PIN_RESET){
 		Serial.println("FATAL: nRF_BUSY");
+		gotRFData = true;
 		return;
 	}
 	bool tx, fail, rx;
@@ -361,6 +364,7 @@ void SendData(uint8_t* data, uint8_t dataSize) {
 			 if (fifoStatus != nRF24_STATUS_RXFIFO_EMPTY) {
 				 nRF24_CE_H(); // Buffer not empty yet trigger retransmit
 				 delayMicroseconds(15);
+				 nRF24_CE_L();
 			 }
 			 else {
 				 break;
@@ -634,6 +638,7 @@ void setupMCPChips() {
 }
 
 void transmitSettingsToRX() {
+	Serial.print("Transmitting settings to RX");
 	nrfSendTim.pause();
 	double settingsSizeAmountD = sizeof(Settings) / 30.0;
 	uint8_t settingsSizeAmount = (uint8_t)settingsSizeAmountD;
@@ -700,6 +705,26 @@ void transmitSettingsToRX() {
 void printNrfStats() {
 	Serial.printf("Success %7d. Failed %7d, Ratio %5.2f\r\n", txfailratio[0], txfailratio[1], (double)txfailratio[0] / (double)txfailratio[1]);
 }
+
+void wipeEeprom() {
+	memset(&settings, 0, sizeof(settings));
+	saveSettings();
+}
+
+void resetMCU(){
+	NVIC_SystemReset();
+}
+
+void setTransmitTest() {
+	transmitTest = !transmitTest;
+	if (transmitTest) {
+		nrfSendTim.pause();
+	}
+	else {
+		nrfSendTim.resume();
+	}
+}
+
 
 void setup()
 {	
@@ -769,11 +794,56 @@ void setup()
 
 	IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
 	genericTimer.attachSecondsCallback(1, std::bind(printNrfStats));
+	Plotter.init(&Serial1, "Raw channels", &scl);
+	for (int i = 0; i < ADCCHANNELNUMBERS; i++) {
+		char adcNum[10] = { 0 };
+		sprintf(adcNum,"ADC%02d\0", i);
+		Plotter.addPlotData(&ADCDMABuffer[i], adcNum);
+	}
+	PlotterLib *chPlotter = Plotter.addNewPlotter("ChannelData");
+
+	for (int i = 1; i <= 24; i++) {
+		char chNum[10] = { 0 };
+		sprintf(chNum, "CH%02d\0", i);
+		chPlotter->addPlotData(&mappedChannels[i], chNum);
+	}
+	scl.init(&Serial1);
+	scl.addVoidCallback("*", resetMCU);
+	scl.addVoidCallback("t", setTransmitTest);
+	scl.addVoidCallback("w", wipeEeprom);
+	scl.addVoidCallback("s", transmitSettingsToRX);
+
+	//if (Serial.available()) {
+	//	char c = Serial.read();
+	//	switch (c) {
+	//	case 'c':
+	//		printChannelValues = !printChannelValues;
+	//		break;
+	//	case 'r':
+	//		printDMAValues = !printDMAValues;
+	//		break;
+	//	case 'w':
+	//		break;
+	//	case 'd':
+	//		debugging = !debugging;
+	//		Serial.printf("Debugging now %s\n", debugging ? "ON" : "OFF");
+	//		break;
+	//	case 'b':
+	//		fixedChannelValue = Serial.readStringUntil('\n').toInt();
+	//		Serial.printf("fixedChannelValue = %d\r\n", fixedChannelValue);
+	//	case '*':
+	//		NVIC_SystemReset();
+	//		break;
+	//	}
+	//}
+
 	Serial.printf("Started in %d millis\n", millis() - startSetup);
 }
 
 void loop()
 {
+	Plotter.loop();
+	scl.loop();
 	if (transmitTest) {
 		uint32_t now = millis();
 		if (now - lastMessageSend >= 1000) {
@@ -889,45 +959,6 @@ void loop()
 			if (sendChannel == 12) {
 				sendChannel = 0;
 			}
-		}
-	}
-	
-	if (Serial.available()) {
-		char c = Serial.read();
-		switch (c) {
-			case 'c':
-				printChannelValues = !printChannelValues;
-				break;
-			case 'r':
-				printDMAValues = !printDMAValues;
-				break;
-			case 'w':
-				memset(&settings, 0, sizeof(settings));
-				saveSettings();
-				break;
-			case 'd':
-				debugging = !debugging;
-				Serial.printf("Debugging now %s\n", debugging ? "ON" : "OFF");
-			break;
-			case 't':
-				transmitTest = !transmitTest;
-				if (transmitTest) {
-					nrfSendTim.pause();
-				}
-				else {
-					nrfSendTim.resume();
-				}
-				break;
-			case 'b':
-				fixedChannelValue = Serial.readStringUntil('\n').toInt();
-				Serial.printf("fixedChannelValue = %d\r\n", fixedChannelValue);
-			case 's':
-				Serial.print("Transmitting settings to RX");
-				transmitSettingsToRX();
-				break;
-			case '*':
-				NVIC_SystemReset();
-				break;
 		}
 	}
 	

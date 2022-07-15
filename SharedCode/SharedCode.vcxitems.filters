@@ -6,11 +6,13 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)config.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ChannelFunctions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ADCDMAFunctions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Structs.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ChannelFunctions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)config.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ADCDMAFunctions.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SharedFunctions.cpp" />
   </ItemGroup>
 </Project>

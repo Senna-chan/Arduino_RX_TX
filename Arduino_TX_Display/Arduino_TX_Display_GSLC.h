@@ -22,6 +22,7 @@
 //<Includes !Start!>
 // Include extended elements
 #include "elem/XKeyPad_Num.h"
+#include "elem/XListbox.h"
 #include "elem/XSlider.h"
 #include "elem/XTogglebtn.h"
 
@@ -50,27 +51,40 @@
 // ------------------------------------------------
 //<Enum !Start!>
 enum {BasePage,E_PG_MAIN,calibrations,DisplayRawValues,DisplayRcValues
-      ,channelSettings,setupChannel,setModel,E_POP_KEYPAD_NUM};
-enum {E_ELEM_BTN65,E_ELEM_TEXT305,E_ELEM_TEXT307,E_ELEM_TEXT309
-      ,E_ELEM_TEXT312,E_ELEM_TEXT330,E_ELEM_TEXT332,E_ELEM_TEXT922
-      ,E_ELEM_TEXT923,E_ELEM_TEXT924,E_ELEM_TEXT925,E_ELEM_TEXT926
-      ,E_ELEM_TEXT927,E_ELEM_TEXT928,E_ELEM_TEXT929,E_ELEM_TEXT930
-      ,E_ELEM_TEXT931,E_ELEM_TEXT952,b0,b1,b2,b3,b4,b5,backbtncal
-      ,backbtnchconf,backbtnchs,c1,c10,c2,c3,c4,c5,c6,c7,c8,c9
-      ,channelname,channelval,configuredIO1,configuredIO2,d1,d10,d2,d3
-      ,d4,d5,d6,d7,d8,d9,dcurio,deadzone0,deadzonetxt,defaultval
+      ,channelSettings,setupChannel,setupOutputPWM,setupOutputStepper
+      ,setupOutputNotNeeded,setModel,transmittingSettings
+      ,E_POP_KEYPAD_NUM};
+enum {E_ELEM_BTN279,E_ELEM_BTN65,E_ELEM_TEXT305,E_ELEM_TEXT307
+      ,E_ELEM_TEXT309,E_ELEM_TEXT312,E_ELEM_TEXT330,E_ELEM_TEXT332
+      ,E_ELEM_TEXT667,E_ELEM_TEXT669,E_ELEM_TEXT670,E_ELEM_TEXT673
+      ,E_ELEM_TEXT674,E_ELEM_TEXT675,E_ELEM_TEXT676,E_ELEM_TEXT677
+      ,E_ELEM_TEXT729,E_ELEM_TEXT730,E_ELEM_TEXT731,E_ELEM_TEXT732
+      ,E_ELEM_TEXT733,E_ELEM_TEXT734,E_ELEM_TEXT735,E_ELEM_TEXT736
+      ,E_ELEM_TEXT745,E_ELEM_TEXT746,E_ELEM_TEXT748,E_ELEM_TEXT749
+      ,E_ELEM_TEXT750,E_ELEM_TEXT751,E_ELEM_TEXT752,E_ELEM_TEXT753
+      ,E_ELEM_TEXT754,E_ELEM_TEXT755,E_ELEM_TEXT756,E_ELEM_TEXT757
+      ,E_ELEM_TEXT758,E_ELEM_TEXT759,E_ELEM_TEXT760,E_ELEM_TEXT761
+      ,E_ELEM_TEXT762,E_ELEM_TEXT763,E_ELEM_TEXT922,E_ELEM_TEXT923
+      ,E_ELEM_TEXT924,E_ELEM_TEXT925,E_ELEM_TEXT926,E_ELEM_TEXT927
+      ,E_ELEM_TEXT928,E_ELEM_TEXT929,E_ELEM_TEXT930,E_ELEM_TEXT931
+      ,E_ELEM_TEXT952,b0,b1,b2,b3,b4,b5,backbtncal,backbtnchconf
+      ,backbtnchs,backbtnchsandsendstorx,backbtnsetupNotNeeded
+      ,backbtnsetupPWM,backbtnsetupStepper,c1,c10,c2,c3,c4,c5,c6,c7,c8
+      ,c9,channelname,channelval,configuredIO1,configuredIO2,d1,d10,d2
+      ,d3,d4,d5,d6,d7,d8,d9,dcurio,deadzone0,deadzonetxt,defaultval
       ,detectIO1,detectIO2,dprevio,drbackbtn,h1,h10,h2,h3,h4,h5,h6,h7
-      ,h8,h9,l1,l10,l2,l3,l4,l5,l6,l7,l8,l9,m0,m1,m10,m11,m12,m13,m14
-      ,m15,m16,m17,m2,m3,m4,m5,m6,m7,m8,m9,mn0,mn1,mn2,mn3,mn4,mn5,mn6
-      ,mn7,n0,n1,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n2,n20,n21,n22
-      ,n23,n3,n4,n5,n6,n7,n8,n9,nBatPercent,nr0,nr1,nr2,nr3,nr4,nr5,nr6
-      ,nr7,nr8,nr9,reverse,reversetxt,savebtncal,savebtnchconf,setch1
-      ,setch10,setch11,setch12,setch13,setch14,setch15,setch16,setch17
-      ,setch18,setch19,setch2,setch20,setch21,setch22,setch23,setch24
-      ,setch3,setch4,setch5,setch6,setch7,setch8,setch9,t0,t1,t10,t11
-      ,t12,t13,t14,t15,t16,t17,t18,t19,t2,t20,t21,t22,t23,t3,t4,t5,t6
-      ,t7,t8,t9,tr0,tr1,tr2,tr3,tr4,tr5,tr6,tr7,tr8,tr9
-      ,E_ELEM_KEYPAD_NUM};
+      ,h8,h9,l1,l10,l2,l3,l4,l5,l6,l7,l8,l9,lsbChannelOutputType,m1,m10
+      ,m2,m3,m4,m5,m6,m7,m8,m9,n0,n1,n10,n11,n12,n13,n14,n15,n16,n17
+      ,n18,n19,n2,n20,n21,n22,n23,n3,n4,n5,n6,n7,n8,n9,nBatPercent,nr0
+      ,nr1,nr2,nr3,nr4,nr5,nr6,nr7,nr8,nr9,pwmCenterZero,pwmFreq
+      ,reverse,reversetxt,savebtncal,savebtnchconf,setch1,setch10
+      ,setch11,setch12,setch13,setch14,setch15,setch16,setch17,setch18
+      ,setch19,setch2,setch20,setch21,setch22,setch23,setch24,setch3
+      ,setch4,setch5,setch6,setch7,setch8,setch9,settingstxtorxprogress
+      ,sm0,sm1,sm2,sm3,sm4,sm5,sm6,sm7,stepCenterZero,stepMaxFreq
+      ,stepMinFreq,t0,t1,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t2,t20
+      ,t21,t22,t23,t3,t4,t5,t6,t7,t8,t9,tr0,tr1,tr2,tr3,tr4,tr5,tr6,tr7
+      ,tr8,tr9,E_ELEM_KEYPAD_NUM};
 // Must use separate enum for fonts with MAX_FONT at end to use gslc_FontSet.
 enum {E_BUILTIN5X8,MAX_FONT};
 //<Enum !End!>
@@ -83,7 +97,7 @@ enum {E_BUILTIN5X8,MAX_FONT};
 // Define the maximum number of elements and pages
 // ------------------------------------------------
 //<ElementDefines !Start!>
-#define MAX_PAGE                9
+#define MAX_PAGE                13
 
 #define MAX_ELEM_BasePage 1 // # Elems total on page
 #define MAX_ELEM_BasePage_RAM MAX_ELEM_BasePage // # Elems in RAM
@@ -100,14 +114,26 @@ enum {E_BUILTIN5X8,MAX_FONT};
 #define MAX_ELEM_DisplayRcValues 49 // # Elems total on page
 #define MAX_ELEM_DisplayRcValues_RAM MAX_ELEM_DisplayRcValues // # Elems in RAM
 
-#define MAX_ELEM_channelSettings 25 // # Elems total on page
+#define MAX_ELEM_channelSettings 26 // # Elems total on page
 #define MAX_ELEM_channelSettings_RAM MAX_ELEM_channelSettings // # Elems in RAM
 
-#define MAX_ELEM_setupChannel 15 // # Elems total on page
+#define MAX_ELEM_setupChannel 17 // # Elems total on page
 #define MAX_ELEM_setupChannel_RAM MAX_ELEM_setupChannel // # Elems in RAM
 
-#define MAX_ELEM_setModel 17 // # Elems total on page
+#define MAX_ELEM_setupOutputPWM 6 // # Elems total on page
+#define MAX_ELEM_setupOutputPWM_RAM MAX_ELEM_setupOutputPWM // # Elems in RAM
+
+#define MAX_ELEM_setupOutputStepper 8 // # Elems total on page
+#define MAX_ELEM_setupOutputStepper_RAM MAX_ELEM_setupOutputStepper // # Elems in RAM
+
+#define MAX_ELEM_setupOutputNotNeeded 2 // # Elems total on page
+#define MAX_ELEM_setupOutputNotNeeded_RAM MAX_ELEM_setupOutputNotNeeded // # Elems in RAM
+
+#define MAX_ELEM_setModel 33 // # Elems total on page
 #define MAX_ELEM_setModel_RAM MAX_ELEM_setModel // # Elems in RAM
+
+#define MAX_ELEM_transmittingSettings 3 // # Elems total on page
+#define MAX_ELEM_transmittingSettings_RAM MAX_ELEM_transmittingSettings // # Elems in RAM
 //<ElementDefines !End!>
 
 // ------------------------------------------------
@@ -133,21 +159,34 @@ gslc_tsElem                     m_asPage26Elem[MAX_ELEM_channelSettings_RAM];
 gslc_tsElemRef                  m_asPage26ElemRef[MAX_ELEM_channelSettings];
 gslc_tsElem                     m_asPage27Elem[MAX_ELEM_setupChannel_RAM];
 gslc_tsElemRef                  m_asPage27ElemRef[MAX_ELEM_setupChannel];
-gslc_tsElem                     m_asPage28Elem[MAX_ELEM_setModel_RAM];
-gslc_tsElemRef                  m_asPage28ElemRef[MAX_ELEM_setModel];
+gslc_tsElem                     m_asPage32Elem[MAX_ELEM_setupOutputPWM_RAM];
+gslc_tsElemRef                  m_asPage32ElemRef[MAX_ELEM_setupOutputPWM];
+gslc_tsElem                     m_asPage33Elem[MAX_ELEM_setupOutputStepper_RAM];
+gslc_tsElemRef                  m_asPage33ElemRef[MAX_ELEM_setupOutputStepper];
+gslc_tsElem                     m_asPage34Elem[MAX_ELEM_setupOutputNotNeeded_RAM];
+gslc_tsElemRef                  m_asPage34ElemRef[MAX_ELEM_setupOutputNotNeeded];
+gslc_tsElem                     m_asPage37Elem[MAX_ELEM_setModel_RAM];
+gslc_tsElemRef                  m_asPage37ElemRef[MAX_ELEM_setModel];
+gslc_tsElem                     m_asPopup12Elem[MAX_ELEM_transmittingSettings_RAM];
+gslc_tsElemRef                  m_asPopup12ElemRef[MAX_ELEM_transmittingSettings];
 gslc_tsElem                     m_asKeypadNumElem[1];
 gslc_tsElemRef                  m_asKeypadNumElemRef[1];
 gslc_tsXKeyPad                  m_sKeyPadNum;
 gslc_tsXSlider                  m_sXSlider4;
 gslc_tsXTogglebtn               m_asXToggle52;
-gslc_tsXTogglebtn               m_asXToggle53;
-gslc_tsXTogglebtn               m_asXToggle54;
-gslc_tsXTogglebtn               m_asXToggle55;
-gslc_tsXTogglebtn               m_asXToggle56;
-gslc_tsXTogglebtn               m_asXToggle57;
-gslc_tsXTogglebtn               m_asXToggle58;
-gslc_tsXTogglebtn               m_asXToggle59;
-gslc_tsXTogglebtn               m_asXToggle60;
+gslc_tsXListbox                 m_sListbox2;
+// - Note that XLISTBOX_BUF_OH_R is extra required per item
+char                            m_acListboxBuf2[22 + XLISTBOX_BUF_OH_R];
+gslc_tsXTogglebtn               m_asXToggle70;
+gslc_tsXTogglebtn               m_asXToggle71;
+gslc_tsXTogglebtn               m_asXToggle88;
+gslc_tsXTogglebtn               m_asXToggle89;
+gslc_tsXTogglebtn               m_asXToggle90;
+gslc_tsXTogglebtn               m_asXToggle91;
+gslc_tsXTogglebtn               m_asXToggle92;
+gslc_tsXTogglebtn               m_asXToggle93;
+gslc_tsXTogglebtn               m_asXToggle94;
+gslc_tsXTogglebtn               m_asXToggle95;
 
 #define MAX_STR                 100
 
@@ -159,17 +198,24 @@ gslc_tsXTogglebtn               m_asXToggle60;
 
 // Element References for direct access
 //<Extern_References !Start!>
-extern gslc_tsElemRef* m_pElemSlider4;
-extern gslc_tsElemRef* m_pElemToggle52;
-extern gslc_tsElemRef* m_pElemToggle53;
-extern gslc_tsElemRef* m_pElemToggle54;
-extern gslc_tsElemRef* m_pElemToggle55;
-extern gslc_tsElemRef* m_pElemToggle56;
-extern gslc_tsElemRef* m_pElemToggle57;
-extern gslc_tsElemRef* m_pElemToggle58;
-extern gslc_tsElemRef* m_pElemToggle59;
-extern gslc_tsElemRef* m_pElemToggle60;
-extern gslc_tsElemRef* m_pElemVal4;
+extern gslc_tsElemRef* m_pDeadzone0;
+extern gslc_tsElemRef* m_pDefaultval;
+extern gslc_tsElemRef* m_pListSlider2;
+extern gslc_tsElemRef* m_pLsbchanneloutputtype;
+extern gslc_tsElemRef* m_pPwmcenterzero;
+extern gslc_tsElemRef* m_pPwmfreq;
+extern gslc_tsElemRef* m_pReverse;
+extern gslc_tsElemRef* m_pSm0;
+extern gslc_tsElemRef* m_pSm1;
+extern gslc_tsElemRef* m_pSm2;
+extern gslc_tsElemRef* m_pSm3;
+extern gslc_tsElemRef* m_pSm4;
+extern gslc_tsElemRef* m_pSm5;
+extern gslc_tsElemRef* m_pSm6;
+extern gslc_tsElemRef* m_pSm7;
+extern gslc_tsElemRef* m_pStepcenterzero;
+extern gslc_tsElemRef* m_pStepmaxfreq;
+extern gslc_tsElemRef* m_pStepminfreq;
 extern gslc_tsElemRef* m_pElemKeyPadNum;
 //<Extern_References !End!>
 
@@ -219,8 +265,16 @@ void InitGUIslice_gen()
   gslc_PageSetHmiEvents(&m_gui,channelSettings, true, false);
   gslc_PageAdd(&m_gui,setupChannel,m_asPage27Elem,MAX_ELEM_setupChannel_RAM,m_asPage27ElemRef,MAX_ELEM_setupChannel);
   gslc_PageSetHmiEvents(&m_gui,setupChannel, true, false);
-  gslc_PageAdd(&m_gui,setModel,m_asPage28Elem,MAX_ELEM_setModel_RAM,m_asPage28ElemRef,MAX_ELEM_setModel);
+  gslc_PageAdd(&m_gui,setupOutputPWM,m_asPage32Elem,MAX_ELEM_setupOutputPWM_RAM,m_asPage32ElemRef,MAX_ELEM_setupOutputPWM);
+  gslc_PageSetHmiEvents(&m_gui,setupOutputPWM, false, false);
+  gslc_PageAdd(&m_gui,setupOutputStepper,m_asPage33Elem,MAX_ELEM_setupOutputStepper_RAM,m_asPage33ElemRef,MAX_ELEM_setupOutputStepper);
+  gslc_PageSetHmiEvents(&m_gui,setupOutputStepper, false, false);
+  gslc_PageAdd(&m_gui,setupOutputNotNeeded,m_asPage34Elem,MAX_ELEM_setupOutputNotNeeded_RAM,m_asPage34ElemRef,MAX_ELEM_setupOutputNotNeeded);
+  gslc_PageSetHmiEvents(&m_gui,setupOutputNotNeeded, false, false);
+  gslc_PageAdd(&m_gui,setModel,m_asPage37Elem,MAX_ELEM_setModel_RAM,m_asPage37ElemRef,MAX_ELEM_setModel);
   gslc_PageSetHmiEvents(&m_gui,setModel, true, false);
+  gslc_PageAdd(&m_gui,transmittingSettings,m_asPopup12Elem,MAX_ELEM_transmittingSettings_RAM,m_asPopup12ElemRef,MAX_ELEM_transmittingSettings);
+  gslc_PageSetHmiEvents(&m_gui,transmittingSettings, false, false);
   gslc_PageAdd(&m_gui,E_POP_KEYPAD_NUM,m_asKeypadNumElem,1,m_asKeypadNumElemRef,1);  // KeyPad
 
   // Now mark BasePage as a "base" page which means that it's elements
@@ -592,7 +646,7 @@ void InitGUIslice_gen()
           (gslc_tsRect){150,30,20,200},0,100,0,5,false);
   gslc_ElemXSliderSetStyle(&m_gui,pElemRef,false,GSLC_COL_BLUE,10,5,GSLC_COL_BLUE);
   gslc_ElemXSliderSetPosFunc(&m_gui,pElemRef,&CbSlidePos);
-  m_pElemSlider4 = pElemRef;
+  m_pDeadzone0 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
   // create backbtncal button with text label
@@ -1109,7 +1163,12 @@ void InitGUIslice_gen()
   
   // create backbtnchs button with text label
   pElemRef = gslc_ElemCreateBtnTxt(&m_gui,backbtnchs,channelSettings,
-    (gslc_tsRect){110,180,100,40},(char*)"Back",0,E_BUILTIN5X8,&CbBtnCommon);
+    (gslc_tsRect){10,180,100,40},(char*)"Back",0,E_BUILTIN5X8,&CbBtnCommon);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
+  
+  // create backbtnchsandsendstorx button with text label
+  pElemRef = gslc_ElemCreateBtnTxt(&m_gui,backbtnchsandsendstorx,channelSettings,
+    (gslc_tsRect){110,180,200,40},(char*)"Back and send settings",0,E_BUILTIN5X8,&CbBtnCommon);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
 
   // -----------------------------------
@@ -1117,30 +1176,30 @@ void InitGUIslice_gen()
   
   
   // Create channelname text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,channelname,setupChannel,(gslc_tsRect){120,20,31,10},
+  pElemRef = gslc_ElemCreateTxt(&m_gui,channelname,setupChannel,(gslc_tsRect){140,20,31,10},
     (char*)"ch???",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
   // Create E_ELEM_TEXT312 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT312,setupChannel,(gslc_tsRect){100,50,31,10},
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT312,setupChannel,(gslc_tsRect){120,45,31,10},
     (char*)"RCval",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
   // Create channelval text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,channelval,setupChannel,(gslc_tsRect){150,45,25,10},
+  pElemRef = gslc_ElemCreateTxt(&m_gui,channelval,setupChannel,(gslc_tsRect){160,45,25,10},
     (char*)"0000",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
   // Create reversetxt text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,reversetxt,setupChannel,(gslc_tsRect){61,112,43,10},
+  pElemRef = gslc_ElemCreateTxt(&m_gui,reversetxt,setupChannel,(gslc_tsRect){192,170,43,10},
     (char*)"reverse",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
   // Create toggle button reverse
   pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,reverse,setupChannel,&m_asXToggle52,
-    (gslc_tsRect){65,90,35,20},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
+    (gslc_tsRect){240,165,35,20},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle52 = pElemRef;
+  m_pReverse = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, true);
   
   // create detectIO1 button with text label
@@ -1174,19 +1233,19 @@ void InitGUIslice_gen()
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
   // Create E_ELEM_TEXT309 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT309,setupChannel,(gslc_tsRect){115,175,79,10},
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT309,setupChannel,(gslc_tsRect){140,143,79,10},
     (char*)"Default value",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
   // Create defaultval numeric input field
   static char m_sInputNumber4[7] = "";
-  pElemRef = gslc_ElemCreateTxt(&m_gui,defaultval,setupChannel,(gslc_tsRect){135,150,40,20},
+  pElemRef = gslc_ElemCreateTxt(&m_gui,defaultval,setupChannel,(gslc_tsRect){230,138,40,20},
     (char*)m_sInputNumber4,7,E_BUILTIN5X8);
   gslc_ElemSetTxtMargin(&m_gui,pElemRef,5);
   gslc_ElemSetFrameEn(&m_gui,pElemRef,true);
   gslc_ElemSetClickEn(&m_gui, pElemRef, true);
   gslc_ElemSetTouchFunc(&m_gui, pElemRef, &CbBtnCommon);
-  m_pElemVal4 = pElemRef;
+  m_pDefaultval = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, true);
   
   // create savebtnchconf button with text label
@@ -1198,111 +1257,351 @@ void InitGUIslice_gen()
   pElemRef = gslc_ElemCreateBtnTxt(&m_gui,backbtnchconf,setupChannel,
     (gslc_tsRect){10,210,40,20},(char*)"Back",0,E_BUILTIN5X8,&CbBtnCommon);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
+   
+  // Create listbox
+  pElemRef = gslc_ElemXListboxCreate(&m_gui,lsbChannelOutputType,setupChannel,&m_sListbox2,
+    (gslc_tsRect){0,70,130,100},E_BUILTIN5X8,
+    (uint8_t*)&m_acListboxBuf2,sizeof(m_acListboxBuf2),0);
+  gslc_ElemXListboxSetSize(&m_gui, pElemRef, 5, 1); // 5 rows, 1 columns
+  gslc_ElemXListboxItemsSetSize(&m_gui, pElemRef, XLISTBOX_SIZE_AUTO, XLISTBOX_SIZE_AUTO);
+  gslc_ElemSetTxtMarginXY(&m_gui, pElemRef, 5, 0);
+  gslc_ElemSetTxtCol(&m_gui,pElemRef,GSLC_COL_WHITE);
+  gslc_ElemSetCol(&m_gui,pElemRef,GSLC_COL_BLUE,GSLC_COL_BLACK,GSLC_COL_GRAY);
+  gslc_ElemXListboxSetSelFunc(&m_gui, pElemRef, &CbListbox);
+  gslc_ElemXListboxAddItem(&m_gui, pElemRef, "RC");
+  gslc_ElemXListboxAddItem(&m_gui, pElemRef, "IO");
+  gslc_ElemXListboxAddItem(&m_gui, pElemRef, "PWM");
+  gslc_ElemXListboxAddItem(&m_gui, pElemRef, "STEPPER");
+  gslc_ElemXListboxAddItem(&m_gui, pElemRef, "DAC");
+  gslc_ElemSetFrameEn(&m_gui,pElemRef,true);
+  m_pLsbchanneloutputtype = pElemRef;
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, true);
+  
+  // create E_ELEM_BTN279 button with text label
+  pElemRef = gslc_ElemCreateBtnTxt(&m_gui,E_ELEM_BTN279,setupChannel,
+    (gslc_tsRect){10,180,120,20},(char*)"Setup output type",0,E_BUILTIN5X8,&CbBtnCommon);
+  gslc_ElemSetRoundEn(&m_gui, pElemRef, true);
+  gslc_ElemSetFrameEn(&m_gui,pElemRef,false);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
+
+  // -----------------------------------
+  // PAGE: setupOutputPWM
+  
+  
+  // Create E_ELEM_TEXT674 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT674,setupOutputPWM,(gslc_tsRect){100,20,115,10},
+    (char*)"Setup PWM Paramters",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT667 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT667,setupOutputPWM,(gslc_tsRect){76,65,79,10},
+    (char*)"PWM Frequency",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create pwmFreq numeric input field
+  static char m_sInputNumber22[7] = "";
+  pElemRef = gslc_ElemCreateTxt(&m_gui,pwmFreq,setupOutputPWM,(gslc_tsRect){160,60,40,20},
+    (char*)m_sInputNumber22,7,E_BUILTIN5X8);
+  gslc_ElemSetTxtMargin(&m_gui,pElemRef,5);
+  gslc_ElemSetFrameEn(&m_gui,pElemRef,true);
+  gslc_ElemSetClickEn(&m_gui, pElemRef, true);
+  gslc_ElemSetTouchFunc(&m_gui, pElemRef, &CbBtnCommon);
+  m_pPwmfreq = pElemRef;
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, true);
+  
+  // Create E_ELEM_TEXT673 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT673,setupOutputPWM,(gslc_tsRect){88,95,67,10},
+    (char*)"Center is 0",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create toggle button pwmCenterZero
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,pwmCenterZero,setupOutputPWM,&m_asXToggle70,
+    (gslc_tsRect){160,90,35,20},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
+    true,false,&CbBtnCommon);
+  m_pPwmcenterzero = pElemRef;
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, true);
+  
+  // create backbtnsetupPWM button with text label
+  pElemRef = gslc_ElemCreateBtnTxt(&m_gui,backbtnsetupPWM,setupOutputPWM,
+    (gslc_tsRect){10,210,40,20},(char*)"Back",0,E_BUILTIN5X8,&CbBtnCommon);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
+
+  // -----------------------------------
+  // PAGE: setupOutputStepper
+  
+  
+  // Create E_ELEM_TEXT675 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT675,setupOutputStepper,(gslc_tsRect){100,20,139,10},
+    (char*)"Setup Stepper Paramters",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT669 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT669,setupOutputStepper,(gslc_tsRect){76,65,79,10},
+    (char*)"Min frequency",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create stepMinFreq numeric input field
+  static char m_sInputNumber23[7] = "";
+  pElemRef = gslc_ElemCreateTxt(&m_gui,stepMinFreq,setupOutputStepper,(gslc_tsRect){160,60,40,20},
+    (char*)m_sInputNumber23,7,E_BUILTIN5X8);
+  gslc_ElemSetTxtMargin(&m_gui,pElemRef,5);
+  gslc_ElemSetFrameEn(&m_gui,pElemRef,true);
+  gslc_ElemSetClickEn(&m_gui, pElemRef, true);
+  gslc_ElemSetTouchFunc(&m_gui, pElemRef, &CbBtnCommon);
+  m_pStepminfreq = pElemRef;
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, true);
+  
+  // Create E_ELEM_TEXT670 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT670,setupOutputStepper,(gslc_tsRect){76,95,79,10},
+    (char*)"Max frequency",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create stepMaxFreq numeric input field
+  static char m_sInputNumber24[7] = "";
+  pElemRef = gslc_ElemCreateTxt(&m_gui,stepMaxFreq,setupOutputStepper,(gslc_tsRect){160,90,40,20},
+    (char*)m_sInputNumber24,7,E_BUILTIN5X8);
+  gslc_ElemSetTxtMargin(&m_gui,pElemRef,5);
+  gslc_ElemSetFrameEn(&m_gui,pElemRef,true);
+  gslc_ElemSetClickEn(&m_gui, pElemRef, true);
+  gslc_ElemSetTouchFunc(&m_gui, pElemRef, &CbBtnCommon);
+  m_pStepmaxfreq = pElemRef;
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, true);
+  
+  // Create E_ELEM_TEXT677 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT677,setupOutputStepper,(gslc_tsRect){88,125,67,10},
+    (char*)"Center is 0",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create toggle button stepCenterZero
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,stepCenterZero,setupOutputStepper,&m_asXToggle71,
+    (gslc_tsRect){160,120,35,20},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
+    true,false,&CbBtnCommon);
+  m_pStepcenterzero = pElemRef;
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, true);
+  
+  // create backbtnsetupStepper button with text label
+  pElemRef = gslc_ElemCreateBtnTxt(&m_gui,backbtnsetupStepper,setupOutputStepper,
+    (gslc_tsRect){10,210,40,20},(char*)"Back",0,E_BUILTIN5X8,&CbBtnCommon);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
+
+  // -----------------------------------
+  // PAGE: setupOutputNotNeeded
+  
+  
+  // Create E_ELEM_TEXT676 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT676,setupOutputNotNeeded,(gslc_tsRect){100,110,97,10},
+    (char*)"Setup not needed",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // create backbtnsetupNotNeeded button with text label
+  pElemRef = gslc_ElemCreateBtnTxt(&m_gui,backbtnsetupNotNeeded,setupOutputNotNeeded,
+    (gslc_tsRect){10,210,40,20},(char*)"Back",0,E_BUILTIN5X8,&CbBtnCommon);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
 
   // -----------------------------------
   // PAGE: setModel
   
   
-  // Create mn0 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,mn0,setModel,(gslc_tsRect){5,5,19,10},
+  // Create E_ELEM_TEXT729 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT729,setModel,(gslc_tsRect){11,42,19,10},
     (char*)"ch1",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
-  // Create toggle button m0
-  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,m0,setModel,&m_asXToggle53,
+  // Create toggle button sm0
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,sm0,setModel,&m_asXToggle88,
     (gslc_tsRect){5,10,30,30},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle53 = pElemRef;
+  m_pSm0 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
-  // Create mn1 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,mn1,setModel,(gslc_tsRect){35,5,19,10},
+  // Create E_ELEM_TEXT730 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT730,setModel,(gslc_tsRect){41,42,19,10},
     (char*)"ch2",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
-  // Create toggle button m11
-  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,m11,setModel,&m_asXToggle54,
+  // Create toggle button sm1
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,sm1,setModel,&m_asXToggle89,
     (gslc_tsRect){35,10,30,30},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle54 = pElemRef;
+  m_pSm1 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
-  // Create mn2 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,mn2,setModel,(gslc_tsRect){65,5,19,10},
+  // Create E_ELEM_TEXT731 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT731,setModel,(gslc_tsRect){71,42,19,10},
     (char*)"ch3",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
-  // Create toggle button m12
-  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,m12,setModel,&m_asXToggle55,
+  // Create toggle button sm2
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,sm2,setModel,&m_asXToggle90,
     (gslc_tsRect){65,10,30,30},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle55 = pElemRef;
+  m_pSm2 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
-  // Create mn3 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,mn3,setModel,(gslc_tsRect){95,5,19,10},
+  // Create E_ELEM_TEXT732 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT732,setModel,(gslc_tsRect){101,42,19,10},
     (char*)"ch4",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
-  // Create toggle button m13
-  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,m13,setModel,&m_asXToggle56,
+  // Create toggle button sm3
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,sm3,setModel,&m_asXToggle91,
     (gslc_tsRect){95,10,30,30},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle56 = pElemRef;
+  m_pSm3 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
-  // Create mn4 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,mn4,setModel,(gslc_tsRect){125,5,19,10},
+  // Create E_ELEM_TEXT733 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT733,setModel,(gslc_tsRect){131,42,19,10},
     (char*)"ch5",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
-  // Create toggle button m14
-  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,m14,setModel,&m_asXToggle57,
+  // Create toggle button sm4
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,sm4,setModel,&m_asXToggle92,
     (gslc_tsRect){125,10,30,30},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle57 = pElemRef;
+  m_pSm4 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
-  // Create mn5 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,mn5,setModel,(gslc_tsRect){155,5,19,10},
+  // Create E_ELEM_TEXT734 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT734,setModel,(gslc_tsRect){161,42,19,10},
     (char*)"ch6",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
-  // Create toggle button m15
-  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,m15,setModel,&m_asXToggle58,
+  // Create toggle button sm5
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,sm5,setModel,&m_asXToggle93,
     (gslc_tsRect){155,10,30,30},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle58 = pElemRef;
+  m_pSm5 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
-  // Create mn6 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,mn6,setModel,(gslc_tsRect){185,5,19,10},
+  // Create E_ELEM_TEXT735 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT735,setModel,(gslc_tsRect){191,42,19,10},
     (char*)"ch7",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
-  // Create toggle button m16
-  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,m16,setModel,&m_asXToggle59,
+  // Create toggle button sm6
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,sm6,setModel,&m_asXToggle94,
     (gslc_tsRect){185,10,30,30},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle59 = pElemRef;
+  m_pSm6 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
-  // Create mn7 text label
-  pElemRef = gslc_ElemCreateTxt(&m_gui,mn7,setModel,(gslc_tsRect){215,5,19,10},
+  // Create E_ELEM_TEXT736 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT736,setModel,(gslc_tsRect){221,42,19,10},
     (char*)"ch8",0,E_BUILTIN5X8);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
   
-  // Create toggle button m17
-  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,m17,setModel,&m_asXToggle60,
+  // Create toggle button sm7
+  pElemRef = gslc_ElemXTogglebtnCreate(&m_gui,sm7,setModel,&m_asXToggle95,
     (gslc_tsRect){215,10,30,30},GSLC_COL_GRAY,GSLC_COL_BLUE_DK1,GSLC_COL_GRAY_LT3,
     true,false,&CbBtnCommon);
-  m_pElemToggle60 = pElemRef;
+  m_pSm7 = pElemRef;
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
   
   // create E_ELEM_BTN65 button with text label
   pElemRef = gslc_ElemCreateBtnTxt(&m_gui,E_ELEM_BTN65,setModel,
     (gslc_tsRect){100,150,60,20},(char*)"Back",0,E_BUILTIN5X8,&CbBtnCommon);
   gslc_ElemSetHmiEvents(&m_gui,pElemRef, true, false, false, false);
+  
+  // Create E_ELEM_TEXT748 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT748,setModel,(gslc_tsRect){11,42,19,10},
+    (char*)"ch1",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT749 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT749,setModel,(gslc_tsRect){41,42,19,10},
+    (char*)"ch2",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT750 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT750,setModel,(gslc_tsRect){71,42,19,10},
+    (char*)"ch3",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT751 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT751,setModel,(gslc_tsRect){101,42,19,10},
+    (char*)"ch4",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT752 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT752,setModel,(gslc_tsRect){131,42,19,10},
+    (char*)"ch5",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT753 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT753,setModel,(gslc_tsRect){161,42,19,10},
+    (char*)"ch6",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT754 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT754,setModel,(gslc_tsRect){191,42,19,10},
+    (char*)"ch7",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT755 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT755,setModel,(gslc_tsRect){221,42,19,10},
+    (char*)"ch8",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT756 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT756,setModel,(gslc_tsRect){11,42,19,10},
+    (char*)"ch1",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT757 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT757,setModel,(gslc_tsRect){41,42,19,10},
+    (char*)"ch2",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT758 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT758,setModel,(gslc_tsRect){71,42,19,10},
+    (char*)"ch3",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT759 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT759,setModel,(gslc_tsRect){101,42,19,10},
+    (char*)"ch4",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT760 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT760,setModel,(gslc_tsRect){131,42,19,10},
+    (char*)"ch5",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT761 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT761,setModel,(gslc_tsRect){161,42,19,10},
+    (char*)"ch6",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT762 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT762,setModel,(gslc_tsRect){191,42,19,10},
+    (char*)"ch7",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT763 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT763,setModel,(gslc_tsRect){221,42,19,10},
+    (char*)"ch8",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+
+  // -----------------------------------
+  // PAGE: transmittingSettings
+  
+  
+  // Create E_ELEM_TEXT745 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT745,transmittingSettings,(gslc_tsRect){90,70,127,10},
+    (char*)"Transmitting settings",0,E_BUILTIN5X8);
+  gslc_ElemSetTxtAlign(&m_gui,pElemRef,GSLC_ALIGN_TOP_MID);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create E_ELEM_TEXT746 text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,E_ELEM_TEXT746,transmittingSettings,(gslc_tsRect){60,90,181,10},
+    (char*)"Please wait for it to complete",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
+  
+  // Create settingstxtorxprogress text label
+  pElemRef = gslc_ElemCreateTxt(&m_gui,settingstxtorxprogress,transmittingSettings,(gslc_tsRect){60,110,181,10},
+    (char*)"Currently at packet ??? of ???",0,E_BUILTIN5X8);
+  gslc_ElemSetHmiEvents(&m_gui,pElemRef, false, false, false, false);
 
   // -----------------------------------
   // PAGE: E_POP_KEYPAD_NUM
