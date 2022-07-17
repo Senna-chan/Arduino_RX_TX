@@ -1453,6 +1453,7 @@ HAL_StatusTypeDef HAL_TIM_PWM_Start(TIM_HandleTypeDef *htim, uint32_t Channel)
 
   /* Check the parameters */
   assert_param(IS_TIM_CCX_INSTANCE(htim->Instance, Channel));
+
   /* Check the TIM channel state */
   if (TIM_CHANNEL_STATE_GET(htim, Channel) != HAL_TIM_CHANNEL_STATE_READY)
   {

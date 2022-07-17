@@ -11,6 +11,8 @@
 #include "main.h"
 #include "SharedFunctions.h"
 #include "SharedVars.h"
+#include "TimerHelpers.hpp"
+#include "math.h"
 
 #ifdef __cplusplus
 extern "C"

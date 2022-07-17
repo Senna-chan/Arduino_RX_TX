@@ -35,6 +35,7 @@ extern "C" {
 #include <stdarg.h>
 #include <stdio.h>
 #include "Structs.h"
+#include "RXStructs.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

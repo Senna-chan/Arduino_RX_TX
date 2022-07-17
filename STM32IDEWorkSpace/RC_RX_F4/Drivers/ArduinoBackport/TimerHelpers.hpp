@@ -1,8 +1,14 @@
 #include "main.h"
-#include "stm32f407xx.h"
+#include "stm32f4xx_hal.h"
 /**
  * This is a on demand backport of the HardwareTimer in arduino
  */
+
+typedef enum {
+  TICK_FORMAT, // default
+  MICROSEC_FORMAT,
+  HERTZ_FORMAT,
+} TimerFormat_t;
 
 typedef enum {
   RESOLUTION_1B_COMPARE_FORMAT = 1,  // used for Dutycycle: [0 .. 1]
@@ -28,16 +34,12 @@ typedef enum {
   PERCENT_COMPARE_FORMAT, // used for Dutycycle
 } TimerCompareFormat_t;
 
-class TimerHelpers{
-private:
-	TIM_HandleTypeDef *_timer;
-	uint32_t getTimerClkFreq();
-	uint8_t getTimerClkSrc();
-public:
 
-	void init(TIM_HandleTypeDef *_timer);
+uint32_t 	TIM_getTimerClkFreq(TIM_HandleTypeDef *_timer);
+uint8_t 	TIM_getTimerClkSrc(TIM_HandleTypeDef *_timer);
 
-	uint32_t getOverflow(TimerFormat_t format);
-	void 	 setOverflow(uint32_t overflow, TimerFormat_t format);
+uint32_t 	TIM_getOverflow(TIM_HandleTypeDef *_timer, TimerFormat_t format);
+void 	 	TIM_setOverflow(TIM_HandleTypeDef *_timer, uint32_t overflow, TimerFormat_t format);
 
-};
+void 		TIM_setCaptureCompare(TIM_HandleTypeDef *_timer,uint32_t timChannel, uint32_t compare, TimerCompareFormat_t format);
+uint32_t 	TIM_getCaptureCompare(TIM_HandleTypeDef *_timer, uint32_t channel,  TimerCompareFormat_t format);

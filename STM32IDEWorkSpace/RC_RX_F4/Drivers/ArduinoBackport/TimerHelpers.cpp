@@ -5,7 +5,7 @@
   * @param  tim: timer instance
   * @retval 1 = PCLK1 or 2 = PCLK2
   */
-uint8_t TimerHelpers::getTimerClkSrc()
+uint8_t TIM_getTimerClkSrc(TIM_HandleTypeDef *_timer)
 {
   uint8_t clkSrc = 0;
 
@@ -14,9 +14,8 @@ uint8_t TimerHelpers::getTimerClkSrc()
     /* TIMx source CLK is PCKL1 */
     clkSrc = 1;
 #else
-  {
     /* Get source clock depending on TIM instance */
-    switch (_timer->Instance) {
+    switch ((uint32_t)_timer->Instance) {
 #if defined(TIM2_BASE)
       case (uint32_t)TIM2:
 #endif
@@ -88,7 +87,7 @@ uint8_t TimerHelpers::getTimerClkSrc()
         clkSrc = 2;
         break;
       default:
-        _Error_Handler("TIM: Unknown timer instance", (int)tim);
+        Error_Handler();
         break;
     }
 #endif
@@ -101,7 +100,7 @@ uint8_t TimerHelpers::getTimerClkSrc()
   * @param  None
   * @retval frequency in Hz
   */
-uint32_t TimerHelpers::getTimerClkFreq()
+uint32_t TIM_getTimerClkFreq(TIM_HandleTypeDef *_timer)
 {
 #if defined(STM32MP1xx)
   uint8_t timerClkSrc = getTimerClkSrc(_timerObj.handle.Instance);
@@ -114,7 +113,7 @@ uint32_t TimerHelpers::getTimerClkFreq()
 
   /* Get clock configuration */
   HAL_RCC_GetClockConfig(&clkconfig, &pFLatency);
-  switch (getTimerClkSrc(_timerObj.handle.Instance)) {
+  switch (TIM_getTimerClkSrc(_timer)) {
     case 1:
       uwAPBxPrescaler = clkconfig.APB1CLKDivider;
       uwTimclock = HAL_RCC_GetPCLK1Freq();
@@ -236,18 +235,18 @@ uint32_t TimerHelpers::getTimerClkFreq()
   *           MICROSEC_FORMAT: return number of microsecondes for overflow
   *           HERTZ_FORMAT:    return frequency in hertz for overflow
   */
-uint32_t TimerHelpers::getOverflow(TimerFormat_t format)
+uint32_t TIM_getOverflow(TIM_HandleTypeDef *_timer, TimerFormat_t format)
 {
   // Hardware register correspond to period count-1. Example ARR register value 9 means period of 10 timer cycle
-  uint32_t ARR_RegisterValue = _timer->Instance.ARR;
-  uint32_t Prescalerfactor = _timer->Instance.PSC 1;
+  uint32_t ARR_RegisterValue = _timer->Instance->ARR;
+  uint32_t Prescalerfactor = _timer->Instance->PSC - 1;
   uint32_t return_value;
   switch (format) {
     case MICROSEC_FORMAT:
-      return_value = (uint32_t)(((ARR_RegisterValue + 1) * Prescalerfactor * 1000000.0) / getTimerClkFreq());
+      return_value = (uint32_t)(((ARR_RegisterValue + 1) * Prescalerfactor * 1000000.0) / TIM_getTimerClkFreq(_timer));
       break;
     case HERTZ_FORMAT:
-      return_value = (uint32_t)(getTimerClkFreq() / ((ARR_RegisterValue + 1) * Prescalerfactor));
+      return_value = (uint32_t)(TIM_getTimerClkFreq(_timer) / ((ARR_RegisterValue + 1) * Prescalerfactor));
       break;
     case TICK_FORMAT:
     default :
@@ -271,7 +270,7 @@ uint32_t TimerHelpers::getOverflow(TimerFormat_t format)
   *           HERTZ_FORMAT:    overflow is the frequency in hertz for overflow
   * @retval None
   */
-void TimerHelpers::setOverflow(uint32_t overflow, TimerFormat_t format)
+void TIM_setOverflow(TIM_HandleTypeDef *_timer, uint32_t overflow, TimerFormat_t format)
 {
   uint32_t ARR_RegisterValue;
   uint32_t PeriodTicks;
@@ -280,15 +279,15 @@ void TimerHelpers::setOverflow(uint32_t overflow, TimerFormat_t format)
   // Remark: Hardware register correspond to period count-1. Example ARR register value 9 means period of 10 timer cycle
   switch (format) {
     case MICROSEC_FORMAT:
-      period_cyc = overflow * (getTimerClkFreq() / 1000000);
+      period_cyc = overflow * (TIM_getTimerClkFreq(_timer) / 1000000);
       Prescalerfactor = (period_cyc / 0x10000) + 1;
-      LL_TIM_SetPrescaler(_timerObj.handle.Instance, Prescalerfactor - 1);
+      _timer->Instance->PSC = Prescalerfactor - 1;
       PeriodTicks = period_cyc / Prescalerfactor;
       break;
     case HERTZ_FORMAT:
-      period_cyc = getTimerClkFreq() / overflow;
+      period_cyc = TIM_getTimerClkFreq(_timer) / overflow;
       Prescalerfactor = (period_cyc / 0x10000) + 1;
-      LL_TIM_SetPrescaler(_timerObj.handle.Instance, Prescalerfactor - 1);
+      _timer->Instance->PSC =Prescalerfactor - 1;
       PeriodTicks = period_cyc / Prescalerfactor;
       break;
     case TICK_FORMAT:
@@ -304,5 +303,119 @@ void TimerHelpers::setOverflow(uint32_t overflow, TimerFormat_t format)
     // But do not underflow in case a zero period was given somehow.
     ARR_RegisterValue = 0;
   }
-  __HAL_TIM_SET_AUTORELOAD(&_timerObj.handle, ARR_RegisterValue);
+  __HAL_TIM_SET_AUTORELOAD(_timer, ARR_RegisterValue);
+  HAL_TIM_GenerateEvent(_timer, TIM_EVENTSOURCE_UPDATE);
+}
+
+
+/**
+  * @brief  Set channel Capture/Compare register
+  * @param  timChannel: HAL Timer Channel
+  * @param  compare: compare value depending on format
+  * @param  format of compare parameter. If omitted default format is Tick
+  *           TICK_FORMAT:     compare is the number of tick
+  *           MICROSEC_FORMAT: compare is the number of microsecondes
+  *           HERTZ_FORMAT:    compare is the frequency in hertz
+  * @retval None
+  */
+void TIM_setCaptureCompare(TIM_HandleTypeDef *_timer,uint32_t timChannel, uint32_t compare, TimerCompareFormat_t format)
+{
+  uint32_t Prescalerfactor = _timer->Instance->PSC + 1;
+  uint32_t CCR_RegisterValue;
+
+  if (timChannel == -1) {
+    Error_Handler();
+  }
+
+  switch (format) {
+    case MICROSEC_COMPARE_FORMAT:
+      CCR_RegisterValue = ((compare * (TIM_getTimerClkFreq(_timer) / 1000000)) / Prescalerfactor);
+      break;
+    case HERTZ_COMPARE_FORMAT:
+      CCR_RegisterValue = TIM_getTimerClkFreq(_timer) / (compare * Prescalerfactor);
+      break;
+    // As per Reference Manual PWM reach 100% with CCRx value strictly greater than ARR (So ARR+1 in our case)
+    case PERCENT_COMPARE_FORMAT:
+      CCR_RegisterValue = (__HAL_TIM_GET_AUTORELOAD(_timer + 1) * compare) / 100;
+      break;
+    case RESOLUTION_1B_COMPARE_FORMAT:
+    case RESOLUTION_2B_COMPARE_FORMAT:
+    case RESOLUTION_3B_COMPARE_FORMAT:
+    case RESOLUTION_4B_COMPARE_FORMAT:
+    case RESOLUTION_5B_COMPARE_FORMAT:
+    case RESOLUTION_6B_COMPARE_FORMAT:
+    case RESOLUTION_7B_COMPARE_FORMAT:
+    case RESOLUTION_8B_COMPARE_FORMAT:
+    case RESOLUTION_9B_COMPARE_FORMAT:
+    case RESOLUTION_10B_COMPARE_FORMAT:
+    case RESOLUTION_11B_COMPARE_FORMAT:
+    case RESOLUTION_12B_COMPARE_FORMAT:
+    case RESOLUTION_13B_COMPARE_FORMAT:
+    case RESOLUTION_14B_COMPARE_FORMAT:
+    case RESOLUTION_15B_COMPARE_FORMAT:
+    case RESOLUTION_16B_COMPARE_FORMAT:
+      CCR_RegisterValue = ((__HAL_TIM_GET_AUTORELOAD(_timer) + 1) * compare) / ((1 << format) - 1) ;
+      break;
+    case TICK_COMPARE_FORMAT:
+    default :
+      CCR_RegisterValue = compare;
+      break;
+  }
+
+  __HAL_TIM_SET_COMPARE(_timer, timChannel, CCR_RegisterValue);
+}
+
+/**
+  * @brief  Retrieve Capture/Compare value
+  * @param  channel: HAL Timer Channel
+  * @param  format of return value. If omitted default format is Tick
+  *           TICK_FORMAT:     return value is the number of tick for Capture/Compare value
+  *           MICROSEC_FORMAT: return value is the number of microsecondes for Capture/Compare value
+  *           HERTZ_FORMAT:    return value is the frequency in hertz for Capture/Compare value
+  * @retval Capture/Compare value
+  */
+uint32_t TIM_getCaptureCompare(TIM_HandleTypeDef *_timer, uint32_t timChannel,  TimerCompareFormat_t format)
+{
+  uint32_t CCR_RegisterValue = __HAL_TIM_GET_COMPARE(_timer, timChannel);
+  uint32_t Prescalerfactor = _timer->Instance->PSC + 1;
+  uint32_t return_value;
+
+  if (timChannel == -1) {
+    Error_Handler();
+  }
+
+  switch (format) {
+    case MICROSEC_COMPARE_FORMAT:
+      return_value = (uint32_t)((CCR_RegisterValue * Prescalerfactor * 1000000.0) / TIM_getTimerClkFreq(_timer));
+      break;
+    case HERTZ_COMPARE_FORMAT:
+      return_value = (uint32_t)(TIM_getTimerClkFreq(_timer) / (CCR_RegisterValue  * Prescalerfactor));
+      break;
+    case PERCENT_COMPARE_FORMAT:
+      return_value = (CCR_RegisterValue * 100) / __HAL_TIM_GET_AUTORELOAD(_timer);
+      break;
+    case RESOLUTION_1B_COMPARE_FORMAT:
+    case RESOLUTION_2B_COMPARE_FORMAT:
+    case RESOLUTION_3B_COMPARE_FORMAT:
+    case RESOLUTION_4B_COMPARE_FORMAT:
+    case RESOLUTION_5B_COMPARE_FORMAT:
+    case RESOLUTION_6B_COMPARE_FORMAT:
+    case RESOLUTION_7B_COMPARE_FORMAT:
+    case RESOLUTION_8B_COMPARE_FORMAT:
+    case RESOLUTION_9B_COMPARE_FORMAT:
+    case RESOLUTION_10B_COMPARE_FORMAT:
+    case RESOLUTION_11B_COMPARE_FORMAT:
+    case RESOLUTION_12B_COMPARE_FORMAT:
+    case RESOLUTION_13B_COMPARE_FORMAT:
+    case RESOLUTION_14B_COMPARE_FORMAT:
+    case RESOLUTION_15B_COMPARE_FORMAT:
+    case RESOLUTION_16B_COMPARE_FORMAT:
+      return_value = (CCR_RegisterValue * ((1 << format) - 1)) / __HAL_TIM_GET_AUTORELOAD(_timer);
+      break;
+    case TICK_COMPARE_FORMAT:
+    default :
+      return_value = CCR_RegisterValue;
+      break;
+  }
+  return return_value;
 }
