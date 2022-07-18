@@ -18,17 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include <RC_RX.hpp>
-#include "main.h"
-#include "dac.h"
-#include "spi.h"
-#include "tim.h"
-#include "usart.h"
-#include "gpio.h"
-#include "crc.h"
 #include <queue>
 #include <stdio.h>
-#include "nrf24.h"
-#include "w25qxx.h"
 #include <stdlib.h>
 
 /* Private typedef -----------------------------------------------------------*/
@@ -163,8 +154,7 @@ void setOutput(uint8_t index, uint16_t channelValue) {
 	channelConfigs* channelConfig = &settings.model[settings.activeModel].channel_settings[index - 1];
 
 	if (choc.currentOutputMode == OUTPUTMODE_RC) {
-		if (choc.timOutput == 0)
-			return;
+		if (choc.timOutput == 0) return;
 
 		*choc.timOutput = channelValues[index - 1];
 	} else if (choc.currentOutputMode == OUTPUTMODE_IO) {
@@ -175,7 +165,11 @@ void setOutput(uint8_t index, uint16_t channelValue) {
 		} else {
 			*choc.timOutput = 0;
 		}
-	} else if(choc.currentOutputMode == OUTPUTMODE_STEP){
+	}
+	else if (choc.currentOutputMode == OUTPUTMODE_DAC) {
+		if (choc.miscOutput != 0) *choc.miscOutput = map(channelValues[index - 1], 1000, 2000, 0,4095);
+	}
+	else if(choc.currentOutputMode == OUTPUTMODE_STEP){
 		uint32_t frequency = map(channelValues[index - 1], 1000, 2000, channelConfig->stepperConfig.minFrequency, channelConfig->stepperConfig.maxFrequency);
 		TIM_setOverflow(choc.miscTimConf, frequency, TimerFormat_t::HERTZ_FORMAT);
 		uint32_t dutyCycle = 50;
@@ -441,19 +435,19 @@ void setDefault(uint8_t channelNumber){
 	}
 }
 
-void setupChannelOutputConfig(uint8_t channelNumber){
-	setupChannelOutputConfig(channelNumber, nullptr,0, nullptr, nullptr, 0, nullptr, 0);
+void setupChannelOutputConfign(uint8_t channelNumber){
+	setupChannelOutputConfigtt(channelNumber, nullptr,0, nullptr, nullptr, 0, nullptr, 0);
 }
 
-void setupChannelOutputConfig(uint8_t channelNumber, TIM_HandleTypeDef* mainTimer, uint8_t mainTimerChannel){
-	setupChannelOutputConfig(channelNumber, mainTimer,mainTimerChannel, nullptr, nullptr, 0, nullptr, 0);
+void setupChannelOutputConfigt(uint8_t channelNumber, TIM_HandleTypeDef* mainTimer, uint8_t mainTimerChannel){
+	setupChannelOutputConfigtt(channelNumber, mainTimer,mainTimerChannel, nullptr, nullptr, 0, nullptr, 0);
 }
 
-void setupChannelOutputConfig(uint8_t channelNumber, TIM_HandleTypeDef* mainTimer, uint8_t mainTimerChannel, __IO uint32_t* miscOutput, GPIO_TypeDef* muxGPIO, uint32_t muxPin){
-	setupChannelOutputConfig(channelNumber, mainTimer,mainTimerChannel, miscOutput, nullptr, 0, muxGPIO, muxPin);
+void setupChannelOutputConfigtm(uint8_t channelNumber, TIM_HandleTypeDef* mainTimer, uint8_t mainTimerChannel, __IO uint32_t* miscOutput, GPIO_TypeDef* muxGPIO, uint32_t muxPin){
+	setupChannelOutputConfigtt(channelNumber, mainTimer,mainTimerChannel, miscOutput, nullptr, 0, muxGPIO, muxPin);
 }
 
-void setupChannelOutputConfig(uint8_t channelNumber, TIM_HandleTypeDef* mainTimer, uint8_t mainTimerChannel, __IO uint32_t* miscOutput, TIM_HandleTypeDef* miscTimConf, uint8_t miscTIMCH, GPIO_TypeDef* muxGPIO, uint32_t muxPin){
+void setupChannelOutputConfigtt(uint8_t channelNumber, TIM_HandleTypeDef* mainTimer, uint8_t mainTimerChannel, __IO uint32_t* miscOutput, TIM_HandleTypeDef* miscTimConf, uint8_t miscTIMCH, GPIO_TypeDef* muxGPIO, uint32_t muxPin){
 
 	// Assigning everything to the output
 	__IO uint32_t* mainTimerOutput;
@@ -512,29 +506,29 @@ void setupChannelOutputConfig(uint8_t channelNumber, TIM_HandleTypeDef* mainTime
 
 void configureChannels(){
 
-	setupChannelOutputConfig(1,&htim2, TIM_CHANNEL_1);
-	setupChannelOutputConfig(2,&htim2, TIM_CHANNEL_2);
-	setupChannelOutputConfig(3,&htim2, TIM_CHANNEL_3);
-	setupChannelOutputConfig(4,&htim2, TIM_CHANNEL_4);
+	setupChannelOutputConfigt(1,&htim2, TIM_CHANNEL_1);
+	setupChannelOutputConfigt(2,&htim2, TIM_CHANNEL_2);
+	setupChannelOutputConfigt(3,&htim2, TIM_CHANNEL_3);
+	setupChannelOutputConfigt(4,&htim2, TIM_CHANNEL_4);
 
-	setupChannelOutputConfig(5,&htim3, TIM_CHANNEL_4, &hdac.Instance->DHR12R1, CHSEL_DAC1_CH5_GPIO_Port, CHSEL_DAC1_CH5_Pin);
-	setupChannelOutputConfig(6,&htim1, TIM_CHANNEL_1, &hdac.Instance->DHR12R2, CHSEL_DAC2_CH6_GPIO_Port, CHSEL_DAC2_CH6_Pin);
+	setupChannelOutputConfigtm(5,&htim3, TIM_CHANNEL_4, &hdac.Instance->DHR12R1, CHSEL_DAC1_CH5_GPIO_Port, CHSEL_DAC1_CH5_Pin);
+	setupChannelOutputConfigtm(6,&htim1, TIM_CHANNEL_1, &hdac.Instance->DHR12R2, CHSEL_DAC2_CH6_GPIO_Port, CHSEL_DAC2_CH6_Pin);
 
-	setupChannelOutputConfig(7,&htim1, TIM_CHANNEL_2);
+	setupChannelOutputConfigt(7,&htim1, TIM_CHANNEL_2);
 
-	setupChannelOutputConfig(8, &htim1, TIM_CHANNEL_3, &htim13.Instance->CCR1, &htim13, TIM_CHANNEL_1, CHSEL_STEP3_FF5_CH8_GPIO_Port, CHSEL_STEP3_FF5_CH8_Pin);
-	setupChannelOutputConfig(9, &htim1, TIM_CHANNEL_4, &htim14.Instance->CCR1, &htim14, TIM_CHANNEL_1, CHSEL_STEP4_FF6_CH9_GPIO_Port, CHSEL_STEP4_FF6_CH9_Pin);
+	setupChannelOutputConfigtt(8, &htim1, TIM_CHANNEL_3, &htim13.Instance->CCR1, &htim13, TIM_CHANNEL_1, CHSEL_STEP3_FF5_CH8_GPIO_Port, CHSEL_STEP3_FF5_CH8_Pin);
+	setupChannelOutputConfigtt(9, &htim1, TIM_CHANNEL_4, &htim14.Instance->CCR1, &htim14, TIM_CHANNEL_1, CHSEL_STEP4_FF6_CH9_GPIO_Port, CHSEL_STEP4_FF6_CH9_Pin);
 
-	setupChannelOutputConfig(10, &htim4, TIM_CHANNEL_1, &htim12.Instance->CCR1, &htim12, TIM_CHANNEL_1, CHSEL_FF1_1_CH10_GPIO_Port, CHSEL_FF1_1_CH10_Pin);
-	setupChannelOutputConfig(11, &htim4, TIM_CHANNEL_2, &htim12.Instance->CCR2, &htim12, TIM_CHANNEL_2, CHSEL_FF1_2_CH11_GPIO_Port, CHSEL_FF1_2_CH11_Pin);
+	setupChannelOutputConfigtt(10, &htim4, TIM_CHANNEL_1, &htim12.Instance->CCR1, &htim12, TIM_CHANNEL_1, CHSEL_FF1_1_CH10_GPIO_Port, CHSEL_FF1_1_CH10_Pin);
+	setupChannelOutputConfigtt(11, &htim4, TIM_CHANNEL_2, &htim12.Instance->CCR2, &htim12, TIM_CHANNEL_2, CHSEL_FF1_2_CH11_GPIO_Port, CHSEL_FF1_2_CH11_Pin);
 
-	setupChannelOutputConfig(12,&htim4, TIM_CHANNEL_3);
-	setupChannelOutputConfig(13,&htim4, TIM_CHANNEL_4);
+	setupChannelOutputConfigt(12,&htim4, TIM_CHANNEL_3);
+	setupChannelOutputConfigt(13,&htim4, TIM_CHANNEL_4);
 
-	setupChannelOutputConfig(14,&htim8, TIM_CHANNEL_1);
-	setupChannelOutputConfig(15,&htim8, TIM_CHANNEL_2);
-	setupChannelOutputConfig(16,&htim8, TIM_CHANNEL_3, &htim10.Instance->CCR1, &htim10, TIM_CHANNEL_1, CHSEL_STEP1_FF3_CH16_GPIO_Port, CHSEL_STEP1_FF3_CH16_Pin);
-	setupChannelOutputConfig(17,&htim8, TIM_CHANNEL_4, &htim11.Instance->CCR1, &htim11, TIM_CHANNEL_1, CHSEL_STEP2_FF4_CH17_GPIO_Port, CHSEL_STEP2_FF4_CH17_Pin);
+	setupChannelOutputConfigt(14,&htim8, TIM_CHANNEL_1);
+	setupChannelOutputConfigt(15,&htim8, TIM_CHANNEL_2);
+	setupChannelOutputConfigtt(16,&htim8, TIM_CHANNEL_3, &htim10.Instance->CCR1, &htim10, TIM_CHANNEL_1, CHSEL_STEP1_FF3_CH16_GPIO_Port, CHSEL_STEP1_FF3_CH16_Pin);
+	setupChannelOutputConfigtt(17,&htim8, TIM_CHANNEL_4, &htim11.Instance->CCR1, &htim11, TIM_CHANNEL_1, CHSEL_STEP2_FF4_CH17_GPIO_Port, CHSEL_STEP2_FF4_CH17_Pin);
 
 	// The rest is not backed by a timer and the defaults are "nullptr" so we are safe to not define them
 }

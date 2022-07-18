@@ -5,25 +5,31 @@
 #ifndef __SUPPORT_H
 #define __SUPPORT_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "main.h"
+extern SPI_HandleTypeDef hspi2;
+extern UART_HandleTypeDef huart1;
 
 
 #ifdef USE_HAL_DRIVER
 
 static inline void nRF24_CE_L() {
-    HAL_GPIO_WritePin(nRF_CE_GPIO_Port, nRF_CE_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
 }
 
 static inline void nRF24_CE_H() {
-    HAL_GPIO_WritePin(nRF_CE_GPIO_Port, nRF_CE_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
 }
 
 static inline void nRF24_CSN_L() {
-    HAL_GPIO_WritePin(nRF_CSN_GPIO_Port, nRF_CSN_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
 }
 
 static inline void nRF24_CSN_H() {
-    HAL_GPIO_WritePin(nRF_CSN_GPIO_Port, nRF_CSN_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET);
 }
 
 static const char* HAL_SPI_StateTypeDef_string_table[8] = {
@@ -47,9 +53,9 @@ static const char* HAL_StatusTypeDef_string_table[4] = {
 static inline uint8_t nRF24_LL_RW(uint8_t data) {
     // Wait until TX buffer is empty
     uint8_t result;
-    HAL_StatusTypeDef hal_result =HAL_SPI_TransmitReceive(&hspi3,&data,&result,1,2000);
+    HAL_StatusTypeDef hal_result =HAL_SPI_TransmitReceive(&hspi2,&data,&result,1,2000);
     if(hal_result!=HAL_OK) {
-    	printf("H: %s, S %s\n", HAL_StatusTypeDef_string_table[hal_result], HAL_SPI_StateTypeDef_string_table[nRF_hspi.State]);
+    	printf("H: %s, S %s\n", HAL_StatusTypeDef_string_table[hal_result], HAL_SPI_StateTypeDef_string_table[hspi2.State]);
 //        Error_Handler();
     };
     return result;
@@ -106,5 +112,10 @@ static inline void Delay_ms(uint32_t ms) { LL_mDelay(ms); }
 #error LL or HAL support must be enabled
 
 #endif // USE_FULL_LL_DRIVER
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif //__SUPPORT_H

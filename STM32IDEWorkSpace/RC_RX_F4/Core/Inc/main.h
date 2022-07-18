@@ -36,6 +36,7 @@ extern "C" {
 #include <stdio.h>
 #include "Structs.h"
 #include "RXStructs.h"
+#include "RC_RX.hpp"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -46,6 +47,7 @@ extern "C" {
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
 extern UART_HandleTypeDef huart1;
+extern SPI_HandleTypeDef hspi2;
 extern SPI_HandleTypeDef hspi3;
 extern uint8_t uart1TXBusy;
 /* USER CODE END EC */
@@ -71,6 +73,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define nRF_CSN_Pin GPIO_PIN_0
+#define nRF_CSN_GPIO_Port GPIOC
+#define nRF_CE_Pin GPIO_PIN_1
+#define nRF_CE_GPIO_Port GPIOC
 #define SLEDB_Pin GPIO_PIN_2
 #define SLEDB_GPIO_Port GPIOE
 #define SLEDG_Pin GPIO_PIN_3
@@ -81,10 +87,6 @@ void Error_Handler(void);
 #define FF2_1_GPIO_Port GPIOE
 #define FF2_2_Pin GPIO_PIN_6
 #define FF2_2_GPIO_Port GPIOE
-#define nRF_CSN_Pin GPIO_PIN_0
-#define nRF_CSN_GPIO_Port GPIOC
-#define nRF_CE_Pin GPIO_PIN_1
-#define nRF_CE_GPIO_Port GPIOC
 #define CH1_Pin GPIO_PIN_0
 #define CH1_GPIO_Port GPIOA
 #define CH2_Pin GPIO_PIN_1
@@ -167,7 +169,7 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 #define customUart huart5
 #define SBUSUart huart3
-#define nRF_hspi hspi3
+#define nRF_hspi hspi2
 #define isTransmitter 0
 #define delay(time) HAL_Delay(time)
 /* USER CODE END Private defines */

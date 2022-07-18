@@ -1,3 +1,6 @@
+#ifndef __TIMERHELPERS_HPP
+#define __TIMERHELPERS_HPP
+
 #include "main.h"
 #include "stm32f4xx_hal.h"
 /**
@@ -43,3 +46,5 @@ void 	 	TIM_setOverflow(TIM_HandleTypeDef *_timer, uint32_t overflow, TimerForma
 
 void 		TIM_setCaptureCompare(TIM_HandleTypeDef *_timer,uint32_t timChannel, uint32_t compare, TimerCompareFormat_t format);
 uint32_t 	TIM_getCaptureCompare(TIM_HandleTypeDef *_timer, uint32_t channel,  TimerCompareFormat_t format);
+
+#endif

@@ -17,72 +17,72 @@ uint8_t TIM_getTimerClkSrc(TIM_HandleTypeDef *_timer)
     /* Get source clock depending on TIM instance */
     switch ((uint32_t)_timer->Instance) {
 #if defined(TIM2_BASE)
-      case (uint32_t)TIM2:
+      case (uint32_t)TIM2_BASE:
 #endif
 #if defined(TIM3_BASE)
-      case (uint32_t)TIM3:
+      case (uint32_t)TIM3_BASE:
 #endif
 #if defined(TIM4_BASE)
-      case (uint32_t)TIM4:
+      case (uint32_t)TIM4_BASE:
 #endif
 #if defined(TIM5_BASE)
-      case (uint32_t)TIM5:
+      case (uint32_t)TIM5_BASE:
 #endif
 #if defined(TIM6_BASE)
-      case (uint32_t)TIM6:
+      case (uint32_t)TIM6_BASE:
 #endif
 #if defined(TIM7_BASE)
-      case (uint32_t)TIM7:
+      case (uint32_t)TIM7_BASE:
 #endif
 #if defined(TIM12_BASE)
-      case (uint32_t)TIM12:
+      case (uint32_t)TIM12_BASE:
 #endif
 #if defined(TIM13_BASE)
-      case (uint32_t)TIM13:
+      case (uint32_t)TIM13_BASE:
 #endif
 #if defined(TIM14_BASE)
-      case (uint32_t)TIM14:
+      case (uint32_t)TIM14_BASE:
 #endif
 #if defined(TIM18_BASE)
-      case (uint32_t)TIM18:
+      case (uint32_t)TIM18_BASE:
 #endif
         clkSrc = 1;
         break;
 #if defined(TIM1_BASE)
-      case (uint32_t)TIM1:
+      case (uint32_t)TIM1_BASE:
 #endif
 #if defined(TIM8_BASE)
-      case (uint32_t)TIM8:
+      case (uint32_t)TIM8_BASE:
 #endif
 #if defined(TIM9_BASE)
-      case (uint32_t)TIM9:
+      case (uint32_t)TIM9_BASE:
 #endif
 #if defined(TIM10_BASE)
-      case (uint32_t)TIM10:
+      case (uint32_t)TIM10_BASE:
 #endif
 #if defined(TIM11_BASE)
-      case (uint32_t)TIM11:
+      case (uint32_t)TIM11_BASE:
 #endif
 #if defined(TIM15_BASE)
-      case (uint32_t)TIM15:
+      case (uint32_t)TIM15_BASE:
 #endif
 #if defined(TIM16_BASE)
-      case (uint32_t)TIM16:
+      case (uint32_t)TIM16_BASE:
 #endif
 #if defined(TIM17_BASE)
-      case (uint32_t)TIM17:
+      case (uint32_t)TIM17_BASE:
 #endif
 #if defined(TIM19_BASE)
-      case (uint32_t)TIM19:
+      case (uint32_t)TIM19_BASE:
 #endif
 #if defined(TIM20_BASE)
-      case (uint32_t)TIM20:
+      case (uint32_t)TIM20_BASE:
 #endif
 #if defined(TIM21_BASE)
-      case (uint32_t)TIM21:
+      case (uint32_t)TIM21_BASE:
 #endif
 #if defined(TIM22_BASE)
-      case (uint32_t)TIM22:
+      case (uint32_t)TIM22_BASE:
 #endif
         clkSrc = 2;
         break;
