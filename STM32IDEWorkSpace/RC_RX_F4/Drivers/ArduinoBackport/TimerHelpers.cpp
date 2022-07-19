@@ -285,6 +285,7 @@ void TIM_setOverflow(TIM_HandleTypeDef *_timer, uint32_t overflow, TimerFormat_t
       PeriodTicks = period_cyc / Prescalerfactor;
       break;
     case HERTZ_FORMAT:
+    	if(overflow == 0) return; // Prevent a crash because dividebyzero
       period_cyc = TIM_getTimerClkFreq(_timer) / overflow;
       Prescalerfactor = (period_cyc / 0x10000) + 1;
       _timer->Instance->PSC =Prescalerfactor - 1;
@@ -335,9 +336,11 @@ void TIM_setCaptureCompare(TIM_HandleTypeDef *_timer,uint32_t timChannel, uint32
       CCR_RegisterValue = TIM_getTimerClkFreq(_timer) / (compare * Prescalerfactor);
       break;
     // As per Reference Manual PWM reach 100% with CCRx value strictly greater than ARR (So ARR+1 in our case)
-    case PERCENT_COMPARE_FORMAT:
-      CCR_RegisterValue = (__HAL_TIM_GET_AUTORELOAD(_timer + 1) * compare) / 100;
+    case PERCENT_COMPARE_FORMAT:{
+    	uint32_t autoreload = __HAL_TIM_GET_AUTORELOAD(_timer) + 1;
+      CCR_RegisterValue = (autoreload * compare) / 100;
       break;
+    }
     case RESOLUTION_1B_COMPARE_FORMAT:
     case RESOLUTION_2B_COMPARE_FORMAT:
     case RESOLUTION_3B_COMPARE_FORMAT:

@@ -39,7 +39,7 @@ extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN Private defines */
-
+#define SBUSUART huart3
 /* USER CODE END Private defines */
 
 void MX_UART5_Init(void);

@@ -9,6 +9,7 @@
 #define INC_RC_RX_HPP_
 
 #include "TimerHelpers.hpp"
+#include "sbus.hpp"
 
 #ifdef __cplusplus
 extern "C"

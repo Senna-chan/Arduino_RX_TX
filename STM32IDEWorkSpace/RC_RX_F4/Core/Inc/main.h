@@ -73,10 +73,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define nRF_CSN_Pin GPIO_PIN_0
-#define nRF_CSN_GPIO_Port GPIOC
-#define nRF_CE_Pin GPIO_PIN_1
-#define nRF_CE_GPIO_Port GPIOC
 #define SLEDB_Pin GPIO_PIN_2
 #define SLEDB_GPIO_Port GPIOE
 #define SLEDG_Pin GPIO_PIN_3
@@ -87,6 +83,10 @@ void Error_Handler(void);
 #define FF2_1_GPIO_Port GPIOE
 #define FF2_2_Pin GPIO_PIN_6
 #define FF2_2_GPIO_Port GPIOE
+#define nRF_CSN_Pin GPIO_PIN_0
+#define nRF_CSN_GPIO_Port GPIOC
+#define nRF_CE_Pin GPIO_PIN_1
+#define nRF_CE_GPIO_Port GPIOC
 #define CH1_Pin GPIO_PIN_0
 #define CH1_GPIO_Port GPIOA
 #define CH2_Pin GPIO_PIN_1

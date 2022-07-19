@@ -11,7 +11,6 @@
 typedef struct
 {
 	uint8_t currentOutputMode;
-	uint8_t muxOutputSet;				// If true then we have switched the mux chip to misc outputuint8_t
 	TIM_HandleTypeDef* mainTimer; 		// Used for setting up the timers correctly
 	uint8_t mainTimerCH; 				// Used for setting up the timers correctly
 	__IO uint32_t* timOutput;			// Direct timer output

@@ -40,6 +40,8 @@ uint8_t nRFDataReady = 0;
 uint8_t gotData = 0;
 uint32_t txfailratio[2];
 
+bool chPacketReceived = false;
+
 uint16_t channelValues[24];
 
 transmitTypes transmitterData;
@@ -56,6 +58,12 @@ uint8_t readingSettingsPacketAmountRest = 0; ///< This is how much bytes are lef
 uint8_t saveSettingsToStorage = 0;
 uint32_t calculatedCRC = 0;
 uint32_t settingsCRC = 0;
+uint32_t lastCHPrint = HAL_GetTick();
+uint32_t lastDataReceived = HAL_GetTick();
+
+//SbusRx sbusRx(SBUSUART);
+bfs::SbusTx sbusTx(&SBUSUART);
+uint32_t lastSBUSSend = HAL_GetTick();
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -141,9 +149,9 @@ void UART_SendStr(char *string) {
 	HAL_UART_Transmit(&huart1, (uint8_t*) string, (uint16_t) strlen(string), 200);
 }
 
-void setOutput(uint8_t index, uint16_t channelValue) {
+void setOutput(uint8_t index, uint16_t outputValue) {
 	channelOutputConfig choc = channelsOutputConfig[index];
-	uint8_t channelSettingsConfig = settings.model[settings.activeModel].channel_settings[index - 1].outputMode;
+	uint32_t channelValue = outputValue;
 	channelValue += 1000;
 	channelValues[index - 1] = channelValue;
 	if (channelValue == 2023) {
@@ -167,18 +175,31 @@ void setOutput(uint8_t index, uint16_t channelValue) {
 		}
 	}
 	else if (choc.currentOutputMode == OUTPUTMODE_DAC) {
-		if (choc.miscOutput != 0) *choc.miscOutput = map(channelValues[index - 1], 1000, 2000, 0,4095);
+		if (choc.miscOutput != 0) *choc.miscOutput = map(channelValue, 1000, 2000, 0,4095);
 	}
 	else if(choc.currentOutputMode == OUTPUTMODE_STEP){
-		uint32_t frequency = map(channelValues[index - 1], 1000, 2000, channelConfig->stepperConfig.minFrequency, channelConfig->stepperConfig.maxFrequency);
+		uint32_t frequency = 0;
+		if(channelConfig->stepperConfig.centerIs0){
+			if(channelValue > 1500) frequency = map(channelValue, 1500, 2000, channelConfig->stepperConfig.minFrequency, channelConfig->stepperConfig.maxFrequency);
+			if(channelValue < 1500) frequency = map(channelValue, 1500, 1000, channelConfig->stepperConfig.minFrequency, channelConfig->stepperConfig.maxFrequency);
+		} else{
+			map(channelValue, 1000, 2000, channelConfig->stepperConfig.minFrequency, channelConfig->stepperConfig.maxFrequency);
+		}
 		TIM_setOverflow(choc.miscTimConf, frequency, TimerFormat_t::HERTZ_FORMAT);
 		uint32_t dutyCycle = 50;
 		if(channelConfig->stepperConfig.centerIs0 && channelValue == 1500) dutyCycle = 0;
 		if(channelValue == 1000) dutyCycle = 0;
 		TIM_setCaptureCompare(choc.miscTimConf,choc.miscTimCH, dutyCycle, TimerCompareFormat_t::PERCENT_COMPARE_FORMAT);
 	} else if(choc.currentOutputMode == OUTPUTMODE_PWM){
-		uint32_t duty = map(channelValues[index - 1], 1000, 2000, 0, 1023);
-		TIM_setCaptureCompare(choc.miscTimConf,choc.miscTimCH, duty, TimerCompareFormat_t::RESOLUTION_8B_COMPARE_FORMAT);
+		uint32_t duty = 0;
+
+		if(channelConfig->pwmConfig.centerIs0){
+			if(channelValue > 1500) duty = map(channelValue, 1500, 2000, 0, 1023);
+			if(channelValue < 1500) duty = map(channelValue, 1500, 1000, 0, 1023);
+		} else{
+			duty = map(channelValue, 1000, 2000, 0, 1023);
+		}
+		TIM_setCaptureCompare(choc.miscTimConf,choc.miscTimCH, duty, TimerCompareFormat_t::RESOLUTION_10B_COMPARE_FORMAT);
 	}
 }
 
@@ -234,7 +255,25 @@ void parseRFPacket(uint8_t *buf, uint8_t length, nRF24_RXResult pipeLine) {
 			txBuf[4] = now >> 8 & 0xFF;
 			txBuf[5] = now >> 0 & 0xFF;
 			nRF24_WriteAckPayload(pipeLine, txBuf, 6);
-
+			sbusTx.set_ch(1, transmitterData.ch_data.channel1);
+			sbusTx.set_ch(2, transmitterData.ch_data.channel2);
+			sbusTx.set_ch(3, transmitterData.ch_data.channel3);
+			sbusTx.set_ch(4, transmitterData.ch_data.channel4);
+			sbusTx.set_ch(5, transmitterData.ch_data.channel5);
+			sbusTx.set_ch(6, transmitterData.ch_data.channel6);
+			sbusTx.set_ch(7, transmitterData.ch_data.channel7);
+			sbusTx.set_ch(8, transmitterData.ch_data.channel8);
+			sbusTx.set_ch(9, transmitterData.ch_data.channel9);
+			sbusTx.set_ch(10, transmitterData.ch_data.channel10);
+			sbusTx.set_ch(11, transmitterData.ch_data.channel11);
+			sbusTx.set_ch(12, transmitterData.ch_data.channel12);
+			sbusTx.set_ch(13, transmitterData.ch_data.channel13);
+			sbusTx.set_ch(14, transmitterData.ch_data.channel14);
+			sbusTx.set_ch(15, transmitterData.ch_data.channel15);
+			sbusTx.set_ch(16, transmitterData.ch_data.channel16);
+			sbusTx.failsafe(false);
+			sbusTx.lost_frame(false);
+			chPacketReceived = true;
 //					receiverData.bytesUnion.u8[0] = SETTINGSDATAID;
 //					nRF24_WriteAckPayload(pipeLine, receiverData.bytesUnion.u8, 6);
 //					memset(&receivedSettings, 0, sizeof(Settings));
@@ -493,8 +532,9 @@ void setupChannelOutputConfigtt(uint8_t channelNumber, TIM_HandleTypeDef* mainTi
 		// Nothing needed in these modes. THis is default mode
 		break;
 	case OUTPUTMODE_PWM:
-		HAL_GPIO_WritePin(chOuputConf->muxGPIO, chOuputConf->muxPIN, GPIO_PinState::GPIO_PIN_SET);
 		TIM_setOverflow(chOuputConf->miscTimConf, channelConfig->pwmConfig.frequency, TimerFormat_t::HERTZ_FORMAT);
+	case OUTPUTMODE_DAC:
+		HAL_GPIO_WritePin(chOuputConf->muxGPIO, chOuputConf->muxPIN, GPIO_PinState::GPIO_PIN_SET);
 		break;
 	case OUTPUTMODE_STEP:
 		HAL_GPIO_WritePin(chOuputConf->muxGPIO, chOuputConf->muxPIN, GPIO_PinState::GPIO_PIN_SET);
@@ -502,6 +542,8 @@ void setupChannelOutputConfigtt(uint8_t channelNumber, TIM_HandleTypeDef* mainTi
 		TIM_setCaptureCompare(chOuputConf->miscTimConf,chOuputConf->miscTimCH, 0, TimerCompareFormat_t::TICK_COMPARE_FORMAT); // Default to off
 		break;
 	}
+
+	chOuputConf->currentOutputMode = channelConfig->outputMode;
 }
 
 void configureChannels(){
@@ -638,8 +680,6 @@ void setup(void) {
 
 	printf("Started RC Receiver\r\n");
 }
-uint32_t lastCHPrint = HAL_GetTick();
-uint32_t lastDataReceived = HAL_GetTick();
 
 void loop() {
 	uint32_t now = HAL_GetTick();
@@ -665,6 +705,13 @@ void loop() {
 //   		  	setStatusLed(1,0,0);
 	} else if (now - lastDataReceived > 500) {
 		setStatusLed(0, 0, 1);
+		sbusTx.failsafe(true);
+	} else if(now - lastDataReceived > 20){
+		sbusTx.lost_frame(true);
+	}
+	if(now - lastSBUSSend >= 7){
+		lastSBUSSend = now;
+		sbusTx.Write();
 	}
 
 	if (huart1.RxXferCount != 0) {

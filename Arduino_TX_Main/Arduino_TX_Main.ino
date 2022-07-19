@@ -567,7 +567,8 @@ void setupMCPChips() {
 
 void transmitSettingsToRX() {
 	vTaskSuspend(nrfTransit_taskHandle);
-	//p_transmittingSettings.navigateTo();
+	saveSettings(); // Be sure that we have saved the settings to EEPROM. This will do an update(read and write if needed)
+	p_transmittingSettings.navigateTo();
 	double settingsSizeAmountD = sizeof(Settings) / (double)SETTINGSDATASIZE;
 	uint16_t settingsSizeAmount = (uint16_t)settingsSizeAmountD;
 	uint8_t settingsModulo = sizeof(Settings) % SETTINGSDATASIZE;
@@ -719,7 +720,7 @@ void transmitSettingsToRX() {
 	// End finish packet
 
 	Serial.println("Finished transmitting settings");
-	//p_transmittingSettings.close();
+	p_transmittingSettings.close();
 	vTaskResume(nrfTransit_taskHandle);
 }
 

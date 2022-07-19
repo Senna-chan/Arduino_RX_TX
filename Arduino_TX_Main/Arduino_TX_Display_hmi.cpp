@@ -35,9 +35,7 @@ HMI_Button* chEditButtons[24]{
 	&e_setch23,
 	&e_setch24,
 };
-#ifdef RCIO
-#error RCIO Already defined
-#endif
+
 #define RCIO		((1 << OUTPUTMODE_RC) | (1 << OUTPUTMODE_IO))
 #define RCIODAC		((1 << OUTPUTMODE_RC) | (1 << OUTPUTMODE_IO) | (1 << OUTPUTMODE_DAC))
 #define RCIOPWM		((1 << OUTPUTMODE_RC) | (1 << OUTPUTMODE_IO) | (1 << OUTPUTMODE_PWM))
@@ -870,7 +868,6 @@ void doNavigation(HMI_Object* navBtn) {
 		navigateToChannelEditor();
 		break;
 	case backbtnchsandsendstorx:
-		p_transmittingSettings.navigateTo();
 		// Trigger transmitting 
 		transmitSettingsToRX();
 		break;
