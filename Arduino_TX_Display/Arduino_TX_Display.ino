@@ -14,6 +14,17 @@
 // ------------------------------------------------
 #include "Arduino_TX_Display_GSLC.h"
 
+extern "C" void _Error_Handler(const char* file, int line) {
+    int count = 0;
+    while (1) {
+        if (++count % 10 == 0) {
+            Serial.printf("Error in file '%s' Line %d\n", file, line);
+        }
+        if (count == 100) HAL_NVIC_SystemReset();
+        digitalToggle(LED_BUILTIN);
+        delay(250);
+    }
+}
 
 //<HMI ReadWrite Functions !Start!>
 HardwareSerial HMI_SERIAL(PC11, PC10);

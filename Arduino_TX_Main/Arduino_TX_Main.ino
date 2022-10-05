@@ -622,6 +622,7 @@ void transmitSettingsToRX() {
 		allowSettingsSend = false;
 		counter = 0;
 		if (i % 40 == 0) {
+			Serial.println("HMI Settings Update");
 			char buf[52];
 			sprintf(buf, "Currently at packet %d of %d", i, settingsSizeAmount);
 			e_settingstxtorxprogress.setValue(buf);
@@ -743,6 +744,17 @@ void setTransmitTest() {
 		vTaskSuspend(nrfTransmitTest_taskHandle);
 		vTaskResume(nrfTransit_taskHandle);
 	}
+}
+
+void setHMITracing(const char* data) {
+	Serial.print("Setting HMI Tracing ");
+	Serial.println(data[0] == '1' ? "on" : "off");
+	HMI.setTracing(data[0] == '1');
+}
+void setHMIDebugging(const char* data) {
+	Serial.print("Setting HMI Debugging ");
+	Serial.println(data[0] == '1' ? "on" : "off");
+	HMI.setDebugging(data[0] == '1');
 }
 
 #pragma endregion
@@ -1156,7 +1168,8 @@ void setup()
 	scl.addVoidCallback("t", setTransmitTest);
 	scl.addVoidCallback("w", wipeEeprom);
 	scl.addVoidCallback("s", transmitSettingsToRX);
-
+	scl.addDataCallback("HMIt", setHMITracing);
+	scl.addDataCallback("HMId", setHMIDebugging);
 	initFreeRTOS();
 	hcrc.Instance = CRC;
 	if (HAL_CRC_Init(&hcrc) != HAL_OK)
@@ -1172,90 +1185,5 @@ void setup()
 
 void loop()
 {
-	//Plotter.loop();
-	//scl.loop();
-	//if (transmitTest) {
-	//	uint32_t now = millis();
-	//	if (now - lastMessageSend >= 1000) {
-	//	}
-
-	//	if (gotRFData) {
-	//		gotRFData = false;
-
-	//		uint8_t buf[32];
-	//		uint8_t length = 0;
-	//		nRF24_RXResult pipeLine = nRF24_ReadPayloadDpl(buf, &length);
-
-	//		Serial.printf("%s Message size '%d'. Data: ", isTransmitter ? "ACK" : "Message", length);
-	//		for (int i = 0; i < length; i++) {
-	//			Serial.printf(" %02d ", buf[i]);
-	//		}
-	//		Serial.println();
-	//	}
-	//	return;
-	//}
-
-	//if (refreshHMITimer.TimePassed_Seconds(5)) {
-	//	refreshHMI();
-	//}
-
-	//if (updateHMITimer.TimePassed_Milliseconds(25)) {
-	//	updateHMITask();
-	//}
-
-	//if (printChannelValuesTimer.TimePassed_Seconds(1) && printChannelValues) {
-	//	if (printDMAValues) {
-	//		Serial.print("DMA ");
-	//		for (int i = 0; i < ADCCHANNELNUMBERS; i++) {
-	//			Serial.printf("CH%02d %04d ", i, ADCDMABuffer[i]);
-	//		}
-	//		Serial.println();
-	//	}
-	//	else {
-	//		bool printedHeader = false;
-	//		int i = printADCChannels ? 0 : ADCCHANNELNUMBERS;
-	//		for (printADCChannels; i < 24; i++) {
-	//			if (prevRawChannels[i] == rawChannels[i]) continue;
-	//			if (!printedHeader) {
-	//				printedHeader = true;
-	//				Serial.print("CHANGEDRAW: ");
-	//			}
-	//			Serial.printf("CH%02d %04d ", i + 1, rawChannels[i]);
-	//		}
-	//		if (printedHeader) {
-	//			Serial.println();
-	//		}
-	//		memcpy(prevRawChannels, rawChannels, 24 * 2);
-	//	}
-	//}
-
-	//HMI.loop(hmiObjects);
-	//nexLoop(nex_listen_list);
-	//if (encoderInterrupted)
-	//{
-	//	handleEncoder();
-	//	encoderInterrupted = false;
-	//}
-
-	//if (calButtonsInterrupted)
-	//{
-	//	processCALInterrupt();
-	//}
-	//else if (!digitalRead(CALEXPENDER_INT_PIN))
-	//{
-	//	//Serial.println("Uncaught CAL interrupt");
-	//	calButtonsInterrupted = true;
-	//}
-
-	//if (ioInterrupted)
-	//{
-	//	processIOInterrupt();
-	//}
-	//else if (!digitalRead(IOEXPENDER_INT_PIN)) {
-	//	//Serial.println("Uncaugh IOExpander IRQ");
-	//	updateIOExpander();
-	//}
-
-	//genericTimer.loop();
-	//CheckBatteryAction.check();
+	// Not used because of FreeRTOS
 }

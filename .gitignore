@@ -351,3 +351,4 @@ __vm/
 .launch
 /STM32IDEWorkSpace/RC_RX
 /Arduino_TX_guislice
+/ChannelSetup

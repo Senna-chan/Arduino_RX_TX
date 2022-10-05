@@ -44,8 +44,8 @@ HMI_Button* chEditButtons[24]{
 // Output options for the channels
 uint8_t channelOutputOptions[25] = {
 	0,
-	RCIO,
-	RCIO,
+	RCIOPWM,
+	RCIOPWM,
 	RCIO,
 	RCIO,
 	RCIODAC,
@@ -851,8 +851,15 @@ void doNavigation(HMI_Object* navBtn) {
 	case E_ELEM_BTN279:
 		if (settings.model[settings.activeModel].channel_settings[channelToEditIdx].outputMode == OUTPUTMODE_STEP) {
 			p_setupOutputStepper.navigateTo();
+			e_stepMinFreq.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.minFrequency);
+			e_stepMaxFreq.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.maxFrequency);
+			e_stepCenterZero.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.centerIs0);
+			
+
 		} else if (settings.model[settings.activeModel].channel_settings[channelToEditIdx].outputMode == OUTPUTMODE_PWM) {
 			p_setupOutputPWM.navigateTo();
+			e_pwmFreq.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].pwmConfig.frequency);
+			e_pwmCenterZero.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].pwmConfig.centerIs0);
 		}
 		else {
 			p_setupOutputNotNeeded.navigateTo();
@@ -870,6 +877,7 @@ void doNavigation(HMI_Object* navBtn) {
 	case backbtnchsandsendstorx:
 		// Trigger transmitting 
 		transmitSettingsToRX();
+		p_E_PG_MAIN.navigateTo();
 		break;
 	default:
 		Serial.printf("nav button '%s' not parsed yet\n", navBtn->getName());
@@ -924,6 +932,7 @@ void navigateToChannelEditor() {
 	e_defaultval.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].chDefaults);
 	detectedIO1 = settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[0];
 	detectedIO2 = settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[1];
+	e_lsbChannelOutputType.selectItem((int16_t)settings.model[settings.activeModel].channel_settings[channelToEditIdx].outputMode);
 	for (int i = 0; i <= OUTPUTMODE_DAC ; i++) {
 		if (!bitRead(outputModesOptions, i)) {
 			Serial.printf("Bit %d is not set. Setting list item to \"NONE\"\r\n", i);

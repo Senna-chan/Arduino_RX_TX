@@ -548,8 +548,8 @@ void setupChannelOutputConfigtt(uint8_t channelNumber, TIM_HandleTypeDef* mainTi
 
 void configureChannels(){
 
-	setupChannelOutputConfigt(1,&htim2, TIM_CHANNEL_1);
-	setupChannelOutputConfigt(2,&htim2, TIM_CHANNEL_2);
+	setupChannelOutputConfigtt(1,&htim2, TIM_CHANNEL_1, &htim9.Instance->CCR1, &htim9, TIM_CHANNEL_1, CHSEL_FF2_1_CH1_GPIO_Port, CHSEL_FF2_1_CH1_Pin);
+	setupChannelOutputConfigtt(2,&htim2, TIM_CHANNEL_2, &htim9.Instance->CCR2, &htim9, TIM_CHANNEL_2, CHSEL_FF2_2_CH2_GPIO_Port, CHSEL_FF2_2_CH2_Pin);
 	setupChannelOutputConfigt(3,&htim2, TIM_CHANNEL_3);
 	setupChannelOutputConfigt(4,&htim2, TIM_CHANNEL_4);
 
