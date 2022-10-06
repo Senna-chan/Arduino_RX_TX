@@ -8,7 +8,8 @@
 #ifndef _SerialControlLibrary_h
 #define _SerialControlLibrary_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
+#ifdef ARDUINO
+#define ISARDUINO
 	#include <Arduino.h>
 #else
 
@@ -34,16 +35,17 @@ private:
 		serialCallbackMap serialCallbacks;
 	};  // This is recurs
 	serialCallbackMap serialCallbacks;
-#ifdef ARDUINO
+#ifdef ISARDUINO
 	HardwareSerial* serial;
-#endif
+#else
 	UART_HandleTypeDef* uart;
+#endif
 	char endLine;
 	char* buf;
 	char* bufPtr;
 	uint16_t bufSize;
 public:
-#ifdef ARDUINO
+#ifdef ISARDUINO
 	/**
 	 * Used for arduino because Arduino is holding RX busy.
 	 * 

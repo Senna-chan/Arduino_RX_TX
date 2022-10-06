@@ -39,26 +39,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SerialControlLibrary", "Ser
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Arduino_TX_Main", "Arduino_TX_Main\Arduino_TX_Main.vcxproj", "{20F563AC-D1A9-468E-9766-FD7B32C69C5B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SerialControlLib", "SerialControlLib", "{DE854AEF-B70E-4222-8434-83C36416D7B9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SerialControlLibTest", "SerialControlLibTest\SerialControlLibTest.vcxproj", "{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		nrf24l01\nrf24l01.vcxitems*{0d46d298-0add-4a83-889f-837a2dd50def}*SharedItemsImports = 9
-		nrf24l01\nrf24l01.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
-		PlotterLib\PlotterLib.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
-		SerialControlLibrary\SerialControlLibrary.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
-		SharedCode\SharedCode.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
-		..\GUISlice_HMI\GUISlice_HMI\GUISlice_HMI.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
-		SerialControlLibrary\SerialControlLibrary.vcxitems*{4a6771cb-5c66-4ae6-a154-cf2df85c91ee}*SharedItemsImports = 9
-		PlotterLib\PlotterLib.vcxitems*{4e8dcddf-fe00-4262-a274-787e915de595}*SharedItemsImports = 9
-		SharedCode\SharedCode.vcxitems*{6d26f218-0e90-43e2-8e48-f8d802db7c92}*SharedItemsImports = 4
-		..\GUISlice_HMI\GUISlice_HMI\GUISlice_HMI.vcxitems*{6d26f218-0e90-43e2-8e48-f8d802db7c92}*SharedItemsImports = 4
-		..\GUISlice_HMI\GUISlice_HMI\GUISlice_HMI.vcxitems*{bb5f77c8-dfbc-4855-a030-a9190d47fde1}*SharedItemsImports = 9
-		SharedCode\SharedCode.vcxitems*{bc5b2871-8236-4529-b6dc-335c9d28db92}*SharedItemsImports = 9
-		SharedCode\SharedCode.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
-		nrf24l01\nrf24l01.vcxitems*{cfdcc87f-c8cd-4327-903f-fb0e1abae02f}*SharedItemsImports = 4
-		SharedCode\SharedCode.vcxitems*{cfdcc87f-c8cd-4327-903f-fb0e1abae02f}*SharedItemsImports = 4
-		LoggerLib\LoggerLib.vcxitems*{dfcc4823-d101-4814-b8ff-a3453e413ae1}*SharedItemsImports = 9
-		SharedCode\SharedCode.vcxitems*{fedd8d73-3d9c-412e-9876-f3d0d23c0855}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -130,13 +115,24 @@ Global
 		{0BB8FA3E-749C-46F7-BEDC-F39DA272C1AE}.Release|x86.Build.0 = Release|Win32
 		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Debug|x64.ActiveCfg = Debug|Win32
-		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Debug|x64.Build.0 = Debug|Win32
 		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Debug|x86.ActiveCfg = Debug|Win32
 		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Release|Any CPU.ActiveCfg = Release|Win32
 		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Release|x64.ActiveCfg = Release|Win32
 		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Release|x64.Build.0 = Release|Win32
 		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Release|x86.ActiveCfg = Release|Win32
 		{20F563AC-D1A9-468E-9766-FD7B32C69C5B}.Release|x86.Build.0 = Release|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Debug|Any CPU.Build.0 = Debug|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Debug|x64.ActiveCfg = Debug|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Debug|x64.Build.0 = Debug|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Debug|x86.ActiveCfg = Debug|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Debug|x86.Build.0 = Debug|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Release|Any CPU.ActiveCfg = Release|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Release|Any CPU.Build.0 = Release|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Release|x64.ActiveCfg = Release|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Release|x64.Build.0 = Release|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Release|x86.ActiveCfg = Release|Win32
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,8 +146,30 @@ Global
 		{63C4369E-2D7C-40A6-AA12-BB5E14864CFC} = {A56518EF-36F8-4BFF-91A4-C395BA0F1EEC}
 		{4E8DCDDF-FE00-4262-A274-787E915DE595} = {7C03E39A-7E0D-4206-8BA1-9A454D9D7C67}
 		{0BB8FA3E-749C-46F7-BEDC-F39DA272C1AE} = {7C03E39A-7E0D-4206-8BA1-9A454D9D7C67}
+		{4A6771CB-5C66-4AE6-A154-CF2DF85C91EE} = {DE854AEF-B70E-4222-8434-83C36416D7B9}
+		{191A1E7B-4061-4571-BA5D-76DC5B3F35BA} = {DE854AEF-B70E-4222-8434-83C36416D7B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3F8CF22-6A12-49E9-AC7D-EF82DEE742A6}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		nrf24l01\nrf24l01.vcxitems*{0d46d298-0add-4a83-889f-837a2dd50def}*SharedItemsImports = 9
+		SerialControlLibrary\SerialControlLibrary.vcxitems*{191a1e7b-4061-4571-ba5d-76dc5b3f35ba}*SharedItemsImports = 4
+		nrf24l01\nrf24l01.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
+		PlotterLib\PlotterLib.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
+		SerialControlLibrary\SerialControlLibrary.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
+		SharedCode\SharedCode.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
+		..\GUISlice_HMI\GUISlice_HMI\GUISlice_HMI.vcxitems*{20f563ac-d1a9-468e-9766-fd7b32c69c5b}*SharedItemsImports = 4
+		SerialControlLibrary\SerialControlLibrary.vcxitems*{4a6771cb-5c66-4ae6-a154-cf2df85c91ee}*SharedItemsImports = 9
+		PlotterLib\PlotterLib.vcxitems*{4e8dcddf-fe00-4262-a274-787e915de595}*SharedItemsImports = 9
+		SharedCode\SharedCode.vcxitems*{6d26f218-0e90-43e2-8e48-f8d802db7c92}*SharedItemsImports = 4
+		..\GUISlice_HMI\GUISlice_HMI\GUISlice_HMI.vcxitems*{6d26f218-0e90-43e2-8e48-f8d802db7c92}*SharedItemsImports = 4
+		..\GUISlice_HMI\GUISlice_HMI\GUISlice_HMI.vcxitems*{bb5f77c8-dfbc-4855-a030-a9190d47fde1}*SharedItemsImports = 9
+		SharedCode\SharedCode.vcxitems*{bc5b2871-8236-4529-b6dc-335c9d28db92}*SharedItemsImports = 9
+		SharedCode\SharedCode.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		nrf24l01\nrf24l01.vcxitems*{cfdcc87f-c8cd-4327-903f-fb0e1abae02f}*SharedItemsImports = 4
+		SharedCode\SharedCode.vcxitems*{cfdcc87f-c8cd-4327-903f-fb0e1abae02f}*SharedItemsImports = 4
+		LoggerLib\LoggerLib.vcxitems*{dfcc4823-d101-4814-b8ff-a3453e413ae1}*SharedItemsImports = 9
+		SharedCode\SharedCode.vcxitems*{fedd8d73-3d9c-412e-9876-f3d0d23c0855}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal
