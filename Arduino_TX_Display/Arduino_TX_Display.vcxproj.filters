@@ -91,9 +91,11 @@
     <Filter Include="src\_micro-api-readonly\libraries\SrcWrapper">
       <UniqueIdentifier>{d8b3d090-0fc5-4dd0-bdce-c727214c80bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\IWatchdog">
+      <UniqueIdentifier>{13b82b36-38df-487d-b1f2-d34a1befe2d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Arduino_TX_Display.ino" />
     <None Include="..\..\..\..\Arduino\portable\sketchbook\libraries\GUIslice\library.json">
       <Filter>src\_micro-api-readonly\libraries\GUIslice</Filter>
     </None>
@@ -124,11 +126,11 @@
     <None Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\libraries\SrcWrapper\library.properties">
       <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
     </None>
+    <None Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\IWatchdog\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\IWatchdog</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.Arduino_TX_Display.vsarduino.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Arduino_TX_Display_GSLC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -921,6 +923,12 @@
     <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\libraries\SrcWrapper\src\SrcWrapper.h">
       <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\IWatchdog\src\IWatchdog.h">
+      <Filter>src\_micro-api-readonly\libraries\IWatchdog</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.Arduino_TX_Display.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\cores\arduino\abi.cpp">
@@ -1649,6 +1657,10 @@
     <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\libraries\SrcWrapper\src\stm32\uart.c">
       <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\IWatchdog\src\IWatchdog.cpp">
+      <Filter>src\_micro-api-readonly\libraries\IWatchdog</Filter>
+    </ClCompile>
+    <ClCompile Include="Arduino_TX_Display.ino" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\Arduino\portable\sketchbook\libraries\GUIslice\GUIBuilder\BUILD.txt">
@@ -1686,6 +1698,9 @@
     </Text>
     <Text Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.1.0\libraries\SrcWrapper\keywords.txt">
       <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </Text>
+    <Text Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.2.0\libraries\IWatchdog\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\IWatchdog</Filter>
     </Text>
   </ItemGroup>
 </Project>

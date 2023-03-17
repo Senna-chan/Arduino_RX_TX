@@ -12,6 +12,7 @@
 // ------------------------------------------------
 // Headers to include
 // ------------------------------------------------
+#include <IWatchdog.h>
 #include "Arduino_TX_Display_GSLC.h"
 
 extern "C" void _Error_Handler(const char* file, int line) {
@@ -436,13 +437,17 @@ void setup()
 
 //<HMI Setup Functions !Start!>
   HMI_SERIAL.begin(115200);
+  while (HMI_SERIAL.available()) {
+      HMI_SERIAL.read();
+  }
+
   gslc_InitHmi(&HmiOut, &HmiIn);
 //<HMI Setup Functions !End!>
   // ------------------------------------------------
   // Create graphic elements
   // ------------------------------------------------
   InitGUIslice_gen();
-
+  IWatchdog.begin(1 * 1000 * 1000);
 }
 
 // -----------------------------------
@@ -450,7 +455,7 @@ void setup()
 // -----------------------------------
 void loop()
 {
-
+    IWatchdog.reload();
   // ------------------------------------------------
   // Update GUI Elements
   // ------------------------------------------------

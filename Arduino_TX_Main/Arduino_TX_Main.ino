@@ -38,7 +38,7 @@ SemaphoreHandle_t nrf_mutex;		// Lock for nRF
 SemaphoreHandle_t i2c_mutex;		// Lock for everything I2C
 SemaphoreHandle_t serial_mutex;		// Lock for everything I2C
 
-CRC_HandleTypeDef hcrc;
+CRC_HandleTypeDef crc_t;
 SerialControlLibrary scl;
 
 bool debugging = true;
@@ -475,93 +475,6 @@ void PrintCalValues()
 	Serial.println();
 }
 
-#pragma region setup hardware
-
-void configureEncoder()
-{
-	if (!encoder.begin(i2cEncoderLibV2::INT_DATA | i2cEncoderLibV2::WRAP_DISABLE | i2cEncoderLibV2::DIRE_RIGHT | i2cEncoderLibV2::IPUP_DISABLE | i2cEncoderLibV2::RMOD_X1 | i2cEncoderLibV2::STD_ENCODER)) {
-		Serial.println("Failed to init encoder");
-	}
-	encoder.writeCounter(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].curValue); /* Reset the counter value */
-	encoder.writeMax(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].maxValue); /* Set the maximum threshold*/
-	encoder.writeMin(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].minValue); /* Set the minimum threshold */
-	encoder.writeStep(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].steps); /* Set the step to 1*/
-	encoder.writeInterruptConfig(0xff); /* Enable all the interrupt */
-	encoder.writeAntibouncingPeriod(20);  /* Set an anti-bouncing of 20ms */
-	encoder.writeDoublePushPeriod(50);  /*Set a period for the double push of 500ms */
-	pinMode(ENCODER_INT_PIN, INPUT_PULLUP);
-	attachInterrupt(ENCODER_INT_PIN, setEncoderIRQFlag, FALLING);
-}
-
-void setupMCPChips() {
-
-	pinMode(CALEXPENDER_INT_PIN, INPUT_PULLUP);				// Expender Interupt pin
-	pinMode(IOEXPENDER_INT_PIN, INPUT_PULLUP);				// IO twoway/oneway IRQ pin
-
-	Serial.printf("Twoway %s OneWay %s Calc %s\n", I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER1_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER2_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + CALEXPENDER_ADDR) ? "found" : "not found");
-
-	while (!I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER1_ADDR)) {
-		Serial.println("IOEXPANDER1 not found");
-		digitalWrite(LED_BUILTIN, LOW);
-		delay(500);
-		digitalWrite(LED_BUILTIN, HIGH);
-		delay(500);
-	}
-	IOExpander1.begin(IOEXPANDER1_ADDR, &Wire);
-	IOExpander1.writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT.writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT
-	IOExpander1.writeRegister(MCP23017_IODIRB, 0xFF);
-	IOExpander1.writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP.writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP
-	IOExpander1.writeRegister(MCP23017_GPPUB, 0xFF);
-	IOExpander1.writeRegister(MCP23017_IPOLA, 0xFF);  // ENABLE REVERSING OF IO. DOES THIS FIX A BUG?
-	IOExpander1.writeRegister(MCP23017_IPOLB, 0xFF);
-	IOExpander1.setupInterrupts(true, true, LOW);
-	IOExpander1.writeRegister(MCP23017_GPINTENA, 0xFF);  // Enable IRQ
-	IOExpander1.writeRegister(MCP23017_GPINTENB, 0xFF);
-
-	while (!I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER2_ADDR)) {
-		Serial.println("IOExpander2 not found");
-		digitalWrite(LED_BUILTIN, LOW);
-		delay(500);
-		digitalWrite(LED_BUILTIN, HIGH);
-		delay(500);
-	}
-
-	IOExpander2.begin(IOEXPANDER2_ADDR, &Wire);
-	IOExpander2.writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT.writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT
-	IOExpander2.writeRegister(MCP23017_IODIRB, 0xFF);
-	IOExpander2.writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP.writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP
-	IOExpander2.writeRegister(MCP23017_GPPUB, 0xFF);
-	IOExpander2.writeRegister(MCP23017_IPOLA, 0xFF);  // ENABLE REVERSING OF IO. DOES THIS FIX A BUG?
-	IOExpander2.writeRegister(MCP23017_IPOLB, 0xFF);
-	IOExpander2.setupInterrupts(true, true, LOW);
-	IOExpander2.writeRegister(MCP23017_GPINTENA, 0xFF);  // Enable IRQ
-	IOExpander2.writeRegister(MCP23017_GPINTENB, 0xFF);
-
-	calButtonExpender.begin(CALEXPENDER_ADDR, &Wire);
-	while (!I2CDeviceConnected(&Wire, 0x20 + CALEXPENDER_ADDR))
-	{
-		Serial.println("Calibrate button expander not found");
-		digitalWrite(LED_BUILTIN, LOW);
-		delay(500);
-		digitalWrite(LED_BUILTIN, HIGH);
-		delay(500);
-	}
-	calButtonExpender.setupInterrupts(true, true, LOW);
-	calButtonExpender.writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT.writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT
-	calButtonExpender.writeRegister(MCP23017_IODIRB, 0xFF);
-	calButtonExpender.writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP.writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP
-	calButtonExpender.writeRegister(MCP23017_GPPUB, 0xFF);
-	calButtonExpender.writeRegister(MCP23017_IPOLA, 0xFF);  // ENABLE REVERSING OF IO. DOES THIS FIX A BUG?
-	calButtonExpender.writeRegister(MCP23017_IPOLB, 0xFF);
-	calButtonExpender.writeRegister(MCP23017_GPINTENA, 0xFF);  // Enable IRQ
-	calButtonExpender.writeRegister(MCP23017_GPINTENB, 0xFF);
-	calButtonExpender.readGPIOAB(); // Clearing any interrupts that may be active
-
-	attachInterrupt(CALEXPENDER_INT_PIN, setCalibrateIRQFlag, FALLING);
-	attachInterrupt(IOEXPENDER_INT_PIN, setIOExpanderIRQFlas, FALLING);
-}
-
-#pragma endregion
 
 #pragma region SerialControl Functions
 
@@ -577,7 +490,7 @@ void transmitSettingsToRX() {
 	Serial.printf("Transmitting settings to RX. Settings size %d. Settings packets %d(%5.2f) rest %d. Settings / 4 %f\n", sizeof(Settings), settingsSizeAmount, settingsSizeAmountD, settingsModulo, sizeof(Settings) / 4.0);
 	int counter = 0;
 	// Main CRC
-	uint32_t settingscrc = HAL_CRC_Calculate(&hcrc, (uint32_t*)settingsPtr, sizeof(Settings) / 4);
+	uint32_t settingscrc = HAL_CRC_Calculate(&crc_t, (uint32_t*)settingsPtr, sizeof(Settings) / 4);
 
 	// start header packet
 	memset(transmitterData.bytesUnion.u8, 0, 32);
@@ -1060,6 +973,7 @@ void handlePlotter(void* parameter) {
 		vTaskDelay((Plotter.getTransmitInterval() + 2) / portTICK_RATE_MS);
 	}
 }
+
 void handleSerialControl(void* parameter) {
 	while (true) {
 		scl.loop();
@@ -1078,14 +992,102 @@ void initFreeRTOS() {
 	xTaskCreate(processCALInterrupt, "calibrate_task", 1024, NULL, 10, &cal_taskHandle);
 	xTaskCreate(processIOInterrupt, "IOExpander", 1024, NULL, 10, &io_taskHandle);
 	xTaskCreate(processEncoder, "encoder", 1024, NULL, 10, &encoder_taskHandle);
-	xTaskCreate(handlePlotter, "plotter", 1024, NULL,1, &plotter_taskHandle);
+	//xTaskCreate(handlePlotter, "plotter", 1024, NULL,1, &plotter_taskHandle);
 	xTaskCreate(updateHMITask,"HMI",1024, NULL,6, &hmi_taskHandle);
 	xTaskCreate(handleSerialControl,"SerialControl",1024, NULL,5, &serialControl_taskHandle);
 	xTaskCreate(nrfTransmitTest,"nrfTest",1024, NULL,20, &nrfTransmitTest_taskHandle);
 	vTaskSuspend(nrfTransmitTest_taskHandle);
 	xTaskCreate(nrfTransmitChannels,"nrfChannels",1024, NULL,20, &nrfTransit_taskHandle);
-	xTaskCreate(printNrfStats,"nrfChannels",1024, NULL,1, &printNrfStats_taskHandle);
+	//xTaskCreate(printNrfStats,"nrfChannels",1024, NULL,1, &printNrfStats_taskHandle);
 }
+#pragma endregion
+
+
+#pragma region Setup Hardware/Software
+
+void initSerialControl() {
+	scl.init(&Serial1);
+	scl.addVoidCallback("*", resetMCU);
+	scl.addVoidCallback("t", setTransmitTest);
+	scl.addVoidCallback("w", wipeEeprom);
+	scl.addVoidCallback("s", transmitSettingsToRX);
+	scl.addDataCallback("HMIt", setHMITracing);
+	scl.addDataCallback("HMId", setHMIDebugging);
+}
+
+void initPlotter() {
+
+	Plotter.init(&Serial1, "Raw channels", &scl);
+	for (int i = 0; i < ADCCHANNELNUMBERS; i++) {
+		char adcNum[10] = { 0 };
+		sprintf(adcNum, "ADC%02d", i);
+		Plotter.addPlotData(&ADCDMABuffer[i], adcNum);
+	}
+	PlotterLib* chPlotter = Plotter.addNewPlotter("ChannelData");
+
+	for (int i = 1; i <= 24; i++) {
+		char chNum[10] = { 0 };
+		sprintf(chNum, "CH%02d", i);
+		chPlotter->addPlotData(&mappedChannels[i], chNum);
+	}
+	Plotter.setPlotState(false);
+	chPlotter->setPlotState(false);
+}
+
+void configureEncoder()
+{
+	if (!encoder.begin(i2cEncoderLibV2::INT_DATA | i2cEncoderLibV2::WRAP_DISABLE | i2cEncoderLibV2::DIRE_RIGHT | i2cEncoderLibV2::IPUP_DISABLE | i2cEncoderLibV2::RMOD_X1 | i2cEncoderLibV2::STD_ENCODER)) {
+		Serial.println("Failed to init encoder");
+	}
+	encoder.writeCounter(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].curValue); /* Reset the counter value */
+	encoder.writeMax(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].maxValue); /* Set the maximum threshold*/
+	encoder.writeMin(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].minValue); /* Set the minimum threshold */
+	encoder.writeStep(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].steps); /* Set the step to 1*/
+	encoder.writeInterruptConfig(0xff); /* Enable all the interrupt */
+	encoder.writeAntibouncingPeriod(20);  /* Set an anti-bouncing of 20ms */
+	encoder.writeDoublePushPeriod(50);  /*Set a period for the double push of 500ms */
+	pinMode(ENCODER_INT_PIN, INPUT_PULLUP);
+	attachInterrupt(ENCODER_INT_PIN, setEncoderIRQFlag, FALLING);
+}
+
+void enableExpender(Adafruit_MCP23017* expender, uint8_t address) {
+	while (!I2CDeviceConnected(&Wire, 0x20 + address)) {
+		Serial.printf("EXPANDER(0x%02X) not found\r\n", 0x20 + address);
+		digitalWrite(LED_BUILTIN, LOW);
+		delay(500);
+		digitalWrite(LED_BUILTIN, HIGH);
+		delay(500);
+	}
+
+	expender->begin(address, &Wire);
+	expender->writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT.writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT
+	expender->writeRegister(MCP23017_IODIRB, 0xFF);
+	expender->writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP.writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP
+	expender->writeRegister(MCP23017_GPPUB, 0xFF);
+	expender->writeRegister(MCP23017_IPOLA, 0xFF);  // ENABLE REVERSING OF IO. DOES THIS FIX A BUG?
+	expender->writeRegister(MCP23017_IPOLB, 0xFF);
+	expender->setupInterrupts(true, true, LOW);
+	expender->writeRegister(MCP23017_GPINTENA, 0xFF);  // Enable IRQ
+	expender->writeRegister(MCP23017_GPINTENB, 0xFF);
+}
+
+void setupMCPChips() {
+
+	pinMode(CALEXPENDER_INT_PIN, INPUT_PULLUP);				// Expender Interupt pin
+	pinMode(IOEXPENDER_INT_PIN, INPUT_PULLUP);				// IO twoway/oneway IRQ pin
+
+	Serial.printf("Twoway %s OneWay %s Calc %s\n", I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER1_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER2_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + CALEXPENDER_ADDR) ? "found" : "not found");
+	enableExpender(&IOExpander1, IOEXPANDER1_ADDR);
+	//enableExpender(&IOExpander2, IOEXPANDER2_ADDR);
+	IOExpander2.begin(IOEXPANDER2_ADDR, &Wire);
+	enableExpender(&calButtonExpender, CALEXPENDER_ADDR);
+	
+	calButtonExpender.readGPIOAB(); // Clearing any interrupts that may be active
+
+	attachInterrupt(CALEXPENDER_INT_PIN, setCalibrateIRQFlag, FALLING);
+	attachInterrupt(IOEXPENDER_INT_PIN, setIOExpanderIRQFlas, FALLING);
+}
+
 #pragma endregion
 
 void setup()
@@ -1104,7 +1106,7 @@ void setup()
 	}
 	digitalWrite(LED_BUILTIN, HIGH);
 
-	//HMI.setDebugging(true);
+	HMI.setDebugging(true);
 	//HMI.setTracing(true);
 	Serial.println("Starting TX");
 	initHMI();
@@ -1115,14 +1117,14 @@ void setup()
 	Wire.begin();
 	Wire.setClock(400000);
 
+	scanI2C(&Wire, &Serial);
+
 	while (!I2CDeviceConnected(&Wire, 0x50)) {
-		Serial.println("Something is wrong with I2C. Check wiring");
+		Serial.println("I2C Failure. EEPROM on 0x50 not found ");
 		delay(1000);
 	}
 
 	setupMCPChips();
-
-	//scanI2C(&Wire, &Serial);
 
 	loadSettings();
 
@@ -1147,32 +1149,14 @@ void setup()
 	nRF24_SetTXPower(nRF24_TXPWR_18dBm);
 
 	IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
-	Plotter.init(&Serial1, "Raw channels", &scl);
-	for (int i = 0; i < ADCCHANNELNUMBERS; i++) {
-		char adcNum[10] = { 0 };
-		sprintf(adcNum, "ADC%02d\0", i);
-		Plotter.addPlotData(&ADCDMABuffer[i], adcNum);
-	}
-	PlotterLib* chPlotter = Plotter.addNewPlotter("ChannelData");
 
-	for (int i = 1; i <= 24; i++) {
-		char chNum[10] = { 0 };
-		sprintf(chNum, "CH%02d\0", i);
-		chPlotter->addPlotData(&mappedChannels[i], chNum);
-	}
-	Plotter.setPlotState(false);
-	chPlotter->setPlotState(false);
+	//initPlotter();
 
-	scl.init(&Serial1);
-	scl.addVoidCallback("*", resetMCU);
-	scl.addVoidCallback("t", setTransmitTest);
-	scl.addVoidCallback("w", wipeEeprom);
-	scl.addVoidCallback("s", transmitSettingsToRX);
-	scl.addDataCallback("HMIt", setHMITracing);
-	scl.addDataCallback("HMId", setHMIDebugging);
+	initSerialControl();
+
 	initFreeRTOS();
-	hcrc.Instance = CRC;
-	if (HAL_CRC_Init(&hcrc) != HAL_OK)
+	crc_t.Instance = CRC;
+	if (HAL_CRC_Init(&crc_t) != HAL_OK)
 	{
 		Error_Handler();
 	}
@@ -1180,7 +1164,7 @@ void setup()
 	Serial.printf("Started in %d millis\n", millis() - startSetup);
 	vTaskStartScheduler();
 	Serial.println("FATAL ERROR OCCURED");
-	Serial.printf("Free head %d\r\n", xPortGetFreeHeapSize);
+	Serial.printf("Free head %d\r\n", xPortGetFreeHeapSize());
 }
 
 void loop()

@@ -6,7 +6,7 @@
 			All non-arduino files created by visual micro and all visual studio project or solution files can be freely deleted and are not required to compile a sketch (do not delete your own code!).
 			Note: debugger breakpoints are stored in '.sln' or '.asln' files, knowledge of last uploaded breakpoints is stored in the upload.vmps.xml file. Both files are required to continue a previous debug session without needing to compile and upload again
 	
-	Hardware: Generic STM32F1 series                                                                                                      (STMicroelectronics_GenF1), Platform=stm32, Package=STMicroelectronics
+	Hardware: Generic STM32F1 series(STMicroelectronics_GenF1), Platform=stm32, Package=STMicroelectronics
 */
 
 #if defined(_VMICRO_INTELLISENSE)
@@ -62,7 +62,7 @@ float fabsl(double _Xx) {}
 
 
 
-typedef int _Bool;
+typedef int _bool;
 typedef int intmax_t;
 typedef int uintmax_t;
 typedef int __intmax_t;
@@ -102,7 +102,8 @@ typedef int __uintptr_t;
 
 #define __INTMAX_TYPE__ int;
 #define __UINTMAX_TYPE__ unsigned int;
-
+typedef int __gnuc_va_list;
+#define _PTR void *
 typedef int  false_type;
 typedef int true_type;
 // Enable USBSerial as default "Serial"
@@ -228,6 +229,6 @@ char* _strndup_r(struct _reent*, const char*, size_t) {}
 #include <variant_STORM32_V1_31_RC.cpp> 
 #undef cli
 #define cli()
-#include "Arduino_TX_Display.ino"
+#include "..\Arduino_TX_Display.ino"
 #endif
 #endif
