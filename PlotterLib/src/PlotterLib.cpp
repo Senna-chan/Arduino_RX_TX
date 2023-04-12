@@ -25,29 +25,29 @@ void PlotterLib::transmitData()
 		*dataBufPtr = dataPtr.dataSize; dataBufPtr += 1;
 		switch (dataPtr.dataSize) {
 		case 1:
-
-			memcpy(dataBufPtr, (uint8_t*)dataPtr.ptr, dataPtr.dataSize); dataBufPtr += dataPtr.dataSize;
+			memcpy(dataBufPtr, (uint8_t*)dataPtr.ptr, dataPtr.dataSize); 
 			break;
 		case 2:
-			memcpy(dataBufPtr, (uint16_t*)dataPtr.ptr, dataPtr.dataSize); dataBufPtr += dataPtr.dataSize;
+			memcpy(dataBufPtr, (uint16_t*)dataPtr.ptr, dataPtr.dataSize); 
 			break;
 		case 4:
 			if (dataPtr.isFloat) {
-				memcpy(dataBufPtr, (float*)dataPtr.ptr, dataPtr.dataSize); dataBufPtr += dataPtr.dataSize;
+				memcpy(dataBufPtr, (float*)dataPtr.ptr, dataPtr.dataSize); 
 			}
 			else {
-				memcpy(dataBufPtr, (uint32_t*)dataPtr.ptr, dataPtr.dataSize); dataBufPtr += dataPtr.dataSize;
+				memcpy(dataBufPtr, (uint32_t*)dataPtr.ptr, dataPtr.dataSize); 
 			}
 			break;
 		case 8:
 
 			if (dataPtr.isFloat) {
-				memcpy(dataBufPtr, dataPtr.ptr, dataPtr.dataSize); dataBufPtr += dataPtr.dataSize;
+				memcpy(dataBufPtr, dataPtr.ptr, dataPtr.dataSize);
 			}
 			else {
-				memcpy(dataBufPtr, (uint64_t*)dataPtr.ptr, dataPtr.dataSize); dataBufPtr += dataPtr.dataSize;
+				memcpy(dataBufPtr, (uint64_t*)dataPtr.ptr, dataPtr.dataSize);
 			}
 		}
+		dataBufPtr += dataPtr.dataSize;
 	}
 	*msgBufPtr = (uint8_t)(dataBufPtr - dataBuf); msgBufPtr += 1;
 	memcpy(msgBufPtr, dataBuf, dataBufPtr - dataBuf);

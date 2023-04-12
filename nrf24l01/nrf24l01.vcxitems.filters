@@ -23,7 +23,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\nrf24.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\support.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\support_ardu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\STM32IDEWorkSpace\RC_RX_F4\Drivers\nrf24l01\support_st.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,8 +3,11 @@
 
 
 // Low level functions (hardware depended)
-#include "support.h"
-
+#ifdef ARDUINO
+#include "support_ardu.h"
+#else
+#include "support_st.h"
+#endif
 
 // nRF24L0 instruction definitions
 #define nRF24_CMD_R_REGISTER       (uint8_t)0x00 // Register read

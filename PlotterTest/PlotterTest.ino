@@ -46,7 +46,9 @@ void setup() {
 
 	ADCStart();
 
-	Plotter.init(Serial1.getHandle(),"ADCPlotter");
+	scl.init(&Serial1);
+
+	Plotter.init(Serial1.getHandle(),"ADCPlotter", &scl);
 	Plotter.setTransmitInterval(100);
 	Plotter.addPlotData(&ADCDMABuffer[3], "ADC1");
 	Plotter.addPlotData(&ADCDMABuffer[4], "ADC2");
@@ -58,8 +60,6 @@ void setup() {
 	randoPlot->addPlotData(&randomNumber3, "RANDOM3");
 	randoPlot->addPlotData(&randomNumber4, "RANDOM4");
 
-	scl.init(&Serial1);
-	scl.addCallback("@PI", sendPlotterInfo);
 	scl.addCallback("*", resetMCU);
 	Serial.println("Started plotter test");
 }

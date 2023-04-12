@@ -2,6 +2,8 @@
 
 uint16_t ADCDMABuffer[DMABUFFERSIZE]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
+
+// TODO: WHY IS ALL THIS HERE!
 //uint8_t nrfAddress[2][5] = { {0xCC,0xCE,0xCC,0xCE,0xCC} , {0xCE,0xCC,0xCE,0xCC,0xCE } };
 
 uint8_t nrfAddress[] = { 0x33, 0x22, 0x11 };

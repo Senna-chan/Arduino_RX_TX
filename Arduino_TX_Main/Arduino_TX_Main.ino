@@ -1,4 +1,6 @@
-#include <STM32FreeRTOS.h>
+#include "STMRTOSIncludes.h"
+#include "MCP23X17.h"
+#include "Encoder.h"
 #include <PlotterLib.h>
 #include <SerialControlLibrary.h>
 #include <eepromi2c_Anything.h>
@@ -23,9 +25,6 @@
 #include "SharedFunctions.h"
 
 TaskHandle_t nRFData_taskHandle;			// nRF Receive task
-TaskHandle_t cal_taskHandle;				// Task for handling calibration buttons(Super high prio but only run when needed, Gets data via queue)
-TaskHandle_t io_taskHandle;					// Task for handling IO expanders
-TaskHandle_t encoder_taskHandle;			// Task for handling encoder
 TaskHandle_t plotter_taskHandle;			// Task for plotter stuff
 TaskHandle_t hmi_taskHandle;				// Task for HMI Data transmission things
 TaskHandle_t serialControl_taskHandle;		// Task for serial control library
@@ -35,21 +34,17 @@ TaskHandle_t printNrfStats_taskHandle;		// Task for printing nrf communication s
 
 SemaphoreHandle_t hmi_mutex;		// Lock for HMI
 SemaphoreHandle_t nrf_mutex;		// Lock for nRF
-SemaphoreHandle_t i2c_mutex;		// Lock for everything I2C
-SemaphoreHandle_t serial_mutex;		// Lock for everything I2C
+SemaphoreHandle_t serial_mutex;		// Lock for everything Serial
 
 CRC_HandleTypeDef crc_t;
 SerialControlLibrary scl;
 
 bool debugging = true;
 
-Adafruit_MCP23017 IOExpander1, IOExpander2, calButtonExpender;
 uint16_t lastCalButtons = 0;
 
 
 TwoWire Wire2 = TwoWire(PB10, PB11);
-i2cEncoderLibV2 encoder(&Wire, ENCODER_ADDR);
-bool encoderSettingsIndex = 0;
 long prevSendTime;
 bool printChannelValues = false;
 bool printDMAValues = false;
@@ -63,11 +58,11 @@ uint16_t buttonValues, oldButtonValues;
 byte sendChannel = 0;
 
 bool detectingChannelsSet = false;
-uint16_t detectingRawChannels[24];
-uint16_t rawChannels[24];
-uint16_t prevRawChannels[24];
-uint16_t parsedChannels[24];
-uint16_t mappedChannels[24];
+uint16_t detectingRawChannels[RC_MAX_CHANNELS];
+uint16_t rawChannels[RC_MAX_CHANNELS];
+uint16_t prevRawChannels[RC_MAX_CHANNELS];
+uint16_t parsedChannels[RC_MAX_CHANNELS];
+uint16_t mappedChannels[RC_MAX_CHANNELS];
 uint16_t fixedChannelValue = 0;
 uint32_t IOExpanderBits = 0;
 uint32_t prevIOExpanderBits = 0;
@@ -88,7 +83,7 @@ struct {
 #define BTN_K0 PE4
 #define BTN_K1 PE3
 
-HMI_Text* DispDispObjs[24]{
+HMI_Text* DispDispObjs[RC_MAX_CHANNELS]{
  &e_n0, &e_n1, &e_n2, &e_n3, &e_n4, &e_n5, &e_n6, &e_n7, &e_n8, &e_n9,
  &e_n10, &e_n11, &e_n12, &e_n13, &e_n14, &e_n15, &e_n16, &e_n17, &e_n18, &e_n19,
 &e_n20, &e_n21, &e_n22, &e_n23
@@ -123,7 +118,7 @@ HMI_Text* calDispObjs[10][2]{
 };
 
 extern "C" void _Error_Handler(const char* file, int line) {
-	vTaskSuspendAll(); // Error mode. So stop all tasks becauase there is an error
+	vTaskSuspendAll(); // Stop! Error time
 	int count = 0;
 	TaskHandle_t currentTask = xTaskGetCurrentTaskHandle();
 	TaskStatus_t taskStatus;
@@ -196,8 +191,7 @@ void initSPI() {
 
 #pragma endregion
 
-// The big function. Parse all the data and create a nRF Packet
-void updateValues() {
+void updateValues(Model* activeSettings, uint16_t* channel_input, ) {
 	memcpy(rawChannels, ADCDMABuffer, ADCCHANNELNUMBERS * 2);
 	for (int i = 0; i < ADCCHANNELNUMBERS; i++)
 	{
@@ -226,17 +220,17 @@ void updateValues() {
 		parsedChannels[i] += settings.model[settings.activeModel].channel_settings[i].chOffset;
 		parsedChannels[i] = constrain(parsedChannels[i], 1000, 2000);
 	}
-	for (int i = 0; i < 24; i++) {
+	for (int i = 0; i < RC_MAX_CHANNELS; i++) {
 		auto io1t = settings.model[settings.activeModel].channel_settings[i].channelMapping[0].type;
 		auto io2t = settings.model[settings.activeModel].channel_settings[i].channelMapping[1].type;
 		auto io1 = settings.model[settings.activeModel].channel_settings[i].channelMapping[0].index;
 		auto io2 = settings.model[settings.activeModel].channel_settings[i].channelMapping[1].index;
 		auto outputMode = settings.model[settings.activeModel].channel_settings[i].outputMode;
-		if (io1t == CTYPE_NONE && io2t == CTYPE_NONE) {
-			mappedChannels[i] = 0; // Make sure that RX will not parse this
+		if (io1t == CTYPE_NONE && io2t == CTYPE_NONE) { // Not mapped
+			mappedChannels[i] = 2023; // Make sure that RX will not parse this
 			continue;
 		}
-		if (io1t != CTYPE_NONE && io2t == CTYPE_NONE) {
+		if (io1t != CTYPE_NONE && io2t == CTYPE_NONE) { // Single channel mapped
 			if (io1t == CTYPE_ADC) {
 				mappedChannels[i] = parsedChannels[io1];
 			}
@@ -244,7 +238,7 @@ void updateValues() {
 				mappedChannels[i] = bitRead(IOExpanderBits, io1) ? 2000 : 1000;
 			}
 		}
-		else if (io1t == CTYPE_IO && io2t == CTYPE_IO) {
+		else if (io1t == CTYPE_IO && io2t == CTYPE_IO) { // Multi IO mapped
 			bool b1 = bitRead(IOExpanderBits, io1);
 			bool b2 = bitRead(IOExpanderBits, io2);
 			if (!b1 && !b2) {
@@ -260,7 +254,7 @@ void updateValues() {
 				Serial.printf("CH%d invalid config. IO1 and IO2 both high");
 			}
 		}
-		else {
+		else { // Can't map ADC with IO or multiple ADC
 			Serial.printf("CH Mapping for %d invalid. IOType1 %d Type2 %d\n", i, io1t, io2t); // Yes this is spammy
 		}
 		if (bitRead(settings.model[settings.activeModel].channelReversed, i)) {
@@ -280,50 +274,37 @@ void updateValues() {
 
 
 	if (between(fixedChannelValue, 1000, 2000)) {
-		for (int i = 0; i < 24; i++) mappedChannels[i] = fixedChannelValue;
+		for (int i = 0; i < RC_MAX_CHANNELS; i++) mappedChannels[i] = fixedChannelValue;
 	}
+
 	// We can only send the 24 channels if it are 10 bit values so we need to subtract 1000 to get a range from 0 to 1000
-	transmitterData.ch_data.channel1 = mappedChannels[0] != 0 ? (mappedChannels[0] - 1000) : 1023;
-	transmitterData.ch_data.channel2 = mappedChannels[1] != 0 ? (mappedChannels[1] - 1000) : 1023;
-	transmitterData.ch_data.channel3 = mappedChannels[2] != 0 ? (mappedChannels[2] - 1000) : 1023;
-	transmitterData.ch_data.channel4 = mappedChannels[3] != 0 ? (mappedChannels[3] - 1000) : 1023;
-	transmitterData.ch_data.channel5 = mappedChannels[4] != 0 ? (mappedChannels[4] - 1000) : 1023;
-	transmitterData.ch_data.channel6 = mappedChannels[5] != 0 ? (mappedChannels[5] - 1000) : 1023;
-	transmitterData.ch_data.channel7 = mappedChannels[6] != 0 ? (mappedChannels[6] - 1000) : 1023;
-	transmitterData.ch_data.channel8 = mappedChannels[7] != 0 ? (mappedChannels[7] - 1000) : 1023;
-	transmitterData.ch_data.channel9 = mappedChannels[8] != 0 ? (mappedChannels[8] - 1000) : 1023;
-	transmitterData.ch_data.channel10 = mappedChannels[9] != 0 ? (mappedChannels[9] - 1000) : 1023;
-	transmitterData.ch_data.channel11 = mappedChannels[10] != 0 ? (mappedChannels[10] - 1000) : 1023;
-	transmitterData.ch_data.channel12 = mappedChannels[11] != 0 ? (mappedChannels[11] - 1000) : 1023;
-	transmitterData.ch_data.channel13 = mappedChannels[12] != 0 ? (mappedChannels[12] - 1000) : 1023;
-	transmitterData.ch_data.channel14 = mappedChannels[13] != 0 ? (mappedChannels[13] - 1000) : 1023;
-	transmitterData.ch_data.channel15 = mappedChannels[14] != 0 ? (mappedChannels[14] - 1000) : 1023;
-	transmitterData.ch_data.channel16 = mappedChannels[15] != 0 ? (mappedChannels[15] - 1000) : 1023;
-	transmitterData.ch_data.channel17 = mappedChannels[16] != 0 ? (mappedChannels[16] - 1000) : 1023;
-	transmitterData.ch_data.channel18 = mappedChannels[17] != 0 ? (mappedChannels[17] - 1000) : 1023;
-	transmitterData.ch_data.channel19 = mappedChannels[18] != 0 ? (mappedChannels[18] - 1000) : 1023;
-	transmitterData.ch_data.channel20 = mappedChannels[19] != 0 ? (mappedChannels[19] - 1000) : 1023;
-	transmitterData.ch_data.channel21 = mappedChannels[20] != 0 ? (mappedChannels[20] - 1000) : 1023;
-	transmitterData.ch_data.channel22 = mappedChannels[21] != 0 ? (mappedChannels[21] - 1000) : 1023;
-	transmitterData.ch_data.channel23 = mappedChannels[22] != 0 ? (mappedChannels[22] - 1000) : 1023;
-	transmitterData.ch_data.channel24 = mappedChannels[23] != 0 ? (mappedChannels[23] - 1000) : 1023;
+	transmitterData.ch_data.channel1 =  mappedChannels[0]  - 1000;
+	transmitterData.ch_data.channel2 =  mappedChannels[1]  - 1000;
+	transmitterData.ch_data.channel3 =  mappedChannels[2]  - 1000;
+	transmitterData.ch_data.channel4 =  mappedChannels[3]  - 1000;
+	transmitterData.ch_data.channel5 =  mappedChannels[4]  - 1000;
+	transmitterData.ch_data.channel6 =  mappedChannels[5]  - 1000;
+	transmitterData.ch_data.channel7 =  mappedChannels[6]  - 1000;
+	transmitterData.ch_data.channel8 =  mappedChannels[7]  - 1000;
+	transmitterData.ch_data.channel9 =  mappedChannels[8]  - 1000;
+	transmitterData.ch_data.channel10 = mappedChannels[9]  - 1000;
+	transmitterData.ch_data.channel11 = mappedChannels[10] - 1000;
+	transmitterData.ch_data.channel12 = mappedChannels[11] - 1000;
+	transmitterData.ch_data.channel13 = mappedChannels[12] - 1000;
+	transmitterData.ch_data.channel14 = mappedChannels[13] - 1000;
+	transmitterData.ch_data.channel15 = mappedChannels[14] - 1000;
+	transmitterData.ch_data.channel16 = mappedChannels[15] - 1000;
+	transmitterData.ch_data.channel17 = mappedChannels[16] - 1000;
+	transmitterData.ch_data.channel18 = mappedChannels[17] - 1000;
+	transmitterData.ch_data.channel19 = mappedChannels[18] - 1000;
+	transmitterData.ch_data.channel20 = mappedChannels[19] - 1000;
+	transmitterData.ch_data.channel21 = mappedChannels[20] - 1000;
+	transmitterData.ch_data.channel22 = mappedChannels[21] - 1000;
+	transmitterData.ch_data.channel23 = mappedChannels[22] - 1000;
+	transmitterData.ch_data.channel24 = mappedChannels[23] - 1000;
 }
 
 #pragma region IRQ functions
-
-void setCalibrateIRQFlag()
-{
-	vTaskNotifyGiveFromISR(cal_taskHandle,NULL);
-}
-
-void setIOExpanderIRQFlas() {
-	vTaskNotifyGiveFromISR(io_taskHandle, NULL);
-}
-
-void setEncoderIRQFlag()
-{
-	vTaskNotifyGiveFromISR(encoder_taskHandle, NULL);
-}
 
 void setNrfIRQFlag() {
 	vTaskNotifyGiveFromISR(nRFData_taskHandle, NULL);
@@ -347,7 +328,7 @@ void SendData(uint8_t* data, uint8_t dataSize) {
 				nRF24_CE_L();
 			}
 			else if(fifoStatus == nRF24_STATUS_TXFIFO_FULL) {
-				Serial.println("TXFULL. We do not want that");
+				Serial.println("TXFULL. HELP");
 				Error_Handler();
 			}
 			else {
@@ -913,60 +894,6 @@ void processCALInterrupt(void* parameter) {
 	}
 }
 
-void processEncoder(void* parameter) {
-	while (true) {
-		ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-		xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-		if (encoder.updateStatus()) {
-			if (encoder.readStatus(i2cEncoderLibV2::RMAX)) {
-				Serial.print("Maximum threshold: ");
-				Serial.println(encoder.readCounterInt());
-
-				/* Write here your code */
-			}
-			else if (encoder.readStatus(i2cEncoderLibV2::RINC)) {
-				Serial.print("Increment: ");
-				Serial.println(encoder.readCounterInt());
-
-				/* Write here your code */
-			}
-
-			if (encoder.readStatus(i2cEncoderLibV2::RMIN)) {
-				Serial.print("Minimum threshold: ");
-				Serial.println(encoder.readCounterInt());
-
-				/* Write here your code */
-			}
-			else if (encoder.readStatus(i2cEncoderLibV2::RDEC)) {
-				Serial.print("Decrement: ");
-				Serial.println(encoder.readCounterInt());
-
-				/* Write here your code */
-			}
-
-			if (encoder.readStatus(i2cEncoderLibV2::PUSHR)) {
-				Serial.println("Push button Released");
-
-				/* Write here your code */
-			}
-
-			if (encoder.readStatus(i2cEncoderLibV2::PUSHP)) {
-				Serial.println("Push button Pressed");
-
-				/* Write here your code */
-			}
-
-			if (encoder.readStatus(i2cEncoderLibV2::PUSHD)) {
-				Serial.println("Double push!");
-
-				/* Write here your code */
-
-			}
-		}
-		xSemaphoreGive(i2c_mutex);
-	}
-}
-
 void handlePlotter(void* parameter) {
 	while (true) {
 		Plotter.loop();
@@ -1034,59 +961,6 @@ void initPlotter() {
 	chPlotter->setPlotState(false);
 }
 
-void configureEncoder()
-{
-	if (!encoder.begin(i2cEncoderLibV2::INT_DATA | i2cEncoderLibV2::WRAP_DISABLE | i2cEncoderLibV2::DIRE_RIGHT | i2cEncoderLibV2::IPUP_DISABLE | i2cEncoderLibV2::RMOD_X1 | i2cEncoderLibV2::STD_ENCODER)) {
-		Serial.println("Failed to init encoder");
-	}
-	encoder.writeCounter(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].curValue); /* Reset the counter value */
-	encoder.writeMax(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].maxValue); /* Set the maximum threshold*/
-	encoder.writeMin(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].minValue); /* Set the minimum threshold */
-	encoder.writeStep(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].steps); /* Set the step to 1*/
-	encoder.writeInterruptConfig(0xff); /* Enable all the interrupt */
-	encoder.writeAntibouncingPeriod(20);  /* Set an anti-bouncing of 20ms */
-	encoder.writeDoublePushPeriod(50);  /*Set a period for the double push of 500ms */
-	pinMode(ENCODER_INT_PIN, INPUT_PULLUP);
-	attachInterrupt(ENCODER_INT_PIN, setEncoderIRQFlag, FALLING);
-}
-
-void enableExpender(Adafruit_MCP23017* expender, uint8_t address) {
-	while (!I2CDeviceConnected(&Wire, 0x20 + address)) {
-		Serial.printf("EXPANDER(0x%02X) not found\r\n", 0x20 + address);
-		digitalWrite(LED_BUILTIN, LOW);
-		delay(500);
-		digitalWrite(LED_BUILTIN, HIGH);
-		delay(500);
-	}
-
-	expender->begin(address, &Wire);
-	expender->writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT.writeRegister(MCP23017_IODIRA, 0xFF);   // IO TO INPUT
-	expender->writeRegister(MCP23017_IODIRB, 0xFF);
-	expender->writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP.writeRegister(MCP23017_GPPUA, 0xFF);	// ENABLE PULLUP
-	expender->writeRegister(MCP23017_GPPUB, 0xFF);
-	expender->writeRegister(MCP23017_IPOLA, 0xFF);  // ENABLE REVERSING OF IO. DOES THIS FIX A BUG?
-	expender->writeRegister(MCP23017_IPOLB, 0xFF);
-	expender->setupInterrupts(true, true, LOW);
-	expender->writeRegister(MCP23017_GPINTENA, 0xFF);  // Enable IRQ
-	expender->writeRegister(MCP23017_GPINTENB, 0xFF);
-}
-
-void setupMCPChips() {
-
-	pinMode(CALEXPENDER_INT_PIN, INPUT_PULLUP);				// Expender Interupt pin
-	pinMode(IOEXPENDER_INT_PIN, INPUT_PULLUP);				// IO twoway/oneway IRQ pin
-
-	Serial.printf("Twoway %s OneWay %s Calc %s\n", I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER1_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER2_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + CALEXPENDER_ADDR) ? "found" : "not found");
-	enableExpender(&IOExpander1, IOEXPANDER1_ADDR);
-	//enableExpender(&IOExpander2, IOEXPANDER2_ADDR);
-	IOExpander2.begin(IOEXPANDER2_ADDR, &Wire);
-	enableExpender(&calButtonExpender, CALEXPENDER_ADDR);
-	
-	calButtonExpender.readGPIOAB(); // Clearing any interrupts that may be active
-
-	attachInterrupt(CALEXPENDER_INT_PIN, setCalibrateIRQFlag, FALLING);
-	attachInterrupt(IOEXPENDER_INT_PIN, setIOExpanderIRQFlas, FALLING);
-}
 
 #pragma endregion
 
@@ -1110,8 +984,8 @@ void setup()
 	//HMI.setTracing(true);
 	Serial.println("Starting TX");
 	initHMI();
-	//Serial.print("Size of channel bits ");
 	initStructs();
+	Serial.printf("Size of settings is %d bytes\n", sizeof(settings));
 	Wire.setSCL(PB_10);
 	Wire.setSDA(PB_11);
 	Wire.begin();
@@ -1120,7 +994,7 @@ void setup()
 	scanI2C(&Wire, &Serial);
 
 	while (!I2CDeviceConnected(&Wire, 0x50)) {
-		Serial.println("I2C Failure. EEPROM on 0x50 not found ");
+		Serial.println("I2C Failure. EEPROM on 0x50 not found, cant continue without EEPROM");
 		delay(1000);
 	}
 

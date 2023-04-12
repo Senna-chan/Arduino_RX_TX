@@ -63,5 +63,5 @@ extern uint16_t ADCDMABuffer[DMABUFFERSIZE];
 #define EEPROMFULLWIPE			false
 
 
-
+// TODO: WHY IS THIS HERE!
 void common_nRFInit();

@@ -9,10 +9,11 @@
 #define _SerialControlLibrary_h
 
 #ifdef ARDUINO
-#define ISARDUINO
 	#include <Arduino.h>
+#elif defined(GTEST)
+	#include <function>
 #else
-
+	
 #endif
 
 #include <map>
@@ -33,10 +34,11 @@ private:
 	struct s_serialCallbacks {
 		s_serialCallbackFunc callback;
 		serialCallbackMap serialCallbacks;
-	};  // This is recurs
+	};  // This is recursive
 	serialCallbackMap serialCallbacks;
-#ifdef ISARDUINO
+#ifdef ARDUINO
 	HardwareSerial* serial;
+#elif defined(GTEST)
 #else
 	UART_HandleTypeDef* uart;
 #endif
@@ -45,7 +47,7 @@ private:
 	char* bufPtr;
 	uint16_t bufSize;
 public:
-#ifdef ISARDUINO
+#ifdef ARDUINO
 	/**
 	 * Used for arduino because Arduino is holding RX busy.
 	 * 
@@ -54,7 +56,9 @@ public:
 	 * \param bufSize
 	 */
 	void init(HardwareSerial* serial, char endLine = '\n', uint16_t bufferSize = 255);
-#else 
+#elif defined(GTEST)
+
+#else
 	void init(UART_HandleTypeDef * uart, char endLine = '\n', uint16_t bufferSize = 255);
 #endif
 	void loop();

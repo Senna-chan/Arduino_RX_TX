@@ -765,6 +765,18 @@
     <ClInclude Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.4.0\libraries\SrcWrapper\src\SrcWrapper.h">
       <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
     </ClInclude>
+    <ClInclude Include="Encoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCP23X17.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeRTOSVars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="STMRTOSIncludes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arduino_TX_Display_hmi.cpp">
@@ -1565,6 +1577,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.4.0\libraries\SrcWrapper\src\stm32\uart.c">
       <Filter>src\_micro-api-readonly\libraries\SrcWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Encoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCP23X17.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeRTOSVars.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

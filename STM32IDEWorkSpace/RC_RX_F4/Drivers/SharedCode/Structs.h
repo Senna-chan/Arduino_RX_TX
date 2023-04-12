@@ -25,23 +25,22 @@ typedef struct {
 
 typedef struct {
 	uint32_t frequency;
-	uint8_t centerIs0; // Used with combi input for mapping
 } s_pwmConfig;
 
 typedef struct {
 	uint32_t minFrequency;
 	uint32_t maxFrequency;
-	uint8_t centerIs0; // Used with combi input for mapping
 } s_stepperConfig;
 
 typedef struct
 {
-	uint16_t chMin;						// Only needed for analog channels
-	uint16_t chMax;						// Only needed for analog channels
-	uint16_t chMid;						// Only needed for analog channels
-	int16_t  chOffset;					// Only needed for analog channels
+	uint16_t chMin;						// ADC Calibration
+	uint16_t chMax;						// ADC Calibration
+	uint16_t chMid;						// ADC Calibration
+	int16_t  chOffset;					// ADC Calibration
 	uint16_t chDefaults;				// Needed for all channels
 	uint8_t  outputMode;				// Output modes for channels
+	uint8_t  centeredStick;				// Used with combi input for mapping. If true then we will map Mid to ends as both 
 	s_pwmConfig pwmConfig;				// PWM Config
 	s_stepperConfig stepperConfig;		// Stepper Config
 	s_channelMapping channelMapping[2];	// Channel mapping for min/mid/max or min/max or any other combo. First index is adc(-1) or digital(1). Second index is adc/io index
@@ -65,11 +64,12 @@ typedef struct
 	int32_t division; // 1 or multiple of 10
 } encoderStruct;
 
-typedef struct
+
+typedef struct __attribute__((packed))
 {
 	char* name;
 	uint8_t nameSize;
-	channelConfigs channel_settings[24];
+	channelConfigs channel_settings[RC_MAX_CHANNELS];
 	uint16_t deadzone; // Deadzone is +/- from either center or from minPostion and maxPosition
 	uint32_t channelReversed; // Bitmap of all the channels in 4 bytes to save room in the EEPROM
 	channelMixStruct channelMixing[8];
@@ -160,14 +160,14 @@ typedef struct
 	uint64_t channel22 : 10;
 	uint64_t channel23 : 10;
 	uint64_t channel24 : 10;
-} channelBitSettings;
+} channelBitData;
 
 typedef union
 {
 	byteDataUnion bytesUnion;
 	packetTypeId packetId;
 	txSettingsData_s settingsData;
-	channelBitSettings ch_data;
+	channelBitData ch_data;
 } transmitTypes;
 
 typedef union
@@ -178,16 +178,13 @@ typedef union
 	rxData rx_data;
 } receiveTypes;
 #pragma endregion
-///< Default 1000 to 2000 ms
-#define OUTPUTMODE_RC 	0	
-///< Use CH7/CH8 for DAC1/DAC2 output
-#define OUTPUTMODE_DAC 	4	
-///< Simple HIGH/LOW with the RC timer pin
-#define OUTPUTMODE_IO 	1	
-///< PWM using one of the other timers
-#define OUTPUTMODE_PWM 	2	
-///< PWM steppermode with changing frequency
-#define OUTPUTMODE_STEP	3	
+
+#define OUTPUTMODE_NONE 0	/*<! No physical output */
+#define OUTPUTMODE_RC 	1	/*<! RC PWM 1000 to 2000 ms */
+#define OUTPUTMODE_DAC 	5	/*<! Use CH7/CH8 for DAC1/DAC2 output */
+#define OUTPUTMODE_IO 	2	/*<! Simple HIGH/LOW with the RC timer pin */
+#define OUTPUTMODE_PWM 	3	/*<! PWM using one of the other timers */
+#define OUTPUTMODE_STEP	4	/*<! PWM steppermode with changing frequency */
 
 extern const char* OUTPUTMODE_STR_TABLE[];
 

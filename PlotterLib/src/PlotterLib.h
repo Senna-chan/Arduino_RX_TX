@@ -22,7 +22,7 @@ private:
 	struct dataPtrStruct {
 		uint8_t dataSize;
 		double* ptr;
-		char name[20] = { 0 }; // Already assign memory
+		char name[20] = { 0 }; // pre-assign memory
 		bool isFloat;
 	};
 #ifdef ARDUINO

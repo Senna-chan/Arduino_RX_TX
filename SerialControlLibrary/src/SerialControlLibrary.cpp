@@ -7,7 +7,7 @@
 
 #include "SerialControlLibrary.h"
 
-#ifdef ISARDUINO
+#ifdef ARDUINO
 void SerialControlLibrary::init(HardwareSerial* serial, char endLine, uint16_t bufferSize){
 	this->serial = serial;
 #else
@@ -23,7 +23,7 @@ void SerialControlLibrary::init(UART_HandleTypeDef* uart, char endLine, uint16_t
 
 void SerialControlLibrary::loop()
 {
-#ifdef ISARDUINO
+#ifdef ARDUINO
 	if(serial->available()){
 		*bufPtr = (char)serial->read();
 #else

@@ -22,7 +22,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\nrf24.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\STM32IDEWorkSpace\RC_RX_F4\Drivers\nrf24l01\support_st.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\nrf24.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\support.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\support_ardu.h" />
   </ItemGroup>
 </Project>

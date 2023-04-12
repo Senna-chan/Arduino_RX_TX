@@ -9,7 +9,7 @@ int8_t detectingIO = 0;
 int8_t channelToEditIdx = -1;
 int8_t channelToEdit = -1;
 
-HMI_Button* chEditButtons[24]{
+HMI_Button* chEditButtons[RC_MAX_CHANNELS]{
 	&e_setch1 ,
 	&e_setch2 ,
 	&e_setch3 ,
@@ -36,16 +36,16 @@ HMI_Button* chEditButtons[24]{
 	&e_setch24,
 };
 
+// WHY HERE!
 #define RCIO		((1 << OUTPUTMODE_RC) | (1 << OUTPUTMODE_IO))
 #define RCIODAC		((1 << OUTPUTMODE_RC) | (1 << OUTPUTMODE_IO) | (1 << OUTPUTMODE_DAC))
 #define RCIOPWM		((1 << OUTPUTMODE_RC) | (1 << OUTPUTMODE_IO) | (1 << OUTPUTMODE_PWM))
 #define RCIOPWMSTEP	((1 << OUTPUTMODE_RC) | (1 << OUTPUTMODE_IO) | (1 << OUTPUTMODE_PWM) | (1 << OUTPUTMODE_STEP))
 
 // Output options for the channels
-uint8_t channelOutputOptions[25] = {
-	0,
-	RCIOPWM,
-	RCIOPWM,
+uint8_t channelOutputOptions[RC_MAX_CHANNELS] = {
+	RCIOPWM, // CH1
+	RCIOPWM, // CH2
 	RCIO,
 	RCIO,
 	RCIODAC,
@@ -69,6 +69,7 @@ uint8_t channelOutputOptions[25] = {
 	0,
 	0
 };
+// end why here
 
 
 // End UserCode : Vars
@@ -337,6 +338,7 @@ HMI_Page p_transmittingSettings = HMI_Page(PAGE_TYPES::POPUP, transmittingSettin
 HMI_Text e_E_ELEM_TEXT745 = HMI_Text(E_ELEM_TEXT745,"E_ELEM_TEXT745");
 HMI_Text e_E_ELEM_TEXT746 = HMI_Text(E_ELEM_TEXT746,"E_ELEM_TEXT746");
 HMI_Text e_settingstxtorxprogress = HMI_Text(settingstxtorxprogress,"settingstxtorxprogress");
+
 HMI_Object *hmiObjects[] = {
 &e_nBatPercent,
 &p_E_PG_MAIN,
@@ -714,6 +716,7 @@ void setupStepper(HMI_Object* obj) {
 		settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.centerIs0 = ((HMI_Toggle*)obj)->getState();
 	}
 }
+
 void setupPWM(HMI_Object* obj) {
 	if (obj->getElementId() == pwmFreq) {
 		settings.model[settings.activeModel].channel_settings[channelToEditIdx].pwmConfig.frequency = String(((HMI_Text*)obj)->getText()).toInt();
@@ -759,7 +762,7 @@ void doNavigation(HMI_Object* navBtn) {
 		break;
 	case b2:{
 		p_channelSettings.navigateTo();
-		for (int i = 0; i < 24; i++) {
+		for (int i = 0; i < RC_MAX_CHANNELS; i++) {
 			delay(20);
 			auto cs = settings.model[settings.activeModel].channel_settings[i];
 			if (cs.channelMapping[0].type == 0 && cs.channelMapping[1].type == 0) {
@@ -892,7 +895,7 @@ void navigateToChannelEditor() {
 	chstr.concat(channelToEdit);
 	e_detectIO1.setValue("Detect IO1");
 	e_detectIO2.setValue("Detect IO2");
-	uint8_t outputModesOptions = channelOutputOptions[channelToEdit];
+	uint8_t outputModesOptions = channelOutputOptions[channelToEditIdx];
 	auto io1Str = String();
 	auto io2Str = String();
 	int8_t io1t = settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[0].type;
