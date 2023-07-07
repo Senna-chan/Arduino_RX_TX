@@ -9,7 +9,7 @@ namespace ControllerCompanion.Enums
 {
     public class ChannelOutputTypes
     {
-        private enum outputModes
+        public enum outputModes
         {
             OUTPUTMODE_NONE =0,
             OUTPUTMODE_RC   =1,

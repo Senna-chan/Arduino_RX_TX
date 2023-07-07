@@ -31,7 +31,7 @@ void SerialControlLibrary::loop()
 	if (status == HAL_OK) {
 #endif
 		if (*bufPtr == endLine) {
-			Serial.printf("Got char '\\n' H(0x%0A)\r\n");
+			Serial.println("Got newline char");
 			*bufPtr = 0;
 			char* ptr = buf;
 			serialCallbackMap* currentMap = &serialCallbacks;

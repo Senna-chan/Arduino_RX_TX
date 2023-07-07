@@ -54,7 +54,7 @@ namespace ControllerCompanion.Structs
             {
                 if (value != this.midValue)
                 {
-                    if(!(value < this.minValue || value > this.maxValue))
+                    if(!(value < this.minValue || value > this.maxValue) || value == 0)
                     {
                         this.midValue = value;
                     }
@@ -82,14 +82,66 @@ namespace ControllerCompanion.Structs
                 }
             }
         }
-        public Int16 chOffset { get; set; }
-        public UInt16 chDefaults { get; set; }
-        public byte outputMode { get; set; }
-        public byte centeredStick { get; set; }
+        private Int16 _chOffset;
+        public Int16 chOffset
+        {
+            get { return _chOffset; }
+            set
+            {
+                if(value != this._chOffset)
+                {
+                    this._chOffset = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        private UInt16 _chDefaults;
+        public UInt16 chDefaults
+        {
+            get { return _chDefaults; }
+            set
+            {
+                if (value != this._chDefaults)
+                {
+                    this._chDefaults = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        private byte _outputMode;
+        public byte outputMode {
+            get { return _outputMode; }
+            set
+            {
+                if(value != this._outputMode)
+                {
+                    this._outputMode = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private bool _centeredStick;
+        public bool centeredStick
+        {
+            get { return _centeredStick; }
+            set
+            {
+                if(value != this._centeredStick)
+                {
+                    this._centeredStick = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public s_pwmConfig pwmConfig { get; set; }
         public s_stepperConfig stepperConfig { get; set; }
         public s_channelMapping[] channelMapping { get; set; }
         
+        // CompanionOnlyStuff
+        public bool reversed { get; set; }
+
         public ChannelConfig()
         {
             chMax = 1023;

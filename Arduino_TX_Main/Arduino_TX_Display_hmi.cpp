@@ -276,13 +276,13 @@ HMI_Button e_savebtnchconf = HMI_Button(savebtnchconf,"savebtnchconf");
 HMI_Button e_backbtnchconf = HMI_Button(backbtnchconf,"backbtnchconf");
 HMI_Listbox e_lsbChannelOutputType = HMI_Listbox(lsbChannelOutputType,"lsbChannelOutputType");
 HMI_Button e_E_ELEM_BTN279 = HMI_Button(E_ELEM_BTN279,"E_ELEM_BTN279");
+HMI_Text e_E_ELEM_TEXT797 = HMI_Text(E_ELEM_TEXT797,"E_ELEM_TEXT797");
+HMI_Toggle e_pwmCenterZero = HMI_Toggle(pwmCenterZero,"pwmCenterZero");
 
 HMI_Page p_setupOutputPWM = HMI_Page(PAGE_TYPES::NORMAL, setupOutputPWM,"setupOutputPWM");
 HMI_Text e_E_ELEM_TEXT674 = HMI_Text(E_ELEM_TEXT674,"E_ELEM_TEXT674");
 HMI_Text e_E_ELEM_TEXT667 = HMI_Text(E_ELEM_TEXT667,"E_ELEM_TEXT667");
 HMI_Text e_pwmFreq = HMI_Text(pwmFreq,"pwmFreq");
-HMI_Text e_E_ELEM_TEXT673 = HMI_Text(E_ELEM_TEXT673,"E_ELEM_TEXT673");
-HMI_Toggle e_pwmCenterZero = HMI_Toggle(pwmCenterZero,"pwmCenterZero");
 HMI_Button e_backbtnsetupPWM = HMI_Button(backbtnsetupPWM,"backbtnsetupPWM");
 
 HMI_Page p_setupOutputStepper = HMI_Page(PAGE_TYPES::NORMAL, setupOutputStepper,"setupOutputStepper");
@@ -291,8 +291,6 @@ HMI_Text e_E_ELEM_TEXT669 = HMI_Text(E_ELEM_TEXT669,"E_ELEM_TEXT669");
 HMI_Text e_stepMinFreq = HMI_Text(stepMinFreq,"stepMinFreq");
 HMI_Text e_E_ELEM_TEXT670 = HMI_Text(E_ELEM_TEXT670,"E_ELEM_TEXT670");
 HMI_Text e_stepMaxFreq = HMI_Text(stepMaxFreq,"stepMaxFreq");
-HMI_Text e_E_ELEM_TEXT677 = HMI_Text(E_ELEM_TEXT677,"E_ELEM_TEXT677");
-HMI_Toggle e_stepCenterZero = HMI_Toggle(stepCenterZero,"stepCenterZero");
 HMI_Button e_backbtnsetupStepper = HMI_Button(backbtnsetupStepper,"backbtnsetupStepper");
 
 HMI_Page p_setupOutputNotNeeded = HMI_Page(PAGE_TYPES::NORMAL, setupOutputNotNeeded,"setupOutputNotNeeded");
@@ -333,12 +331,51 @@ HMI_Text e_E_ELEM_TEXT760 = HMI_Text(E_ELEM_TEXT760,"E_ELEM_TEXT760");
 HMI_Text e_E_ELEM_TEXT761 = HMI_Text(E_ELEM_TEXT761,"E_ELEM_TEXT761");
 HMI_Text e_E_ELEM_TEXT762 = HMI_Text(E_ELEM_TEXT762,"E_ELEM_TEXT762");
 HMI_Text e_E_ELEM_TEXT763 = HMI_Text(E_ELEM_TEXT763,"E_ELEM_TEXT763");
+HMI_Text e_E_ELEM_TEXT765 = HMI_Text(E_ELEM_TEXT765,"E_ELEM_TEXT765");
+HMI_Text e_E_ELEM_TEXT766 = HMI_Text(E_ELEM_TEXT766,"E_ELEM_TEXT766");
+HMI_Text e_E_ELEM_TEXT767 = HMI_Text(E_ELEM_TEXT767,"E_ELEM_TEXT767");
+HMI_Text e_E_ELEM_TEXT768 = HMI_Text(E_ELEM_TEXT768,"E_ELEM_TEXT768");
+HMI_Text e_E_ELEM_TEXT769 = HMI_Text(E_ELEM_TEXT769,"E_ELEM_TEXT769");
+HMI_Text e_E_ELEM_TEXT770 = HMI_Text(E_ELEM_TEXT770,"E_ELEM_TEXT770");
+HMI_Text e_E_ELEM_TEXT771 = HMI_Text(E_ELEM_TEXT771,"E_ELEM_TEXT771");
+HMI_Text e_E_ELEM_TEXT772 = HMI_Text(E_ELEM_TEXT772,"E_ELEM_TEXT772");
+HMI_Text e_E_ELEM_TEXT773 = HMI_Text(E_ELEM_TEXT773,"E_ELEM_TEXT773");
+HMI_Text e_E_ELEM_TEXT774 = HMI_Text(E_ELEM_TEXT774,"E_ELEM_TEXT774");
+HMI_Text e_E_ELEM_TEXT775 = HMI_Text(E_ELEM_TEXT775,"E_ELEM_TEXT775");
+HMI_Text e_E_ELEM_TEXT776 = HMI_Text(E_ELEM_TEXT776,"E_ELEM_TEXT776");
+HMI_Text e_E_ELEM_TEXT777 = HMI_Text(E_ELEM_TEXT777,"E_ELEM_TEXT777");
+HMI_Text e_E_ELEM_TEXT778 = HMI_Text(E_ELEM_TEXT778,"E_ELEM_TEXT778");
+HMI_Text e_E_ELEM_TEXT779 = HMI_Text(E_ELEM_TEXT779,"E_ELEM_TEXT779");
+HMI_Text e_E_ELEM_TEXT780 = HMI_Text(E_ELEM_TEXT780,"E_ELEM_TEXT780");
+HMI_Text e_E_ELEM_TEXT781 = HMI_Text(E_ELEM_TEXT781,"E_ELEM_TEXT781");
+HMI_Text e_E_ELEM_TEXT782 = HMI_Text(E_ELEM_TEXT782,"E_ELEM_TEXT782");
+HMI_Text e_E_ELEM_TEXT783 = HMI_Text(E_ELEM_TEXT783,"E_ELEM_TEXT783");
+HMI_Text e_E_ELEM_TEXT784 = HMI_Text(E_ELEM_TEXT784,"E_ELEM_TEXT784");
+HMI_Text e_E_ELEM_TEXT785 = HMI_Text(E_ELEM_TEXT785,"E_ELEM_TEXT785");
+HMI_Text e_E_ELEM_TEXT786 = HMI_Text(E_ELEM_TEXT786,"E_ELEM_TEXT786");
+HMI_Text e_E_ELEM_TEXT787 = HMI_Text(E_ELEM_TEXT787,"E_ELEM_TEXT787");
+HMI_Text e_E_ELEM_TEXT788 = HMI_Text(E_ELEM_TEXT788,"E_ELEM_TEXT788");
+HMI_Text e_E_ELEM_TEXT789 = HMI_Text(E_ELEM_TEXT789,"E_ELEM_TEXT789");
+HMI_Text e_E_ELEM_TEXT790 = HMI_Text(E_ELEM_TEXT790,"E_ELEM_TEXT790");
+HMI_Text e_E_ELEM_TEXT791 = HMI_Text(E_ELEM_TEXT791,"E_ELEM_TEXT791");
+HMI_Text e_E_ELEM_TEXT792 = HMI_Text(E_ELEM_TEXT792,"E_ELEM_TEXT792");
+HMI_Text e_E_ELEM_TEXT793 = HMI_Text(E_ELEM_TEXT793,"E_ELEM_TEXT793");
+HMI_Text e_E_ELEM_TEXT794 = HMI_Text(E_ELEM_TEXT794,"E_ELEM_TEXT794");
+HMI_Text e_E_ELEM_TEXT795 = HMI_Text(E_ELEM_TEXT795,"E_ELEM_TEXT795");
+HMI_Text e_E_ELEM_TEXT796 = HMI_Text(E_ELEM_TEXT796,"E_ELEM_TEXT796");
+HMI_Text e_E_ELEM_TEXT798 = HMI_Text(E_ELEM_TEXT798,"E_ELEM_TEXT798");
+HMI_Text e_E_ELEM_TEXT799 = HMI_Text(E_ELEM_TEXT799,"E_ELEM_TEXT799");
+HMI_Text e_E_ELEM_TEXT800 = HMI_Text(E_ELEM_TEXT800,"E_ELEM_TEXT800");
+HMI_Text e_E_ELEM_TEXT801 = HMI_Text(E_ELEM_TEXT801,"E_ELEM_TEXT801");
+HMI_Text e_E_ELEM_TEXT802 = HMI_Text(E_ELEM_TEXT802,"E_ELEM_TEXT802");
+HMI_Text e_E_ELEM_TEXT803 = HMI_Text(E_ELEM_TEXT803,"E_ELEM_TEXT803");
+HMI_Text e_E_ELEM_TEXT804 = HMI_Text(E_ELEM_TEXT804,"E_ELEM_TEXT804");
+HMI_Text e_E_ELEM_TEXT805 = HMI_Text(E_ELEM_TEXT805,"E_ELEM_TEXT805");
 
 HMI_Page p_transmittingSettings = HMI_Page(PAGE_TYPES::POPUP, transmittingSettings,"transmittingSettings");
 HMI_Text e_E_ELEM_TEXT745 = HMI_Text(E_ELEM_TEXT745,"E_ELEM_TEXT745");
 HMI_Text e_E_ELEM_TEXT746 = HMI_Text(E_ELEM_TEXT746,"E_ELEM_TEXT746");
 HMI_Text e_settingstxtorxprogress = HMI_Text(settingstxtorxprogress,"settingstxtorxprogress");
-
 HMI_Object *hmiObjects[] = {
 &e_nBatPercent,
 &p_E_PG_MAIN,
@@ -534,12 +571,12 @@ HMI_Object *hmiObjects[] = {
 &e_backbtnchconf,
 &e_lsbChannelOutputType,
 &e_E_ELEM_BTN279,
+&e_E_ELEM_TEXT797,
+&e_pwmCenterZero,
 &p_setupOutputPWM,
 &e_E_ELEM_TEXT674,
 &e_E_ELEM_TEXT667,
 &e_pwmFreq,
-&e_E_ELEM_TEXT673,
-&e_pwmCenterZero,
 &e_backbtnsetupPWM,
 &p_setupOutputStepper,
 &e_E_ELEM_TEXT675,
@@ -547,8 +584,6 @@ HMI_Object *hmiObjects[] = {
 &e_stepMinFreq,
 &e_E_ELEM_TEXT670,
 &e_stepMaxFreq,
-&e_E_ELEM_TEXT677,
-&e_stepCenterZero,
 &e_backbtnsetupStepper,
 &p_setupOutputNotNeeded,
 &e_E_ELEM_TEXT676,
@@ -587,6 +622,46 @@ HMI_Object *hmiObjects[] = {
 &e_E_ELEM_TEXT761,
 &e_E_ELEM_TEXT762,
 &e_E_ELEM_TEXT763,
+&e_E_ELEM_TEXT765,
+&e_E_ELEM_TEXT766,
+&e_E_ELEM_TEXT767,
+&e_E_ELEM_TEXT768,
+&e_E_ELEM_TEXT769,
+&e_E_ELEM_TEXT770,
+&e_E_ELEM_TEXT771,
+&e_E_ELEM_TEXT772,
+&e_E_ELEM_TEXT773,
+&e_E_ELEM_TEXT774,
+&e_E_ELEM_TEXT775,
+&e_E_ELEM_TEXT776,
+&e_E_ELEM_TEXT777,
+&e_E_ELEM_TEXT778,
+&e_E_ELEM_TEXT779,
+&e_E_ELEM_TEXT780,
+&e_E_ELEM_TEXT781,
+&e_E_ELEM_TEXT782,
+&e_E_ELEM_TEXT783,
+&e_E_ELEM_TEXT784,
+&e_E_ELEM_TEXT785,
+&e_E_ELEM_TEXT786,
+&e_E_ELEM_TEXT787,
+&e_E_ELEM_TEXT788,
+&e_E_ELEM_TEXT789,
+&e_E_ELEM_TEXT790,
+&e_E_ELEM_TEXT791,
+&e_E_ELEM_TEXT792,
+&e_E_ELEM_TEXT793,
+&e_E_ELEM_TEXT794,
+&e_E_ELEM_TEXT795,
+&e_E_ELEM_TEXT796,
+&e_E_ELEM_TEXT798,
+&e_E_ELEM_TEXT799,
+&e_E_ELEM_TEXT800,
+&e_E_ELEM_TEXT801,
+&e_E_ELEM_TEXT802,
+&e_E_ELEM_TEXT803,
+&e_E_ELEM_TEXT804,
+&e_E_ELEM_TEXT805,
 &p_transmittingSettings,
 &e_E_ELEM_TEXT745,
 &e_E_ELEM_TEXT746,
@@ -681,12 +756,11 @@ void initHMI(){
 	e_backbtnchconf.addTouchUpCallback(doNavigation);
 	e_lsbChannelOutputType.addValueChangedCallback(listboxChanged);
 	e_E_ELEM_BTN279.addTouchUpCallback(doNavigation);
-	e_pwmFreq.addValueChangedCallback(setupPWM);
 	e_pwmCenterZero.addValueChangedCallback(setupPWM);
+	e_pwmFreq.addValueChangedCallback(setupPWM);
 	e_backbtnsetupPWM.addTouchUpCallback(doNavigation);
 	e_stepMinFreq.addValueChangedCallback(setupStepper);
 	e_stepMaxFreq.addValueChangedCallback(setupStepper);
-	e_stepCenterZero.addValueChangedCallback(setupStepper);
 	e_backbtnsetupStepper.addTouchUpCallback(doNavigation);
 	e_backbtnsetupNotNeeded.addTouchUpCallback(doNavigation);
 	e_sm0.addTouchUpCallback(defaultCallback);
@@ -712,17 +786,11 @@ void setupStepper(HMI_Object* obj) {
 	if (obj->getElementId() == stepMaxFreq) {
 		settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.maxFrequency = String(((HMI_Text*)obj)->getText()).toInt();
 	}
-	if (obj->getElementId() == stepCenterZero) {
-		settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.centerIs0 = ((HMI_Toggle*)obj)->getState();
-	}
 }
 
 void setupPWM(HMI_Object* obj) {
 	if (obj->getElementId() == pwmFreq) {
 		settings.model[settings.activeModel].channel_settings[channelToEditIdx].pwmConfig.frequency = String(((HMI_Text*)obj)->getText()).toInt();
-	}
-	if (obj->getElementId() == pwmCenterZero) {
-		settings.model[settings.activeModel].channel_settings[channelToEditIdx].pwmConfig.centerIs0 = ((HMI_Toggle*)obj)->getState();
 	}
 }
 
@@ -795,7 +863,7 @@ void doNavigation(HMI_Object* navBtn) {
 	case savebtncal:
 	case backbtnchs:
 	case drbackbtn:
-		saveSettings();
+		//saveSettings(); // TODO: Check how to seperate settings from main ino into own file
 	case E_ELEM_BTN65:
 	case backbtncal:
 	case b5:
@@ -847,6 +915,7 @@ void doNavigation(HMI_Object* navBtn) {
 		else {
 			bitClear(settings.model[settings.activeModel].channelReversed, channelToEditIdx);
 		}
+		settings.model[settings.activeModel].channel_settings[channelToEditIdx].centeredStick = e_pwmCenterZero.getState();
 
 		p_channelSettings.navigateTo();
 		break;
@@ -856,13 +925,11 @@ void doNavigation(HMI_Object* navBtn) {
 			p_setupOutputStepper.navigateTo();
 			e_stepMinFreq.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.minFrequency);
 			e_stepMaxFreq.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.maxFrequency);
-			e_stepCenterZero.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].stepperConfig.centerIs0);
 			
 
 		} else if (settings.model[settings.activeModel].channel_settings[channelToEditIdx].outputMode == OUTPUTMODE_PWM) {
 			p_setupOutputPWM.navigateTo();
 			e_pwmFreq.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].pwmConfig.frequency);
-			e_pwmCenterZero.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].pwmConfig.centerIs0);
 		}
 		else {
 			p_setupOutputNotNeeded.navigateTo();
@@ -936,6 +1003,7 @@ void navigateToChannelEditor() {
 	detectedIO1 = settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[0];
 	detectedIO2 = settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[1];
 	e_lsbChannelOutputType.selectItem((int16_t)settings.model[settings.activeModel].channel_settings[channelToEditIdx].outputMode);
+	e_pwmCenterZero.setState(settings.model[settings.activeModel].channel_settings[channelToEditIdx].centeredStick);
 	for (int i = 0; i <= OUTPUTMODE_DAC ; i++) {
 		if (!bitRead(outputModesOptions, i)) {
 			Serial.printf("Bit %d is not set. Setting list item to \"NONE\"\r\n", i);

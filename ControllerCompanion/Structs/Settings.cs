@@ -20,75 +20,98 @@ namespace ControllerCompanion.Structs
             model = new Model[8];
             for(int i = 0; i < model.Length; i++)
                 model[i] = new Model();
+
+            InitDefaultSettings();
+        }
+
+        public void InitDefaultSettings()
+        {
+            version = Config.SETTINGS_VERSION;
+            activeModel = 0;
+            for (int i = 0; i < model.Length; i++)
+            {
+                Model lmodel = model[i];
+                lmodel.nameSize = 0;
+                lmodel.name = "";
+                //lmodel.nameSize = 6;
+                //if (lmodel.nameSize > 0)
+                //    lmodel.name = new String($"model{i}");
+
+                foreach (ChannelConfig channelConfig in lmodel.channel_settings)
+                {
+                    channelConfig.chMin = 0;
+                    channelConfig.chMid = 0;
+                    channelConfig.chMax = 1023;
+                    channelConfig.chOffset = 0;
+                    channelConfig.chDefaults = 0;
+                    channelConfig.outputMode = 0;
+                    channelConfig.centeredStick = false;
+                    channelConfig.reversed = false;
+
+                    channelConfig.pwmConfig.frequency = 0;
+
+                    channelConfig.stepperConfig.minFrequency = 0;
+                    channelConfig.stepperConfig.maxFrequency = 0;
+
+                    foreach (var channelMapping in channelConfig.channelMapping)
+                    {
+                        channelMapping.type = 0;
+                        channelMapping.index = 0;
+                    }
+                }
+
+                lmodel.deadzone = 20;
+                lmodel.channelReversed = 0;
+
+                foreach (var channelMixing in lmodel.channelMixing)
+                {
+                    channelMixing.source1 = 0;
+                    channelMixing.source2 = 0;
+                    channelMixing.dest1 = 0;
+                    channelMixing.dest2 = 0;
+                    channelMixing.type = 0;
+                }
+
+                lmodel.encoderSettings[0].minValue = 0;
+                lmodel.encoderSettings[0].maxValue = 10;
+                lmodel.encoderSettings[0].steps = 1;
+                lmodel.encoderSettings[0].curValue = 1;
+                lmodel.encoderSettings[0].devision = 1;
+
+                lmodel.encoderSettings[1].minValue = -105;
+                lmodel.encoderSettings[1].maxValue = 105;
+                lmodel.encoderSettings[1].steps = 1;
+                lmodel.encoderSettings[1].curValue = 5;
+                lmodel.encoderSettings[1].devision = 10;
+            }
         }
 
         public static Settings loadFromFile(string fileName)
         {
+            Settings settings = new Settings();
             if (fileName.EndsWith("json"))
             {
                 string fileContent = File.ReadAllText(fileName, Encoding.UTF8);
-                return JsonConvert.DeserializeObject<Settings>(fileContent);
+                settings = JsonConvert.DeserializeObject<Settings>(fileContent);
             }
-            else
+            else if (fileName.EndsWith("bin"))
             {
-                Settings settings = new Settings();
+                
                 using (var stream = File.Open(fileName, FileMode.Open))
                 {
-                    using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
-                    {
-                        settings.version = reader.ReadUInt16();
-                        settings.activeModel =reader.ReadByte();
-                        foreach (Model model in settings.model)
-                        {
-                            model.nameSize = reader.ReadByte();
-                            model.name = new String(reader.ReadChars(model.nameSize));
-
-                            foreach (ChannelConfig channelConfig in model.channel_settings)
-                            {
-                                channelConfig.chMin = reader.ReadUInt16();
-                                channelConfig.chMid = reader.ReadUInt16();
-                                channelConfig.chMax = reader.ReadUInt16();
-                                channelConfig.chOffset = reader.ReadInt16();
-                                channelConfig.chDefaults = reader.ReadUInt16();
-                                channelConfig.outputMode = reader.ReadByte();
-
-                                channelConfig.pwmConfig.frequency = reader.ReadUInt32();
-
-                                channelConfig.stepperConfig.minFrequency = reader.ReadUInt32();
-                                channelConfig.stepperConfig.maxFrequency = reader.ReadUInt32();
-
-                                foreach (var channelMapping in channelConfig.channelMapping)
-                                {
-                                    channelMapping.type = reader.ReadSByte();
-                                    channelMapping.index = reader.ReadByte();
-                                }
-                            }
-
-                            model.deadzone = reader.ReadInt16();
-                            model.channelReversed = reader.ReadUInt32();
-
-                            foreach (var channelMixing in model.channelMixing)
-                            {
-                                channelMixing.source1 = reader.ReadByte();
-                                channelMixing.source2 = reader.ReadByte();
-                                channelMixing.dest1 = reader.ReadByte();
-                                channelMixing.dest2 = reader.ReadByte();
-                                channelMixing.type = reader.ReadByte();
-                            }
-
-                            foreach (var encoderSettings in model.encoderSettings)
-                            {
-                                encoderSettings.minValue = reader.Read();
-                                encoderSettings.maxValue = reader.Read();
-                                encoderSettings.steps = reader.Read();
-                                encoderSettings.curValue = reader.Read();
-                                encoderSettings.devision = reader.Read();
-                            }
-                        }
-                    }
+                    readBinary(stream, settings, false);
                 }
                 return settings;
             }
+            else if (fileName.EndsWith("hex"))
+            {
+                using (var stream = File.Open(fileName, FileMode.Open))
+                {
+                    readHex(stream, settings, false);
+                }
+            }
+
+            return settings;
         }
 
         public static void saveToFile(string fileName, Settings settings)
@@ -98,43 +121,62 @@ namespace ControllerCompanion.Structs
                 string json = JsonConvert.SerializeObject(settings);
                 File.WriteAllText(fileName, json);
             }
-            else
+            else if (fileName.EndsWith("bin"))
             {
                 using (var stream = File.Open(fileName, FileMode.Create))
                 {
-                    writeBinary(stream, settings);
+                    writeBinary(stream, settings, false);
+                }
+            }
+            else if (fileName.EndsWith("hex"))
+            {
+                using (var stream = File.Open(fileName, FileMode.Create))
+                {
+                    writeHex(stream, settings, false);
                 }
             }
         }
 
-        internal static Settings readFromRemote(SerialPort selectedSerialPort)
+        internal static void readFromRemote(SerialPort selectedSerialPort, ref Settings settings)
         {
-            Settings settings = new Settings();
-            using (var stream = selectedSerialPort.BaseStream)
+            selectedSerialPort.Write(new byte[] { (byte)'R' }, 0, 1);
+            readBinary(selectedSerialPort.BaseStream, settings, true);
+            if(selectedSerialPort.BytesToRead > 0)
             {
-                readBinary(stream, settings);
+                Console.WriteLine($"Still got bytes left. {selectedSerialPort.BytesToRead}");
+                selectedSerialPort.ReadExisting();
             }
-            return settings;
+
         }
 
         internal static void writeToRemote(SerialPort selectedSerialPort, Settings settings)
         {
-            writeBinary(selectedSerialPort.BaseStream, settings);
+            selectedSerialPort.Write(new byte[] { (byte)'T' }, 0, 1);
+            writeBinary(selectedSerialPort.BaseStream, settings, true);
         }
         
-        private static void writeBinary(Stream stream, Settings settings)
+        private static void writeBinary(Stream stream, Settings settings, bool keepOpen)
         {
-            using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))
+            using (var writer = new BinaryWriter(stream, Encoding.UTF8, keepOpen))
             {
+                writer.Flush();
                 writer.Write(settings.version);
                 writer.Write(settings.activeModel);
                 foreach (Model model in settings.model)
                 {
-                    writer.Write(model.name);
                     writer.Write(model.nameSize);
+                    if (model.nameSize != 0)
+                    {
+                        writer.Write(model.name);
+                    }
+                    for (int i = 0; i < 20 - model.nameSize; i++) // Need filling of the 20 chars
+                        writer.Write((byte)0);
 
+                    int bitIndex = 0;
                     foreach (ChannelConfig channelConfig in model.channel_settings)
                     {
+                        uint bitShiftedValue = ((uint)(bitIndex << (channelConfig.reversed ? 1 : 0)));
+                        model.channelReversed = model.channelReversed |= bitShiftedValue;
                         writer.Write(channelConfig.chMin);
                         writer.Write(channelConfig.chMid);
                         writer.Write(channelConfig.chMax);
@@ -153,6 +195,7 @@ namespace ControllerCompanion.Structs
                             writer.Write(channelMapping.type);
                             writer.Write(channelMapping.index);
                         }
+                        writer.Flush();
                     }
 
                     writer.Write(model.deadzone);
@@ -180,26 +223,33 @@ namespace ControllerCompanion.Structs
             }
         }
 
-        private static void readBinary(Stream stream, Settings settings)
+        private static void readBinary(Stream stream, Settings settings, bool keepOpen)
         {
-            using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+            using (var reader = new BinaryReader(stream, Encoding.UTF8, keepOpen))
             {
                 settings.version = reader.ReadUInt16();
                 settings.activeModel = reader.ReadByte();
                 foreach (Model model in settings.model)
                 {
                     model.nameSize = reader.ReadByte();
-                    model.name = new String(reader.ReadChars(model.nameSize));
+                    //if (model.nameSize != 0)
+                    //{
+                        model.name = new String(reader.ReadChars(20));
+                    //}
 
                     foreach (ChannelConfig channelConfig in model.channel_settings)
                     {
+                        channelConfig.chMin = 0;
+                        channelConfig.chMid = 0;
+                        channelConfig.chMax = 1023;
+
                         channelConfig.chMin = reader.ReadUInt16();
                         channelConfig.chMid = reader.ReadUInt16();
                         channelConfig.chMax = reader.ReadUInt16();
                         channelConfig.chOffset = reader.ReadInt16();
                         channelConfig.chDefaults = reader.ReadUInt16();
                         channelConfig.outputMode = reader.ReadByte();
-                        channelConfig.centeredStick = reader.ReadByte();
+                        channelConfig.centeredStick = reader.ReadBoolean();
 
                         channelConfig.pwmConfig.frequency = reader.ReadUInt32();
 
@@ -235,7 +285,33 @@ namespace ControllerCompanion.Structs
                     }
                 }
             }
+
+            foreach (Model model in settings.model)
+            {
+                int bitIndex = 0;
+                foreach (ChannelConfig channelConfig in model.channel_settings)
+                {
+                    if ((model.channelReversed & (1 << bitIndex)) != 0)
+                    {
+                        channelConfig.reversed = true;
+                    }
+                    else
+                    {
+                        channelConfig.reversed = false;
+                    }
+                }
+            }
         }
 
+
+        private static void writeHex(Stream stream, Settings settings, bool keepOpen)
+        {
+
+        }
+
+        private static void readHex(Stream stream, Settings settings, bool keepOpen)
+        {
+
+        }
     }
 }

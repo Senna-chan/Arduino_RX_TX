@@ -13,7 +13,7 @@ namespace ControllerCompanion.Views
 {
     public partial class SetupComport : Form
     {
-
+        private string selectedComPort = "";
 
         public SetupComport()
         {
@@ -27,10 +27,15 @@ namespace ControllerCompanion.Views
             this.DialogResult = DialogResult.Cancel;
             if (lbxComPorts.SelectedItem != null)
             {
-                Config.SelectedSerialPort = new SerialPort(lbxComPorts.SelectedItem.ToString());
+                selectedComPort = lbxComPorts.SelectedItem.ToString();
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
+        }
+
+        public string GetSelectedPort()
+        {
+            return selectedComPort;
         }
     }
 }

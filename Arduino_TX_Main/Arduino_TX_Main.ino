@@ -1,9 +1,10 @@
+#include "settingsHelper.h"
 #include "STMRTOSIncludes.h"
+#include "CompanionControl.h"
 #include "MCP23X17.h"
 #include "Encoder.h"
 #include <PlotterLib.h>
 #include <SerialControlLibrary.h>
-#include <eepromi2c_Anything.h>
 #include <BetterHardwareTimer.h>
 #include <GUISlice_HMI_Lib.h>
 #include <i2cEncoderLibV2.h>
@@ -28,6 +29,7 @@ TaskHandle_t nRFData_taskHandle;			// nRF Receive task
 TaskHandle_t plotter_taskHandle;			// Task for plotter stuff
 TaskHandle_t hmi_taskHandle;				// Task for HMI Data transmission things
 TaskHandle_t serialControl_taskHandle;		// Task for serial control library
+TaskHandle_t companionSerial_taskHandle;	// Task for serial communication with the companion app. Custom protocol that bypasses SerialControl for easy use
 TaskHandle_t nrfTransmitTest_taskHandle;	// Task for nrf transmission testing
 TaskHandle_t nrfTransit_taskHandle;			// Task for nrf transmission
 TaskHandle_t printNrfStats_taskHandle;		// Task for printing nrf communication stats
@@ -45,6 +47,8 @@ uint16_t lastCalButtons = 0;
 
 
 TwoWire Wire2 = TwoWire(PB10, PB11);
+bool eepromFound = true; /*<! Default on true because we only check if it is not found */
+
 long prevSendTime;
 bool printChannelValues = false;
 bool printDMAValues = false;
@@ -191,7 +195,7 @@ void initSPI() {
 
 #pragma endregion
 
-void updateValues(Model* activeSettings, uint16_t* channel_input, ) {
+void updateValues(Model* activeSettings) {
 	memcpy(rawChannels, ADCDMABuffer, ADCCHANNELNUMBERS * 2);
 	for (int i = 0; i < ADCCHANNELNUMBERS; i++)
 	{
@@ -384,78 +388,6 @@ void parseReceivednRFPacket() {
 	} 
 }
 
-void loadSettings()
-{
-	Serial.print("Settings size is ");
-	Serial.println(sizeof(settings));
-	eeRead(0, settings);
-	if (settings.version != SETTINGSVERSION)
-	{
-		Serial.printf("Settings are not correct. Current version %d, expected version %d\r\nDo you want to reset settings?\r\n", settings.version, SETTINGSVERSION);
-		int count = 0;
-		int oriTimeout = Serial.getTimeout();
-		Serial.setTimeout(5000); // 5 seconds timeout
-		String serialRead = Serial.readStringUntil('\n');
-		Serial.setTimeout(oriTimeout);
-		Serial.printf("Read '%s'\r\n", serialRead.c_str());
-		if (!serialRead.startsWith("y")) return;
-		Serial.println("Recreating default settings");
-		for (int i = 0; i < ADCCHANNELNUMBERS; i++)
-		{
-			settings.model[0].channel_settings[i].chMin = 0;
-			settings.model[0].channel_settings[i].chMid = 0;
-			settings.model[0].channel_settings[i].chMax = 1023;
-			settings.model[0].channel_settings[i].chOffset = 0;
-			settings.model[0].channelMixing[i].source1 = 0;
-			settings.model[0].channelMixing[i].source2 = 0;
-			settings.model[0].channelMixing[i].dest1 = 0;
-			settings.model[0].channelMixing[i].dest2 = 0;
-		}
-		for (int i = 0; i < 24; i++)
-		{
-			settings.model[0].channel_settings[i].channelMapping[0].type = 0;
-			settings.model[0].channel_settings[i].channelMapping[1].type = 0;
-			settings.model[0].channel_settings[i].channelMapping[0].index = 0;
-			settings.model[0].channel_settings[i].channelMapping[1].index = 0;
-		}
-		settings.model[0].deadzone = 30;
-		settings.model[0].encoderSettings[0].minValue = 0;
-		settings.model[0].encoderSettings[0].maxValue = 10;
-		settings.model[0].encoderSettings[0].curValue = 1;
-		settings.model[0].encoderSettings[0].steps = 1;
-		settings.model[0].encoderSettings[0].division = 1;
-		settings.model[0].encoderSettings[1].minValue = -105;
-		settings.model[0].encoderSettings[1].maxValue = 105;
-		settings.model[0].encoderSettings[1].curValue = 5;
-		settings.model[0].encoderSettings[1].steps = 1;
-		settings.model[0].encoderSettings[1].division = 10;
-
-		for (int i = 1; i < 8; i++)
-		{
-			settings.model[i] = settings.model[0];
-		}
-		settings.version = SETTINGSVERSION;
-		settings.activeModel = 0;
-		saveSettings();
-	}
-}
-
-void PrintCalValues()
-{
-	//buttonValues = random(0, UINT16_MAX);
-	Serial.println("ch\tmin\tmid\tmax\toffset\tdefault\tIO1\tIO2");
-	for (int i = 0; i < 24; i++)
-	{
-		auto chSetting = settings.model[settings.activeModel].channel_settings[i];
-		Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t%s%02d\t%s%02d\r\n",
-			i + 1, chSetting.chMin, chSetting.chMid, chSetting.chMax, chSetting.chOffset, chSetting.chDefaults,
-			chSetting.channelMapping[0].type == 0 ? "NONE" : chSetting.channelMapping[0].type == 1 ? "IO" : "ADC", chSetting.channelMapping[0].index,
-			chSetting.channelMapping[1].type == 0 ? "NONE" : chSetting.channelMapping[1].type == 1 ? "IO" : "ADC", chSetting.channelMapping[1].index
-		);
-	}
-	Serial.println();
-}
-
 
 #pragma region SerialControl Functions
 
@@ -620,8 +552,13 @@ void transmitSettingsToRX() {
 }
 
 void wipeEeprom() {
-	memset(&settings, 0, sizeof(settings));
+	Serial.println("Wiping EEPROM");
+	memset(&settings, 0, sizeof(Settings));
+	generateDefaultSettings();
+	activeModel = &settings.model[settings.activeModel];
 	saveSettings();
+	PrintCalValues();
+	Serial.println("Wipe done");
 }
 
 void resetMCU() {
@@ -658,7 +595,7 @@ void setHMIDebugging(const char* data) {
 void nrfTransmitChannels(void* parameter)
 {
 	while (true) {
-		updateValues();
+		updateValues(activeModel);
 		transmitterData.ch_data.identifier = CHANNELDATAID;
 		SendData(transmitterData.bytesUnion.u8, sizeof(transmitterData));
 		vTaskDelay(7 / portTICK_RATE_MS);
@@ -922,9 +859,13 @@ void initFreeRTOS() {
 	//xTaskCreate(handlePlotter, "plotter", 1024, NULL,1, &plotter_taskHandle);
 	xTaskCreate(updateHMITask,"HMI",1024, NULL,6, &hmi_taskHandle);
 	xTaskCreate(handleSerialControl,"SerialControl",1024, NULL,5, &serialControl_taskHandle);
+	xTaskCreate(handleCompanionControl,"CompanionControl",4048, &SerialUSB,1, &companionSerial_taskHandle);
 	xTaskCreate(nrfTransmitTest,"nrfTest",1024, NULL,20, &nrfTransmitTest_taskHandle);
 	vTaskSuspend(nrfTransmitTest_taskHandle);
 	xTaskCreate(nrfTransmitChannels,"nrfChannels",1024, NULL,20, &nrfTransit_taskHandle);
+	vTaskSuspend(nrfTransit_taskHandle);
+	Serial.println("WARNING: NRF TRANSMISSION IS DISABLED");
+	delay(1000);
 	//xTaskCreate(printNrfStats,"nrfChannels",1024, NULL,1, &printNrfStats_taskHandle);
 }
 #pragma endregion
@@ -968,6 +909,7 @@ void setup()
 {
 	uint32_t startSetup = millis();
 	Serial.begin(115200);
+	SerialUSB.begin(115200);
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(PE3, INPUT_PULLDOWN);
 	pinMode(BTN_K0, INPUT_PULLDOWN);
@@ -992,10 +934,11 @@ void setup()
 	Wire.setClock(400000);
 
 	scanI2C(&Wire, &Serial);
-
-	while (!I2CDeviceConnected(&Wire, 0x50)) {
-		Serial.println("I2C Failure. EEPROM on 0x50 not found, cant continue without EEPROM");
+	int count = 20;
+	while (!I2CDeviceConnected(&Wire, 0x50) && --count > 0) {
+		Serial.println("I2C Failure. EEPROM on 0x50 not found, EEPROM is most recommended");
 		delay(1000);
+		eepromFound = false;
 	}
 
 	setupMCPChips();
@@ -1038,7 +981,6 @@ void setup()
 	Serial.printf("Started in %d millis\n", millis() - startSetup);
 	vTaskStartScheduler();
 	Serial.println("FATAL ERROR OCCURED");
-	Serial.printf("Free head %d\r\n", xPortGetFreeHeapSize());
 }
 
 void loop()

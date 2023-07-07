@@ -46,10 +46,10 @@ static int16_t HmiIn()
 
 // Save some element references for direct access
 //<Save_References !Start!>
+gslc_tsElemRef* centeredStick     = NULL;
 gslc_tsElemRef* m_pDeadzone0      = NULL;
 gslc_tsElemRef* m_pDefaultval     = NULL;
 gslc_tsElemRef* m_pLsbchanneloutputtype= NULL;
-gslc_tsElemRef* m_pPwmcenterzero  = NULL;
 gslc_tsElemRef* m_pPwmfreq        = NULL;
 gslc_tsElemRef* m_pReverse        = NULL;
 gslc_tsElemRef* m_pSm0            = NULL;
@@ -60,7 +60,6 @@ gslc_tsElemRef* m_pSm4            = NULL;
 gslc_tsElemRef* m_pSm5            = NULL;
 gslc_tsElemRef* m_pSm6            = NULL;
 gslc_tsElemRef* m_pSm7            = NULL;
-gslc_tsElemRef* m_pStepcenterzero = NULL;
 gslc_tsElemRef* m_pStepmaxfreq    = NULL;
 gslc_tsElemRef* m_pStepminfreq    = NULL;
 gslc_tsElemRef* m_pElemKeyPadNum  = NULL;
@@ -234,15 +233,15 @@ bool CbBtnCommon(void* pvGui,void *pvElemRef,gslc_teTouch eTouch,int16_t nX,int1
         break;
       case E_ELEM_BTN279:
         break;
-      case pwmFreq:
-        // Clicked on edit field, so show popup box and associate with this text field
-        gslc_ElemXKeyPadInputAsk(&m_gui, m_pElemKeyPadNum, E_POP_KEYPAD_NUM, m_pPwmfreq);
-        break;
       case pwmCenterZero:
         // TODO Add code for Toggle button ON/OFF state
         if (gslc_ElemXTogglebtnGetState(&m_gui, m_pPwmcenterzero)) {
           ;
         }
+        break;
+      case pwmFreq:
+        // Clicked on edit field, so show popup box and associate with this text field
+        gslc_ElemXKeyPadInputAsk(&m_gui, m_pElemKeyPadNum, E_POP_KEYPAD_NUM, m_pPwmfreq);
         break;
       case backbtnsetupPWM:
         break;
@@ -253,12 +252,6 @@ bool CbBtnCommon(void* pvGui,void *pvElemRef,gslc_teTouch eTouch,int16_t nX,int1
       case stepMaxFreq:
         // Clicked on edit field, so show popup box and associate with this text field
         gslc_ElemXKeyPadInputAsk(&m_gui, m_pElemKeyPadNum, E_POP_KEYPAD_NUM, m_pStepmaxfreq);
-        break;
-      case stepCenterZero:
-        // TODO Add code for Toggle button ON/OFF state
-        if (gslc_ElemXTogglebtnGetState(&m_gui, m_pStepcenterzero)) {
-          ;
-        }
         break;
       case backbtnsetupStepper:
         break;
@@ -437,10 +430,6 @@ void setup()
 
 //<HMI Setup Functions !Start!>
   HMI_SERIAL.begin(115200);
-  while (HMI_SERIAL.available()) {
-      HMI_SERIAL.read();
-  }
-
   gslc_InitHmi(&HmiOut, &HmiIn);
 //<HMI Setup Functions !End!>
   // ------------------------------------------------

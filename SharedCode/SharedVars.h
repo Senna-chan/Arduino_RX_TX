@@ -16,3 +16,6 @@
 extern uint32_t IOExpanderBits;
 extern uint32_t prevIOExpanderBits;
 extern uint16_t rawChannels[RC_MAX_CHANNELS];
+
+
+extern bool eepromFound;

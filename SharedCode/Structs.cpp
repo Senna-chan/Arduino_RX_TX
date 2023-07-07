@@ -5,6 +5,7 @@
 transmitTypes transmitterData;
 receiveTypes receiverData;
 Settings settings;
+Model* activeModel;
 
 const char* OUTPUTMODE_STR_TABLE[5] = {
 	"RC",
@@ -17,8 +18,4 @@ const char* OUTPUTMODE_STR_TABLE[5] = {
 void initStructs()
 {
 
-}
-
-void saveSettings() {
-	eeWrite(0, settings);
 }

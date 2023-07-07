@@ -1,6 +1,7 @@
 using ControllerCompanion.Structs;
 using System.IO.Ports;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ControllerCompanion.Views
 {
@@ -53,7 +54,7 @@ namespace ControllerCompanion.Views
         private void loadFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var diagBox = new OpenFileDialog();
-            diagBox.Filter = "JSON files (*.json)|*.json|HEX Files (*.hex)|*.hex";
+            diagBox.Filter = "JSON files (*.json)|*.json|HEX Files (*.hex)|*.hex|BIN Files (*.bin)|*.bin";
             var diagResult = diagBox.ShowDialog(this);
             if (diagResult == DialogResult.OK)
             {
@@ -65,7 +66,7 @@ namespace ControllerCompanion.Views
         private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var diagBox = new SaveFileDialog();
-            diagBox.Filter = "JSON files (*.json)|*.json|HEX Files (*.hex)|*.hex";
+            diagBox.Filter = "JSON files (*.json)|*.json|HEX Files (*.hex)|*.hex|BIN Files (*.bin)|*.bin";
             var diagResult = diagBox.ShowDialog(this);
             if (diagResult == DialogResult.OK)
             {
@@ -80,17 +81,39 @@ namespace ControllerCompanion.Views
             var result = setupSerial.ShowDialog(this);
             if (result == DialogResult.OK)
             {
-                tslblComPort.Text = Config.SelectedSerialPort.PortName;
-                writeToTXToolStripMenuItem.Visible = true;
-                readFromTXToolStripMenuItem.Visible = true;
-                disconnectFromTXToolStripMenuItem.Visible = true;
-                connectToTXToolStripMenuItem.Visible = false;
+                try
+                {
+                    Config.SelectedSerialPort = new SerialPort(setupSerial.GetSelectedPort(), 115200, Parity.None, 8, StopBits.One)
+                    {
+                        DtrEnable = true,
+                    };
+                    Config.SelectedSerialPort.Open();
+                    tslblComPort.Text = Config.SelectedSerialPort.PortName;
+                    writeToTXToolStripMenuItem.Visible = true;
+                    readFromTXToolStripMenuItem.Visible = true;
+                    disconnectFromTXToolStripMenuItem.Visible = true;
+                    connectToTXToolStripMenuItem.Visible = false;
+                } catch {
+                    MessageBox.Show($"Failed to connect to {Config.SelectedSerialPort.PortName}");
+                    Config.SelectedSerialPort = new SerialPort();
+                }
             }
         }
 
         private void readFromTXToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings.readFromRemote(Config.SelectedSerialPort);
+            Settings.saveToFile("comp_config.bin", Config.settings);
+            Settings.readFromRemote(Config.SelectedSerialPort, ref Config.settings);
+            Settings.saveToFile("tx_config.bin", Config.settings);
+
+            //for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
+            //{
+            //    if (i < 10)
+            //    {
+            //        adcSetups[i].updateBindings();
+            //    }
+            //    tcRCChannels.TabPages[i].Update();
+            //}
         }
 
         private void writeToTXToolStripMenuItem_Click(object sender, EventArgs e)

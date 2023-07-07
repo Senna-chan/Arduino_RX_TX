@@ -2,6 +2,8 @@
 
 #ifdef ARDUINO
 	#include <Arduino.h>
+#else
+#include <stdint.h>
 #endif
 
 #include "SharedVars.h"
@@ -10,33 +12,38 @@
 #define CTYPE_ADC	-1
 #define CTYPE_IO	1
 
-typedef union {
+typedef union 
+{
 	uint8_t u8[32];
 	uint16_t u16[16];
 	uint32_t u32[8];
 	uint64_t u64[4];
-}byteDataUnion;
+} byteDataUnion;
 
-typedef struct {
+#pragma pack(push, 1)
+typedef struct
+{
 	int8_t type; //!< If 0 then not set. If -1 then ADC. If 1 then Digital
 	uint8_t index;
 } s_channelMapping;
 
 
-typedef struct {
+typedef struct 
+{
 	uint32_t frequency;
 } s_pwmConfig;
 
-typedef struct {
+typedef struct 
+{
 	uint32_t minFrequency;
 	uint32_t maxFrequency;
 } s_stepperConfig;
 
-typedef struct
+typedef struct 
 {
 	uint16_t chMin;						// ADC Calibration
-	uint16_t chMax;						// ADC Calibration
 	uint16_t chMid;						// ADC Calibration
+	uint16_t chMax;						// ADC Calibration
 	int16_t  chOffset;					// ADC Calibration
 	uint16_t chDefaults;				// Needed for all channels
 	uint8_t  outputMode;				// Output modes for channels
@@ -46,7 +53,7 @@ typedef struct
 	s_channelMapping channelMapping[2];	// Channel mapping for min/mid/max or min/max or any other combo. First index is adc(-1) or digital(1). Second index is adc/io index
 } channelConfigs;
 
-typedef struct
+typedef struct 
 {
 	uint8_t source1;
 	uint8_t source2;
@@ -65,10 +72,10 @@ typedef struct
 } encoderStruct;
 
 
-typedef struct __attribute__((packed))
+typedef struct 
 {
-	char* name;
 	uint8_t nameSize;
+	char name[20]; // Alocate in this to prevent it being a pointer and messing with bytepointer transfers
 	channelConfigs channel_settings[RC_MAX_CHANNELS];
 	uint16_t deadzone; // Deadzone is +/- from either center or from minPostion and maxPosition
 	uint32_t channelReversed; // Bitmap of all the channels in 4 bytes to save room in the EEPROM
@@ -76,12 +83,13 @@ typedef struct __attribute__((packed))
 	encoderStruct encoderSettings[2];
 } Model;
 
-typedef struct
+typedef struct 
 {
 	uint16_t version;
 	uint8_t activeModel;
 	Model model[8];
 } Settings;
+
 
 // Channel data
 #define CHANNELDATAID 			0b0001
@@ -110,7 +118,8 @@ typedef struct
 	uint16_t speedms;
 } rxData;
 
-typedef struct __attribute__((__packed__)) {
+typedef struct 
+{
 	uint8_t id : 4;
 	uint8_t RES : 4;
 	uint16_t settingsPacket;
@@ -118,7 +127,8 @@ typedef struct __attribute__((__packed__)) {
 // TX
 
 
-typedef struct __attribute__((__packed__)) {
+typedef struct
+{
 	uint8_t id : 4;
 	uint8_t RES : 4;
 	uint16_t packetNumber;
@@ -179,6 +189,8 @@ typedef union
 } receiveTypes;
 #pragma endregion
 
+#pragma pack(pop)
+
 #define OUTPUTMODE_NONE 0	/*<! No physical output */
 #define OUTPUTMODE_RC 	1	/*<! RC PWM 1000 to 2000 ms */
 #define OUTPUTMODE_DAC 	5	/*<! Use CH7/CH8 for DAC1/DAC2 output */
@@ -193,7 +205,6 @@ extern receiveTypes receiverData;
 
 
 extern Settings settings;
-extern Model activeSettings;
+extern Model* activeModel;
 
 void initStructs();
-void saveSettings();
