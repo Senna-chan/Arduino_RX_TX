@@ -84,8 +84,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="ControllerCompanionQT.qrc" />
+    <QtUic Include="ADCSetup.ui" />
     <QtUic Include="ControllerCompanionQT.ui" />
     <QtMoc Include="ControllerCompanionQT.h" />
+    <ClCompile Include="ADCSetup.cpp" />
     <ClCompile Include="ControllerCompanionQT.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="ControllerCompanionQT.ico" />
@@ -93,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SharedCode\Structs.h" />
+    <QtMoc Include="ADCSetup.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
