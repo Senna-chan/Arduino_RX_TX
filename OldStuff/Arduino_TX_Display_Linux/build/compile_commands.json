@@ -1,0 +1,127 @@
+[
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build",
+  "command": "/usr/bin/cc  -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -fno-exceptions -Wno-format-truncation -o CMakeFiles/Ardu_TX_HMI_Linux.dir/Arduino_TX_Display_Linux.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/Arduino_TX_Display_Linux.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/Arduino_TX_Display_Linux.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build",
+  "command": "/usr/bin/cc  -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -fno-exceptions -Wno-format-truncation -o CMakeFiles/Ardu_TX_HMI_Linux.dir/serial.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/serial.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/serial.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/GUIslice.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/GUIslice.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/GUIslice.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/GUIslice_drv_sdl.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/GUIslice_drv_sdl.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/GUIslice_drv_sdl.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/GUIslice_hmi.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/GUIslice_hmi.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/GUIslice_hmi.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XCheckbox.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XCheckbox.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XCheckbox.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XGauge.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XGauge.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XGauge.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XGlowball.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XGlowball.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XGlowball.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XGraph.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XGraph.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XGraph.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XKeyPad.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XKeyPad.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XKeyPad.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XKeyPad_Alpha.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XKeyPad_Alpha.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XKeyPad_Alpha.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XKeyPad_Num.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XKeyPad_Num.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XKeyPad_Num.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XListbox.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XListbox.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XListbox.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XProgress.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XProgress.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XProgress.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XRadial.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XRadial.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XRadial.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XRamp.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XRamp.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XRamp.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XRingGauge.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XRingGauge.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XRingGauge.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XSeekbar.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XSeekbar.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XSeekbar.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XSelNum.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XSelNum.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XSelNum.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XSlider.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XSlider.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XSlider.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XSpinner.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XSpinner.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XSpinner.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XTemplate.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XTemplate.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XTemplate.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XTextbox.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XTextbox.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XTextbox.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XToggleImgbtn.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XToggleImgbtn.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XToggleImgbtn.c"
+},
+{
+  "directory": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice",
+  "command": "/usr/bin/cc  -I/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL -I/usr/include/SDL -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src -I/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem -g -O0 -ggdb -Wall -Wextra -Wshadow -Wno-unused-parameter -fno-exceptions -o CMakeFiles/GUISlice.dir/src/elem/XTogglebtn.c.o -c /mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XTogglebtn.c",
+  "file": "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem/XTogglebtn.c"
+}
+]
