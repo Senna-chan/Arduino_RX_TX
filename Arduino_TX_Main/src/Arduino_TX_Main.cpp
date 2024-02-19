@@ -1,13 +1,13 @@
 // System includes
 #include <Arduino.h>
 #include <stm32f4xx_hal_crc.h>
-#include <SPI.h>
-#include <Wire.h>
 
 // Config
 #include "config.h"
 
 // Library includes
+#include <SPI.h>
+#include <Wire.h>
 #include <Adafruit_MCP23X17.h>
 #include <ArduinoTimerV2.h>
 #include <MyHelpers.h>
@@ -20,10 +20,11 @@
 #include <nrf24.hpp>
 
 // My includes
-#include "SharedFunctions.h"
-#include "Structs.h"
-#include "SharedVars.h"
-#include "ADCDMAFunctions.h"
+#include <SharedFunctions.h>
+#include <sharedSetup.h>
+#include <Structs.h>
+#include <SharedVars.h>
+#include <ADCDMAFunctions.h>
 #include "MCPExpanders.h"
 #include "settingsHelper.h"
 #include "STMRTOSIncludes.h"
@@ -31,7 +32,7 @@
 #include "Encoder.h"
 #include "ChannelFunctions.h"
 #include "Arduino_TX_Display_hmi.h"
-#include "sharedNRF.h"
+#include <sharedNRF.h>
 #include "AUX_Serial_reader.h"
 
 // extern "C"
@@ -84,7 +85,7 @@ HardwareSerial auxSerial = HardwareSerial(AUX_RX, AUX_TX);
 TwoWire Wire2 = TwoWire(PB10, PB11);
 bool eepromFound = false;
 
-long prevSendTime;
+uint32_t prevSendTime;
 bool printChannelValues = false;
 bool printDMAValues = false;
 bool printADCChannels = false;
@@ -128,9 +129,9 @@ struct {
 #define BTN_K1 PE3
 
 HMI_Text* DispayRCObjs[RC_MAX_CHANNELS]{
- &e_n0, &e_n1, &e_n2, &e_n3, &e_n4, &e_n5, &e_n6, &e_n7, &e_n8, &e_n9,
- &e_n10, &e_n11, &e_n12, &e_n13, &e_n14, &e_n15, &e_n16, &e_n17, &e_n18, &e_n19,
-&e_n20, &e_n21, &e_n22, &e_n23
+    &e_n0, &e_n1, &e_n2, &e_n3, &e_n4, &e_n5, &e_n6, &e_n7, &e_n8, &e_n9,
+    &e_n10, &e_n11, &e_n12, &e_n13, &e_n14, &e_n15, &e_n16, &e_n17, &e_n18, &e_n19,
+    &e_n20, &e_n21, &e_n22, &e_n23
 };
 
 HMI_Text* rawDispObjs[12]{
@@ -149,16 +150,16 @@ HMI_Text* rawDispObjs[12]{
 };
 
 HMI_Text* calDispObjs[10][2]{
-    {&e_d1,&e_c1},
-    {&e_d2,&e_c2},
-    {&e_d3,&e_c3},
-    {&e_d4,&e_c4},
-    {&e_d5,&e_c5},
-    {&e_d6,&e_c6},
-    {&e_d7,&e_c7},
-    {&e_d8,&e_c8},
-    {&e_d9,&e_c9},
-    {&e_d10,&e_c10},
+    {&e_d1, &e_c1},
+    {&e_d2, &e_c2},
+    {&e_d3, &e_c3},
+    {&e_d4, &e_c4},
+    {&e_d5, &e_c5},
+    {&e_d6, &e_c6},
+    {&e_d7, &e_c7},
+    {&e_d8, &e_c8},
+    {&e_d9, &e_c9},
+    {&e_d10, &e_c10},
 };
 
 extern "C" void _Error_Handler(const char *file, int line)
@@ -747,6 +748,78 @@ void printNrfStats(void* parameter) {
         vTaskDelay(1000 / portTICK_RATE_MS);
     }
 }
+
+uint32_t sendRCChannelTime;
+void HMIdoSetupChannel()
+{
+    if (detectingIO != 0 && !detectingChannelsSet)
+    {
+        detectingChannelsSet = true;
+        memcpy(detectingRawChannels, rawChannels, ADCCHANNELNUMBERS * 2);
+        memset(detectingAUXRXChannels, 0, RC_MAX_CHANNELS);
+        AUX_Serial_reader.getChannels(detectingAUXRXChannels);
+        sendRCChannelTime = millis();
+    }
+    AUX_Serial_reader.getChannels(detectedAUXRXChannels);
+    if (detectingIO != 0)
+    {
+        for (uint8_t i = 0; i < RC_MAX_CHANNELS; i++)
+        {
+            if (i < 12) // ADC Checking
+            {
+                if (abs((int16_t)detectingRawChannels[i] - (int16_t)rawChannels[i]) > 200)
+                {
+                    char str[25];
+                    snprintf(str, sizeof(str), "Detected ADC %u", i);
+                    Serial.printf("ADCDETECT: %s\n", str);
+                    if (detectingIO == 1)
+                    {
+                        detectedIO1.type = CTYPE_ADC;
+                        detectedIO1.index = i;
+                        e_detectIO1.setValue(str);
+                    }
+                    else if (detectingIO == 2)
+                    {
+                        Serial.printf("INVALID");
+                        e_detectIO2.setValue("INVALID");
+                    }
+                    detectingChannelsSet = false;
+                    detectingIO = 0;
+                }
+            }
+            if (abs((int16_t)detectingAUXRXChannels[i] - (int16_t)detectedAUXRXChannels[i]) > 200)
+            {
+                char str[25];
+                snprintf(str, sizeof(str), "Detected AUX_RX %u", i);
+                Serial.printf("AUXDETECT: %s\n", str);
+                if (detectingIO == 1)
+                {
+                    detectedIO1.type = CTYPE_AUX_SERIAL;
+                    detectedIO1.index = i;
+                    e_detectIO1.setValue(str);
+                }
+                else if (detectingIO == 2)
+                {
+                    Serial.printf("INVALID");
+                    e_detectIO2.setValue("INVALID");
+                }
+                detectingChannelsSet = false;
+                detectingIO = 0;
+            }
+        }
+    }
+
+    auto io1t = activeModel->channel_settings[channelToEditIdx].channelMapping[0].type;
+    auto io2t = activeModel->channel_settings[channelToEditIdx].channelMapping[1].type;
+    if (io1t != CTYPE_NONE || io2t != CTYPE_NONE)
+    {
+        if (millis() - sendRCChannelTime > 100)
+        {
+            sendRCChannelTime = millis();
+            e_channelval.setValue(mappedChannels[channelToEditIdx]);
+        }
+    }
+}
 // TODO: Rewrite this to be more simple and to have the bussiness code in a seperate function
 uint32_t lastHMIRefresh = 0;
 void updateHMITask(void* parameter) {
@@ -754,78 +827,27 @@ void updateHMITask(void* parameter) {
         if (xSemaphoreTake(hmi_mutex, 10 / portTICK_RATE_MS) == pdFALSE) {
             Serial.println("updateHMITask failed to get mutex");
         }
-        else {
+        else
+        {
             // TODO: Seperate function with params for channel buffers
             HMI.loop(hmiObjects);
-            if (HMI.getCurrentPageId() == HMIPageElems::calibrations) { // CalibratePage
-                calDispObjs[sendChannel][0]->setValue(rawChannels[sendChannel]);
-                calDispObjs[sendChannel][1]->setValue(parsedChannels[sendChannel]);
-                sendChannel++;
-                if (sendChannel == ADCCHANNELNUMBERS) {
-                    sendChannel = 0;
-                }
-            }
-            if (HMI.getCurrentPageId() == HMIPageElems::setupChannel) {
-                if (detectingIO != 0 && !detectingChannelsSet) {
-                    detectingChannelsSet = true;
-                    memcpy(detectingRawChannels, rawChannels, ADCCHANNELNUMBERS * 2);
-                    memset(detectingAUXRXChannels, 0, RC_MAX_CHANNELS);
-                    AUX_Serial_reader.getChannels(detectingAUXRXChannels);
-                }
-                AUX_Serial_reader.getChannels(detectedAUXRXChannels);
-                if (detectingIO != 0)
-                {
-                    for (uint8_t i = 0; i < RC_MAX_CHANNELS; i++)
-                    {
-                        if (i < 12) // ADC Checking
-                        {
-                            if (abs((int16_t)detectingRawChannels[i] - (int16_t)rawChannels[i]) > 200)
-                            {
-                                char str[25];
-                                snprintf(str, sizeof(str), "Detected ADC %u", i);
-                                Serial.printf("ADCDETECT: %s\n", str);
-                                if (detectingIO == 1)
-                                {
-                                    detectedIO1.type = CTYPE_ADC;
-                                    detectedIO1.index = i;
-                                    e_detectIO1.setValue(str);
-                                }
-                                else if (detectingIO == 2)
-                                {
-                                    Serial.printf("INVALID");
-                                    e_detectIO2.setValue("INVALID");
-                                }
-                                detectingChannelsSet = false;
-                                detectingIO = 0;
-                            }
-                        }
-                        if (abs((int16_t)detectingAUXRXChannels[i] - (int16_t)detectedAUXRXChannels[i]) > 200)
-                        {
-                            char str[25];
-                            snprintf(str, sizeof(str), "Detected AUX_RX %u", i);
-                            Serial.printf("AUXDETECT: %s\n", str);
-                            if (detectingIO == 1)
-                            {
-                                detectedIO1.type = CTYPE_AUX_SERIAL;
-                                detectedIO1.index = i;
-                                e_detectIO1.setValue(str);
-                            }
-                            else if (detectingIO == 2)
-                            {
-                                Serial.printf("INVALID");
-                                e_detectIO2.setValue("INVALID");
-                            }
-                            detectingChannelsSet = false;
-                            detectingIO = 0;
-                        }
+            uint8_t currentPageId = HMI.getCurrentPageId();
+            switch (currentPageId)
+            {
+                case HMIPageElems::calibrations:
+                    calDispObjs[sendChannel][0]->setValue(rawChannels[sendChannel]);
+                    calDispObjs[sendChannel][1]->setValue(parsedChannels[sendChannel]);
+                    sendChannel++;
+                    if (sendChannel == ADCCHANNELNUMBERS) {
+                        sendChannel = 0;
                     }
-                }
-                // if (settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[0].type != CTYPE_NONE ||
-                //     settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[1].type != CTYPE_NONE)
-                // {
-                //     e_channelval.setValue(mappedChannels[channelToEditIdx]);
-                // }
+                break;
+
+                case HMIPageElems::setupChannel:
+                    HMIdoSetupChannel();
+                break;
             }
+
             if (HMI.getCurrentPageId() == HMIPageElems::DisplayRcValues) {
                 DispayRCObjs[sendChannel]->setValue(mappedChannels[sendChannel]);
                 sendChannel++;
@@ -1060,13 +1082,16 @@ void setup()
     initHMI();
 #endif
     initStructs();
+#if DEBUG
     Serial.printf("Size of settings is %d bytes\n", sizeof(settings));
-    Wire.setSCL(PB_10);
-    Wire.setSDA(PB_11);
-    Wire.begin();
-    Wire.setClock(400000);
+#endif
 
+    setupWire1();
+
+#if 1
     scanI2C(&Wire, &Serial);
+#endif
+
 #if ENABLE_EEPROM
     int count = 20;
     do
