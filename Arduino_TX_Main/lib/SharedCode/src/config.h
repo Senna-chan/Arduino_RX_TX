@@ -10,6 +10,7 @@
 #define ENABLE_AUX_SERIAL   1
 #define ENABLE_RADIO        0
 
+#define DEBUG_WIRE          0
 #define DEBUG               0
 #define DEBUG_RADIO         0
 #define DEBUG_HMI           0
@@ -41,6 +42,10 @@ PB1     ------> ADC1_IN9
 // AUX SERIAL
 #define AUX_RX					PC11
 #define AUX_TX					PC10
+
+// Wire1
+#define WIRE1_SCL               PB10
+#define WIRE1_SDA               PB11
 
 // NRF defines
 #define RF_SPI_BUS				SPI3

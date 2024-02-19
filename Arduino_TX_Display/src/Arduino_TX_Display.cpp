@@ -88,7 +88,8 @@ bool CbBtnCommon(void* pvGui,void *pvElemRef,gslc_teTouch eTouch,int16_t nX,int1
     switch (pElem->nId) {
 //<Button Enums !Start!>
       case BTN_Quit:
-        break;
+          NVIC_SystemReset();
+          break;
       case navRC:
         break;
       case navRAW:
