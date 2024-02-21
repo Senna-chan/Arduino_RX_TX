@@ -1,11 +1,13 @@
 //
 //
 //
+#include "Arduino_TX_Main.h"
 
-#include "CompanionControl.h"
 #include "FreeRTOSVars.h"
 #include "Structs.h"
 #include "settingsHelper.h"
+
+#include "CompanionControl.h"
 
 bool stream_adc = false;
 bool stream_rc = false;
@@ -18,7 +20,6 @@ void handleCompanionControl(void* parameter) {
         if (output->available()) {
             char c = output->read();
             if (c == '\r' || c == '\n' || c == 255) continue;
-            Serial.printf("Received '%c' from CompanionConnection.\n", c);
             switch (c) {
                 case 'R':
                 {
@@ -56,32 +57,50 @@ void handleCompanionControl(void* parameter) {
 
                 case 'T': {
                     Serial.println("Settings from companion");
-                    Settings newSettings;
-                    size_t bytesRead = output->readBytes((char*)&newSettings, sizeof(Settings));
+                    Settings *newSettings = (Settings*)malloc(sizeof(Settings));
+                    size_t bytesRead = output->readBytes((uint8_t*)newSettings, sizeof(Settings));
                     if (bytesRead != sizeof(Settings)) {
                         Serial.printf("WRONG SIZE READ. Got %d bytes of %d\n", bytesRead, sizeof(Settings));
                         break;
                     }
-                    memcpy(&settings, &newSettings, sizeof(Settings));
+                    memcpy(&settings, newSettings, sizeof(Settings));
+                    free(newSettings);
                     activeModel = &settings.model[settings.activeModel];
                     PrintCalValues();  // Validation
                     saveSettings();
                 }
                 break;
 
-                case 'S':  // TODO: Properly implement this
+                case 'G': // Get
                 {
                     while (output->available() < 1) {
                         vTaskDelay(1 / portTICK_RATE_MS);
                     }
                     c = output->read();
-                    if (c == 'A') stream_adc = !stream_adc;
-                    if (c == 'R') stream_rc = !stream_rc;
-                    if (c == 'C') stream_channel = !stream_channel;
+                    if (c == 'D') // Detection vars
+                    {
+                        output->write((uint8_t*)&rawChannels, 2 * RC_MAX_CHANNELS);
+                        output->write((uint8_t*)&AUXRXChannels, 2 * RC_MAX_CHANNELS);
+                        output->write((uint8_t*)&IOExpanderBits, 4);
+                    }
+                    if (c == 'S') // AUX SERIAL
+                    {
+                        output->write((uint8_t*)&AUXRXChannels, 2 * RC_MAX_CHANNELS);
+                    }
+                    if (c == 'R') // RC Data
+                    {
+                        output->write((uint8_t*)&mappedChannels, 2 * RC_MAX_CHANNELS);
+                    }
+                    if (c == 'A') // RC Data
+                    {
+                        output->write((uint8_t*)&rawChannels, 2 * RC_MAX_CHANNELS);
+                        output->write((uint8_t*)&IOExpanderBits, 4);
+                    }
                 }
                 break;
 
                 default:
+                    Serial.printf("Received '%c' from CompanionConnection.\n", c);
                     break;
             }
         }

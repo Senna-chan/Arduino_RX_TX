@@ -124,7 +124,6 @@ void generateDefaultSettings()
         settings.model[0].channelMixing[i].type = 0;
     }
 
-
     settings.model[0].encoderSettings[0].minValue = 0;
     settings.model[0].encoderSettings[0].maxValue = 10;
     settings.model[0].encoderSettings[0].steps = 1;
@@ -141,4 +140,6 @@ void generateDefaultSettings()
     {
         settings.model[i] = settings.model[0];
     }
+
+
 }

@@ -35,6 +35,8 @@
 #include <sharedNRF.h>
 #include "AUX_Serial_reader.h"
 
+#include "Arduino_TX_Main.h"
+
 // extern "C"
 // {
 //     void* malloc(size_t size) {
@@ -67,6 +69,7 @@ TaskHandle_t companionSerial_taskHandle;    // Task for serial communication wit
 TaskHandle_t nrfTransmitTest_taskHandle;    // Task for nrf transmission testing
 TaskHandle_t nrfTransit_taskHandle;            // Task for nrf transmission
 TaskHandle_t printNrfStats_taskHandle;        // Task for printing nrf communication stats
+TaskHandle_t loop_taskHandle;
 
 SemaphoreHandle_t hmi_mutex;        // Lock for HMI
 SemaphoreHandle_t nrf_mutex;        // Lock for nRF
@@ -78,7 +81,12 @@ SerialControlLibrary scl;
 bool debugging = true;
 
 uint16_t lastCalButtons = 0;
-
+uint16_t rawChannels[RC_MAX_CHANNELS];
+uint16_t AUXRXChannels[RC_MAX_CHANNELS];   // AUX Serial channels temp capture
+uint32_t IOExpanderBits = 0;
+uint16_t detectingRawChannels[RC_MAX_CHANNELS];    /// DMA'd ADC Channels
+uint16_t detectedAUXRXChannels[RC_MAX_CHANNELS];    // AUX Serial channels refresing capture // TODO: Rename this eventualy
+uint16_t detectingAUXRXChannels[RC_MAX_CHANNELS];    // AUX Serial channels refresing capture // TODO: Rename this eventualy
 
 HardwareSerial HMISerial = HardwareSerial(HMI_RX, HMI_TX);
 HardwareSerial auxSerial = HardwareSerial(AUX_RX, AUX_TX);
@@ -99,17 +107,10 @@ byte sendChannel = 0;
 
 bool detectingChannelsSet = false;
 
-
-uint16_t detectingRawChannels[RC_MAX_CHANNELS];     // DMA'd ADC Channels
-uint16_t detectingAUXRXChannels[RC_MAX_CHANNELS];   // AUX Serial channels temp capture
-uint16_t detectedAUXRXChannels[RC_MAX_CHANNELS];    // AUX Serial channels refresing capture // TODO: Rename this eventualy
-
-uint16_t rawChannels[RC_MAX_CHANNELS];
 uint16_t prevRawChannels[RC_MAX_CHANNELS];
 uint16_t parsedChannels[RC_MAX_CHANNELS];
 uint16_t mappedChannels[RC_MAX_CHANNELS];
 uint16_t fixedChannelValue = 0;
-uint32_t IOExpanderBits = 0;
 uint32_t prevIOExpanderBits = 0;
 uint16_t twoWay = 0;
 uint8_t oneWay = 0;
@@ -245,14 +246,15 @@ void initSPI() {}
 /**
  * Parses all the things to make the RC values.
  *
- * \param activeSettings[in] Current active settings
- * \param channel_data [out] Parsed and packed data
- * \param raw_channels       [in] Raw channels from ADC DMA buffer
- * \param parsed_channels  [out] Intermidiary buffer for parsed but not yet mapped data
- * \param mapped_channels  [out] Mapped data
- * \param IO_bits           [in] IOExpender bits from IOExpender 1 and 2
+ * \param activeSettings        [in] Current active settings
+ * \param channel_data          [out] Parsed and packed data
+ * \param raw_channels          [in] Raw channels from ADC DMA buffer
+ * \param parsed_channels       [out] Intermidiary buffer for parsed but not yet mapped data
+ * \param mapped_channels       [out] Mapped data
+ * \param IO_bits               [in] IOExpender bits from IOExpender 1 and 2
+ * \param AUX_Serial_channels   [in] Aux serial channels
  */
-void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t* raw_channels, uint16_t* parsed_channels, uint16_t* mapped_channels, uint32_t IO_bits) {
+void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t* raw_channels, uint16_t* parsed_channels, uint16_t* mapped_channels, uint32_t IO_bits, uint16_t* AUX_Serial_Channels) {
     for (int i = 0; i < ADCCHANNELNUMBERS; i++)
     {
         auto chSettings = activeSettings->channel_settings[i];
@@ -671,7 +673,8 @@ void nrfTransmitChannels(void* parameter)
     while (true) {
         transmitTypes txData;
         memcpy(rawChannels, ADCDMABuffer, ADCCHANNELNUMBERS * 2);
-        updateValues(activeModel, &txData.ch_data, rawChannels, parsedChannels, mappedChannels, IOExpanderBits);
+        AUX_Serial_reader.getChannels(AUXRXChannels);
+        updateValues(activeModel, &txData.ch_data, rawChannels, parsedChannels, mappedChannels, IOExpanderBits, AUXRXChannels);
         txData.ch_data.identifier = CHANNELDATAID;
         SendDataToRX(txData.bytesUnion.u8, sizeof(transmitTypes));
         vTaskDelay(7 / portTICK_RATE_MS);
@@ -756,11 +759,9 @@ void HMIdoSetupChannel()
     {
         detectingChannelsSet = true;
         memcpy(detectingRawChannels, rawChannels, ADCCHANNELNUMBERS * 2);
-        memset(detectingAUXRXChannels, 0, RC_MAX_CHANNELS);
-        AUX_Serial_reader.getChannels(detectingAUXRXChannels);
+        memcpy(detectedAUXRXChannels, AUXRXChannels, RC_MAX_CHANNELS * 2);
         sendRCChannelTime = millis();
     }
-    AUX_Serial_reader.getChannels(detectedAUXRXChannels);
     if (detectingIO != 0)
     {
         for (uint8_t i = 0; i < RC_MAX_CHANNELS; i++)
@@ -811,14 +812,14 @@ void HMIdoSetupChannel()
 
     auto io1t = activeModel->channel_settings[channelToEditIdx].channelMapping[0].type;
     auto io2t = activeModel->channel_settings[channelToEditIdx].channelMapping[1].type;
-    if (io1t != CTYPE_NONE || io2t != CTYPE_NONE)
-    {
-        if (millis() - sendRCChannelTime > 100)
-        {
-            sendRCChannelTime = millis();
-            e_channelval.setValue(mappedChannels[channelToEditIdx]);
-        }
-    }
+    // if (io1t != CTYPE_NONE || io2t != CTYPE_NONE)
+    // {
+    //     if (millis() - sendRCChannelTime > 100)
+    //     {
+    //         sendRCChannelTime = millis();
+    //         e_channelval.setValue(mappedChannels[channelToEditIdx]);
+    //     }
+    // }
 }
 // TODO: Rewrite this to be more simple and to have the bussiness code in a seperate function
 uint32_t lastHMIRefresh = 0;
@@ -906,33 +907,6 @@ void processIOInterrupt(void* parameter) {
     while (true) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
-        if (IOExpanderBits != prevIOExpanderBits) {
-            Serial.print("IOExpander IRQ. ");
-            printBits(&Serial, IOExpanderBits, false);
-            Serial.print(" Changed bits: ");
-            for (int b = 0; b < 32; b++) {
-                if (bitRead(prevIOExpanderBits, b) != bitRead(IOExpanderBits, b)) {
-                    if (bitRead(IOExpanderBits, b) && detectingIO != 0) {
-                        auto str = String("Detected IO ");
-                        str.concat(b);
-                        Serial.printf("IODETECT: %s\n", str.c_str());
-                        if (detectingIO == 1) {
-                            detectedIO1.type = CTYPE_IO;
-                            detectedIO1.index = b;
-                            e_detectIO1.setValue(str.c_str());
-                        }
-                        else if (detectingIO == 2) {
-                            detectedIO2.type = CTYPE_IO;
-                            detectedIO2.index = b;
-                            e_detectIO2.setValue(str.c_str());
-                        }
-                        detectingIO = 0;
-                    }
-                    Serial.printf("%d now %s, ", b, bitRead(IOExpanderBits, b) ? "HIGH" : "LOW");
-                }
-            }
-            Serial.println();
-        }
     }
 }
 
@@ -983,8 +957,47 @@ void handleSerialControl(void* parameter) {
     }
 }
 
-void initFreeRTOS() {
+void miscTask(void* param)
+{
+    while (true)
+    {
+        if (IOExpanderBits != prevIOExpanderBits)
+        {
+            Serial.print("IOExpander IRQ. ");
+            printBits(&Serial, IOExpanderBits, false);
+            Serial.print(" Changed bits: ");
+            for (int b = 0; b < 32; b++) {
+                if (bitRead(prevIOExpanderBits, b) != bitRead(IOExpanderBits, b))
+                {
+                    if (bitRead(IOExpanderBits, b) && detectingIO != 0)
+                    {
+                        auto str = String("Detected IO ");
+                        str.concat(b);
+                        Serial.printf("IODETECT: %s\n", str.c_str());
+                        if (detectingIO == 1)
+                        {
+                            detectedIO1.type = CTYPE_IO;
+                            detectedIO1.index = b;
+                            e_detectIO1.setValue(str.c_str());
+                        }
+                        else if (detectingIO == 2)
+                        {
+                            detectedIO2.type = CTYPE_IO;
+                            detectedIO2.index = b;
+                            e_detectIO2.setValue(str.c_str());
+                        }
+                        detectingIO = 0;
+                    }
+                    Serial.printf("%d now %s, ", b, bitRead(IOExpanderBits, b) ? "HIGH" : "LOW");
+                }
+            }
+            Serial.println();
+        }
+        vTaskDelay(100 / portTICK_RATE_MS);
+    }
+}
 
+void initFreeRTOS() {
     hmi_mutex = xSemaphoreCreateMutex();
     nrf_mutex = xSemaphoreCreateMutex();
     i2c_mutex = xSemaphoreCreateMutex();
@@ -995,15 +1008,20 @@ void initFreeRTOS() {
     xTaskCreate(processIOInterrupt, "IOExpander", 10, NULL, 10, &io_taskHandle);
     xTaskCreate(processEncoder, "encoder", 50, NULL, 10, &encoder_taskHandle);
     //xTaskCreate(handlePlotter, "plotter", 256, NULL,1, &plotter_taskHandle);
+#if ENABLE_HMI
     xTaskCreate(updateHMITask,"HMI", 256, NULL,6, &hmi_taskHandle);
+#endif
     xTaskCreate(handleSerialControl,"SerialControl", 256, NULL,5, &serialControl_taskHandle);
-    //xTaskCreate(handleCompanionControl,"CompanionControl",1024, &SerialUSB,1, &companionSerial_taskHandle);
+#if ENABLE_CONTROLLER_COMPANION
+    xTaskCreate(handleCompanionControl,"CompanionControl",1024, &SerialUSB,1, &companionSerial_taskHandle);
+#endif
     xTaskCreate(nrfTransmitTest,"nrfTest", 10, NULL,20, &nrfTransmitTest_taskHandle);
     vTaskSuspend(nrfTransmitTest_taskHandle);
     xTaskCreate(nrfTransmitChannels,"nrfChannels", 100, NULL,20, &nrfTransit_taskHandle);
 #ifdef DISABLE_NRF
     Serial.println("WARNING: NRF TRANSMISSION IS DISABLED");
 #endif
+    xTaskCreate(miscTask, "MiscTask", 20, NULL, 1, &loop_taskHandle);
     delay(1000);
     //xTaskCreate(printNrfStats,"nrfChannels",1024, NULL,1, &printNrfStats_taskHandle);
 }
@@ -1054,6 +1072,7 @@ void initPlotter()
 
 void setup()
 {
+    CoreDebug->DHCSR |= CoreDebug_DHCSR_C_DEBUGEN_Msk;
     uint32_t startSetup = millis();
     Serial.begin(115200);
     // SerialUSB.begin(115200);
@@ -1140,6 +1159,8 @@ void setup()
 
 #if ENABLE_MCPIO
     IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
+#else
+    IOExpanderBits = 0;
 #endif
     initPlotter();
 
@@ -1167,3 +1188,4 @@ void loop()
 {
     // Not used because of FreeRTOS
 }
+

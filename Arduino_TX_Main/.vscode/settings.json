@@ -9,7 +9,8 @@
         "initializer_list": "cpp",
         "compare": "cpp",
         "algorithm": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "stm32freertos.h": "c"
     },
     "cpp-check-lint.cpplint.--filter=": "-whitespace/comments,-readability/todo,-whitespace/line_length,-whitespace/braces,-legal/copyright,-build/header_guard",
     "editor.tabSize": 4,

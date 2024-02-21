@@ -9,5 +9,5 @@ void setupWire1()
     Wire.setSCL(WIRE1_SCL);
     Wire.setSDA(WIRE1_SCL);
     Wire.begin();
-    Wire.setClock(400000);
+    Wire.setClock(100000);
 }
