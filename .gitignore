@@ -2,3 +2,7 @@
 *.vcxitems*
 ControllerCompanion/obj/
 ControllerCompanion/bin/
+build/
+Backup/
+Debug/
+Release/

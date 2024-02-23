@@ -1,6 +1,0 @@
-../Drivers/ArduinoBackport/TimerHelpers.cpp:8:9:uint8_t TIM_getTimerClkSrc(TIM_HandleTypeDef*)	27
-../Drivers/ArduinoBackport/TimerHelpers.cpp:103:10:uint32_t TIM_getTimerClkFreq(TIM_HandleTypeDef*)	9
-../Drivers/ArduinoBackport/TimerHelpers.cpp:238:10:uint32_t TIM_getOverflow(TIM_HandleTypeDef*, TimerFormat_t)	3
-../Drivers/ArduinoBackport/TimerHelpers.cpp:273:6:void TIM_setOverflow(TIM_HandleTypeDef*, uint32_t, TimerFormat_t)	5
-../Drivers/ArduinoBackport/TimerHelpers.cpp:322:6:void TIM_setCaptureCompare(TIM_HandleTypeDef*, uint32_t, uint32_t, TimerCompareFormat_t)	12
-../Drivers/ArduinoBackport/TimerHelpers.cpp:380:10:uint32_t TIM_getCaptureCompare(TIM_HandleTypeDef*, uint32_t, TimerCompareFormat_t)	12
