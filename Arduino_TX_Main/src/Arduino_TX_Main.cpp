@@ -258,7 +258,7 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t*
     for (int i = 0; i < ADCCHANNELNUMBERS; i++)
     {
         auto chSettings = activeSettings->channel_settings[i];
-        parsed_channels[i] = parseADCChannel(raw_channels[i], chSettings.chMin, chSettings.chMid, chSettings.chMax, activeSettings->deadzone, chSettings.chOffset);
+        parsed_channels[i] = parseADCChannel(raw_channels[i], chSettings.adcConfig.min, chSettings.adcConfig.mid, chSettings.adcConfig.max, activeSettings->deadzone, chSettings.trim);
     }
 
     for (int i = 0; i < RC_MAX_CHANNELS; i++) {
@@ -924,17 +924,17 @@ void processCALInterrupt(void* parameter) {
             if (bitRead(buttons, btn) && bitRead(buttons, btn + 1))
             {
                 Serial.printf("CH%02d offset reset\n", ch + 1);
-                settings.model[settings.activeModel].channel_settings[ch].chOffset = 0;
+                settings.model[settings.activeModel].channel_settings[ch].trim = 0;
             }
             else if (bitRead(buttons, btn) && !bitRead(lastCalButtons, btn))
             {
-                settings.model[settings.activeModel].channel_settings[ch].chOffset++;
-                Serial.printf("CH%02d offset ++ to %d\n", ch + 1, settings.model[settings.activeModel].channel_settings[i].chOffset);
+                settings.model[settings.activeModel].channel_settings[ch].trim++;
+                Serial.printf("CH%02d offset ++ to %d\n", ch + 1, settings.model[settings.activeModel].channel_settings[i].trim);
             }
             else if (bitRead(buttons, btn + 1) && !bitRead(lastCalButtons, btn + 1))
             {
-                settings.model[settings.activeModel].channel_settings[ch].chOffset--;
-                Serial.printf("CH%02d offset -- to %d\n", ch + 1, settings.model[settings.activeModel].channel_settings[i].chOffset);
+                settings.model[settings.activeModel].channel_settings[ch].trim--;
+                Serial.printf("CH%02d offset -- to %d\n", ch + 1, settings.model[settings.activeModel].channel_settings[i].trim);
             }
         }
         lastCalButtons = buttons;

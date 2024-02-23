@@ -43,7 +43,6 @@ typedef struct
     uint8_t index;
 } s_channelMapping;
 
-
 typedef struct
 {
     uint32_t frequency;
@@ -55,19 +54,23 @@ typedef struct
     uint32_t maxFrequency;
 } s_stepperConfig;
 
+typedef struct{
+    uint16_t min;
+    uint16_t mid;
+    uint16_t max;
+} s_adcConfig;
+
 typedef struct
 {
-    uint16_t chMin;                     // ADC Calibration      // TODO: Move to ADC_Config struct
-    uint16_t chMid;                     // ADC Calibration      // TODO: Move to ADC_Config struct
-    uint16_t chMax;                     // ADC Calibration      // TODO: Move to ADC_Coofig struct
-    int16_t  chOffset;                  // TODO: Rename to trim
-    uint16_t chDefaults;                // Needed for all channels
+    s_adcConfig adcConfig;
+    int16_t  trim;
+    uint16_t failsafe;
     uint8_t  outputMode;                // Output modes for channels
     uint8_t  centeredStick;             // Used with combi input for mapping. If true then we will map Mid to ends as both
     s_pwmConfig pwmConfig;              // PWM Config
     s_stepperConfig stepperConfig;      // Stepper Config
     s_channelMapping channelMapping[2]; // Channel mapping for min/mid/max or min/max or any other combo. First index is adc(-1) or digital(1). Second index is adc/io index
-} channelConfigs; // TODO: Add MinEndpoint and MaxEndPoint
+} channelConfigs;
 
 typedef struct
 {

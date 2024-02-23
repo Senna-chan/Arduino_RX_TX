@@ -796,7 +796,7 @@ case navMODEL:
     }
     case savebtnchconf: {
         uint16_t chDef = atoi(e_defaultval.getText());
-        Serial.printf("New channel %d default = '%d'\tNew reverse '%d'\tNew IO1 '%s%d' New IO2 '%s%d'\n", channelToEdit, chDef, e_reverse.getState(),
+        Serial.printf("New channel %d Failsafe = '%d'\tNew reverse '%d'\tNew IO1 '%s%d' New IO2 '%s%d'\n", channelToEdit, chDef, e_reverse.getState(),
             channel_types_str[detectedIO1.type], detectedIO1.index,
             channel_types_str[detectedIO2.type], detectedIO2.index
         );
@@ -804,7 +804,7 @@ case navMODEL:
         settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[1].type = detectedIO2.type;
         settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[0].index = detectedIO1.index;
         settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[1].index = detectedIO2.index;
-        settings.model[settings.activeModel].channel_settings[channelToEditIdx].chDefaults = chDef;
+        settings.model[settings.activeModel].channel_settings[channelToEditIdx].failsafe = chDef;
         if (e_reverse.getState())
         {
             bitSet(settings.model[settings.activeModel].channelReversed, channelToEditIdx);
@@ -887,7 +887,7 @@ void navigateToChannelEditor() {
     e_configuredIO1.setValue(io1Str);
     e_configuredIO2.setValue(io2Str);
     e_reverse.setState(bitRead(settings.model[settings.activeModel].channelReversed, channelToEditIdx));
-    e_defaultval.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].chDefaults);
+    e_defaultval.setValue(settings.model[settings.activeModel].channel_settings[channelToEditIdx].failsafe);
     detectedIO1 = settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[0];
     detectedIO2 = settings.model[settings.activeModel].channel_settings[channelToEditIdx].channelMapping[1];
     e_lsbChannelOutputType.selectItem((int16_t)settings.model[settings.activeModel].channel_settings[channelToEditIdx].outputMode);
@@ -903,7 +903,7 @@ void navigateToChannelEditor() {
     }
     uint32_t totalTime = millis() - startTime;
     Serial.printf("Time to process %4d ms channel to edit %d. Default val '%d' reverse '%d' IO1 %s IO2 %s OUTPUTOPTIONS ",
-        totalTime, channelToEdit, settings.model[settings.activeModel].channel_settings[channelToEditIdx].chDefaults, bitRead(settings.model[settings.activeModel].channelReversed, channelToEditIdx), io1Str, io2Str);
+        totalTime, channelToEdit, settings.model[settings.activeModel].channel_settings[channelToEditIdx].failsafe, bitRead(settings.model[settings.activeModel].channelReversed, channelToEditIdx), io1Str, io2Str);
         printBits(&Serial, outputModesOptions, true);
 
 }
@@ -914,13 +914,13 @@ void setupMinMaxMid(HMI_Object* obj)
     int objCHIdIdx = objCHId - 1;
     uint16_t adcVal = rawChannels[objCHIdIdx];
     if (obj->getName()[0] == 'l') {
-        settings.model[settings.activeModel].channel_settings[objCHIdIdx].chMin = adcVal;
+        settings.model[settings.activeModel].channel_settings[objCHIdIdx].adcConfig.min = adcVal;
         Serial.printf("Setting min of ch%d to %d\n", objCHId, adcVal);
     } else if (obj->getName()[0] == 'm') {
-        settings.model[settings.activeModel].channel_settings[objCHIdIdx].chMid = adcVal;
+        settings.model[settings.activeModel].channel_settings[objCHIdIdx].adcConfig.mid = adcVal;
         Serial.printf("Setting mid of ch%d to %d\n", objCHId, adcVal);
     } else if (obj->getName()[0] == 'h') {
-        settings.model[settings.activeModel].channel_settings[objCHIdIdx].chMax = adcVal;
+        settings.model[settings.activeModel].channel_settings[objCHIdIdx].adcConfig.max = adcVal;
         Serial.printf("Setting max of ch%d to %d\n", objCHId, adcVal);
     }
 }

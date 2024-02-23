@@ -8,12 +8,12 @@
 
 void PrintCalValues()
 {
-    Serial.println("ch\tmin\tmid\tmax\toffset\tdefault\tIO1\tIO2");
+    Serial.println("ch\tmin\tmid\tmax\toffset\tfailsafe\t\tIO1\tIO2");
     for (int i = 0; i < 24; i++)
     {
         auto chSetting = activeModel->channel_settings[i];
-        Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t%s%02d\t%s%02d\r\n",
-            i + 1, chSetting.chMin, chSetting.chMid, chSetting.chMax, chSetting.chOffset, chSetting.chDefaults,
+        Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t\t%s%02d\t%s%02d\r\n",
+            i + 1, chSetting.adcConfig.min, chSetting.adcConfig.mid, chSetting.adcConfig.max, chSetting.trim, chSetting.failsafe,
             channel_types_str[chSetting.channelMapping[0].type], chSetting.channelMapping[0].index,
             channel_types_str[chSetting.channelMapping[1].type], chSetting.channelMapping[1].index
         );
@@ -97,11 +97,11 @@ void generateDefaultSettings()
     memset(settings.model[0].name, 0, 20); // Blank name
     for (int i = 0; i < 24; i++)
     {
-        settings.model[0].channel_settings[i].chMin = 0;
-        settings.model[0].channel_settings[i].chMid = 0;
-        settings.model[0].channel_settings[i].chMax = 1023;
-        settings.model[0].channel_settings[i].chOffset = 0;
-        settings.model[0].channel_settings[i].chDefaults = 0;
+        settings.model[0].channel_settings[i].adcConfig.min = 0;
+        settings.model[0].channel_settings[i].adcConfig.mid = 0;
+        settings.model[0].channel_settings[i].adcConfig.max = 1023;
+        settings.model[0].channel_settings[i].trim = 0;
+        settings.model[0].channel_settings[i].failsafe = 0;
         settings.model[0].channel_settings[i].outputMode = 0;
         settings.model[0].channel_settings[i].centeredStick = 0;
         settings.model[0].channel_settings[i].pwmConfig.frequency = 0;
