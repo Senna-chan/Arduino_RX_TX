@@ -23,101 +23,43 @@ namespace ControllerCompanion.Structs
             }
         }
 
-        private UInt16 minValue;
-        private UInt16 midValue;
-        private UInt16 maxValue;
-        private Int16 _chOffset;
-        private UInt16 _chDefaults;
+        private Int16 _trim;
+        private UInt16 _failsafe;
         private byte _outputMode;
         private bool _centeredStick;
 
         public void UpdateValues(ChannelConfig config)
         {
-            chMin = config.chMin;
-            chMid = config.chMid;
-            chMax = config.chMax;
-            chOffset = config.chOffset;
-            chDefaults = config.chDefaults;
+            trim = config.trim;
+            failsafe = config.failsafe;
             outputMode = config.outputMode;
             centeredStick = config.centeredStick;
             channelMapping[0].UpdateValues(config.channelMapping[0]);
             channelMapping[1].UpdateValues(config.channelMapping[1]);
+            adcConfig.UpdateValues(config.adcConfig);
         }
 
-        public UInt16 chMin
+        
+        public Int16 trim
         {
-            get { return minValue; }
+            get { return _trim; }
             set
             {
-                if (value != this.minValue)
+                if(value != this._trim)
                 {
-                    if (value > this.midValue && this.midValue != 0)
-                    {
-                        this.minValue = this.midValue;
-                    }
-                    else
-                    {
-                        this.minValue = value;
-                    }
+                    this._trim = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public UInt16 chMid
+        public UInt16 failsafe
         {
-            get { return midValue; }
+            get { return _failsafe; }
             set
             {
-                if (value != this.midValue)
+                if (value != this._failsafe)
                 {
-                    if(!(value < this.minValue || value > this.maxValue) || value == 0)
-                    {
-                        this.midValue = value;
-                    }
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public UInt16 chMax
-        {
-            get { return maxValue; }
-            set
-            {
-                if (value != this.maxValue)
-                {
-
-                    if (value < this.midValue && this.midValue != 0)
-                    {
-                        this.maxValue = this.midValue;
-                    }
-                    else
-                    {
-                        this.maxValue = value;
-                    }
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public Int16 chOffset
-        {
-            get { return _chOffset; }
-            set
-            {
-                if(value != this._chOffset)
-                {
-                    this._chOffset = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        public UInt16 chDefaults
-        {
-            get { return _chDefaults; }
-            set
-            {
-                if (value != this._chDefaults)
-                {
-                    this._chDefaults = value;
+                    this._failsafe = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -147,6 +89,7 @@ namespace ControllerCompanion.Structs
             }
         }
 
+        public s_adcConfig adcConfig { get; set; }
         public s_pwmConfig pwmConfig { get; set; }
         public s_stepperConfig stepperConfig { get; set; }
         public s_channelMapping[] channelMapping { get; set; }
@@ -156,9 +99,7 @@ namespace ControllerCompanion.Structs
 
         public ChannelConfig()
         {
-            chMax = 1023;
-            chMin = 0;
-            chMid = 512;
+            adcConfig = new s_adcConfig();
             pwmConfig = new s_pwmConfig();
             stepperConfig = new s_stepperConfig();
             channelMapping = new s_channelMapping[2];

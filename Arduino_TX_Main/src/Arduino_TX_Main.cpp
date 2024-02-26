@@ -1009,15 +1009,15 @@ void initFreeRTOS() {
     xTaskCreate(processEncoder, "encoder", 50, NULL, 10, &encoder_taskHandle);
     //xTaskCreate(handlePlotter, "plotter", 256, NULL,1, &plotter_taskHandle);
 #if ENABLE_HMI
-    xTaskCreate(updateHMITask,"HMI", 256, NULL,6, &hmi_taskHandle);
+    xTaskCreate(updateHMITask, "HMI", 256, NULL, 6, &hmi_taskHandle);
 #endif
-    xTaskCreate(handleSerialControl,"SerialControl", 256, NULL,5, &serialControl_taskHandle);
+    xTaskCreate(handleSerialControl, "SerialControl", 256, NULL, 5, &serialControl_taskHandle);
 #if ENABLE_CONTROLLER_COMPANION
-    xTaskCreate(handleCompanionControl,"CompanionControl",1024, &SerialUSB,1, &companionSerial_taskHandle);
+    xTaskCreate(handleCompanionControl, "CompanionControl", 1024, &SerialUSB, 1, &companionSerial_taskHandle);
 #endif
-    xTaskCreate(nrfTransmitTest,"nrfTest", 10, NULL,20, &nrfTransmitTest_taskHandle);
+    xTaskCreate(nrfTransmitTest, "nrfTest", 10, NULL, 20, &nrfTransmitTest_taskHandle);
     vTaskSuspend(nrfTransmitTest_taskHandle);
-    xTaskCreate(nrfTransmitChannels,"nrfChannels", 100, NULL,20, &nrfTransit_taskHandle);
+    xTaskCreate(nrfTransmitChannels, "nrfChannels", 100, NULL, 20, &nrfTransit_taskHandle);
 #ifdef DISABLE_NRF
     Serial.println("WARNING: NRF TRANSMISSION IS DISABLED");
 #endif
@@ -1053,14 +1053,14 @@ void initPlotter()
     Plotter.init(&Serial1, "Raw channels", &scl);
     for (int i = 0; i < ADCCHANNELNUMBERS; i++) {
         char adcNum[10];
-        sprintf(adcNum, "ADC%02d", i);
+        snprintf(adcNum, sizeof(adcNum), "ADC%02d", i);
         Plotter.addPlotData(&ADCDMABuffer[i], adcNum);
     }
     PlotterLib* chPlotter = Plotter.addNewPlotter("ChannelData");
 
     for (int i = 1; i <= 24; i++) {
         char chNum[10];
-        sprintf(chNum, "CH%02d", i);
+        snprintf(chNum, sizeof(chNum), "CH%02d", i);
         chPlotter->addPlotData(&mappedChannels[i], chNum);
     }
     Plotter.setPlotState(false);

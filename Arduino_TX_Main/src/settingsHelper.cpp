@@ -102,6 +102,7 @@ void generateDefaultSettings()
         settings.model[0].channel_settings[i].adcConfig.max = 1023;
         settings.model[0].channel_settings[i].trim = 0;
         settings.model[0].channel_settings[i].failsafe = 0;
+        settings.model[0].channel_settings[i].startupVal = 0;
         settings.model[0].channel_settings[i].outputMode = 0;
         settings.model[0].channel_settings[i].centeredStick = 0;
         settings.model[0].channel_settings[i].pwmConfig.frequency = 0;

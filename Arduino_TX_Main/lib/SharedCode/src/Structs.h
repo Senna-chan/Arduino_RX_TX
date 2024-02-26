@@ -62,9 +62,10 @@ typedef struct{
 
 typedef struct
 {
-    s_adcConfig adcConfig;
-    int16_t  trim;
-    uint16_t failsafe;
+    s_adcConfig adcConfig;              // ADC Config/ Min/mid/max config
+    int16_t  trim;                      // Offset off the channel
+    uint16_t failsafe;                  // Value when controller fails to connect
+    uint16_t startupVal;                // Value when all are this transmission is allowed
     uint8_t  outputMode;                // Output modes for channels
     uint8_t  centeredStick;             // Used with combi input for mapping. If true then we will map Mid to ends as both
     s_pwmConfig pwmConfig;              // PWM Config

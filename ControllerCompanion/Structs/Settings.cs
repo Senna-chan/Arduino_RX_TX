@@ -40,11 +40,11 @@ namespace ControllerCompanion.Structs
 
                 foreach (ChannelConfig channelConfig in lmodel.channel_settings)
                 {
-                    channelConfig.chMin = 0;
-                    channelConfig.chMid = 0;
-                    channelConfig.chMax = 1023;
-                    channelConfig.chOffset = 0;
-                    channelConfig.chDefaults = 0;
+                    channelConfig.adcConfig.min = 0;
+                    channelConfig.adcConfig.mid = 0;
+                    channelConfig.adcConfig.max = 1023;
+                    channelConfig.trim = 0;
+                    channelConfig.failsafe = 0;
                     channelConfig.outputMode = 0;
                     channelConfig.centeredStick = false;
                     channelConfig.reversed = false;
@@ -187,11 +187,11 @@ namespace ControllerCompanion.Structs
                     {
                         uint bitShiftedValue = ((uint)(bitIndex << (channelConfig.reversed ? 1 : 0)));
                         model.channelReversed = model.channelReversed |= bitShiftedValue;
-                        writer.Write(channelConfig.chMin);
-                        writer.Write(channelConfig.chMid);
-                        writer.Write(channelConfig.chMax);
-                        writer.Write(channelConfig.chOffset);
-                        writer.Write(channelConfig.chDefaults);
+                        writer.Write(channelConfig.adcConfig.min);
+                        writer.Write(channelConfig.adcConfig.min);
+                        writer.Write(channelConfig.adcConfig.min);
+                        writer.Write(channelConfig.trim);
+                        writer.Write(channelConfig.failsafe);
                         writer.Write(channelConfig.outputMode);
                         writer.Write(channelConfig.centeredStick);
 
@@ -246,15 +246,15 @@ namespace ControllerCompanion.Structs
 
                     foreach (ChannelConfig channelConfig in model.channel_settings)
                     {
-                        channelConfig.chMin = 0;
-                        channelConfig.chMid = 0;
-                        channelConfig.chMax = 1023;
+                        channelConfig.adcConfig.min = 0;
+                        channelConfig.adcConfig.mid = 0;
+                        channelConfig.adcConfig.min = 1023;
 
-                        channelConfig.chMin = reader.ReadUInt16();
-                        channelConfig.chMid = reader.ReadUInt16();
-                        channelConfig.chMax = reader.ReadUInt16();
-                        channelConfig.chOffset = reader.ReadInt16();
-                        channelConfig.chDefaults = reader.ReadUInt16();
+                        channelConfig.adcConfig.min = reader.ReadUInt16();
+                        channelConfig.adcConfig.min = reader.ReadUInt16();
+                        channelConfig.adcConfig.min = reader.ReadUInt16();
+                        channelConfig.trim = reader.ReadInt16();
+                        channelConfig.failsafe = reader.ReadUInt16();
                         channelConfig.outputMode = reader.ReadByte();
                         channelConfig.centeredStick = reader.ReadBoolean();
 
