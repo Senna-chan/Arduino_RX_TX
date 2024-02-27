@@ -3,8 +3,9 @@
 
 #include <Arduino.h>
 #include <ibus.h>
-#include "STMRTOSIncludes.h"
+#include <PPMReader.h>
 
+#include "STMRTOSIncludes.h"
 
 class Aux_Serial_Reader
 {
@@ -15,9 +16,10 @@ class Aux_Serial_Reader
         NONE,     // Inactive
         IBUS,     // FLYSKY
         SBUS,     // Industry standard
+        PPM,      // Pulse input
         CUSTOM_TX // My own protocol
     };
-    void init(HardwareSerial *serial);
+    void init(uint8_t rx, uint8_t tx);
     void begin();
     void end();
     void readData();
@@ -35,9 +37,12 @@ private:
     void processIBUS();
     void processSBUS();
     void processCUSTOM_TX();
+    uint8_t aux_rx;
+    uint8_t aux_tx;
     HardwareSerial *aux_serial;
     TaskHandle_t auxSerial_taskHandle;
     IBusBM ibus;
+    PPMReader *ppm;
 };
 
 extern Aux_Serial_Reader AUX_Serial_reader;

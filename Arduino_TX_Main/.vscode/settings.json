@@ -12,7 +12,10 @@
         "*.tcc": "cpp",
         "stm32freertos.h": "c",
         "random": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "cstddef": "cpp",
+        "list": "cpp",
+        "unordered_set": "cpp"
     },
     "cpp-check-lint.cpplint.--filter=": "-whitespace/comments,-readability/todo,-whitespace/line_length,-whitespace/braces,-legal/copyright,-build/header_guard",
     "editor.tabSize": 4,

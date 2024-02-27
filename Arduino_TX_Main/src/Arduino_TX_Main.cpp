@@ -89,7 +89,6 @@ uint16_t detectedAUXRXChannels[RC_MAX_CHANNELS];    // AUX Serial channels refre
 uint16_t detectingAUXRXChannels[RC_MAX_CHANNELS];    // AUX Serial channels refresing capture // TODO: Rename this eventualy
 
 HardwareSerial HMISerial = HardwareSerial(HMI_RX, HMI_TX);
-HardwareSerial auxSerial = HardwareSerial(AUX_RX, AUX_TX);
 TwoWire Wire2 = TwoWire(PB10, PB11);
 bool eepromFound = false;
 
@@ -1031,8 +1030,8 @@ void initFreeRTOS() {
 #pragma region Setup Hardware/Software
 
 void initAuxSerial(){
-    AUX_Serial_reader.init(&auxSerial);
-    AUX_Serial_reader.setProtocol(Aux_Serial_Reader::IBUS);
+    AUX_Serial_reader.init(AUX_RX, AUX_TX);
+    AUX_Serial_reader.setProtocol(Aux_Serial_Reader::PPM);
     AUX_Serial_reader.begin();
 }
 

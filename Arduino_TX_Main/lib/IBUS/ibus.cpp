@@ -39,6 +39,11 @@ void IBusBM::begin(HardwareSerial &serial) {
   this->lchksum = 0;
 }
 
+void IBusBM::end(void)
+{
+    stream->end();
+}
+
 // called from timer interrupt or mannually by user (if IBUSBM_NOTIMER set in begin())
 void IBusBM::loop(void)
 {
