@@ -1,0 +1,41 @@
+{
+	"folders": [
+		{
+			"path": "Arduino_TX_Main"
+		},
+		{
+			"path": "Arduino_RX"
+		},
+		{
+			"path": "Arduino_TX_Display"
+		},
+		{
+			"path": "ControllerCompanion"
+		},
+		{
+			"path": "RX_To_LegoHub"
+		}
+	],
+    "settings": {
+        "files.associations": {
+            "array": "cpp",
+            "deque": "cpp",
+            "string": "cpp",
+            "unordered_map": "cpp",
+            "vector": "cpp",
+            "string_view": "cpp",
+            "initializer_list": "cpp",
+            "compare": "cpp",
+            "algorithm": "cpp",
+            "*.tcc": "cpp",
+            "stm32freertos.h": "c",
+            "random": "cpp",
+            "limits": "cpp",
+            "cstddef": "cpp",
+            "list": "cpp",
+            "unordered_set": "cpp",
+            "chrono": "cpp",
+            "semaphore": "cpp"
+        }
+    }
+}
