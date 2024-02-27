@@ -160,6 +160,5 @@ namespace ControllerCompanion.Views
         {
             channelConfig.endPoints.max = (ushort)numEndPointMax.Value;
         }
-
     }
 }

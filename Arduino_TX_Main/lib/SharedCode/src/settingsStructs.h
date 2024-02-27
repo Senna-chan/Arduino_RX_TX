@@ -35,7 +35,8 @@ typedef struct
     uint32_t maxFrequency;
 } s_stepperConfig;
 
-typedef struct{
+typedef struct
+{
     uint16_t min;
     uint16_t mid;
     uint16_t max;

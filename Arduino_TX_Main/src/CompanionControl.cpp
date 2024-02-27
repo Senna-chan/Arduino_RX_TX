@@ -61,6 +61,8 @@ void handleCompanionControl(void* parameter) {
                     size_t bytesRead = output->readBytes((uint8_t*)newSettings, sizeof(Settings));
                     if (bytesRead != sizeof(Settings)) {
                         Serial.printf("WRONG SIZE READ. Got %d bytes of %d\n", bytesRead, sizeof(Settings));
+                        free(newSettings);
+                        Error_Handler();
                         break;
                     }
                     memcpy(&settings, newSettings, sizeof(Settings));

@@ -3,8 +3,8 @@
 //
 
 #include "settingsHelper.h"
-#include <eepromi2c_Anything.h>
 #include "SharedVars.h"
+#include <eepromi2c_Anything.h>
 
 void PrintCalValues()
 {
@@ -13,12 +13,11 @@ void PrintCalValues()
     {
         auto chSetting = activeModel->channel_settings[i];
         Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t\t%04d\t%04d\t%04d\t%6s%02d\t%6s%02d\r\n",
-            i + 1, chSetting.adcConfig.min, chSetting.adcConfig.mid, chSetting.adcConfig.max,
-            chSetting.trim, chSetting.failsafe, chSetting.startupVal,
-            chSetting.endPoints.min, chSetting.endPoints.max,
-            channel_types_str[chSetting.channelMapping[0].type], chSetting.channelMapping[0].index,
-            channel_types_str[chSetting.channelMapping[1].type], chSetting.channelMapping[1].index
-        );
+                      i + 1, chSetting.adcConfig.min, chSetting.adcConfig.mid, chSetting.adcConfig.max,
+                      chSetting.trim, chSetting.failsafe, chSetting.startupVal,
+                      chSetting.endPoints.min, chSetting.endPoints.max,
+                      channel_types_str[chSetting.channelMapping[0].type], chSetting.channelMapping[0].index,
+                      channel_types_str[chSetting.channelMapping[1].type], chSetting.channelMapping[1].index);
     }
     Serial.println();
 }
@@ -27,7 +26,8 @@ void PrintCalValues()
  * Abstraction to be able to check if the EEPROM is there and if not then just don't read and always generate default settings.
  *
  */
-bool readSettings() {
+bool readSettings()
+{
 #if ENABLE_EEPROM
     if (!eepromFound)
     {
@@ -40,7 +40,8 @@ bool readSettings() {
 #endif
 }
 
-void saveSettings() {
+void saveSettings()
+{
 #if ENABLE_EEPROM
     if (!eepromFound)
     {
@@ -50,12 +51,12 @@ void saveSettings() {
 #endif
 }
 
-
 void loadSettings(bool forceReset)
 {
     Serial.print("Settings size is ");
     Serial.println(sizeof(Settings));
-    if (!readSettings()) {
+    if (!readSettings())
+    {
         Serial.println("Failed to read settings. Using default settings. Send config via ControllerCompanion");
         generateDefaultSettings();
         activeModel = &settings.model[settings.activeModel];
@@ -63,12 +64,12 @@ void loadSettings(bool forceReset)
     }
     if (settings.version != SETTINGSVERSION)
     {
-        Serial.printf("Settings are not correct. Current version %d, expected version %d\r\n", settings.version, SETTINGSVERSION);
+        Serial.printf("Incorrect version. Current %d, expected %d\r\n", settings.version, SETTINGSVERSION);
         bool reset = forceReset;
 
-        if (!forceReset) {
+        if (!forceReset)
+        {
             Serial.println("Do you want to reset the settings? y/N\r\n");
-            int count = 0;
             int oriTimeout = Serial.getTimeout();
             Serial.setTimeout(5000); // 5 seconds timeout
             char buffer[2];
@@ -77,10 +78,12 @@ void loadSettings(bool forceReset)
             Serial.printf("Read '%s'\r\n", buffer);
             reset = buffer[0] == 'y';
         }
-        else {
+        else
+        {
             Serial.println("Forcereset == true");
         }
-        if (reset) {
+        if (reset)
+        {
             generateDefaultSettings();
             saveSettings();
         }
@@ -122,7 +125,8 @@ void generateDefaultSettings()
     settings.model[0].deadzone = 20;
     settings.model[0].channelReversed = 0;
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++)
+    {
         settings.model[0].channelMixing[i].source1 = 0;
         settings.model[0].channelMixing[i].source2 = 0;
         settings.model[0].channelMixing[i].dest1 = 0;
@@ -146,6 +150,4 @@ void generateDefaultSettings()
     {
         settings.model[i] = settings.model[0];
     }
-
-
 }
