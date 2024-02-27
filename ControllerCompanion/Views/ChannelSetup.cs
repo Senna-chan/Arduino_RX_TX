@@ -64,12 +64,15 @@ namespace ControllerCompanion.Views
             cobInput2.SelectedValueChanged += CobInput_SelectedValueChanged;
             cobInput2.DataBindings.Add("SelectedValue", channelConfig.channelMapping[1], "intDefinition");
 
-            numDefaultChannelValue.DataBindings.Add("Value", channelConfig, "chDefaults");
+            numFailsafeValue.DataBindings.Add("Value", channelConfig, "failsafe");
+            numStartupValue.DataBindings.Add("Value", channelConfig, "startup");
             chbReversedChannel.DataBindings.Add("Checked", channelConfig, "reversed");
             chbCenteredStick.DataBindings.Add("Checked", channelConfig, "centeredStick");
             numSTEPMin.DataBindings.Add("Value", stepperConfig, "minFrequency");
             numSTEPMax.DataBindings.Add("Value", stepperConfig, "maxFrequency");
             numPWMFreq.DataBindings.Add("Value", pwmConfig, "frequency");
+            numEndPointMin.DataBindings.Add("Value", channelConfig.endPoints, "min");
+            numEndPointMax.DataBindings.Add("Value", channelConfig.endPoints, "max");
         }
 
         private void CobInput_SelectedValueChanged(object? sender, EventArgs e)
@@ -139,5 +142,24 @@ namespace ControllerCompanion.Views
             btnDetectInput2.Text = "Detecting 2";
             InputDetector.detectSequence(this, 2);
         }
+
+        private void numFailsafeValue_ValueChanged(object sender, EventArgs e)
+        {
+            channelConfig.failsafe = (ushort)numFailsafeValue.Value;
+        }
+        private void numStartupValue_ValueChanged(object sender, EventArgs e)
+        {
+            channelConfig.startup = (ushort)numStartupValue.Value;
+        }
+
+        private void numEndPointMin_ValueChanged(object sender, EventArgs e)
+        {
+            channelConfig.endPoints.min = (ushort)numEndPointMin.Value;
+        }
+        private void numEndPointMax_ValueChanged(object sender, EventArgs e)
+        {
+            channelConfig.endPoints.max = (ushort)numEndPointMax.Value;
+        }
+
     }
 }

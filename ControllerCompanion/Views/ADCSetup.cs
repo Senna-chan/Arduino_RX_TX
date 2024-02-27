@@ -26,12 +26,12 @@ namespace ControllerCompanion.Views
             InitializeComponent();
             this.channel = channel;
             channelConfig = Config.settings.model[Config.settings.activeModel].channel_settings[channel];
-            bindings.Add(numMin.DataBindings.Add("Value", Config.settings.model[Config.settings.activeModel].channel_settings[channel].adcConfig, "min"));
-            bindings.Add(numMid.DataBindings.Add("Value", Config.settings.model[Config.settings.activeModel].channel_settings[channel].adcConfig, "mid"));
-            bindings.Add(numMax.DataBindings.Add("Value", Config.settings.model[Config.settings.activeModel].channel_settings[channel].adcConfig, "max"));
-            bindings.Add(tbMin.DataBindings.Add("Value", Config.settings.model[Config.settings.activeModel].channel_settings[channel].adcConfig,  "min"));
-            bindings.Add(tbMid.DataBindings.Add("Value", Config.settings.model[Config.settings.activeModel].channel_settings[channel].adcConfig,  "mid"));
-            bindings.Add(tbMax.DataBindings.Add("Value", Config.settings.model[Config.settings.activeModel].channel_settings[channel].adcConfig,  "max"));
+            bindings.Add(numMin.DataBindings.Add("Value", channelConfig.adcConfig, "min"));
+            bindings.Add(numMid.DataBindings.Add("Value", channelConfig.adcConfig, "mid"));
+            bindings.Add(numMax.DataBindings.Add("Value", channelConfig.adcConfig, "max"));
+            bindings.Add(tbMin.DataBindings.Add("Value", channelConfig.adcConfig, "min"));
+            bindings.Add(tbMid.DataBindings.Add("Value", channelConfig.adcConfig, "mid"));
+            bindings.Add(tbMax.DataBindings.Add("Value", channelConfig.adcConfig, "max"));
         }
 
         public void updateBindings()

@@ -4,13 +4,13 @@ using System.Runtime.CompilerServices;
 
 namespace ControllerCompanion.Structs
 {
-    public class s_adcConfig : INotifyPropertyChanged
+    public class s_calibrationConfig : INotifyPropertyChanged
     {
 
-        public s_adcConfig() {
+        public s_calibrationConfig() {
             max = 1023;
             min = 0;
-            mid = 512;
+            mid = 0;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -28,9 +28,9 @@ namespace ControllerCompanion.Structs
         private UInt16 minValue; // ADC Minumum
         private UInt16 midValue; // ADC Midium
         private UInt16 maxValue; // ADC Max
-        
 
-        public void UpdateValues(s_adcConfig config)
+
+        public void UpdateValues(s_calibrationConfig config)
         {
             max = config.max;
             min = config.min;

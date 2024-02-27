@@ -8,12 +8,14 @@
 
 void PrintCalValues()
 {
-    Serial.println("ch\tmin\tmid\tmax\toffset\tfailsafe\t\tIO1\tIO2");
+    Serial.println("ch\tmin\tmid\tmax\toffset\tfailsafe\tstartup\tendmin\tendmax\tIO1\tIO2");
     for (int i = 0; i < 24; i++)
     {
         auto chSetting = activeModel->channel_settings[i];
-        Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t\t%s%02d\t%s%02d\r\n",
-            i + 1, chSetting.adcConfig.min, chSetting.adcConfig.mid, chSetting.adcConfig.max, chSetting.trim, chSetting.failsafe,
+        Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t\t%04d\t%04d\t%04d\t%6s%02d\t%6s%02d\r\n",
+            i + 1, chSetting.adcConfig.min, chSetting.adcConfig.mid, chSetting.adcConfig.max,
+            chSetting.trim, chSetting.failsafe, chSetting.startupVal,
+            chSetting.endPoints.min, chSetting.endPoints.max,
             channel_types_str[chSetting.channelMapping[0].type], chSetting.channelMapping[0].index,
             channel_types_str[chSetting.channelMapping[1].type], chSetting.channelMapping[1].index
         );
@@ -112,6 +114,9 @@ void generateDefaultSettings()
         settings.model[0].channel_settings[i].channelMapping[0].index = 0;
         settings.model[0].channel_settings[i].channelMapping[1].type = 0;
         settings.model[0].channel_settings[i].channelMapping[1].index = 0;
+        settings.model[0].channel_settings[i].endPoints.min = 1000;
+        settings.model[0].channel_settings[i].endPoints.mid = 0;
+        settings.model[0].channel_settings[i].endPoints.max = 2000;
     }
 
     settings.model[0].deadzone = 20;

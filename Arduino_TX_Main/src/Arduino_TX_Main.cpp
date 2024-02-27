@@ -255,6 +255,7 @@ void initSPI() {}
  * \param AUX_Serial_channels   [in] Aux serial channels
  */
 void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t* raw_channels, uint16_t* parsed_channels, uint16_t* mapped_channels, uint32_t IO_bits, uint16_t* AUX_Serial_Channels) {
+    digitalWrite(chPerfDebugPin, HIGH);
     for (int i = 0; i < ADCCHANNELNUMBERS; i++)
     {
         auto chSettings = activeSettings->channel_settings[i];
@@ -262,6 +263,7 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t*
     }
 
     for (int i = 0; i < RC_MAX_CHANNELS; i++) {
+
         auto chSettings = activeSettings->channel_settings[i];
         auto io1t = chSettings.channelMapping[0].type;
         auto io2t = chSettings.channelMapping[1].type;
@@ -272,7 +274,8 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t*
             mapped_channels[i] = 2023; // Make sure that RX will not parse this
             continue;
         }
-        if (io1t != CTYPE_NONE && io2t == CTYPE_NONE) { // Single channel mapped
+        if (io1t != CTYPE_NONE && io2t == CTYPE_NONE)  // Single channel mapped
+        {
             switch(io1t)
             {
                 case CTYPE_ADC:
@@ -300,22 +303,30 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t*
         {
             bool b1 = bitRead(IO_bits, io1);
             bool b2 = bitRead(IO_bits, io2);
-            if (!b1 && !b2) {
+            if (!b1 && !b2)
+            {
                 mapped_channels[i] = 1500;
             }
-            else if (b1 && !b2) {
+            else if (b1 && !b2)
+            {
                 mapped_channels[i] = 2000;
             }
-            else if (!b1 && b2) {
+            else if (!b1 && b2)
+            {
                 mapped_channels[i] = 1000;
             }
-            else {
+            else
+            {
                 Serial.printf("CH%d invalid config. IO1 and IO2 both high", i);
             }
         }
-        else { // Can't map ADC with IO or multiple ADC
-            Serial.printf("CH Mapping for %d invalid. IOType1 %d Type2 %d\n", i, io1t, io2t); // Yes this is spammy
+        else // Invalid config
+        {
+            Serial.printf("CH Mapping for %d invalid. IOType1 %s Type2 %s\n", i, channel_types_str[io1t], channel_types_str[io2t]); // SPAM
         }
+
+        mapped_channels[i] = map(mapped_channels[i], 1000, 2000, chSettings.endPoints.min, chSettings.endPoints.max);
+
         if (bitRead(activeSettings->channelReversed, i)) {
             int16_t tempVal = (mapped_channels[i] - 3000) * -1;
             mappedChannels[i] = tempVal;
@@ -364,6 +375,7 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t*
     channel_data->channel22 = mapped_channels[21] - 1000;
     channel_data->channel23 = mapped_channels[22] - 1000;
     channel_data->channel24 = mapped_channels[23] - 1000;
+    digitalWrite(chPerfDebugPin, LOW);
 }
 
 #pragma region IRQ functions
@@ -1049,16 +1061,17 @@ void initSerialControl() {
 
 void initPlotter()
 {
-
     Plotter.init(&Serial1, "Raw channels", &scl);
-    for (int i = 0; i < ADCCHANNELNUMBERS; i++) {
+    for (int i = 0; i < ADCCHANNELNUMBERS; i++)
+    {
         char adcNum[10];
         snprintf(adcNum, sizeof(adcNum), "ADC%02d", i);
         Plotter.addPlotData(&ADCDMABuffer[i], adcNum);
     }
     PlotterLib* chPlotter = Plotter.addNewPlotter("ChannelData");
 
-    for (int i = 1; i <= 24; i++) {
+    for (int i = 1; i <= 24; i++)
+    {
         char chNum[10];
         snprintf(chNum, sizeof(chNum), "CH%02d", i);
         chPlotter->addPlotData(&mappedChannels[i], chNum);
@@ -1077,12 +1090,13 @@ void setup()
     Serial.begin(115200);
     // SerialUSB.begin(115200);
     pinMode(LED_BUILTIN, OUTPUT);
-    pinMode(PE3, INPUT_PULLDOWN);
+    pinMode(chPerfDebugPin, OUTPUT);
     pinMode(BTN_K0, INPUT_PULLDOWN);
     pinMode(BTN_K1, INPUT_PULLDOWN);
     delay(50);
 
-    if (digitalRead(PE3)) {
+    if (digitalRead(PE3))
+    {
         transmitTest = true;
         Serial.println("TransmitTest");
     }
