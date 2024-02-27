@@ -43,6 +43,9 @@ namespace ControllerCompanion.Structs
                     channelConfig.adcConfig.min = 0;
                     channelConfig.adcConfig.mid = 0;
                     channelConfig.adcConfig.max = 1023;
+                    channelConfig.endPoints.min = 1000;
+                    channelConfig.endPoints.mid = 0;
+                    channelConfig.endPoints.max = 2000;
                     channelConfig.trim = 0;
                     channelConfig.failsafe = 0;
                     channelConfig.outputMode = 0;
@@ -141,8 +144,10 @@ namespace ControllerCompanion.Structs
         internal static void readFromRemote(SerialPort selectedSerialPort, ref Settings settings)
         {
             selectedSerialPort.Write(new byte[] { (byte)'R' }, 0, 1);
+            Thread.Sleep(1000);
+            Console.WriteLine($"Got {selectedSerialPort.BytesToRead} bytes to read");
             readBinary(selectedSerialPort.BaseStream, settings, true);
-            if(selectedSerialPort.BytesToRead > 0)
+            if (selectedSerialPort.BytesToRead > 0)
             {
                 Console.WriteLine($"Still got bytes left. {selectedSerialPort.BytesToRead}");
                 selectedSerialPort.ReadExisting();
@@ -187,13 +192,20 @@ namespace ControllerCompanion.Structs
                     {
                         uint bitShiftedValue = ((uint)(bitIndex << (channelConfig.reversed ? 1 : 0)));
                         model.channelReversed = model.channelReversed |= bitShiftedValue;
+
                         writer.Write(channelConfig.adcConfig.min);
-                        writer.Write(channelConfig.adcConfig.min);
-                        writer.Write(channelConfig.adcConfig.min);
+                        writer.Write(channelConfig.adcConfig.mid);
+                        writer.Write(channelConfig.adcConfig.max);
+
                         writer.Write(channelConfig.trim);
                         writer.Write(channelConfig.failsafe);
+                        writer.Write(channelConfig.startup);
                         writer.Write(channelConfig.outputMode);
                         writer.Write(channelConfig.centeredStick);
+
+                        writer.Write(channelConfig.endPoints.min);
+                        writer.Write(channelConfig.endPoints.mid);
+                        writer.Write(channelConfig.endPoints.max);
 
                         writer.Write(channelConfig.pwmConfig.frequency);
 
@@ -251,12 +263,18 @@ namespace ControllerCompanion.Structs
                         channelConfig.adcConfig.min = 1023;
 
                         channelConfig.adcConfig.min = reader.ReadUInt16();
-                        channelConfig.adcConfig.min = reader.ReadUInt16();
-                        channelConfig.adcConfig.min = reader.ReadUInt16();
+                        channelConfig.adcConfig.mid = reader.ReadUInt16();
+                        channelConfig.adcConfig.max = reader.ReadUInt16();
+
                         channelConfig.trim = reader.ReadInt16();
                         channelConfig.failsafe = reader.ReadUInt16();
+                        channelConfig.startup = reader.ReadUInt16();
                         channelConfig.outputMode = reader.ReadByte();
                         channelConfig.centeredStick = reader.ReadBoolean();
+
+                        channelConfig.endPoints.min = reader.ReadUInt16();
+                        channelConfig.endPoints.mid = reader.ReadUInt16();
+                        channelConfig.endPoints.max = reader.ReadUInt16();
 
                         channelConfig.pwmConfig.frequency = reader.ReadUInt32();
 

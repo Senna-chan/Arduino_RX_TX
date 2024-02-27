@@ -1,0 +1,1 @@
+../../../Arduino_TX_Main/lib/SharedCode/src/settingsStructs.h

@@ -39,7 +39,7 @@ namespace ControllerCompanion.Structs
             adcConfig.UpdateValues(config.adcConfig);
         }
 
-        
+
         public Int16 trim
         {
             get { return _trim; }
@@ -60,6 +60,19 @@ namespace ControllerCompanion.Structs
                 if (value != this._failsafe)
                 {
                     this._failsafe = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public UInt16 _startup;
+        public UInt16 startup
+        {
+            get { return _startup; }
+            set
+            {
+                if (value != this._startup)
+                {
+                    this._startup = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -89,22 +102,26 @@ namespace ControllerCompanion.Structs
             }
         }
 
-        public s_adcConfig adcConfig { get; set; }
+        public s_calibrationConfig adcConfig { get; set; }
         public s_pwmConfig pwmConfig { get; set; }
         public s_stepperConfig stepperConfig { get; set; }
         public s_channelMapping[] channelMapping { get; set; }
-        
+        public s_calibrationConfig endPoints { get; set; }
+
         // CompanionOnlyStuff
         public bool reversed { get; set; }
 
         public ChannelConfig()
         {
-            adcConfig = new s_adcConfig();
+            adcConfig = new s_calibrationConfig();
             pwmConfig = new s_pwmConfig();
             stepperConfig = new s_stepperConfig();
             channelMapping = new s_channelMapping[2];
             for(int i = 0; i < 2; i++)
+            {
                 channelMapping[i] = new s_channelMapping();
+            }
+            endPoints = new s_calibrationConfig();
         }
     }
 }
