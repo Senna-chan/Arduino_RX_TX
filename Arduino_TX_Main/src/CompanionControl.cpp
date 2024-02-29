@@ -1,8 +1,11 @@
 //
 //
 //
-#include "Arduino_TX_Main.h"
 
+
+#include <ChannelFunctions.h>
+
+#include "Arduino_TX_Main.h"
 #include "FreeRTOSVars.h"
 #include "Structs.h"
 #include "settingsHelper.h"
@@ -13,6 +16,10 @@ bool stream_adc = false;
 bool stream_rc = false;
 bool stream_channel = false;
 Stream* output;
+
+channelConfigs localChannelConfig = {0};
+bool reverseChannel = false;
+
 void handleCompanionControl(void* parameter) {
     Serial.println("HandleCompanionControl");
     output = (Stream*)parameter;
@@ -73,6 +80,14 @@ void handleCompanionControl(void* parameter) {
                 }
                 break;
 
+                case 'C': // ChannelConfig
+                {
+                    output->readBytes((uint8_t*)&localChannelConfig, sizeof(channelConfigs));
+                    reverseChannel = output->read();
+                    Serial.println("Channel config");
+                }
+                break;
+
                 case 'G': // Get
                 {
                     while (output->available() < 1) {
@@ -97,6 +112,11 @@ void handleCompanionControl(void* parameter) {
                     {
                         output->write((uint8_t*)&rawChannels, 2 * RC_MAX_CHANNELS);
                         output->write((uint8_t*)&IOExpanderBits, 4);
+                    }
+                    if (c == 'C') // Channel
+                    {
+                        uint16_t rcValue = parseRCChannel(0, &localChannelConfig,reverseChannel, parsedChannels, IOExpanderBits, AUXRXChannels);
+                        output->write((uint8_t *)&rcValue, 2);
                     }
                 }
                 break;

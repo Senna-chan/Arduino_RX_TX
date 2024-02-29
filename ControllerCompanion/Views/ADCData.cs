@@ -53,7 +53,7 @@ namespace ControllerCompanion.Views
             {
                 if (getData)
                 {
-                    DataGetter.requestAndReadRAW(adcData, ioData);
+                    TX_Communicator.requestAndReadRAW(adcData, ref ioData);
                     if (this.InvokeRequired)
                     {
                         this.BeginInvoke(new Action(() =>

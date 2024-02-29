@@ -36,6 +36,7 @@
             tpADCData = new TabPage();
             adcData1 = new ADCData();
             tpRCData = new TabPage();
+            rcData1 = new RCData();
             tpAuxData = new TabPage();
             auxData1 = new AUXData();
             statStip = new StatusStrip();
@@ -46,16 +47,17 @@
             loadFromFileToolStripMenuItem = new ToolStripMenuItem();
             saveToFileToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
-            connectToTXToolStripMenuItem = new ToolStripMenuItem();
-            reconnectToTXToolStripMenuItem = new ToolStripMenuItem();
-            disconnectFromTXToolStripMenuItem = new ToolStripMenuItem();
-            readFromTXToolStripMenuItem = new ToolStripMenuItem();
-            writeToTXToolStripMenuItem = new ToolStripMenuItem();
-            toolStripSeparator2 = new ToolStripSeparator();
             quitToolStripMenuItem = new ToolStripMenuItem();
             modelToolStripMenuItem = new ToolStripMenuItem();
+            transmitterToolStripMenuItem = new ToolStripMenuItem();
+            connectToTXToolStripMenuItem = new ToolStripMenuItem();
+            disconnectFromTXToolStripMenuItem = new ToolStripMenuItem();
+            reconnectToTXToolStripMenuItem = new ToolStripMenuItem();
+            readFromTXToolStripMenuItem = new ToolStripMenuItem();
+            writeToTXToolStripMenuItem = new ToolStripMenuItem();
+            miscToolStripMenuItem = new ToolStripMenuItem();
+            realtimeChannelDataToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1 = new TableLayoutPanel();
-            rcData1 = new RCData();
             tcOptions.SuspendLayout();
             tpADCSetup.SuspendLayout();
             tpChannelSetup.SuspendLayout();
@@ -122,6 +124,7 @@
             tcRCChannels.SelectedIndex = 0;
             tcRCChannels.Size = new Size(1326, 462);
             tcRCChannels.TabIndex = 1;
+            tcRCChannels.SelectedIndexChanged += tcRCChannels_SelectedIndexChanged;
             // 
             // tpADCData
             // 
@@ -152,6 +155,14 @@
             tpRCData.TabIndex = 3;
             tpRCData.Text = "RC Data";
             tpRCData.UseVisualStyleBackColor = true;
+            // 
+            // rcData1
+            // 
+            rcData1.Dock = DockStyle.Fill;
+            rcData1.Location = new Point(3, 3);
+            rcData1.Name = "rcData1";
+            rcData1.Size = new Size(1326, 462);
+            rcData1.TabIndex = 0;
             // 
             // tpAuxData
             // 
@@ -195,7 +206,7 @@
             // 
             // menuMain
             // 
-            menuMain.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, modelToolStripMenuItem });
+            menuMain.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, modelToolStripMenuItem, transmitterToolStripMenuItem, miscToolStripMenuItem });
             menuMain.Location = new Point(0, 0);
             menuMain.Name = "menuMain";
             menuMain.Size = new Size(1346, 24);
@@ -204,7 +215,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadFromFileToolStripMenuItem, saveToFileToolStripMenuItem, toolStripSeparator1, connectToTXToolStripMenuItem, reconnectToTXToolStripMenuItem, disconnectFromTXToolStripMenuItem, readFromTXToolStripMenuItem, writeToTXToolStripMenuItem, toolStripSeparator2, quitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadFromFileToolStripMenuItem, saveToFileToolStripMenuItem, toolStripSeparator1, quitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
@@ -212,70 +223,26 @@
             // loadFromFileToolStripMenuItem
             // 
             loadFromFileToolStripMenuItem.Name = "loadFromFileToolStripMenuItem";
-            loadFromFileToolStripMenuItem.Size = new Size(178, 22);
-            loadFromFileToolStripMenuItem.Text = "Load from file";
+            loadFromFileToolStripMenuItem.Size = new Size(187, 22);
+            loadFromFileToolStripMenuItem.Text = "Load setting from file";
             loadFromFileToolStripMenuItem.Click += loadFromFileToolStripMenuItem_Click;
             // 
             // saveToFileToolStripMenuItem
             // 
             saveToFileToolStripMenuItem.Name = "saveToFileToolStripMenuItem";
-            saveToFileToolStripMenuItem.Size = new Size(178, 22);
-            saveToFileToolStripMenuItem.Text = "Save to file";
+            saveToFileToolStripMenuItem.Size = new Size(187, 22);
+            saveToFileToolStripMenuItem.Text = "Save settings to file";
             saveToFileToolStripMenuItem.Click += saveToFileToolStripMenuItem_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(175, 6);
-            // 
-            // connectToTXToolStripMenuItem
-            // 
-            connectToTXToolStripMenuItem.Name = "connectToTXToolStripMenuItem";
-            connectToTXToolStripMenuItem.Size = new Size(178, 22);
-            connectToTXToolStripMenuItem.Text = "Connect to TX";
-            connectToTXToolStripMenuItem.Click += connectToTXToolStripMenuItem_Click;
-            // 
-            // reconnectToTXToolStripMenuItem
-            // 
-            reconnectToTXToolStripMenuItem.Name = "reconnectToTXToolStripMenuItem";
-            reconnectToTXToolStripMenuItem.Size = new Size(178, 22);
-            reconnectToTXToolStripMenuItem.Text = "Reconnect to TX";
-            reconnectToTXToolStripMenuItem.Visible = false;
-            reconnectToTXToolStripMenuItem.Click += reconnectToTXToolStripMenuItem_Click;
-            // 
-            // disconnectFromTXToolStripMenuItem
-            // 
-            disconnectFromTXToolStripMenuItem.Name = "disconnectFromTXToolStripMenuItem";
-            disconnectFromTXToolStripMenuItem.Size = new Size(178, 22);
-            disconnectFromTXToolStripMenuItem.Text = "Disconnect from TX";
-            disconnectFromTXToolStripMenuItem.Visible = false;
-            disconnectFromTXToolStripMenuItem.Click += disconnectFromTXToolStripMenuItem_Click;
-            // 
-            // readFromTXToolStripMenuItem
-            // 
-            readFromTXToolStripMenuItem.Name = "readFromTXToolStripMenuItem";
-            readFromTXToolStripMenuItem.Size = new Size(178, 22);
-            readFromTXToolStripMenuItem.Text = "Read from TX";
-            readFromTXToolStripMenuItem.Visible = false;
-            readFromTXToolStripMenuItem.Click += readFromTXToolStripMenuItem_Click;
-            // 
-            // writeToTXToolStripMenuItem
-            // 
-            writeToTXToolStripMenuItem.Name = "writeToTXToolStripMenuItem";
-            writeToTXToolStripMenuItem.Size = new Size(178, 22);
-            writeToTXToolStripMenuItem.Text = "Write to TX";
-            writeToTXToolStripMenuItem.Visible = false;
-            writeToTXToolStripMenuItem.Click += writeToTXToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator2
-            // 
-            toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(175, 6);
+            toolStripSeparator1.Size = new Size(184, 6);
             // 
             // quitToolStripMenuItem
             // 
             quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            quitToolStripMenuItem.Size = new Size(178, 22);
+            quitToolStripMenuItem.Size = new Size(187, 22);
             quitToolStripMenuItem.Text = "Quit";
             quitToolStripMenuItem.Click += quitToolStripMenuItem_Click;
             // 
@@ -284,6 +251,63 @@
             modelToolStripMenuItem.Name = "modelToolStripMenuItem";
             modelToolStripMenuItem.Size = new Size(53, 20);
             modelToolStripMenuItem.Text = "Model";
+            // 
+            // transmitterToolStripMenuItem
+            // 
+            transmitterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { connectToTXToolStripMenuItem, disconnectFromTXToolStripMenuItem, reconnectToTXToolStripMenuItem, readFromTXToolStripMenuItem, writeToTXToolStripMenuItem });
+            transmitterToolStripMenuItem.Name = "transmitterToolStripMenuItem";
+            transmitterToolStripMenuItem.Size = new Size(78, 20);
+            transmitterToolStripMenuItem.Text = "Transmitter";
+            // 
+            // connectToTXToolStripMenuItem
+            // 
+            connectToTXToolStripMenuItem.Name = "connectToTXToolStripMenuItem";
+            connectToTXToolStripMenuItem.Size = new Size(180, 22);
+            connectToTXToolStripMenuItem.Text = "Connect to TX";
+            connectToTXToolStripMenuItem.Click += connectToTXToolStripMenuItem_Click;
+            // 
+            // disconnectFromTXToolStripMenuItem
+            // 
+            disconnectFromTXToolStripMenuItem.Name = "disconnectFromTXToolStripMenuItem";
+            disconnectFromTXToolStripMenuItem.Size = new Size(180, 22);
+            disconnectFromTXToolStripMenuItem.Text = "Disconnect from TX";
+            disconnectFromTXToolStripMenuItem.Visible = false;
+            // 
+            // reconnectToTXToolStripMenuItem
+            // 
+            reconnectToTXToolStripMenuItem.Name = "reconnectToTXToolStripMenuItem";
+            reconnectToTXToolStripMenuItem.Size = new Size(180, 22);
+            reconnectToTXToolStripMenuItem.Text = "Reconnect to TX";
+            reconnectToTXToolStripMenuItem.Visible = false;
+            // 
+            // readFromTXToolStripMenuItem
+            // 
+            readFromTXToolStripMenuItem.Name = "readFromTXToolStripMenuItem";
+            readFromTXToolStripMenuItem.Size = new Size(180, 22);
+            readFromTXToolStripMenuItem.Text = "Read settings";
+            readFromTXToolStripMenuItem.Visible = false;
+            // 
+            // writeToTXToolStripMenuItem
+            // 
+            writeToTXToolStripMenuItem.Name = "writeToTXToolStripMenuItem";
+            writeToTXToolStripMenuItem.Size = new Size(180, 22);
+            writeToTXToolStripMenuItem.Text = "Write settings";
+            writeToTXToolStripMenuItem.Visible = false;
+            // 
+            // miscToolStripMenuItem
+            // 
+            miscToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { realtimeChannelDataToolStripMenuItem });
+            miscToolStripMenuItem.Name = "miscToolStripMenuItem";
+            miscToolStripMenuItem.Size = new Size(44, 20);
+            miscToolStripMenuItem.Text = "Misc";
+            // 
+            // realtimeChannelDataToolStripMenuItem
+            // 
+            realtimeChannelDataToolStripMenuItem.CheckOnClick = true;
+            realtimeChannelDataToolStripMenuItem.Name = "realtimeChannelDataToolStripMenuItem";
+            realtimeChannelDataToolStripMenuItem.Size = new Size(191, 22);
+            realtimeChannelDataToolStripMenuItem.Text = "Realtime channel data";
+            realtimeChannelDataToolStripMenuItem.Click += realtimeChannelDataToolStripMenuItem_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -299,14 +323,6 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 2F));
             tableLayoutPanel1.Size = new Size(1346, 502);
             tableLayoutPanel1.TabIndex = 2;
-            // 
-            // rcData1
-            // 
-            rcData1.Dock = DockStyle.Fill;
-            rcData1.Location = new Point(3, 3);
-            rcData1.Name = "rcData1";
-            rcData1.Size = new Size(1326, 462);
-            rcData1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -348,21 +364,23 @@
         private ToolStripMenuItem loadFromFileToolStripMenuItem;
         private ToolStripMenuItem saveToFileToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
-        private ToolStripMenuItem connectToTXToolStripMenuItem;
-        private ToolStripMenuItem readFromTXToolStripMenuItem;
-        private ToolStripMenuItem writeToTXToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem quitToolStripMenuItem;
-        private ToolStripMenuItem disconnectFromTXToolStripMenuItem;
         private TableLayoutPanel tableLayoutPanel1;
         private TabControl tcRCChannels;
         private ToolStripMenuItem modelToolStripMenuItem;
-        private ToolStripMenuItem reconnectToTXToolStripMenuItem;
         private TabPage tpADCData;
         private TabPage tpRCData;
         private TabPage tpAuxData;
         private ADCData adcData1;
         private AUXData auxData1;
         private RCData rcData1;
+        private ToolStripMenuItem transmitterToolStripMenuItem;
+        private ToolStripMenuItem disconnectFromTXToolStripMenuItem;
+        private ToolStripMenuItem reconnectToTXToolStripMenuItem;
+        private ToolStripMenuItem readFromTXToolStripMenuItem;
+        private ToolStripMenuItem writeToTXToolStripMenuItem;
+        private ToolStripMenuItem miscToolStripMenuItem;
+        private ToolStripMenuItem realtimeChannelDataToolStripMenuItem;
+        private ToolStripMenuItem connectToTXToolStripMenuItem;
     }
 }

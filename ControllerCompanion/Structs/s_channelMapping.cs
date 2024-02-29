@@ -6,6 +6,11 @@ namespace ControllerCompanion.Structs
 {
     public class s_channelMapping : INotifyPropertyChanged
     {
+        ChannelConfig parent;
+        public s_channelMapping(ChannelConfig parent)
+        {
+            this.parent = parent;
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         // This method is called by the Set accessor of each property.

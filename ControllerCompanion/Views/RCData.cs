@@ -51,7 +51,7 @@ namespace ControllerCompanion.Views
             {
                 if (getData)
                 {
-                    DataGetter.requestAndReadRC(rcData);
+                    TX_Communicator.requestAndReadRC(rcData);
                     if (this.InvokeRequired)
                     {
                         this.BeginInvoke(new Action(() =>

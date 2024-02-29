@@ -51,7 +51,7 @@ namespace ControllerCompanion.Views
             {
                 if (getData)
                 {
-                    DataGetter.requestAndReadAUX(auxData);
+                    TX_Communicator.requestAndReadAUX(auxData);
                     if (this.InvokeRequired)
                     {
                         this.BeginInvoke(new Action(() =>
