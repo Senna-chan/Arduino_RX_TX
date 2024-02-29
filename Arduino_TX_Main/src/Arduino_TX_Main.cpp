@@ -256,81 +256,18 @@ void initSPI() {}
  */
 void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t* raw_channels, uint16_t* parsed_channels, uint16_t* mapped_channels, uint32_t IO_bits, uint16_t* AUX_Serial_Channels) {
     digitalWrite(chPerfDebugPin, HIGH);
+
+    // Parse ADC channels
     for (int i = 0; i < ADCCHANNELNUMBERS; i++)
     {
         auto chSettings = activeSettings->channel_settings[i];
         parsed_channels[i] = parseADCChannel(raw_channels[i], chSettings.adcConfig.min, chSettings.adcConfig.mid, chSettings.adcConfig.max, activeSettings->deadzone, chSettings.trim);
     }
 
-    for (int i = 0; i < RC_MAX_CHANNELS; i++) {
-
+    for (int i = 0; i < RC_MAX_CHANNELS; i++)
+    {
         auto chSettings = activeSettings->channel_settings[i];
-        auto io1t = chSettings.channelMapping[0].type;
-        auto io2t = chSettings.channelMapping[1].type;
-        auto io1 = chSettings.channelMapping[0].index;
-        auto io2 = chSettings.channelMapping[1].index;
-        //auto outputMode = chSettings.outputMode;
-        if (io1t == CTYPE_NONE && io2t == CTYPE_NONE) { // Not mapped
-            mapped_channels[i] = 2023; // Make sure that RX will not parse this
-            continue;
-        }
-        if (io1t != CTYPE_NONE && io2t == CTYPE_NONE)  // Single channel mapped
-        {
-            switch(io1t)
-            {
-                case CTYPE_ADC:
-                    mapped_channels[i] = parsed_channels[io1];
-                break;
-
-                case CTYPE_IO:
-                    mapped_channels[i] = bitRead(IO_bits, io1) ? 2000 : 1000;
-                break;
-
-                case CTYPE_AUX_IO:
-
-                break;
-
-                case CTYPE_AUX_SERIAL:
-                    mapped_channels[i] = AUX_Serial_reader.getChannel(io1);
-                break;
-
-                default:
-                    Error_Handler();
-                break;
-            }
-        }
-        else if (io1t == CTYPE_IO && io2t == CTYPE_IO) // Multi IO mapped
-        {
-            bool b1 = bitRead(IO_bits, io1);
-            bool b2 = bitRead(IO_bits, io2);
-            if (!b1 && !b2)
-            {
-                mapped_channels[i] = 1500;
-            }
-            else if (b1 && !b2)
-            {
-                mapped_channels[i] = 2000;
-            }
-            else if (!b1 && b2)
-            {
-                mapped_channels[i] = 1000;
-            }
-            else
-            {
-                Serial.printf("CH%d invalid config. IO1 and IO2 both high", i);
-            }
-        }
-        else // Invalid config
-        {
-            Serial.printf("CH Mapping for %d invalid. IOType1 %s Type2 %s\n", i, channel_types_str[io1t], channel_types_str[io2t]); // SPAM
-        }
-
-        mapped_channels[i] = map(mapped_channels[i], 1000, 2000, chSettings.endPoints.min, chSettings.endPoints.max);
-
-        if (bitRead(activeSettings->channelReversed, i)) {
-            int16_t tempVal = (mapped_channels[i] - 3000) * -1;
-            mappedChannels[i] = tempVal;
-        }
+        mapped_channels[i] = parseRCChannel(i, &chSettings, bitRead(activeSettings->channelReversed, i), parsed_channels, IO_bits, AUX_Serial_Channels);
     }
 
     //for (channelMixStruct channel_mixing : settings.model[settings.activeModel].channelMixing)

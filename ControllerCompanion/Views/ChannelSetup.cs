@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
 using System.IO;
 
@@ -23,6 +22,66 @@ namespace ControllerCompanion.Views
         s_stepperConfig stepperConfig;
 
         bool blockCobUpdates = false;
+
+        private static Thread dataThread = new Thread(dataGetter);
+        private static bool getData = false;
+        private static ChannelSetup? currentChannelSetup;
+        private static void dataGetter()
+        {
+            Thread.CurrentThread.Name = "RCChannelGetter";
+            UInt16 rcValue = 0;
+            int count = 0;
+            while (true)
+            {
+                if (getData && currentChannelSetup != null)
+                {
+                    count++;
+                    if (count % 8 == 0)
+                    {
+                        count = 0;
+                        TX_Communicator.transmitChannelConfig(currentChannelSetup.channelConfig);
+                    }
+
+                    TX_Communicator.requestAndReadRCChannel(ref rcValue);
+                    if (currentChannelSetup.InvokeRequired)
+                    {
+                        currentChannelSetup.BeginInvoke(new Action(() =>
+                        {
+                            for (int i = 0; i < 24; i++)
+                            {
+                                currentChannelSetup.lblRCValue.Text = rcValue.ToString();
+                            }
+                        }));
+                    }
+                }
+                Thread.Sleep(250);
+            }
+        }
+
+        public static void startDataGetter()
+        {
+            getData = true;
+            if (dataThread.ThreadState == ThreadState.Unstarted)
+            {
+                dataThread.Start();
+            }
+        }
+
+        public static void stopDataGetter()
+        {
+            getData = false;
+        }
+
+        public static void tempStopDataGetter()
+        {
+            currentChannelSetup = null;
+        }
+
+        public void getThisRCValue()
+        {
+            currentChannelSetup = this;
+            TX_Communicator.transmitChannelConfig(channelConfig);
+        }
 
         private void changeStepObjects(bool visible)
         {
@@ -40,6 +99,7 @@ namespace ControllerCompanion.Views
         public ChannelSetup(int channel)
         {
             InitializeComponent();
+            lblChannelId.Text = $"Channel {channel}";
             changeStepObjects(false);
             changePWMObjects(false);
             this.channel = channel;

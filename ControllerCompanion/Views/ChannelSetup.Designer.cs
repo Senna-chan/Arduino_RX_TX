@@ -56,6 +56,7 @@
             btnDetectInput1 = new Button();
             label8 = new Label();
             numStartupValue = new NumericUpDown();
+            lblRCValue = new Label();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numEndPointMax).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numEndPointMin).BeginInit();
@@ -103,6 +104,7 @@
             tableLayoutPanel1.Controls.Add(btnDetectInput1, 4, 2);
             tableLayoutPanel1.Controls.Add(label8, 4, 6);
             tableLayoutPanel1.Controls.Add(numStartupValue, 6, 6);
+            tableLayoutPanel1.Controls.Add(lblRCValue, 5, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -409,6 +411,16 @@
             numStartupValue.TabIndex = 29;
             numStartupValue.ValueChanged += numStartupValue_ValueChanged;
             // 
+            // lblRCValue
+            // 
+            lblRCValue.AutoSize = true;
+            lblRCValue.Font = new Font("Stencil", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            lblRCValue.Location = new Point(932, 30);
+            lblRCValue.Name = "lblRCValue";
+            lblRCValue.Size = new Size(73, 29);
+            lblRCValue.TabIndex = 30;
+            lblRCValue.Text = "1234";
+            // 
             // ChannelSetup
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -460,5 +472,6 @@
         private Label label7;
         private Label label8;
         private NumericUpDown numStartupValue;
+        public Label lblRCValue;
     }
 }

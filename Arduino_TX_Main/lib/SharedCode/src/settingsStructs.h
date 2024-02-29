@@ -1,6 +1,7 @@
 #ifndef _SETTINGS_STRUCTS_H
 #define _SETTINGS_STRUCTS_H
 
+#include "sharedVars.h"
 
 #define CTYPE_NONE          0
 #define CTYPE_ADC           1

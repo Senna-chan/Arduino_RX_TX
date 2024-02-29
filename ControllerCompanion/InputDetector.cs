@@ -29,11 +29,11 @@ namespace ControllerCompanion
             {
                 Thread.CurrentThread.Name = "InputDetector";
                 Console.WriteLine("Starting input detection");
-                DataGetter.requestAndReadDetectionVars(InitialADCChannels, InitialAUX_Serial_Channels, InitialIOBits);
+                TX_Communicator.requestAndReadDetectionVars(InitialADCChannels, InitialAUX_Serial_Channels, ref InitialIOBits);
 
                 while (true)
                 {
-                    DataGetter.requestAndReadDetectionVars(ADCChannels, AUX_Serial_Channels, IOBits);
+                    TX_Communicator.requestAndReadDetectionVars(ADCChannels, AUX_Serial_Channels, ref IOBits);
                     for (byte i = 0; i < Config.RC_MAX_CHANNELS; i++)
                     {
                         short initADC = (short)InitialADCChannels[i];

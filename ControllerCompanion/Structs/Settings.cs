@@ -143,31 +143,15 @@ namespace ControllerCompanion.Structs
 
         internal static void readFromRemote(SerialPort selectedSerialPort, ref Settings settings)
         {
-            selectedSerialPort.Write(new byte[] { (byte)'R' }, 0, 1);
-            Thread.Sleep(1000);
-            Console.WriteLine($"Got {selectedSerialPort.BytesToRead} bytes to read");
-            readBinary(selectedSerialPort.BaseStream, settings, true);
-            if (selectedSerialPort.BytesToRead > 0)
-            {
-                Console.WriteLine($"Still got bytes left. {selectedSerialPort.BytesToRead}");
-                selectedSerialPort.ReadExisting();
-            }
+            
         }
 
         internal static void writeToRemote(SerialPort selectedSerialPort, Settings settings)
         {
-            selectedSerialPort.Write(new byte[] { (byte)'T' }, 0, 1);
-            try
-            {
-                writeBinary(selectedSerialPort.BaseStream, settings, true);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            
         }
         
-        private static void writeBinary(Stream stream, Settings settings, bool keepOpen)
+        public static void writeBinary(Stream stream, Settings settings, bool keepOpen)
         {
             using (var writer = new BinaryWriter(stream, Encoding.UTF8, keepOpen))
             {
@@ -245,7 +229,7 @@ namespace ControllerCompanion.Structs
             }
         }
 
-        private static void readBinary(Stream stream, Settings settings, bool keepOpen)
+        public static void readBinary(Stream stream, Settings settings, bool keepOpen)
         {
             using (var reader = new BinaryReader(stream, Encoding.UTF8, keepOpen))
             {

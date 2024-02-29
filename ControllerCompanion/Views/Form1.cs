@@ -62,7 +62,8 @@ namespace ControllerCompanion.Views
             {
                 var fileName = diagBox.FileName;
                 Config.settings = Settings.loadFromFile(fileName);
-                for (int i = 0; i < Config.RC_MAX_CHANNELS; i++) {
+                for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
+                {
                     channelSetups[i].getChannelConfig().UpdateValues(Config.settings.model[0].channel_settings[i]);
                 }
             }
@@ -111,7 +112,7 @@ namespace ControllerCompanion.Views
         private void readFromTXToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.saveToFile("comp_config.bin", Config.settings);
-            Settings.readFromRemote(Config.SelectedSerialPort, ref Config.settings);
+            TX_Communicator.requestSettings(ref Config.settings);
             Settings.saveToFile("tx_config.bin", Config.settings);
 
             //for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
@@ -126,7 +127,7 @@ namespace ControllerCompanion.Views
 
         private void writeToTXToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings.writeToRemote(Config.SelectedSerialPort, Config.settings);
+            TX_Communicator.transmitSettings(Config.settings);
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -159,6 +160,7 @@ namespace ControllerCompanion.Views
             auxData1.stopDataGetter();
             adcData1.stopDataGetter();
             rcData1.stopDataGetter();
+            ChannelSetup.tempStopDataGetter();
             if (tcOptions.SelectedTab.Name == "tpADCData")
             {
                 adcData1.startDataGetter();
@@ -171,6 +173,24 @@ namespace ControllerCompanion.Views
             {
                 auxData1.startDataGetter();
             }
+        }
+
+        private void realtimeChannelDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (realtimeChannelDataToolStripMenuItem.Checked)
+            {
+                ChannelSetup.startDataGetter();
+            }
+            else
+            {
+                ChannelSetup.stopDataGetter();
+            }
+        }
+
+        private void tcRCChannels_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = (int)tcRCChannels.SelectedIndex;
+            channelSetups[index].getThisRCValue();
         }
     }
 }
