@@ -6,10 +6,10 @@ namespace ControllerCompanion.Structs
 {
     public class s_channelMapping : INotifyPropertyChanged
     {
-        ChannelConfig parent;
-        public s_channelMapping(ChannelConfig parent)
+        
+        public s_channelMapping()
         {
-            this.parent = parent;
+        
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

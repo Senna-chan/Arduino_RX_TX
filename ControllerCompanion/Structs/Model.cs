@@ -16,6 +16,8 @@ namespace ControllerCompanion.Structs
         public uint channelReversed { get; set; }
         public ChannelMixSettings[] channelMixing { get; set; }
         public EncoderSettings[] encoderSettings { get; set; }
+        public OutputEnableStruct outputEnable { get; set; }
+        public RateLimitConfigStruct rateLimitConfig { get; set; }
 
         public Model()
         {
@@ -32,6 +34,9 @@ namespace ControllerCompanion.Structs
             encoderSettings = new EncoderSettings[2];
             for(int i = 0; i < 2; i++)
                 encoderSettings[i] = new EncoderSettings();
+
+            outputEnable = new OutputEnableStruct();
+            rateLimitConfig = new RateLimitConfigStruct();
         }
     }
 }

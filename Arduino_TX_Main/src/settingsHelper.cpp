@@ -146,6 +146,10 @@ void generateDefaultSettings()
     settings.model[0].encoderSettings[1].curValue = 5;
     settings.model[0].encoderSettings[1].division = 10;
 
+    settings.model[0].rateLimitConfig.outputValuesMax.s.min = 1200;
+    settings.model[0].rateLimitConfig.outputValuesMax.s.mid = 1600;
+    settings.model[0].rateLimitConfig.outputValuesMax.s.max = 2000;
+
     for (int i = 1; i < 8; i++)
     {
         settings.model[i] = settings.model[0];

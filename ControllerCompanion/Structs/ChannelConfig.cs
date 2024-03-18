@@ -119,7 +119,7 @@ namespace ControllerCompanion.Structs
             channelMapping = new s_channelMapping[2];
             for(int i = 0; i < 2; i++)
             {
-                channelMapping[i] = new s_channelMapping(this);
+                channelMapping[i] = new s_channelMapping();
             }
             endPoints = new s_calibrationConfig();
         }

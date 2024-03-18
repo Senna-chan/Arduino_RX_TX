@@ -87,6 +87,7 @@ namespace ControllerCompanion.Structs
                 lmodel.encoderSettings[1].steps = 1;
                 lmodel.encoderSettings[1].curValue = 5;
                 lmodel.encoderSettings[1].devision = 10;
+
             }
         }
 
@@ -100,19 +101,11 @@ namespace ControllerCompanion.Structs
             }
             else if (fileName.EndsWith("bin"))
             {
-                
                 using (var stream = File.Open(fileName, FileMode.Open))
                 {
                     readBinary(stream, settings, false);
                 }
                 return settings;
-            }
-            else if (fileName.EndsWith("hex"))
-            {
-                using (var stream = File.Open(fileName, FileMode.Open))
-                {
-                    readHex(stream, settings, false);
-                }
             }
 
             return settings;
@@ -122,7 +115,7 @@ namespace ControllerCompanion.Structs
         {
             if (fileName.EndsWith("json"))
             {
-                string json = JsonConvert.SerializeObject(settings);
+                string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
                 File.WriteAllText(fileName, json);
             }
             else if (fileName.EndsWith("bin"))
@@ -132,23 +125,6 @@ namespace ControllerCompanion.Structs
                     writeBinary(stream, settings, false);
                 }
             }
-            else if (fileName.EndsWith("hex"))
-            {
-                using (var stream = File.Open(fileName, FileMode.Create))
-                {
-                    writeHex(stream, settings, false);
-                }
-            }
-        }
-
-        internal static void readFromRemote(SerialPort selectedSerialPort, ref Settings settings)
-        {
-            
-        }
-
-        internal static void writeToRemote(SerialPort selectedSerialPort, Settings settings)
-        {
-            
         }
         
         public static void writeBinary(Stream stream, Settings settings, bool keepOpen)
@@ -225,6 +201,22 @@ namespace ControllerCompanion.Structs
                         writer.Write(encoderSettings.devision);
                     }
                     writer.Flush();
+
+                    writer.Write(model.outputEnable.inputIO.type);
+                    writer.Write(model.outputEnable.inputIO.index);
+                    writer.Write(model.outputEnable.outputsToEnable);
+
+                    foreach (var ratelimitinput in model.rateLimitConfig.input) {
+                        writer.Write(ratelimitinput.type);
+                        writer.Write(ratelimitinput.index);
+                    }
+                    writer.Write(model.rateLimitConfig.outputValuesMax.min);
+                    writer.Write(model.rateLimitConfig.outputValuesMax.mid);
+                    writer.Write(model.rateLimitConfig.outputValuesMax.max);
+                    writer.Write(model.rateLimitConfig.outputToRateLimit);
+                    writer.Write(model.rateLimitConfig.limitSide);
+
+                    writer.Flush();
                 }
             }
         }
@@ -292,6 +284,22 @@ namespace ControllerCompanion.Structs
                         encoderSettings.curValue = reader.ReadInt32();
                         encoderSettings.devision = reader.ReadInt32();
                     }
+
+                    model.outputEnable.inputIO.type = reader.ReadByte();
+                    model.outputEnable.inputIO.index = reader.ReadByte();
+
+                    model.outputEnable.outputsToEnable = reader.ReadUInt32();
+
+                    foreach (var ratelimitinput in model.rateLimitConfig.input)
+                    {
+                        ratelimitinput.type = reader.ReadByte();
+                        ratelimitinput.index = reader.ReadByte();
+                    }
+                    model.rateLimitConfig.outputValuesMax.min = reader.ReadUInt16();
+                    model.rateLimitConfig.outputValuesMax.mid = reader.ReadUInt16();
+                    model.rateLimitConfig.outputValuesMax.max = reader.ReadUInt16();
+                    model.rateLimitConfig.outputToRateLimit = reader.ReadByte();
+                    model.rateLimitConfig.limitSide = reader.ReadSByte();
                 }
             }
 
@@ -310,17 +318,6 @@ namespace ControllerCompanion.Structs
                     }
                 }
             }
-        }
-
-
-        private static void writeHex(Stream stream, Settings settings, bool keepOpen)
-        {
-
-        }
-
-        private static void readHex(Stream stream, Settings settings, bool keepOpen)
-        {
-
         }
     }
 }

@@ -194,13 +194,13 @@ namespace ControllerCompanion.Views
         private void btnDetectInput1_Click(object sender, EventArgs e)
         {
             btnDetectInput1.Text = "Detecting 1";
-            InputDetector.detectSequence(this, 1);
+            InputDetector.detectSequence(setChannelMapping, 1);
         }
 
         private void btnDetectInput2_Click(object sender, EventArgs e)
         {
             btnDetectInput2.Text = "Detecting 2";
-            InputDetector.detectSequence(this, 2);
+            InputDetector.detectSequence(setChannelMapping, 2);
         }
 
         private void numFailsafeValue_ValueChanged(object sender, EventArgs e)

@@ -39,6 +39,7 @@
             rcData1 = new RCData();
             tpAuxData = new TabPage();
             auxData1 = new AUXData();
+            tpSwitchFunctions = new TabPage();
             statStip = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             tslblComPort = new ToolStripStatusLabel();
@@ -57,6 +58,7 @@
             writeToTXToolStripMenuItem = new ToolStripMenuItem();
             miscToolStripMenuItem = new ToolStripMenuItem();
             realtimeChannelDataToolStripMenuItem = new ToolStripMenuItem();
+            stopDetectorToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1 = new TableLayoutPanel();
             tcOptions.SuspendLayout();
             tpADCSetup.SuspendLayout();
@@ -77,6 +79,7 @@
             tcOptions.Controls.Add(tpADCData);
             tcOptions.Controls.Add(tpRCData);
             tcOptions.Controls.Add(tpAuxData);
+            tcOptions.Controls.Add(tpSwitchFunctions);
             tcOptions.Location = new Point(3, 3);
             tcOptions.Name = "tcOptions";
             tableLayoutPanel1.SetRowSpan(tcOptions, 3);
@@ -183,6 +186,16 @@
             auxData1.Size = new Size(1326, 462);
             auxData1.TabIndex = 0;
             // 
+            // tpSwitchFunctions
+            // 
+            tpSwitchFunctions.Location = new Point(4, 24);
+            tpSwitchFunctions.Name = "tpSwitchFunctions";
+            tpSwitchFunctions.Padding = new Padding(3);
+            tpSwitchFunctions.Size = new Size(1332, 468);
+            tpSwitchFunctions.TabIndex = 5;
+            tpSwitchFunctions.Text = "Switch functions";
+            tpSwitchFunctions.UseVisualStyleBackColor = true;
+            // 
             // statStip
             // 
             statStip.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, tslblComPort });
@@ -262,41 +275,45 @@
             // connectToTXToolStripMenuItem
             // 
             connectToTXToolStripMenuItem.Name = "connectToTXToolStripMenuItem";
-            connectToTXToolStripMenuItem.Size = new Size(180, 22);
+            connectToTXToolStripMenuItem.Size = new Size(178, 22);
             connectToTXToolStripMenuItem.Text = "Connect to TX";
             connectToTXToolStripMenuItem.Click += connectToTXToolStripMenuItem_Click;
             // 
             // disconnectFromTXToolStripMenuItem
             // 
             disconnectFromTXToolStripMenuItem.Name = "disconnectFromTXToolStripMenuItem";
-            disconnectFromTXToolStripMenuItem.Size = new Size(180, 22);
+            disconnectFromTXToolStripMenuItem.Size = new Size(178, 22);
             disconnectFromTXToolStripMenuItem.Text = "Disconnect from TX";
             disconnectFromTXToolStripMenuItem.Visible = false;
+            disconnectFromTXToolStripMenuItem.Click += disconnectFromTXToolStripMenuItem_Click;
             // 
             // reconnectToTXToolStripMenuItem
             // 
             reconnectToTXToolStripMenuItem.Name = "reconnectToTXToolStripMenuItem";
-            reconnectToTXToolStripMenuItem.Size = new Size(180, 22);
+            reconnectToTXToolStripMenuItem.Size = new Size(178, 22);
             reconnectToTXToolStripMenuItem.Text = "Reconnect to TX";
             reconnectToTXToolStripMenuItem.Visible = false;
+            reconnectToTXToolStripMenuItem.Click += reconnectToTXToolStripMenuItem_Click;
             // 
             // readFromTXToolStripMenuItem
             // 
             readFromTXToolStripMenuItem.Name = "readFromTXToolStripMenuItem";
-            readFromTXToolStripMenuItem.Size = new Size(180, 22);
+            readFromTXToolStripMenuItem.Size = new Size(178, 22);
             readFromTXToolStripMenuItem.Text = "Read settings";
             readFromTXToolStripMenuItem.Visible = false;
+            readFromTXToolStripMenuItem.Click += readFromTXToolStripMenuItem_Click;
             // 
             // writeToTXToolStripMenuItem
             // 
             writeToTXToolStripMenuItem.Name = "writeToTXToolStripMenuItem";
-            writeToTXToolStripMenuItem.Size = new Size(180, 22);
+            writeToTXToolStripMenuItem.Size = new Size(178, 22);
             writeToTXToolStripMenuItem.Text = "Write settings";
             writeToTXToolStripMenuItem.Visible = false;
+            writeToTXToolStripMenuItem.Click += writeToTXToolStripMenuItem_Click;
             // 
             // miscToolStripMenuItem
             // 
-            miscToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { realtimeChannelDataToolStripMenuItem });
+            miscToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { realtimeChannelDataToolStripMenuItem, stopDetectorToolStripMenuItem });
             miscToolStripMenuItem.Name = "miscToolStripMenuItem";
             miscToolStripMenuItem.Size = new Size(44, 20);
             miscToolStripMenuItem.Text = "Misc";
@@ -308,6 +325,13 @@
             realtimeChannelDataToolStripMenuItem.Size = new Size(191, 22);
             realtimeChannelDataToolStripMenuItem.Text = "Realtime channel data";
             realtimeChannelDataToolStripMenuItem.Click += realtimeChannelDataToolStripMenuItem_Click;
+            // 
+            // stopDetectorToolStripMenuItem
+            // 
+            stopDetectorToolStripMenuItem.Name = "stopDetectorToolStripMenuItem";
+            stopDetectorToolStripMenuItem.Size = new Size(191, 22);
+            stopDetectorToolStripMenuItem.Text = "Stop detector";
+            stopDetectorToolStripMenuItem.Click += stopDetectorToolStripMenuItem_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -382,5 +406,7 @@
         private ToolStripMenuItem miscToolStripMenuItem;
         private ToolStripMenuItem realtimeChannelDataToolStripMenuItem;
         private ToolStripMenuItem connectToTXToolStripMenuItem;
+        private TabPage tpSwitchFunctions;
+        public ToolStripMenuItem stopDetectorToolStripMenuItem;
     }
 }

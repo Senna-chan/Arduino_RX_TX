@@ -34,6 +34,10 @@ namespace ControllerCompanion.Views
                 rcTab.Controls.Add(chSetup);
                 tcRCChannels.TabPages.Add(rcTab);
             }
+            tpSwitchFunctions.Controls.Add(new SwitchSettings(Config.settings.model[Config.settings.activeModel].outputEnable, Config.settings.model[Config.settings.activeModel].rateLimitConfig)
+            {
+                Dock = DockStyle.Fill,
+            });
         }
 
         private void applySettings()
@@ -56,7 +60,7 @@ namespace ControllerCompanion.Views
         private void loadFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var diagBox = new OpenFileDialog();
-            diagBox.Filter = "JSON files (*.json)|*.json|HEX Files (*.hex)|*.hex|BIN Files (*.bin)|*.bin";
+            diagBox.Filter = "BIN Files (*.bin)|*.bin|JSON files (*.json)|*.json";
             var diagResult = diagBox.ShowDialog(this);
             if (diagResult == DialogResult.OK)
             {
@@ -72,7 +76,7 @@ namespace ControllerCompanion.Views
         private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var diagBox = new SaveFileDialog();
-            diagBox.Filter = "JSON files (*.json)|*.json|HEX Files (*.hex)|*.hex|BIN Files (*.bin)|*.bin";
+            diagBox.Filter = "BIN Files (*.bin)|*.bin|JSON files (*.json)|*.json";
             var diagResult = diagBox.ShowDialog(this);
             if (diagResult == DialogResult.OK)
             {
@@ -191,6 +195,11 @@ namespace ControllerCompanion.Views
         {
             int index = (int)tcRCChannels.SelectedIndex;
             channelSetups[index].getThisRCValue();
+        }
+
+        private void stopDetectorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputDetector.detectionRunning = false;
         }
     }
 }

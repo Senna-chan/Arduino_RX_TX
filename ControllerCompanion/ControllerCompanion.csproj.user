@@ -19,5 +19,8 @@
     <Compile Update="Views\SetupComport.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Views\SwitchSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
