@@ -24,7 +24,7 @@ namespace ControllerCompanion.Views
             for (int i = 0; i < 2; i++)
             {
                 int row = 0;
-                for (int j = 0; j < 12; j++)
+                for (int j = 0; j < 10; j++)
                 {
                     Label text = new Label();
                     text.Dock = DockStyle.Fill;
@@ -46,7 +46,7 @@ namespace ControllerCompanion.Views
         private void dataGetter()
         {
             Thread.CurrentThread.Name = "RCDataGetter";
-            UInt16[] rcData = new UInt16[24];
+            UInt16[] rcData = new UInt16[Config.RC_MAX_CHANNELS];
             while (true)
             {
                 if (getData)
@@ -56,7 +56,7 @@ namespace ControllerCompanion.Views
                     {
                         this.BeginInvoke(new Action(() =>
                         {
-                            for (int i = 0; i < 24; i++)
+                            for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
                             {
                                 rcChannels[i].Text = rcData[i].ToString();
                             }

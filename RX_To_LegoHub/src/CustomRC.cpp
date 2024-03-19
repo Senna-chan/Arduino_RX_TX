@@ -1,6 +1,6 @@
-// 
-// 
-// 
+//
+//
+//
 
 #include "CustomRC.h"
 
@@ -39,9 +39,9 @@ void CustomRC::parsePacket()
     switch (cmd) {
         case CHANNELS:
             uint16_t channels[25] = { 0 };
-            memcpy(channels+1, uartBuffer + 3, 24 * 2);
+            memcpy(channels+1, uartBuffer + 3, RC_MAX_CHANNELS * 2);
             channelCallback(channels, prevChannels);
-            memcpy(prevChannels, channels, 25 * 2);
+            memcpy(prevChannels, channels, RC_MAX_CHANNELS * 2);
             break;
     }
 }

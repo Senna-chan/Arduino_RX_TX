@@ -132,7 +132,6 @@ struct {
 HMI_Text* DispayRCObjs[RC_MAX_CHANNELS]{
     &e_n0, &e_n1, &e_n2, &e_n3, &e_n4, &e_n5, &e_n6, &e_n7, &e_n8, &e_n9,
     &e_n10, &e_n11, &e_n12, &e_n13, &e_n14, &e_n15, &e_n16, &e_n17, &e_n18, &e_n19,
-    &e_n20, &e_n21, &e_n22, &e_n23
 };
 
 HMI_Text* rawDispObjs[12]{
@@ -287,31 +286,27 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t*
         }
     }
 
-    // We can only send the 24 channels if it are 10 bit values so we need to subtract 1000 to get a range from 0 to 1000
-    channel_data->channel1 =  mapped_channels[0]  - 1000;
-    channel_data->channel2 =  mapped_channels[1]  - 1000;
-    channel_data->channel3 =  mapped_channels[2]  - 1000;
-    channel_data->channel4 =  mapped_channels[3]  - 1000;
-    channel_data->channel5 =  mapped_channels[4]  - 1000;
-    channel_data->channel6 =  mapped_channels[5]  - 1000;
-    channel_data->channel7 =  mapped_channels[6]  - 1000;
-    channel_data->channel8 =  mapped_channels[7]  - 1000;
-    channel_data->channel9 =  mapped_channels[8]  - 1000;
-    channel_data->channel10 = mapped_channels[9]  - 1000;
-    channel_data->channel11 = mapped_channels[10] - 1000;
-    channel_data->channel12 = mapped_channels[11] - 1000;
-    channel_data->channel13 = mapped_channels[12] - 1000;
-    channel_data->channel14 = mapped_channels[13] - 1000;
-    channel_data->channel15 = mapped_channels[14] - 1000;
-    channel_data->channel16 = mapped_channels[15] - 1000;
-    channel_data->channel17 = mapped_channels[16] - 1000;
-    channel_data->channel18 = mapped_channels[17] - 1000;
-    channel_data->channel19 = mapped_channels[18] - 1000;
-    channel_data->channel20 = mapped_channels[19] - 1000;
-    channel_data->channel21 = mapped_channels[20] - 1000;
-    channel_data->channel22 = mapped_channels[21] - 1000;
-    channel_data->channel23 = mapped_channels[22] - 1000;
-    channel_data->channel24 = mapped_channels[23] - 1000;
+
+    channel_data->channel1 =  mapped_channels[0]  - 500;
+    channel_data->channel2 =  mapped_channels[1]  - 500;
+    channel_data->channel3 =  mapped_channels[2]  - 500;
+    channel_data->channel4 =  mapped_channels[3]  - 500;
+    channel_data->channel5 =  mapped_channels[4]  - 500;
+    channel_data->channel6 =  mapped_channels[5]  - 500;
+    channel_data->channel7 =  mapped_channels[6]  - 500;
+    channel_data->channel8 =  mapped_channels[7]  - 500;
+    channel_data->channel9 =  mapped_channels[8]  - 500;
+    channel_data->channel10 = mapped_channels[9]  - 500;
+    channel_data->channel11 = mapped_channels[10] - 500;
+    channel_data->channel12 = mapped_channels[11] - 500;
+    channel_data->channel13 = mapped_channels[12] - 500;
+    channel_data->channel14 = mapped_channels[13] - 500;
+    channel_data->channel15 = mapped_channels[14] - 500;
+    channel_data->channel16 = mapped_channels[15] - 500;
+    channel_data->channel17 = mapped_channels[16] - 500;
+    channel_data->channel18 = mapped_channels[17] - 500;
+    channel_data->channel19 = mapped_channels[18] - 500;
+    channel_data->channel20 = mapped_channels[19] - 500;
     digitalWrite(chPerfDebugPin, LOW);
 }
 
@@ -801,7 +796,7 @@ void updateHMITask(void* parameter) {
             if (HMI.getCurrentPageId() == HMIPageElems::DisplayRcValues) {
                 DispayRCObjs[sendChannel]->setValue(mappedChannels[sendChannel]);
                 sendChannel++;
-                if (sendChannel == 24) {
+                if (sendChannel == RC_MAX_CHANNELS) {
                     sendChannel = 0;
                 }
             }
@@ -1007,7 +1002,7 @@ void initPlotter()
     }
     PlotterLib* chPlotter = Plotter.addNewPlotter("ChannelData");
 
-    for (int i = 1; i <= 24; i++)
+    for (int i = 1; i <= RC_MAX_CHANNELS; i++)
     {
         char chNum[10];
         snprintf(chNum, sizeof(chNum), "CH%02d", i);

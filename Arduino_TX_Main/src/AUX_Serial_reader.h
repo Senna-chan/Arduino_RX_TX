@@ -24,9 +24,9 @@ class Aux_Serial_Reader
     void setProtocol(AUX_SERIAL_PROTOCOL protocol);
     uint16_t getChannel(uint8_t channel);
     /**
-     * @brief Get all the channels. This is a limit of 24 channels
+     * @brief Get all the channels. This is a limit of 20 channels
      *
-     * @param channelBuf Buffer to hold channel data. Must be 24 big
+     * @param channelBuf Buffer to hold channel data. Must be 20 big
      */
     void getChannels(uint16_t *channelBuf);
 

@@ -34,7 +34,7 @@
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 7;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857113F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.28571F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857161F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857161F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857161F));
@@ -44,28 +44,28 @@
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 12;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 8.333333F));
+            tableLayoutPanel1.RowCount = 10;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(1332, 468);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // AUXData
+            // RCData
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tableLayoutPanel1);
-            Name = "AUXData";
+            Name = "RCData";
             Size = new Size(1332, 468);
             ResumeLayout(false);
         }

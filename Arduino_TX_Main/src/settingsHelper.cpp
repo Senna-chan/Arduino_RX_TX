@@ -9,7 +9,7 @@
 void PrintCalValues()
 {
     Serial.println("ch\tmin\tmid\tmax\toffset\tfailsafe\tstartup\tendmin\tendmax\tIO1\tIO2");
-    for (int i = 0; i < 24; i++)
+    for (int i = 0; i < RC_MAX_CHANNELS; i++)
     {
         auto chSetting = activeModel->channel_settings[i];
         Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t\t%04d\t%04d\t%04d\t%6s%02d\t%6s%02d\r\n",
@@ -100,7 +100,7 @@ void generateDefaultSettings()
 
     settings.model[0].nameSize = 0;
     memset(settings.model[0].name, 0, 20); // Blank name
-    for (int i = 0; i < 24; i++)
+    for (int i = 0; i < RC_MAX_CHANNELS; i++)
     {
         settings.model[0].channel_settings[i].adcConfig.min = 0;
         settings.model[0].channel_settings[i].adcConfig.mid = 0;

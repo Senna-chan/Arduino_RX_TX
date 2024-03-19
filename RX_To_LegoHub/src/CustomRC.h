@@ -7,7 +7,7 @@
 #include <functional>
 
 typedef std::function<void(uint16_t*, uint16_t*)> channelDataCallback;
-
+#define RC_MAX_CHANNELS 20
 class CustomRC {
 private:
 	uint8_t headerFound = 0;
@@ -26,7 +26,7 @@ private:
 	uint8_t uartBuffer[255];
 
 
-	uint16_t prevChannels[25]; ///<Used to keep track of previous values
+	uint16_t prevChannels[RC_MAX_CHANNELS]; ///<Used to keep track of previous values
 
 	HardwareSerial* _serial;
 	channelDataCallback channelCallback;

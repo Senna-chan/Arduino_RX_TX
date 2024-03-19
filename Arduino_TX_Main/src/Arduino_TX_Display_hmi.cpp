@@ -30,10 +30,6 @@ HMI_Button* chEditButtons[RC_MAX_CHANNELS]{
     &e_setch18,
     &e_setch19,
     &e_setch20,
-    &e_setch21,
-    &e_setch22,
-    &e_setch23,
-    &e_setch24,
 };
 
 // WHY HERE!
@@ -61,10 +57,6 @@ uint8_t channelOutputOptions[RC_MAX_CHANNELS] = {
     RCIO,
     RCIOPWMSTEP,
     RCIOPWMSTEP,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     0

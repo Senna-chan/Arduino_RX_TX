@@ -47,7 +47,7 @@ namespace ControllerCompanion.Views
         private void dataGetter()
         {
             Thread.CurrentThread.Name = "ADCDataGetter";
-            UInt16[] adcData = new UInt16[24];
+            UInt16[] adcData = new UInt16[Config.RC_MAX_CHANNELS];
             UInt32 ioData = 0;
             while (true)
             {

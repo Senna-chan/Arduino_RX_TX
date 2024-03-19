@@ -47,7 +47,7 @@ namespace ControllerCompanion.Views
                     {
                         currentChannelSetup.BeginInvoke(new Action(() =>
                         {
-                            for (int i = 0; i < 24; i++)
+                            for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
                             {
                                 currentChannelSetup.lblRCValue.Text = rcValue.ToString();
                             }

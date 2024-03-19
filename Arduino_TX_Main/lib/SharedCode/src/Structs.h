@@ -69,38 +69,34 @@ typedef struct
 
 typedef struct
 {
-    // No bits free
+    // 5 bits free
     uint64_t identifier : 4;
-    uint64_t channel1 : 10;
-    uint64_t channel2 : 10;
-    uint64_t channel3 : 10;
-    uint64_t channel4 : 10;
-    uint64_t channel5 : 10;
-    uint64_t channel6 : 10;
+    uint64_t channel1 : 11;
+    uint64_t channel2 : 11;
+    uint64_t channel3 : 11;
+    uint64_t channel4 : 11;
+    uint64_t channel5 : 11;
 
-    // 4 bits free
-    uint64_t channel7 : 10;
-    uint64_t channel8 : 10;
-    uint64_t channel9 : 10;
-    uint64_t channel10 : 10;
-    uint64_t channel11 : 10;
-    uint64_t channel12 : 10;
+    // 9 bits free
+    uint64_t channel6 : 11;
+    uint64_t channel7 : 11;
+    uint64_t channel8 : 11;
+    uint64_t channel9 : 11;
+    uint64_t channel10 : 11;
 
-    // 4 bits free
-    uint64_t channel13 : 10;
-    uint64_t channel14 : 10;
-    uint64_t channel15 : 10;
-    uint64_t channel16 : 10;
-    uint64_t channel17 : 10;
-    uint64_t channel18 : 10;
+    // 9 bits free
+    uint64_t channel11 : 11;
+    uint64_t channel12 : 11;
+    uint64_t channel13 : 11;
+    uint64_t channel14 : 11;
+    uint64_t channel15 : 11;
 
-    // 4 bits free
-    uint64_t channel19 : 10;
-    uint64_t channel20 : 10;
-    uint64_t channel21 : 10;
-    uint64_t channel22 : 10;
-    uint64_t channel23 : 10;
-    uint64_t channel24 : 10;
+    // 9 bits free
+    uint64_t channel16 : 11;
+    uint64_t channel17 : 11;
+    uint64_t channel18 : 11;
+    uint64_t channel19 : 11;
+    uint64_t channel20 : 11;
 } channelBitData;
 
 typedef union
