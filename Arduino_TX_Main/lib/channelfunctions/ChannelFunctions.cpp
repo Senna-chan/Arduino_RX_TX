@@ -5,7 +5,12 @@
 #include <MyHelpers.h>
 
 #include "ChannelFunctions.h"
-
+#ifdef PIO_UNIT_TESTING
+#include <unity.h>
+#define DEBUGPRINTF TEST_PRINTF
+#else
+#define DEBUGPRINTF Serial.printf
+#endif
 
 uint16_t parseADCChannel(const uint16_t raw_channel, const uint16_t minValue, const uint16_t midValue, const uint16_t maxValue, const uint16_t deadZone, const uint16_t offset)
 {
@@ -105,55 +110,67 @@ uint16_t parseRCChannel(const uint8_t channel_number, const channelConfigs *chan
     {
         Serial.printf("CH Mapping for %d invalid. IOType1 %s Type2 %s\n", channel_number, channel_types_str[io1t], channel_types_str[io2t]); // SPAM
     }
-    if (channel_settings->endPoints.min != 1000 || channel_settings->endPoints.max != 2000)
-    {
-        returnValue = map(returnValue, 1000, 2000, channel_settings->endPoints.min, channel_settings->endPoints.max);
-    }
+
+    returnValue = checkRateLimit(channel_number, rateLimitSettings, channel_settings->centeredStick, adc_values, IO_bits, AUX_Serial_Channels, returnValue);
 
     if (reverse_channel)
     {
         int16_t tempVal = (returnValue - 3000) * -1;
         returnValue = tempVal;
     }
-    returnValue = checkRateLimit(channel_number, rateLimitSettings, channel_settings, adc_values, IO_bits, AUX_Serial_Channels, returnValue);
+
+    if (channel_settings->endPoints.min != 1000 || channel_settings->endPoints.max != 2000)
+    {
+        returnValue = map(returnValue, 1000, 2000, channel_settings->endPoints.min, channel_settings->endPoints.max);
+    }
+
     return returnValue;
 }
 
-uint16_t checkRateLimit(const uint8_t channel_number, const rateLimitConfigStruct *rateLimitSettings, const channelConfigs *channel_settings, const uint16_t *adc_values, const uint32_t IO_bits, const uint16_t *AUX_Serial_Channels, uint16_t channelValue)
+uint16_t checkRateLimit(const uint8_t channel_number, const rateLimitConfigStruct *rateLimitSettings, const bool centeredStick, const uint16_t *adc_values, const uint32_t IO_bits, const uint16_t *AUX_Serial_Channels, uint16_t channelValue)
 {
     uint16_t returnValue = channelValue;
     if (rateLimitSettings->outputToRateLimit == channel_number)
     {
-        auto io1t = rateLimitSettings->input[0].type;
-        auto io2t = rateLimitSettings->input[1].type;
         auto io1 = rateLimitSettings->input[0].index;
+        auto io1t = rateLimitSettings->input[0].type;
         auto io2 = rateLimitSettings->input[1].index;
-        int8_t limit;
+        auto io2t = rateLimitSettings->input[1].type;
+        uint8_t limitScale = 255; /* <! Limit with percentage */
         if (io1t != CTYPE_NONE && io2t == CTYPE_NONE) // Single channel mapped
         {
             switch (io1t)
             {
             case CTYPE_ADC:
-                limit = (int8_t)(adc_values[io1] / 10);
-                break;
+            {
+                limitScale = (uint8_t)(adc_values[io1] / 10);
+            }
+            break;
 
             case CTYPE_IO:
-                limit = bitRead(IO_bits, io1) - 1;
-                break;
+                limitScale = rateLimitSettings->outputValuesMax.b[bitRead(IO_bits, io1) ? 2 : 0];
+            break;
 
             case CTYPE_AUX_IO:
 
-                break;
+            break;
 
             case CTYPE_AUX_SERIAL:
             {
-                uint16_t auxValue = AUX_Serial_Channels[channel_number] / 500;
-                limit = auxValue - 2;
+                uint16_t aux_value = AUX_Serial_Channels[io1] - 1000;
+                if(rateLimitSettings->analogInput)
+                {
+                    limitScale = (uint8_t)(aux_value / 10);
+                }
+                else
+                {
+                    limitScale = rateLimitSettings->outputValuesMax.b[aux_value / 500];
+                }
             }
             break;
 
             default:
-                return returnValue;
+                return channelValue;
                 break;
             }
         }
@@ -163,60 +180,57 @@ uint16_t checkRateLimit(const uint8_t channel_number, const rateLimitConfigStruc
             bool b2 = bitRead(IO_bits, io2);
             if (!b1 && !b2)
             {
-                limit = 0;
+                limitScale = rateLimitSettings->outputValuesMax.b[1];
             }
             else if (b1 && !b2)
             {
-                limit = 1;
+                limitScale = rateLimitSettings->outputValuesMax.b[0];
             }
             else if (!b1 && b2)
             {
-                limit = -1;
+                limitScale = rateLimitSettings->outputValuesMax.b[2];
             }
             else
             {
-                return returnValue;
+                return channelValue;
             }
         }
         else // Invalid config
         {
-            return returnValue;
-        }
-
-        uint16_t channelMinValue = 1000;
-        uint16_t channelMaxValue = 2000;
-        uint16_t mappedMinValue = 1000;
-        uint16_t mappedMaxValue = 2000;
-
-        if(channel_settings->centeredStick)
+            return channelValue;
+        } // Making percentiale math easier
+        if(centeredStick)
         {
-            if(channelValue < 1500 && rateLimitSettings->limitSide <= 0)
+            if(channelValue < 1500 && rateLimitSettings->limitSide != LIMIT_UPONLY) // Limit down and updown
             {
-                channelMinValue = 1500;
-                channelMaxValue = abs((int16_t)rateLimitSettings->outputValuesMax.b[limit + 1] - 3000);
+                int16_t step1 = (channelValue - 3000) * -1;
+                uint16_t step2 = step1 - 1500;
+                returnValue = 1500 - (step2 * limitScale / 100);
             }
-            else if(channelValue > 1500 && rateLimitSettings->limitSide >= 0)
+            else if(channelValue > 1500 && rateLimitSettings->limitSide != LIMIT_DOWNONLY) // Limit updown and up
             {
-                channelMinValue = 1500;
-                channelMaxValue = rateLimitSettings->outputValuesMax.b[limit + 1];
+                returnValue = 1500 + ((channelValue - 1500) * limitScale / 100);
+            }
+            else
+            {
+                return channelValue;
             }
         }
         else
         {
-            mappedMaxValue = rateLimitSettings->outputValuesMax.b[limit + 1];
+            returnValue = 1000 + (channelValue - 1000) * limitScale / 100;
         }
-        returnValue = map(channelValue, channelMinValue, channelMaxValue, mappedMinValue, mappedMaxValue);
     }
     return returnValue;
 }
 
 bool channelNotEnabled(const uint8_t channel_number, const outputEnableStruct *outputEnableSettings, const uint32_t IO_bits, const uint16_t *AUX_Serial_Channels)
 {
+    bool disableOutput = false;
     if(bitRead(outputEnableSettings->outputsToEnable, channel_number))
     {
         auto oeiType = outputEnableSettings->inputIO.type;
         auto oeiIndex = outputEnableSettings->inputIO.index;
-        bool disableOutput = false;
         switch (oeiType)
         {
             case CTYPE_IO:
@@ -228,9 +242,9 @@ bool channelNotEnabled(const uint8_t channel_number, const outputEnableStruct *o
             break;
 
             case CTYPE_AUX_SERIAL:
-                disableOutput = AUX_Serial_Channels[oeiIndex] == 2000;
+                disableOutput = AUX_Serial_Channels[oeiIndex] == 1000;
             break;
         }
-        return disableOutput;
     }
+    return disableOutput;
 }

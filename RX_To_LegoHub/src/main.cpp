@@ -39,9 +39,8 @@ CustomRC customRC;
 // Channels
 uint8_t driveChannel = 1;
 uint8_t steerChannel = 2;
-uint8_t gearChannel = 3;
-uint8_t allowDriveChannel = 4;
-uint8_t autoGearingChannel = 5;
+uint8_t gearChannel = 4;
+uint8_t autoGearingChannel = 3;
 
 // Steering
 int32_t desiredSteerAngle = 0.0;
@@ -65,7 +64,7 @@ void setDriveSpeed() {
     case 2:
     case 3:
     case 4:
-        desiredDriveRpm = (double)map(driveSpeed, -100, 100, -maxRPMDriveMotor, maxRPMDriveMotor); 
+        desiredDriveRpm = (double)map(driveSpeed, -100, 100, -maxRPMDriveMotor, maxRPMDriveMotor);
         break;
     case 5:
         desiredDriveRpm = (double)map(driveSpeed, -100, 100, -260, 260);
@@ -78,7 +77,7 @@ void setDriveSpeed() {
         desiredDriveRpm = (double)map(driveSpeed, -100, 100, -180, 180);
         break;
     }
-    
+
 }
 
 void setSteerSpeed() {
@@ -86,7 +85,7 @@ void setSteerSpeed() {
     {
         steerAngle = desiredSteerAngle;
         hub.setAbsoluteMotorPosition(steerMotor, 100, desiredSteerAngle);
-    } 
+    }
     else
     {
         steerSpeed = desiredSteerSpeed;
@@ -108,20 +107,16 @@ void shift() {
 
 void channelCallback(uint16_t* curChannels, uint16_t* prevChannels) {
     // Serial.println("DATA FROM RX");
-    if (curChannels[gearChannel] == 1500 && prevChannels[gearChannel] == 1000) {
+    if (curChannels[gearChannel] == 1500 && prevChannels[gearChannel] == CustomRC::defMinValue) {
         desiredGear--;
     }
-    else if (curChannels[gearChannel] == 1500 && prevChannels[gearChannel] == 2000) {
+    else if (curChannels[gearChannel] == 1500 && prevChannels[gearChannel] == CustomRC::defMaxValue) {
         desiredGear++;
     }
-    if (curChannels[allowDriveChannel] == 2000) {
-        desiredDriveSpeed = map(curChannels[driveChannel], 1000, 2000, -100, 100);
-        desiredSteerSpeed = map(curChannels[steerChannel], 1000, 2000, -100, 100);
-        desiredSteerAngle = map(curChannels[steerChannel], 1000, 2000, -max_steering_angle, max_steering_angle);
-    }
-    else {
-        desiredDriveSpeed = desiredSteerSpeed = 0;
-    }
+    desiredDriveSpeed = map(curChannels[driveChannel], CustomRC::defMinValue, CustomRC::defMaxValue, -100, 100);
+    desiredSteerSpeed = map(curChannels[steerChannel], CustomRC::defMinValue, CustomRC::defMaxValue, -100, 100);
+    desiredSteerAngle = map(curChannels[steerChannel], CustomRC::defMinValue, CustomRC::defMaxValue, -max_steering_angle, max_steering_angle);
+
     desiredAutoShifting = curChannels[autoGearingChannel] == 2000;
 }
 
@@ -142,7 +137,7 @@ void hubPropertyChangeCallback(void* hub, HubPropertyReference hubProperty, uint
 void portValueChangeCallback(void* hub, byte portNumber, DeviceType deviceType, uint8_t* pData)
 {
     Lpf2Hub* myHub = (Lpf2Hub*)hub;
-    
+
     if (portNumber == driveMotor) {
         if (deviceType == DeviceType::TECHNIC_XLARGE_LINEAR_MOTOR) {
             driveEnc = myHub->parseTachoMotor(pData);
@@ -229,7 +224,7 @@ void setup()
     customRC.attachChannelCallback(channelCallback);
     hub.init(); // initalize the MoveHub instance
     Serial.println("Started Lego tank");
-}   
+}
 
 // main loop
 void loop()
@@ -278,7 +273,7 @@ void loop()
             driveRpm /= 2; // Filtering
             steerRpm = ((((double)(steerEnc - prevSteerEnc) / (double)100) * 1000) * 60) / (double)360;
             gearRpm = ((((double)(gearEnc - prevGearEnc) / (double)100) * 1000) * 60) / (double)360;
-            Serial.printf("Voltage %5.2f, current %8.2f,batterylevel %3d, driveEnc %8d, driveRPM %8.2f(%5.0f), steerEnc %8d, rpmSteer %8.2f, gear %d, gearEnc %5d(%5d)\t", 
+            Serial.printf("Voltage %5.2f, current %8.2f,batterylevel %3d, driveEnc %8d, driveRPM %8.2f(%5.0f), steerEnc %8d, rpmSteer %8.2f, gear %d, gearEnc %5d(%5d)\t",
                 voltage, current, batteryLevel, driveEnc, driveRpm,desiredDriveRpm, steerEnc, steerRpm, currentGear, gearEnc, desiredGearEnc);
             if (desiredAutoShifting != autoShifting) {
                 autoShifting = desiredAutoShifting;

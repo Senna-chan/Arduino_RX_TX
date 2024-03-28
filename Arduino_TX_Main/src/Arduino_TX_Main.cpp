@@ -271,6 +271,19 @@ void updateValues(Model *activeSettings, channelBitData *channel_data, const uin
     {
         auto chSettings = activeSettings->channel_settings[i];
         mapped_channels[i] = parseRCChannel(i, &chSettings, &activeSettings->rateLimitConfig, &activeSettings->outputEnable, bitRead(activeSettings->channelReversed, i), parsed_channels, IO_bits, AUX_Serial_Channels);
+        if(mapped_channels[i] != 2023)
+        {
+            continue;
+        }
+        // Failsafe detection
+        if(chSettings.startupVal != 0)
+        {
+            mapped_channels[i] = chSettings.startupVal;
+        }
+        if(chSettings.failsafe != 0)
+        {
+            mapped_channels[i] = chSettings.failsafe;
+        }
     }
 
     // for (channelMixStruct channel_mixing : settings.model[settings.activeModel].channelMixing)
@@ -280,16 +293,6 @@ void updateValues(Model *activeSettings, channelBitData *channel_data, const uin
     //         mixChannels(mappedChannels[channel_mixing.source1], mappedChannels[channel_mixing.source2], &mappedChannels[channel_mixing.dest1], &mappedChannels[channel_mixing.dest2], MixTypes::AddSubtract);
     //     }
     // }
-
-    // Testing
-    if (between(fixedChannelValue, 1000, 2000))
-    {
-        for (int i = 0; i < RC_MAX_CHANNELS; i++)
-        {
-            mapped_channels[i] = fixedChannelValue;
-        }
-    }
-
 
     channel_data->channel1 =  mapped_channels[0]  - 500;
     channel_data->channel2 =  mapped_channels[1]  - 500;

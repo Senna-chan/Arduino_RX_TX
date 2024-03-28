@@ -1,33 +1,22 @@
 ﻿using ControllerCompanion.Enums;
+using ControllerCompanion.Structs.HelperClasses;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace ControllerCompanion.Structs
 {
-    public class s_calibrationConfig : INotifyPropertyChanged
+    public class s_calibrationConfig : StructBase
     {
 
         public s_calibrationConfig() {
-            max = 1023;
+            max = 0;
             min = 0;
             mid = 0;
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        // This method is called by the Set accessor of each property.
-        // The CallerMemberName attribute that is applied to the optional propertyName
-        // parameter causes the property name of the caller to be substituted as an argument.
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        private UInt16 minValue; // ADC Minumum
-        private UInt16 midValue; // ADC Midium
-        private UInt16 maxValue; // ADC Max
+        private UInt16 _min; // ADC Minumum
+        private UInt16 _mid; // ADC Midium
+        private UInt16 _max; // ADC Max
 
 
         public void UpdateValues(s_calibrationConfig config)
@@ -39,18 +28,25 @@ namespace ControllerCompanion.Structs
 
         public UInt16 min
         {
-            get { return minValue; }
+            get { return _min; }
             set
             {
-                if (value != this.minValue)
+                if (value != this._min)
                 {
-                    if (value > this.midValue && this.midValue != 0)
+                    _min = value;
+                    if (_mid != 0)
                     {
-                        this.minValue = this.midValue;
+                        if(value > _mid)
+                        {
+                            _min = _mid;
+                        }
                     }
-                    else
+                    else if(_max != 0)
                     {
-                        this.minValue = value;
+                        if(value > _max)
+                        {
+                            _min = _max;
+                        }
                     }
                     NotifyPropertyChanged();
                 }
@@ -58,14 +54,22 @@ namespace ControllerCompanion.Structs
         }
         public UInt16 mid
         {
-            get { return midValue; }
+            get { return _mid; }
             set
             {
-                if (value != this.midValue)
+                if (value != this._mid)
                 {
-                    if (!(value < this.minValue || value > this.maxValue) || value == 0)
+                    _mid = value;
+                    if (_max != 0)
                     {
-                        this.midValue = value;
+                        if(value > _max)
+                        {
+                            _mid = _max;
+                        }
+                        else
+                        {
+                            _mid = value;
+                        }
                     }
                     NotifyPropertyChanged();
                 }
@@ -73,23 +77,48 @@ namespace ControllerCompanion.Structs
         }
         public UInt16 max
         {
-            get { return maxValue; }
+            get { return _max; }
             set
             {
-                if (value != this.maxValue)
+                if (value != this._max)
                 {
-
-                    if (value < this.midValue && this.midValue != 0)
+                    _max = value;
+                    if (_mid != 0)
                     {
-                        this.maxValue = this.midValue;
-                    }
-                    else
-                    {
-                        this.maxValue = value;
+                        if(value < _mid)
+                        {
+                            _max = _mid;
+                        }
+                        else
+                        {
+                            _max = value;
+                        }
                     }
                     NotifyPropertyChanged();
                 }
             }
+        }
+
+        public override string? ToString()
+        {
+            return $"Min {_min}, mid {_mid}, max {_max}";
+        }
+
+        public override void WriteValues(BinaryWriter writer)
+        {
+            writer.Write(min);
+            writer.Write(mid);
+            writer.Write(max);
+        }
+
+        public override void ReadValues(BinaryReader reader)
+        {
+            _max = 0;
+            _mid = 0;
+            _min = 0;
+            _min = reader.ReadUInt16();
+            _mid = reader.ReadUInt16();
+            _max = reader.ReadUInt16();
         }
     }
 }

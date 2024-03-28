@@ -1,6 +1,7 @@
 using ControllerCompanion.Structs;
 using System.IO.Ports;
 using System.Text;
+using System.Threading.Channels;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -10,7 +11,7 @@ namespace ControllerCompanion.Views
     {
         Dictionary<int, ADCSetup> adcSetups = new Dictionary<int, ADCSetup>();
         Dictionary<int, ChannelSetup> channelSetups = new Dictionary<int, ChannelSetup>();
-
+        SwitchSettings switchSettings;
         public Form1()
         {
             InitializeComponent();
@@ -26,7 +27,7 @@ namespace ControllerCompanion.Views
                     myTabPage.Controls.Add(adcSetup);
                     tcADCChannels.TabPages.Add(myTabPage);
                 }
-                ChannelSetup chSetup = new ChannelSetup(i);
+                ChannelSetup chSetup = new ChannelSetup(i, Config.settings.model[Config.settings.activeModel].channel_settings[i]);
                 chSetup.Dock = DockStyle.Fill;
                 chSetup.Name = "RCCH" + (i).ToString();
                 channelSetups.Add(i, chSetup);
@@ -34,10 +35,11 @@ namespace ControllerCompanion.Views
                 rcTab.Controls.Add(chSetup);
                 tcRCChannels.TabPages.Add(rcTab);
             }
-            tpSwitchFunctions.Controls.Add(new SwitchSettings(Config.settings.model[Config.settings.activeModel].outputEnable, Config.settings.model[Config.settings.activeModel].rateLimitConfig)
+            switchSettings = new SwitchSettings(Config.settings.model[Config.settings.activeModel].outputEnable, Config.settings.model[Config.settings.activeModel].rateLimitConfig)
             {
                 Dock = DockStyle.Fill,
-            });
+            };
+            tpSwitchFunctions.Controls.Add(switchSettings);
         }
 
         private void applySettings()
@@ -65,11 +67,7 @@ namespace ControllerCompanion.Views
             if (diagResult == DialogResult.OK)
             {
                 var fileName = diagBox.FileName;
-                Config.settings = Settings.loadFromFile(fileName);
-                for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
-                {
-                    channelSetups[i].getChannelConfig().UpdateValues(Config.settings.model[0].channel_settings[i]);
-                }
+                Config.settings.UpdateValues(SettingsHandler.loadFromFile(fileName));
             }
         }
 
@@ -81,7 +79,7 @@ namespace ControllerCompanion.Views
             if (diagResult == DialogResult.OK)
             {
                 var fileName = diagBox.FileName;
-                Settings.saveToFile(fileName, Config.settings);
+                SettingsHandler.saveToFile(fileName, Config.settings);
             }
         }
 
@@ -115,9 +113,11 @@ namespace ControllerCompanion.Views
 
         private void readFromTXToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings.saveToFile("comp_config.bin", Config.settings);
-            TX_Communicator.requestSettings(ref Config.settings);
-            Settings.saveToFile("tx_config.bin", Config.settings);
+            SettingsHandler.saveToFile("comp_config.bin", Config.settings);
+            Settings settings = new Settings();
+            TX_Communicator.requestSettings(ref settings);
+            Config.settings.UpdateValues(settings);
+            SettingsHandler.saveToFile("tx_config.bin", Config.settings);
 
             //for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
             //{

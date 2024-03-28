@@ -5,40 +5,83 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ControllerCompanion.Structs.HelperClasses;
 
 namespace ControllerCompanion.Structs
 {
-    public class ChannelConfig : INotifyPropertyChanged
+    public class ChannelConfig : StructBase
     {
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        // This method is called by the Set accessor of each property.
-        // The CallerMemberName attribute that is applied to the optional propertyName
-        // parameter causes the property name of the caller to be substituted as an argument.
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
+        public s_calibrationConfig adcConfig { get; set; }
         private Int16 _trim;
         private UInt16 _failsafe;
+        public UInt16 _startup;
         private byte _outputMode;
         private bool _centeredStick;
+        public s_calibrationConfig endPoints { get; set; }
+        public s_pwmConfig pwmConfig { get; set; }
+        public s_stepperConfig stepperConfig { get; set; }
+        public ChannelMappings channelMapping { get; set; }
+
+        // CompanionOnlyStuff
+        public bool reversed { get; set; }
+
+        public ChannelConfig()
+        {
+            adcConfig = new s_calibrationConfig();
+            pwmConfig = new s_pwmConfig();
+            stepperConfig = new s_stepperConfig();
+            channelMapping = new ChannelMappings();
+            endPoints = new s_calibrationConfig();
+        }
 
         public void UpdateValues(ChannelConfig config)
         {
+            adcConfig.UpdateValues(config.adcConfig);
             trim = config.trim;
             failsafe = config.failsafe;
+            startup = config.startup;
             outputMode = config.outputMode;
             centeredStick = config.centeredStick;
-            channelMapping[0].UpdateValues(config.channelMapping[0]);
-            channelMapping[1].UpdateValues(config.channelMapping[1]);
-            adcConfig.UpdateValues(config.adcConfig);
+            endPoints.UpdateValues(config.endPoints);
+            pwmConfig.UpdateValues(config.pwmConfig);
+            stepperConfig.UpdateValues(config.stepperConfig);
+            channelMapping.inputs[0].UpdateValues(config.channelMapping.inputs[0]);
+            channelMapping.inputs[1].UpdateValues(config.channelMapping.inputs[1]);
         }
 
+        public override void WriteValues(BinaryWriter writer)
+        {
+            adcConfig.WriteValues(writer);
+            writer.Write(trim);
+            writer.Write(failsafe);
+            writer.Write(startup);
+            writer.Write(outputMode);
+            writer.Write(centeredStick);
+            endPoints.WriteValues(writer);
+            pwmConfig.WriteValues(writer);
+            stepperConfig.WriteValues(writer);
+            foreach (var channel in channelMapping.inputs)
+            {
+                channel.WriteValues(writer);
+            }
+        }
+
+        public override void ReadValues(BinaryReader reader)
+        {
+            adcConfig.ReadValues(reader);
+            trim = reader.ReadInt16();
+            failsafe = reader.ReadUInt16();
+            startup = reader.ReadUInt16();
+            outputMode = reader.ReadByte();
+            centeredStick = reader.ReadBoolean();
+            endPoints.ReadValues(reader);
+            pwmConfig.ReadValues(reader);
+            stepperConfig.ReadValues(reader);
+            foreach (var channel in channelMapping.inputs)
+            {
+                channel.ReadValues(reader);
+            }
+        }
 
         public Int16 trim
         {
@@ -64,7 +107,6 @@ namespace ControllerCompanion.Structs
                 }
             }
         }
-        public UInt16 _startup;
         public UInt16 startup
         {
             get { return _startup; }
@@ -102,26 +144,5 @@ namespace ControllerCompanion.Structs
             }
         }
 
-        public s_calibrationConfig adcConfig { get; set; }
-        public s_pwmConfig pwmConfig { get; set; }
-        public s_stepperConfig stepperConfig { get; set; }
-        public s_channelMapping[] channelMapping { get; set; }
-        public s_calibrationConfig endPoints { get; set; }
-
-        // CompanionOnlyStuff
-        public bool reversed { get; set; }
-
-        public ChannelConfig()
-        {
-            adcConfig = new s_calibrationConfig();
-            pwmConfig = new s_pwmConfig();
-            stepperConfig = new s_stepperConfig();
-            channelMapping = new s_channelMapping[2];
-            for(int i = 0; i < 2; i++)
-            {
-                channelMapping[i] = new s_channelMapping();
-            }
-            endPoints = new s_calibrationConfig();
-        }
     }
 }

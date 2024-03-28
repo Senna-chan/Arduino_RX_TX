@@ -414,7 +414,7 @@
             // lblRCValue
             // 
             lblRCValue.AutoSize = true;
-            lblRCValue.Font = new Font("Stencil", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            lblRCValue.Font = new Font("Stencil", 18F, FontStyle.Bold);
             lblRCValue.Location = new Point(932, 30);
             lblRCValue.Name = "lblRCValue";
             lblRCValue.Size = new Size(73, 29);

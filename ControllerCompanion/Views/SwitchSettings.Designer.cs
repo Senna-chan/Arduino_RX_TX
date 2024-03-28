@@ -48,12 +48,11 @@
             numOutputMid = new NumericUpDown();
             numOutputMax = new NumericUpDown();
             lbOutputsToEnabled = new ListBox();
-            numChannelToRateLimit = new NumericUpDown();
+            cobChannelToRateLimit = new ComboBox();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOutputMin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOutputMid).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOutputMax).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numChannelToRateLimit).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -85,7 +84,7 @@
             tableLayoutPanel1.Controls.Add(numOutputMid, 5, 5);
             tableLayoutPanel1.Controls.Add(numOutputMax, 6, 5);
             tableLayoutPanel1.Controls.Add(lbOutputsToEnabled, 1, 3);
-            tableLayoutPanel1.Controls.Add(numChannelToRateLimit, 6, 7);
+            tableLayoutPanel1.Controls.Add(cobChannelToRateLimit, 6, 7);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -267,34 +266,31 @@
             // 
             numOutputMin.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             numOutputMin.Location = new Point(665, 193);
-            numOutputMin.Maximum = new decimal(new int[] { 2000, 0, 0, 0 });
-            numOutputMin.Minimum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numOutputMin.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numOutputMin.Name = "numOutputMin";
             numOutputMin.Size = new Size(141, 23);
             numOutputMin.TabIndex = 27;
-            numOutputMin.Value = new decimal(new int[] { 1000, 0, 0, 0 });
+            numOutputMin.Value = new decimal(new int[] { 30, 0, 0, 0 });
             // 
             // numOutputMid
             // 
             numOutputMid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             numOutputMid.Location = new Point(812, 193);
-            numOutputMid.Maximum = new decimal(new int[] { 2000, 0, 0, 0 });
-            numOutputMid.Minimum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numOutputMid.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numOutputMid.Name = "numOutputMid";
             numOutputMid.Size = new Size(141, 23);
             numOutputMid.TabIndex = 28;
-            numOutputMid.Value = new decimal(new int[] { 1000, 0, 0, 0 });
+            numOutputMid.Value = new decimal(new int[] { 60, 0, 0, 0 });
             // 
             // numOutputMax
             // 
             numOutputMax.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             numOutputMax.Location = new Point(959, 193);
-            numOutputMax.Maximum = new decimal(new int[] { 2000, 0, 0, 0 });
-            numOutputMax.Minimum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numOutputMax.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numOutputMax.Name = "numOutputMax";
             numOutputMax.Size = new Size(144, 23);
             numOutputMax.TabIndex = 29;
-            numOutputMax.Value = new decimal(new int[] { 1000, 0, 0, 0 });
+            numOutputMax.Value = new decimal(new int[] { 100, 0, 0, 0 });
             // 
             // lbOutputsToEnabled
             // 
@@ -309,14 +305,14 @@
             lbOutputsToEnabled.Size = new Size(288, 234);
             lbOutputsToEnabled.TabIndex = 37;
             // 
-            // numChannelToRateLimit
+            // cobChannelToRateLimit
             // 
-            numChannelToRateLimit.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            numChannelToRateLimit.Location = new Point(959, 273);
-            numChannelToRateLimit.Maximum = new decimal(new int[] { 24, 0, 0, 0 });
-            numChannelToRateLimit.Name = "numChannelToRateLimit";
-            numChannelToRateLimit.Size = new Size(144, 23);
-            numChannelToRateLimit.TabIndex = 38;
+            cobChannelToRateLimit.Dock = DockStyle.Fill;
+            cobChannelToRateLimit.FormattingEnabled = true;
+            cobChannelToRateLimit.Location = new Point(959, 273);
+            cobChannelToRateLimit.Name = "cobChannelToRateLimit";
+            cobChannelToRateLimit.Size = new Size(144, 23);
+            cobChannelToRateLimit.TabIndex = 40;
             // 
             // SwitchSettings
             // 
@@ -330,7 +326,6 @@
             ((System.ComponentModel.ISupportInitialize)numOutputMin).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOutputMid).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOutputMax).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numChannelToRateLimit).EndInit();
             ResumeLayout(false);
         }
 
@@ -355,7 +350,7 @@
         private NumericUpDown numOutputMid;
         private NumericUpDown numOutputMax;
         private ListBox lbOutputsToEnabled;
-        private NumericUpDown numChannelToRateLimit;
         private Label label5;
+        private ComboBox cobChannelToRateLimit;
     }
 }

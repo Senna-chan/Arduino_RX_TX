@@ -30,13 +30,13 @@ namespace ControllerCompanion.Views
             cobRateInput1.DisplayMember = "Value";
             cobRateInput1.ValueMember = "Key";
             cobRateInput1.SelectedValueChanged += CobInput_SelectedValueChanged;
-            cobRateInput1.DataBindings.Add("SelectedValue", rateLimitConfig.input[0], "intDefinition");
+            cobRateInput1.DataBindings.Add("SelectedValue", rateLimitConfig.input.inputs[0], "intDefinition");
 
             cobRateInput2.DataSource = new BindingSource(ChannelInputTypes.inputTypes, null);
             cobRateInput2.DisplayMember = "Value";
             cobRateInput2.ValueMember = "Key";
             cobRateInput2.SelectedValueChanged += CobInput_SelectedValueChanged;
-            cobRateInput2.DataBindings.Add("SelectedValue", rateLimitConfig.input[1], "intDefinition");
+            cobRateInput2.DataBindings.Add("SelectedValue", rateLimitConfig.input.inputs[1], "intDefinition");
 
 
             cobOutputIO.DataSource = new BindingSource(ChannelInputTypes.inputTypes, null);
@@ -55,12 +55,30 @@ namespace ControllerCompanion.Views
             cobLimitSide.ValueMember = "Key";
             cobLimitSide.SelectedIndex = 1;
             cobLimitSide.SelectedValueChanged += CobLimit_SelectedValueChanged;
-            for (int i = 0; i < 24; i++)
+
+            for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
             {
                 lbOutputsToEnabled.Items.Add($"RC{i + 1}");
+                cobChannelToRateLimit.Items.Add($"RC{i + 1}");
+                if (((outputEnableConfig.outputsToEnable >> i) & 1) == 1)
+                {
+                    lbOutputsToEnabled.SelectedItems.Add($"RC{i + 1}");
+                }
             }
+            lbOutputsToEnabled.SelectedValueChanged += LbOutputsToEnabled_SelectedValueChanged;
 
-            numChannelToRateLimit.DataBindings.Add("Value", rateLimitConfig, "outputToRateLimit");
+            cobChannelToRateLimit.DataBindings.Add("SelectedIndex", rateLimitConfig, "outputToRateLimit");
+        }
+
+        private void LbOutputsToEnabled_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            outputEnableConfig.outputsToEnable = 0;
+            for (int i = 0; i < lbOutputsToEnabled.SelectedItems.Count; i++)
+            {
+                int bit = int.Parse(lbOutputsToEnabled.SelectedItems[i].ToString().Substring(2));
+                bit--;
+                outputEnableConfig.outputsToEnable |= (uint)(1 << bit);
+            }
         }
 
         private void CobLimit_SelectedValueChanged(object? sender, EventArgs e)
@@ -78,7 +96,7 @@ namespace ControllerCompanion.Views
                 Console.WriteLine($"chInput {aIndex} is null");
                 return;
             }
-            rateLimitConfig.input[aIndex].intDefinition = (int)chInput.SelectedValue;
+            rateLimitConfig.input.inputs[aIndex].intDefinition = (int)chInput.SelectedValue;
         }
 
 
@@ -108,8 +126,8 @@ namespace ControllerCompanion.Views
                     else
                     {
                         channel--;
-                        rateLimitConfig.input[channel].type = inputType;
-                        rateLimitConfig.input[channel].index = inputIndex;
+                        rateLimitConfig.input.inputs[channel].type = inputType;
+                        rateLimitConfig.input.inputs[channel].index = inputIndex;
                     }
                     btnDetectRateInput1.Text = "Rate Input 1";
                     btnDetectRateInput2.Text = "Rate Input 2";

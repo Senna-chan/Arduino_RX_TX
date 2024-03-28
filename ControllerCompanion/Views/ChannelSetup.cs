@@ -23,6 +23,47 @@ namespace ControllerCompanion.Views
 
         bool blockCobUpdates = false;
 
+
+
+        public ChannelSetup(int channel, ChannelConfig channelConfig)
+        {
+            InitializeComponent();
+            lblChannelId.Text = $"Channel {channel}";
+            changeStepObjects(false);
+            changePWMObjects(false);
+            this.channel = channel;
+            this.channelConfig = channelConfig;
+            stepperConfig = channelConfig.stepperConfig;
+            pwmConfig = channelConfig.pwmConfig;
+            cobOutputType.DataSource = new BindingSource(ChannelOutputTypes.GetItemsForChannel(channel), null);
+            cobOutputType.DisplayMember = "Value";
+            cobOutputType.ValueMember = "Key";
+            cobOutputType.SelectedValueChanged += CobOutputType_SelectedValueChanged;
+            cobOutputType.DataBindings.Add("SelectedValue", channelConfig, "outputMode");
+
+            cobInput1.DataSource = new BindingSource(ChannelInputTypes.inputTypes, null);
+            cobInput1.DisplayMember = "Value";
+            cobInput1.ValueMember = "Key";
+            cobInput1.SelectedValueChanged += CobInput_SelectedValueChanged;
+            cobInput1.DataBindings.Add("SelectedValue", channelConfig.channelMapping.inputs[0], "intDefinition");
+
+            cobInput2.DataSource = new BindingSource(ChannelInputTypes.inputTypes, null);
+            cobInput2.DisplayMember = "Value";
+            cobInput2.ValueMember = "Key";
+            cobInput2.SelectedValueChanged += CobInput_SelectedValueChanged;
+            cobInput2.DataBindings.Add("SelectedValue", channelConfig.channelMapping.inputs[1], "intDefinition");
+
+            numFailsafeValue.DataBindings.Add("Value", channelConfig, "failsafe");
+            numStartupValue.DataBindings.Add("Value", channelConfig, "startup");
+            chbReversedChannel.DataBindings.Add("Checked", channelConfig, "reversed");
+            chbCenteredStick.DataBindings.Add("Checked", channelConfig, "centeredStick");
+            numSTEPMin.DataBindings.Add("Value", stepperConfig, "minFrequency");
+            numSTEPMax.DataBindings.Add("Value", stepperConfig, "maxFrequency");
+            numPWMFreq.DataBindings.Add("Value", pwmConfig, "frequency");
+            numEndPointMin.DataBindings.Add("Value", channelConfig.endPoints, "min");
+            numEndPointMax.DataBindings.Add("Value", channelConfig.endPoints, "max");
+        }
+
         private static Thread dataThread = new Thread(dataGetter);
         private static bool getData = false;
         private static ChannelSetup? currentChannelSetup;
@@ -31,6 +72,10 @@ namespace ControllerCompanion.Views
             Thread.CurrentThread.Name = "RCChannelGetter";
             UInt16 rcValue = 0;
             int count = 0;
+            if (currentChannelSetup != null)
+            {
+                TX_Communicator.transmitChannelConfig(currentChannelSetup.channelConfig);
+            }
             while (true)
             {
                 if (getData && currentChannelSetup != null)
@@ -47,9 +92,16 @@ namespace ControllerCompanion.Views
                     {
                         currentChannelSetup.BeginInvoke(new Action(() =>
                         {
-                            for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
+                            try
                             {
-                                currentChannelSetup.lblRCValue.Text = rcValue.ToString();
+                                for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
+                                {
+                                    currentChannelSetup.lblRCValue.Text = rcValue.ToString();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+
                             }
                         }));
                     }
@@ -80,6 +132,10 @@ namespace ControllerCompanion.Views
         public void getThisRCValue()
         {
             currentChannelSetup = this;
+            if (!getData)
+            {
+                return;
+            }
             TX_Communicator.transmitChannelConfig(channelConfig);
         }
 
@@ -96,44 +152,6 @@ namespace ControllerCompanion.Views
             lblPWMFreq.Visible = visible;
         }
 
-        public ChannelSetup(int channel)
-        {
-            InitializeComponent();
-            lblChannelId.Text = $"Channel {channel}";
-            changeStepObjects(false);
-            changePWMObjects(false);
-            this.channel = channel;
-            channelConfig = Config.settings.model[Config.settings.activeModel].channel_settings[channel];
-            stepperConfig = channelConfig.stepperConfig;
-            pwmConfig = channelConfig.pwmConfig;
-            cobOutputType.DataSource = new BindingSource(ChannelOutputTypes.GetItemsForChannel(channel), null);
-            cobOutputType.DisplayMember = "Value";
-            cobOutputType.ValueMember = "Key";
-            cobOutputType.SelectedValueChanged += CobOutputType_SelectedValueChanged;
-            cobOutputType.DataBindings.Add("SelectedValue", channelConfig, "outputMode");
-
-            cobInput1.DataSource = new BindingSource(ChannelInputTypes.inputTypes, null);
-            cobInput1.DisplayMember = "Value";
-            cobInput1.ValueMember = "Key";
-            cobInput1.SelectedValueChanged += CobInput_SelectedValueChanged;
-            cobInput1.DataBindings.Add("SelectedValue", channelConfig.channelMapping[0], "intDefinition");
-
-            cobInput2.DataSource = new BindingSource(ChannelInputTypes.inputTypes, null);
-            cobInput2.DisplayMember = "Value";
-            cobInput2.ValueMember = "Key";
-            cobInput2.SelectedValueChanged += CobInput_SelectedValueChanged;
-            cobInput2.DataBindings.Add("SelectedValue", channelConfig.channelMapping[1], "intDefinition");
-
-            numFailsafeValue.DataBindings.Add("Value", channelConfig, "failsafe");
-            numStartupValue.DataBindings.Add("Value", channelConfig, "startup");
-            chbReversedChannel.DataBindings.Add("Checked", channelConfig, "reversed");
-            chbCenteredStick.DataBindings.Add("Checked", channelConfig, "centeredStick");
-            numSTEPMin.DataBindings.Add("Value", stepperConfig, "minFrequency");
-            numSTEPMax.DataBindings.Add("Value", stepperConfig, "maxFrequency");
-            numPWMFreq.DataBindings.Add("Value", pwmConfig, "frequency");
-            numEndPointMin.DataBindings.Add("Value", channelConfig.endPoints, "min");
-            numEndPointMax.DataBindings.Add("Value", channelConfig.endPoints, "max");
-        }
 
         private void CobInput_SelectedValueChanged(object? sender, EventArgs e)
         {
@@ -145,7 +163,7 @@ namespace ControllerCompanion.Views
                 Console.WriteLine($"chInput {aIndex} is null");
                 return;
             }
-            channelConfig.channelMapping[aIndex].intDefinition = (int)chInput.SelectedValue;
+            channelConfig.channelMapping.inputs[aIndex].intDefinition = (int)chInput.SelectedValue;
         }
 
         private void CobOutputType_SelectedValueChanged(object? sender, EventArgs e)
@@ -177,8 +195,8 @@ namespace ControllerCompanion.Views
                 {
                     channel--;
                     blockCobUpdates = true;
-                    channelConfig.channelMapping[channel].type = inputType;
-                    channelConfig.channelMapping[channel].index = inputIndex;
+                    channelConfig.channelMapping.inputs[channel].type = inputType;
+                    channelConfig.channelMapping.inputs[channel].index = inputIndex;
                     btnDetectInput1.Text = "Input 1";
                     btnDetectInput2.Text = "Input 2";
                     blockCobUpdates = false;

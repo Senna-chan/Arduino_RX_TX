@@ -81,7 +81,7 @@ extern uint16_t ADCDMABuffer[DMABUFFERSIZE];
 #define IOEXPANDER2_ADDR        0b011
 
 
-#define SETTINGSVERSION         24
+#define SETTINGSVERSION         25
 #define EEPROMFULLWIPE          false
 
 #endif

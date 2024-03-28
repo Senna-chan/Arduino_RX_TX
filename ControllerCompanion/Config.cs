@@ -11,7 +11,7 @@ namespace ControllerCompanion
     public class Config
     {
         public static byte RC_MAX_CHANNELS = 20;
-        public static byte SETTINGS_VERSION = 24;
+        public static byte SETTINGS_VERSION = 25;
         public static SerialPort SelectedSerialPort;
 
         public static Settings settings = new Settings();

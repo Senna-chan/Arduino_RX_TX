@@ -55,7 +55,7 @@ typedef struct
     uint16_t failsafe;                  // Value when controller fails to connect
     uint16_t startupVal;                // Value when all are this transmission is allowed
     uint8_t outputMode;                 // Output modes for channels
-    uint8_t centeredStick;              // Used with combi input for mapping. If true then we will map Mid to ends as both
+    bool centeredStick;              // Used with combi input for mapping. If true then we will map Mid to ends as both
     s_calibrationConfig endPoints;      // Endpoint config, AKA changing mapping from 1000-2000 to anything in between
     s_pwmConfig pwmConfig;              // PWM output Config
     s_stepperConfig stepperConfig;      // Stepper output Config
@@ -97,6 +97,7 @@ typedef struct
     } outputValuesMax;
     uint8_t outputToRateLimit;
     int8_t limitSide;   // If 0 then both, if -1 then only min to mid, if 1 then only mid to max.
+    bool analogInput; // If true then we scale from 0 to 100%. If false we scale from 3 set values
 } rateLimitConfigStruct;
 
 typedef struct
