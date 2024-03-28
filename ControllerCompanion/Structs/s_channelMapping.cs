@@ -1,27 +1,17 @@
 ﻿using ControllerCompanion.Enums;
+using ControllerCompanion.Structs.HelperClasses;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace ControllerCompanion.Structs
 {
-    public class s_channelMapping : INotifyPropertyChanged
+    public class s_channelMapping : StructBase
     {
-        ChannelConfig parent;
-        public s_channelMapping(ChannelConfig parent)
+        
+        public s_channelMapping()
         {
-            this.parent = parent;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        // This method is called by the Set accessor of each property.
-        // The CallerMemberName attribute that is applied to the optional propertyName
-        // parameter causes the property name of the caller to be substituted as an argument.
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            _type = 0;
+            _index = 0;
         }
 
         private byte _type; // Type of the channel
@@ -147,31 +137,28 @@ namespace ControllerCompanion.Structs
                     _index = 0;
                     _type = 0;
                 }
-
                 _type = (byte)(value / ChannelInputTypes.INPUTVALUEBETWEEN);
                 _index = (byte)(value % ChannelInputTypes.INPUTVALUEBETWEEN);
-                //if( value >= 50 && value < 100)
-                //{
-                //    _type = ChannelInputTypes.ADC;
-                //    _index = (byte)(value - 50);
-                //}
-                //if (value >= 100 && value < 150)
-                //{
-                //    _type = ChannelInputTypes.IO;
-                //    _index = (byte)(value - 100);
-                //}
-                //if (value >= 150 && value < 200)
-                //{
-                //    _type = ChannelInputTypes.AUX_IO;
-                //    _index = (byte)(value - 150);
-                //}
-                //if (value > 200 && value < 250)
-                //{
-                //    _type = ChannelInputTypes.AUX_SERIAL;
-                //    _index = (byte)(value - 200);
-                //}
                 NotifyPropertyChanged();
             }
+        }
+
+
+        public override string? ToString()
+        {
+            return strDefinition;
+        }
+
+        public override void WriteValues(BinaryWriter writer)
+        {
+            writer.Write(type);
+            writer.Write(index);
+        }
+
+        public override void ReadValues(BinaryReader reader)
+        {
+            type = reader.ReadByte();
+            index = reader.ReadByte();  
         }
     }
 }

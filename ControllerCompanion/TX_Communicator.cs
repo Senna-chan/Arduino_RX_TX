@@ -33,30 +33,7 @@ namespace ControllerCompanion
             using (var writer = new BinaryWriter(Config.SelectedSerialPort.BaseStream, Encoding.UTF8, true))
             {
                 writer.Write('C');
-                writer.Write(channelConfig.adcConfig.min);
-                writer.Write(channelConfig.adcConfig.mid);
-                writer.Write(channelConfig.adcConfig.max);
-
-                writer.Write(channelConfig.trim);
-                writer.Write(channelConfig.failsafe);
-                writer.Write(channelConfig.startup);
-                writer.Write(channelConfig.outputMode);
-                writer.Write(channelConfig.centeredStick);
-
-                writer.Write(channelConfig.endPoints.min);
-                writer.Write(channelConfig.endPoints.mid);
-                writer.Write(channelConfig.endPoints.max);
-
-                writer.Write(channelConfig.pwmConfig.frequency);
-
-                writer.Write(channelConfig.stepperConfig.minFrequency);
-                writer.Write(channelConfig.stepperConfig.maxFrequency);
-
-                foreach (var channelMapping in channelConfig.channelMapping)
-                {
-                    writer.Write(channelMapping.type);
-                    writer.Write(channelMapping.index);
-                }
+                channelConfig.WriteValues(writer);
                 writer.Write(channelConfig.reversed);
                 writer.Flush();
             }
@@ -99,13 +76,17 @@ namespace ControllerCompanion
             if (!checkState()) return;
             state = CommunicationState.REQUESTING_RC;
             Config.SelectedSerialPort.Write(new byte[] { (byte)'G', (byte)'R' }, 0, 2);
-            using (var reader = new BinaryReader(Config.SelectedSerialPort.BaseStream, Encoding.UTF8, true))
+            try
             {
-                for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
+                using (var reader = new BinaryReader(Config.SelectedSerialPort.BaseStream, Encoding.UTF8, true))
                 {
-                    rc_data[i] = reader.ReadUInt16();
+                    for (int i = 0; i < Config.RC_MAX_CHANNELS; i++)
+                    {
+                        rc_data[i] = reader.ReadUInt16();
+                    }
                 }
             }
+            catch { }
             state = CommunicationState.WAITING;
         }
 
@@ -147,8 +128,8 @@ namespace ControllerCompanion
             state = CommunicationState.REQUESTING_SETTINGS;
             Config.SelectedSerialPort.Write(new byte[] { (byte)'R' }, 0, 1);
             Thread.Sleep(1000);
-            Console.WriteLine($"Got {Config.SelectedSerialPort.BytesToRead} bytes to read");
-            Settings.readBinary(Config.SelectedSerialPort.BaseStream, settings, true);
+            Console.WriteLine($"Got {Config.SelectedSerialPort.BytesToRead} bytes to read and want {Config.settings.settingsSize}");
+            SettingsHandler.readBinary(Config.SelectedSerialPort.BaseStream, settings, true);
             if (Config.SelectedSerialPort.BytesToRead > 0)
             {
                 Console.WriteLine($"Still got bytes left. {Config.SelectedSerialPort.BytesToRead}");
@@ -164,7 +145,7 @@ namespace ControllerCompanion
             Config.SelectedSerialPort.Write(new byte[] { (byte)'T' }, 0, 1);
             try
             {
-                Settings.writeBinary(Config.SelectedSerialPort.BaseStream, settings, true);
+                SettingsHandler.writeBinary(Config.SelectedSerialPort.BaseStream, settings, true);
             }
             catch (Exception ex)
             {

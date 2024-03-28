@@ -34,7 +34,12 @@ private:
 	void writePacket(uint8_t command, uint8_t* data, uint8_t dataSize);
 	void parsePacket();
 public:
-	void loop();
+    const uint16_t extMinValue = 500;
+    const uint16_t extMaxValue = 2500;
+    const uint16_t defMinValue = 1000;
+    const uint16_t defMaxValue = 2000;
+
+    void loop();
 	void init(HardwareSerial* serial);
 	void configureChannelStreaming(uint16_t millis);
 	void getChannels();

@@ -6,34 +6,34 @@
 #include "config.h"
 
 // Library includes
-#include <SPI.h>
-#include <Wire.h>
 #include <Adafruit_MCP23X17.h>
 #include <ArduinoTimerV2.h>
-#include <MyHelpers.h>
-#include <TimedAction.h>
-#include <PlotterLib.h>
-#include <SerialControlLibrary.h>
 #include <BetterHardwareTimer.h>
 #include <GUISlice_HMI_Lib.h>
+#include <MyHelpers.h>
+#include <PlotterLib.h>
+#include <SPI.h>
+#include <SerialControlLibrary.h>
+#include <TimedAction.h>
+#include <Wire.h>
 #include <i2cEncoderLibV2.h>
 #include <nrf24.hpp>
 
 // My includes
-#include <SharedFunctions.h>
-#include <sharedSetup.h>
-#include <Structs.h>
-#include <SharedVars.h>
-#include <ADCDMAFunctions.h>
-#include "MCPExpanders.h"
-#include "settingsHelper.h"
-#include "STMRTOSIncludes.h"
+#include "AUX_Serial_reader.h"
+#include "Arduino_TX_Display_hmi.h"
+#include "ChannelFunctions.h"
 #include "CompanionControl.h"
 #include "Encoder.h"
-#include "ChannelFunctions.h"
-#include "Arduino_TX_Display_hmi.h"
+#include "MCPExpanders.h"
+#include "STMRTOSIncludes.h"
+#include "settingsHelper.h"
+#include <ADCDMAFunctions.h>
+#include <SharedFunctions.h>
+#include <SharedVars.h>
+#include <Structs.h>
 #include <sharedNRF.h>
-#include "AUX_Serial_reader.h"
+#include <sharedSetup.h>
 
 #include "Arduino_TX_Main.h"
 
@@ -61,19 +61,19 @@
 //     //}
 // }
 
-TaskHandle_t nRFData_taskHandle;            // nRF Receive task
-TaskHandle_t plotter_taskHandle;            // Task for plotter stuff
-TaskHandle_t hmi_taskHandle;                // Task for HMI Data transmission things
-TaskHandle_t serialControl_taskHandle;        // Task for serial control library
-TaskHandle_t companionSerial_taskHandle;    // Task for serial communication with the companion app. Custom protocol that bypasses SerialControl for easy use
-TaskHandle_t nrfTransmitTest_taskHandle;    // Task for nrf transmission testing
-TaskHandle_t nrfTransit_taskHandle;            // Task for nrf transmission
-TaskHandle_t printNrfStats_taskHandle;        // Task for printing nrf communication stats
+TaskHandle_t nRFData_taskHandle;         // nRF Receive task
+TaskHandle_t plotter_taskHandle;         // Task for plotter stuff
+TaskHandle_t hmi_taskHandle;             // Task for HMI Data transmission things
+TaskHandle_t serialControl_taskHandle;   // Task for serial control library
+TaskHandle_t companionSerial_taskHandle; // Task for serial communication with the companion app. Custom protocol that bypasses SerialControl for easy use
+TaskHandle_t nrfTransmitTest_taskHandle; // Task for nrf transmission testing
+TaskHandle_t nrfTransit_taskHandle;      // Task for nrf transmission
+TaskHandle_t printNrfStats_taskHandle;   // Task for printing nrf communication stats
 TaskHandle_t loop_taskHandle;
 
-SemaphoreHandle_t hmi_mutex;        // Lock for HMI
-SemaphoreHandle_t nrf_mutex;        // Lock for nRF
-SemaphoreHandle_t serial_mutex;        // Lock for everything Serial
+SemaphoreHandle_t hmi_mutex;    // Lock for HMI
+SemaphoreHandle_t nrf_mutex;    // Lock for nRF
+SemaphoreHandle_t serial_mutex; // Lock for everything Serial
 
 CRC_HandleTypeDef crc_t;
 SerialControlLibrary scl;
@@ -82,11 +82,11 @@ bool debugging = true;
 
 uint16_t lastCalButtons = 0;
 uint16_t rawChannels[RC_MAX_CHANNELS];
-uint16_t AUXRXChannels[RC_MAX_CHANNELS];   // AUX Serial channels temp capture
+uint16_t AUXRXChannels[RC_MAX_CHANNELS]; // AUX Serial channels temp capture
 uint32_t IOExpanderBits = 0;
-uint16_t detectingRawChannels[RC_MAX_CHANNELS];    /// DMA'd ADC Channels
-uint16_t detectedAUXRXChannels[RC_MAX_CHANNELS];    // AUX Serial channels refresing capture // TODO: Rename this eventualy
-uint16_t detectingAUXRXChannels[RC_MAX_CHANNELS];    // AUX Serial channels refresing capture // TODO: Rename this eventualy
+uint16_t detectingRawChannels[RC_MAX_CHANNELS];   /// DMA'd ADC Channels
+uint16_t detectedAUXRXChannels[RC_MAX_CHANNELS];  // AUX Serial channels refresing capture // TODO: Rename this eventualy
+uint16_t detectingAUXRXChannels[RC_MAX_CHANNELS]; // AUX Serial channels refresing capture // TODO: Rename this eventualy
 
 HardwareSerial HMISerial = HardwareSerial(HMI_RX, HMI_TX);
 HardwareSerial auxSerial = HardwareSerial(AUX_RX, AUX_TX);
@@ -119,7 +119,8 @@ uint32_t lastMessageSend = 0;
 
 bool tx, fail, rx;
 
-struct {
+struct
+{
     uint32_t send;
     uint32_t txack;
     uint32_t rx;
@@ -129,12 +130,12 @@ struct {
 #define BTN_K0 PE4
 #define BTN_K1 PE3
 
-HMI_Text* DispayRCObjs[RC_MAX_CHANNELS]{
+HMI_Text *DispayRCObjs[RC_MAX_CHANNELS]{
     &e_n0, &e_n1, &e_n2, &e_n3, &e_n4, &e_n5, &e_n6, &e_n7, &e_n8, &e_n9,
     &e_n10, &e_n11, &e_n12, &e_n13, &e_n14, &e_n15, &e_n16, &e_n17, &e_n18, &e_n19,
 };
 
-HMI_Text* rawDispObjs[12]{
+HMI_Text *rawDispObjs[12]{
     &e_nr0,
     &e_nr1,
     &e_nr2,
@@ -146,10 +147,9 @@ HMI_Text* rawDispObjs[12]{
     &e_nr8,
     &e_nr9,
     &e_dprevio,
-    &e_dcurio
-};
+    &e_dcurio};
 
-HMI_Text* calDispObjs[10][2]{
+HMI_Text *calDispObjs[10][2]{
     {&e_d1, &e_c1},
     {&e_d2, &e_c2},
     {&e_d3, &e_c3},
@@ -169,33 +169,36 @@ extern "C" void _Error_Handler(const char *file, int line)
     TaskHandle_t currentTask = xTaskGetCurrentTaskHandle();
     TaskStatus_t taskStatus;
     vTaskGetInfo(currentTask, &taskStatus, pdTRUE, eInvalid);
-    while (1) {
-        if (++count % 10 == 0) {
+    while (1)
+    {
+        if (++count % 10 == 0)
+        {
             Serial.printf("Error in file '%s' Line %d, Task %s\n", file, line, taskStatus.pcTaskName);
         }
-        if (count == 100) HAL_NVIC_SystemReset();
+        if (count == 100)
+            HAL_NVIC_SystemReset();
         digitalToggle(LED_BUILTIN);
         delay(250);
     }
 }
 
-void notifyThread(TaskHandle_t taskHandle) {
-
+void notifyThread(TaskHandle_t taskHandle)
+{
 }
 
 // TODO: Move this to someplace else so we can maybe unit test the whole project
 #pragma region SPIStuff
 #ifdef ARDUINO_ARCH_STM32
 SPI_HandleTypeDef nRF_hspi;
-void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
+void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
 {
-    GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
     if (hspi->Instance == SPI3)
     {
         /* USER CODE BEGIN SPI3_MspInit 0 */
 
         /* USER CODE END SPI3_MspInit 0 */
-          /* Peripheral clock enable */
+        /* Peripheral clock enable */
         __HAL_RCC_SPI3_CLK_ENABLE();
 
         __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -217,7 +220,8 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     }
 }
 
-void initSPI() {
+void initSPI()
+{
     nRF_hspi.Instance = SPI3;
     nRF_hspi.Init.Mode = SPI_MODE_MASTER;
     nRF_hspi.Init.Direction = SPI_DIRECTION_2LINES;
@@ -235,7 +239,6 @@ void initSPI() {
         Error_Handler();
     }
     __HAL_SPI_ENABLE(&nRF_hspi);
-
 }
 #else
 void initSPI() {}
@@ -253,7 +256,8 @@ void initSPI() {}
  * \param IO_bits               [in] IOExpender bits from IOExpender 1 and 2
  * \param AUX_Serial_channels   [in] Aux serial channels
  */
-void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t* raw_channels, uint16_t* parsed_channels, uint16_t* mapped_channels, uint32_t IO_bits, uint16_t* AUX_Serial_Channels) {
+void updateValues(Model *activeSettings, channelBitData *channel_data, const uint16_t *raw_channels, uint16_t *parsed_channels, uint16_t *mapped_channels, uint32_t IO_bits, uint16_t *AUX_Serial_Channels)
+{
     digitalWrite(chPerfDebugPin, HIGH);
 
     // Parse ADC channels
@@ -266,26 +270,29 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t*
     for (int i = 0; i < RC_MAX_CHANNELS; i++)
     {
         auto chSettings = activeSettings->channel_settings[i];
-        mapped_channels[i] = parseRCChannel(i, &chSettings, bitRead(activeSettings->channelReversed, i), parsed_channels, IO_bits, AUX_Serial_Channels);
-    }
-
-    //for (channelMixStruct channel_mixing : settings.model[settings.activeModel].channelMixing)
-    //{
-    //    if(channel_mixing.dest1 != 0 && channel_mixing.dest2 != 0 && channel_mixing.source1 != 0 && channel_mixing.source2 != 0)
-    //    {
-    //        mixChannels(mappedChannels[channel_mixing.source1], mappedChannels[channel_mixing.source2], &mappedChannels[channel_mixing.dest1], &mappedChannels[channel_mixing.dest2], MixTypes::AddSubtract);
-    //    }
-    //}
-
-     // Testing
-    if (between(fixedChannelValue, 1000, 2000))
-    {
-        for (int i = 0; i < RC_MAX_CHANNELS; i++)
+        mapped_channels[i] = parseRCChannel(i, &chSettings, &activeSettings->rateLimitConfig, &activeSettings->outputEnable, bitRead(activeSettings->channelReversed, i), parsed_channels, IO_bits, AUX_Serial_Channels);
+        if(mapped_channels[i] != 2023)
         {
-            mapped_channels[i] = fixedChannelValue;
+            continue;
+        }
+        // Failsafe detection
+        if(chSettings.startupVal != 0)
+        {
+            mapped_channels[i] = chSettings.startupVal;
+        }
+        if(chSettings.failsafe != 0)
+        {
+            mapped_channels[i] = chSettings.failsafe;
         }
     }
 
+    // for (channelMixStruct channel_mixing : settings.model[settings.activeModel].channelMixing)
+    //{
+    //     if(channel_mixing.dest1 != 0 && channel_mixing.dest2 != 0 && channel_mixing.source1 != 0 && channel_mixing.source2 != 0)
+    //     {
+    //         mixChannels(mappedChannels[channel_mixing.source1], mappedChannels[channel_mixing.source2], &mappedChannels[channel_mixing.dest1], &mappedChannels[channel_mixing.dest2], MixTypes::AddSubtract);
+    //     }
+    // }
 
     channel_data->channel1 =  mapped_channels[0]  - 500;
     channel_data->channel2 =  mapped_channels[1]  - 500;
@@ -312,36 +319,43 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, uint16_t*
 
 #pragma region IRQ functions
 
-void setNrfIRQFlag() {
+void setNrfIRQFlag()
+{
     vTaskNotifyGiveFromISR(nRFData_taskHandle, NULL);
 }
 
 #pragma endregion
-void SendDataToRX(uint8_t* data, uint8_t dataSize) {
+void SendDataToRX(uint8_t *data, uint8_t dataSize)
+{
 #if ENABLE_RADIO
     radioStats.send++;
-    if (xSemaphoreTake(nrf_mutex, 7 / portTICK_RATE_MS) == pdFALSE) {
+    if (xSemaphoreTake(nrf_mutex, 7 / portTICK_RATE_MS) == pdFALSE)
+    {
         Serial.println("SendData FATAL: Failed to take mutex");
     }
     else
     {
         uint32_t counter = 0;
-        do {
+        do
+        {
             uint8_t fifoStatus = nRF24_GetStatus_TXFIFO();
-            if (fifoStatus != nRF24_STATUS_TXFIFO_EMPTY) {
+            if (fifoStatus != nRF24_STATUS_TXFIFO_EMPTY)
+            {
                 nRF24_CE_H(); // Buffer not empty yet trigger retransmit
                 delayMicroseconds(15);
                 nRF24_CE_L();
             }
-            else if(fifoStatus == nRF24_STATUS_TXFIFO_FULL) {
+            else if (fifoStatus == nRF24_STATUS_TXFIFO_FULL)
+            {
                 Serial.println("TXFULL. NOT GOOD");
                 Error_Handler();
             }
-            else {
+            else
+            {
                 break;
             }
         } while (++counter < 5);
-        //Serial.print("Sending");
+        // Serial.print("Sending");
 
         nRF24_CE_L();
 
@@ -362,29 +376,33 @@ void SendDataToRX(uint8_t* data, uint8_t dataSize) {
 }
 
 // TODO: Rewrite this to accept a data input and to provide a output pointer
-void parseReceivednRFPacket() {
-    while (true){
+void parseReceivednRFPacket()
+{
+    while (true)
+    {
         uint8_t buf[32];
         uint8_t length = 0;
         nRF24_RXResult pipeLine = nRF24_ReadPayloadDpl(buf, &length);
         if (pipeLine == nRF24_RX_EMPTY)
             return; // Nothing left in buffer.
-        if (length == 6) {
-            //Serial.printf("%s Message size '%d'. Data: ", isTransmitter ? "ACK" : "Message", length);
-            //for (int i = 0; i < length; i++) {
-            //    Serial.printf(" %02d ", buf[i]);
-            //}
-            //Serial.println();
+        if (length == 6)
+        {
+            // Serial.printf("%s Message size '%d'. Data: ", isTransmitter ? "ACK" : "Message", length);
+            // for (int i = 0; i < length; i++) {
+            //     Serial.printf(" %02d ", buf[i]);
+            // }
+            // Serial.println();
         }
         else
         {
-            //Serial.printf("nRF_SIZE %d\r\n", length);
-            //if (length == 32) {
+            // Serial.printf("nRF_SIZE %d\r\n", length);
+            // if (length == 32) {
             memmove(receiverData.bytesUnion.u8, buf, length);
             uint8_t packetId = receiverData.packetId.id;
-            switch (packetId) {
+            switch (packetId)
+            {
             case SETTINGSDATAID:
-                //Serial.printf("SETTINGSACK");
+                // Serial.printf("SETTINGSACK");
                 allowSettingsSend = true;
                 settingsAckValue = receiverData.settingsDataAck.settingsPacket;
                 break;
@@ -393,10 +411,10 @@ void parseReceivednRFPacket() {
     }
 }
 
-
 #pragma region SerialControl Functions
 // TODO: mMake this function less complex
-void transmitSettingsToRX() {
+void transmitSettingsToRX()
+{
 #ifdef DISABLE_NRF
     return;
 #endif
@@ -407,12 +425,12 @@ void transmitSettingsToRX() {
     double settingsSizeAmountD = sizeof(Settings) / (double)SETTINGSDATASIZE;
     uint16_t settingsSizeAmount = (uint16_t)settingsSizeAmountD;
     uint8_t settingsModulo = sizeof(Settings) % SETTINGSDATASIZE;
-    uint8_t* settingsPtr = (uint8_t*)&settings;
+    uint8_t *settingsPtr = (uint8_t *)&settings;
 
     Serial.printf("Transmitting settings to RX. Settings size %d. Settings packets %d(%5.2f) rest %d. Settings / 4 %f\n", sizeof(Settings), settingsSizeAmount, settingsSizeAmountD, settingsModulo, sizeof(Settings) / 4.0);
     int counter = 0;
     // Main CRC
-    uint32_t settingscrc = HAL_CRC_Calculate(&crc_t, (uint32_t*)settingsPtr, sizeof(Settings) / 4);
+    uint32_t settingscrc = HAL_CRC_Calculate(&crc_t, (uint32_t *)settingsPtr, sizeof(Settings) / 4);
 
     // start header packet
     memset(transmitterData.bytesUnion.u8, 0, 32);
@@ -427,62 +445,73 @@ void transmitSettingsToRX() {
     int maxCounterVal = 200;
     int warningCounterVal = 10;
 
-    //Serial.print("Header packet: ");
-    //for (int b = 0; b < 32; b++) {
-    //    Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
-    //}
-    //Serial.println();
-    do {
+    // Serial.print("Header packet: ");
+    // for (int b = 0; b < 32; b++) {
+    //     Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
+    // }
+    // Serial.println();
+    do
+    {
         SendDataToRX(transmitterData.bytesUnion.u8, 32);
         vTaskDelay(10);
     } while (!allowSettingsSend && ++counter < maxCounterVal);
-    if (counter >= maxCounterVal) {
+    if (counter >= maxCounterVal)
+    {
         Serial.println("Failed to transmit settingsheader");
         Error_Handler();
     }
-    if (counter >= warningCounterVal) Serial.printf("SettingsTX To long. c %d\r\n", counter);
+    if (counter >= warningCounterVal)
+        Serial.printf("SettingsTX To long. c %d\r\n", counter);
     // End header packet
 
     // Start data packets
-    for (int i = 0; i < settingsSizeAmount; i++) {
+    for (int i = 0; i < settingsSizeAmount; i++)
+    {
         memset(transmitterData.bytesUnion.u8, 0, 32); // Clear mem
         transmitterData.settingsData.id = SETTINGSDATAID;
         transmitterData.settingsData.packetNumber = i;
-        uint8_t* txsdPtr = (uint8_t*)&transmitterData.settingsData.data;
+        uint8_t *txsdPtr = (uint8_t *)&transmitterData.settingsData.data;
         memcpy(txsdPtr, settingsPtr, SETTINGSDATASIZE);
         crc = gencrc(transmitterData.bytesUnion.u8, RFPACKETLENGTH - 2);
         transmitterData.settingsData.crc = crc;
         settingsPtr += SETTINGSDATASIZE;
         allowSettingsSend = false;
         counter = 0;
-        if (i % 40 == 0) {
+        if (i % 40 == 0)
+        {
             Serial.println("HMI Settings Update");
             char buf[52];
             sprintf(buf, "Currently at packet %d of %d", i, settingsSizeAmount);
             e_settingstxtorxprogress.setValue(buf);
         }
-        //Serial.printf("packet_%d: ", i);
-        //for (int b = 0; b < 32; b++) {
-        //    Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
-        //}
-        //Serial.println();
-        do {
+        // Serial.printf("packet_%d: ", i);
+        // for (int b = 0; b < 32; b++) {
+        //     Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
+        // }
+        // Serial.println();
+        do
+        {
             SendDataToRX(transmitterData.bytesUnion.u8, 32);
             vTaskDelay(10);
-            if (allowSettingsSend) {
-                if (settingsAckValue != i) {
-                    //Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, i);
+            if (allowSettingsSend)
+            {
+                if (settingsAckValue != i)
+                {
+                    // Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, i);
                 }
-                else if (settingsAckValue == i) {
+                else if (settingsAckValue == i)
+                {
                     break;
                 }
             }
         } while (++counter < maxCounterVal);
-        if (counter >= maxCounterVal) {
+        if (counter >= maxCounterVal)
+        {
             Serial.printf("Failed to transmit settings packet %d. %d packets remaining\r\n", i, settingsSizeAmount - i);
             Error_Handler();
         }
-        if (counter >= warningCounterVal) Serial.printf("SettingsTX To long. c %d\r\n", counter);
+        if (counter >= warningCounterVal)
+            Serial.printf("SettingsTX To long. c %d\r\n", counter);
     }
     // End data packets
 
@@ -490,10 +519,11 @@ void transmitSettingsToRX() {
     transmitterData.settingsData.id = SETTINGSDATAID;
     transmitterData.settingsData.packetNumber = settingsSizeAmount;
 
-    uint8_t* txsdPtr = (uint8_t*)&transmitterData.settingsData.data;
+    uint8_t *txsdPtr = (uint8_t *)&transmitterData.settingsData.data;
     memset(txsdPtr, 0, SETTINGSDATASIZE);
     counter = 0;
-    if (settingsModulo != 0) { // Transmit last packet
+    if (settingsModulo != 0)
+    { // Transmit last packet
         memcpy(txsdPtr, settingsPtr, settingsModulo);
     }
     crc = gencrc(transmitterData.bytesUnion.u8, RFPACKETLENGTH - 2);
@@ -501,25 +531,31 @@ void transmitSettingsToRX() {
 
     allowSettingsSend = false;
 
-    //Serial.print("modulo packet: ");
-    //for (int b = 0; b < 32; b++) {
-    //    Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
-    //}
-    //Serial.println();
-    do {
+    // Serial.print("modulo packet: ");
+    // for (int b = 0; b < 32; b++) {
+    //     Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
+    // }
+    // Serial.println();
+    do
+    {
         SendDataToRX(transmitterData.bytesUnion.u8, 32);
-        if (allowSettingsSend) {
-            if (settingsAckValue != transmitterData.settingsData.packetNumber) {
-                //Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, transmitterData.bytesUnion.u8[1]);
+        if (allowSettingsSend)
+        {
+            if (settingsAckValue != transmitterData.settingsData.packetNumber)
+            {
+                // Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, transmitterData.bytesUnion.u8[1]);
             }
-            else if (settingsAckValue == transmitterData.settingsData.packetNumber) {
+            else if (settingsAckValue == transmitterData.settingsData.packetNumber)
+            {
                 break;
             }
         }
         vTaskDelay(10);
     } while (++counter < maxCounterVal);
-    if (counter >= maxCounterVal) Error_Handler();
-    if (counter >= warningCounterVal) Serial.printf("SettingsTX To long. c %d\r\n", counter);
+    if (counter >= maxCounterVal)
+        Error_Handler();
+    if (counter >= warningCounterVal)
+        Serial.printf("SettingsTX To long. c %d\r\n", counter);
     counter = 0;
     // End modulo packet
 
@@ -530,28 +566,34 @@ void transmitSettingsToRX() {
     transmitterData.bytesUnion.u32[1] = settingscrc;
     crc = gencrc(transmitterData.bytesUnion.u8, RFPACKETLENGTH - 2);
     transmitterData.settingsData.crc = crc;
-    //Serial.printf("SettingsCRC %u\r\n", crc);
+    // Serial.printf("SettingsCRC %u\r\n", crc);
     allowSettingsSend = false;
 
-    //Serial.print("Final packet: ");
-    //for (int b = 0; b < 32; b++) {
-    //    Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
-    //}
-    //Serial.println();
-    do {
+    // Serial.print("Final packet: ");
+    // for (int b = 0; b < 32; b++) {
+    //     Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
+    // }
+    // Serial.println();
+    do
+    {
         SendDataToRX(transmitterData.bytesUnion.u8, 32);
-        if (allowSettingsSend) {
-            if (settingsAckValue != transmitterData.settingsData.packetNumber) {
-                //Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, transmitterData.bytesUnion.u8[1]);
+        if (allowSettingsSend)
+        {
+            if (settingsAckValue != transmitterData.settingsData.packetNumber)
+            {
+                // Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, transmitterData.bytesUnion.u8[1]);
             }
-            else if (settingsAckValue == transmitterData.settingsData.packetNumber) {
+            else if (settingsAckValue == transmitterData.settingsData.packetNumber)
+            {
                 break;
             }
         }
         vTaskDelay(10);
     } while (++counter < maxCounterVal);
-    if (counter >= maxCounterVal) Error_Handler();
-    if (counter >= warningCounterVal) Serial.printf("SettingsTX To long. c %d\r\n", counter);
+    if (counter >= maxCounterVal)
+        Error_Handler();
+    if (counter >= warningCounterVal)
+        Serial.printf("SettingsTX To long. c %d\r\n", counter);
     // End finish packet
 
     Serial.println("Finished transmitting settings");
@@ -559,7 +601,8 @@ void transmitSettingsToRX() {
     vTaskResume(nrfTransit_taskHandle);
 }
 
-void wipeEeprom() {
+void wipeEeprom()
+{
     Serial.println("Wiping EEPROM");
     memset(&settings, 0, sizeof(Settings));
     generateDefaultSettings();
@@ -569,37 +612,44 @@ void wipeEeprom() {
     Serial.println("Wipe done");
 }
 
-void resetMCU() {
+void resetMCU()
+{
     NVIC_SystemReset();
 }
 
-void setTransmitTest() {
+void setTransmitTest()
+{
 #ifdef DISABLE_NRF
     return;
 #endif
     transmitTest = !transmitTest;
-    if (transmitTest) {
+    if (transmitTest)
+    {
         vTaskResume(nrfTransmitTest_taskHandle);
         vTaskSuspend(nrfTransit_taskHandle);
     }
-    else {
+    else
+    {
         vTaskSuspend(nrfTransmitTest_taskHandle);
         vTaskResume(nrfTransit_taskHandle);
     }
 }
 
-void setHMITracing(const char* data) {
+void setHMITracing(const char *data)
+{
     Serial.print("Setting HMI Tracing ");
     Serial.println(data[0] == '1' ? "on" : "off");
     HMI.setTracing(data[0] == '1');
 }
-void setHMIDebugging(const char* data) {
+void setHMIDebugging(const char *data)
+{
     Serial.print("Setting HMI Debugging ");
     Serial.println(data[0] == '1' ? "on" : "off");
     HMI.setDebugging(data[0] == '1');
 }
 
-void getAuxChannels(){
+void getAuxChannels()
+{
     Serial.println("Aux channel data");
     for (int i = 0; i < 14; i++)
     {
@@ -612,9 +662,10 @@ void getAuxChannels(){
 
 #pragma region FreeRTOS tasks
 
-void nrfTransmitChannels(void* parameter)
+void nrfTransmitChannels(void *parameter)
 {
-    while (true) {
+    while (true)
+    {
         transmitTypes txData;
         memcpy(rawChannels, ADCDMABuffer, ADCCHANNELNUMBERS * 2);
         AUX_Serial_reader.getChannels(AUXRXChannels);
@@ -625,8 +676,10 @@ void nrfTransmitChannels(void* parameter)
     }
 }
 
-void nrfTransmitTest(void* parameter) {
-    while (true) {
+void nrfTransmitTest(void *parameter)
+{
+    while (true)
+    {
         uint32_t now = millis();
         lastMessageSend = now;
         uint8_t txBuf[32];
@@ -653,33 +706,40 @@ void nrfTransmitTest(void* parameter) {
 }
 
 // TODO: Check what this function does fully
-void check_radio(void* parameters)
+void check_radio(void *parameters)
 {
-    while (true) {
+    while (true)
+    {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        if (xSemaphoreTake(nrf_mutex, 7 / portTICK_RATE_MS) == pdFALSE) {
+        if (xSemaphoreTake(nrf_mutex, 7 / portTICK_RATE_MS) == pdFALSE)
+        {
             Serial.println("CHECKRADIO: nRF_BUSY");
         }
-        else {
+        else
+        {
             uint8_t status = nRF24_GetIRQFlags();
             tx = (status & nRF24_FLAG_TX_DS) != 0;
             fail = (status & nRF24_FLAG_MAX_RT) != 0;
             rx = (status & nRF24_FLAG_RX_DR) != 0;
             uint8_t fifoStatus = nRF24_GetStatus_TXFIFO();
-            if (fifoStatus == nRF24_STATUS_TXFIFO_EMPTY) {
+            if (fifoStatus == nRF24_STATUS_TXFIFO_EMPTY)
+            {
                 nRF24_CE_L(); // All packets transmitted
             }
 
-            if (tx) {
+            if (tx)
+            {
                 radioStats.txack++;
-                //if(debugging) Serial.println("TXOK");
+                // if(debugging) Serial.println("TXOK");
             }
-            if (fail) { // TXFail
+            if (fail)
+            { // TXFail
                 radioStats.fail++;
-                //if (debugging) Serial.println("TXFERR");
+                // if (debugging) Serial.println("TXFERR");
             }
 
-            if (rx) {                      // Did we receive a message?
+            if (rx)
+            { // Did we receive a message?
                 radioStats.rx++;
                 parseReceivednRFPacket();
             }
@@ -689,8 +749,10 @@ void check_radio(void* parameters)
     }
 }
 
-void printNrfStats(void* parameter) {
-    while (true) {
+void printNrfStats(void *parameter)
+{
+    while (true)
+    {
         Serial.printf("NRFStats: TX %7d ACK %7d RX %7d FAIL %7d\r\n", radioStats.send, radioStats.txack, radioStats.rx, radioStats.fail);
         vTaskDelay(1000 / portTICK_RATE_MS);
     }
@@ -767,9 +829,12 @@ void HMIdoSetupChannel()
 }
 // TODO: Rewrite this to be more simple and to have the bussiness code in a seperate function
 uint32_t lastHMIRefresh = 0;
-void updateHMITask(void* parameter) {
-    while (true) {
-        if (xSemaphoreTake(hmi_mutex, 10 / portTICK_RATE_MS) == pdFALSE) {
+void updateHMITask(void *parameter)
+{
+    while (true)
+    {
+        if (xSemaphoreTake(hmi_mutex, 10 / portTICK_RATE_MS) == pdFALSE)
+        {
             Serial.println("updateHMITask failed to get mutex");
         }
         else
@@ -779,29 +844,33 @@ void updateHMITask(void* parameter) {
             uint8_t currentPageId = HMI.getCurrentPageId();
             switch (currentPageId)
             {
-                case HMIPageElems::calibrations:
-                    calDispObjs[sendChannel][0]->setValue(rawChannels[sendChannel]);
-                    calDispObjs[sendChannel][1]->setValue(parsedChannels[sendChannel]);
-                    sendChannel++;
-                    if (sendChannel == ADCCHANNELNUMBERS) {
-                        sendChannel = 0;
-                    }
+            case HMIPageElems::calibrations:
+                calDispObjs[sendChannel][0]->setValue(rawChannels[sendChannel]);
+                calDispObjs[sendChannel][1]->setValue(parsedChannels[sendChannel]);
+                sendChannel++;
+                if (sendChannel == ADCCHANNELNUMBERS)
+                {
+                    sendChannel = 0;
+                }
                 break;
 
-                case HMIPageElems::setupChannel:
-                    HMIdoSetupChannel();
+            case HMIPageElems::setupChannel:
+                HMIdoSetupChannel();
                 break;
             }
 
-            if (HMI.getCurrentPageId() == HMIPageElems::DisplayRcValues) {
+            if (HMI.getCurrentPageId() == HMIPageElems::DisplayRcValues)
+            {
                 DispayRCObjs[sendChannel]->setValue(mappedChannels[sendChannel]);
                 sendChannel++;
                 if (sendChannel == RC_MAX_CHANNELS) {
                     sendChannel = 0;
                 }
             }
-            if (HMI.getCurrentPageId() == HMIPageElems::DisplayRawValues) {
-                if (sendChannel < 10) {
+            if (HMI.getCurrentPageId() == HMIPageElems::DisplayRawValues)
+            {
+                if (sendChannel < 10)
+                {
                     rawDispObjs[sendChannel]->setValue(rawChannels[sendChannel]);
                 }
                 else if (sendChannel == 10)
@@ -830,9 +899,11 @@ void updateHMITask(void* parameter) {
                     sendChannel = 0;
                 }
             }
-            if (millis() - lastHMIRefresh > 5000) {
+            if (millis() - lastHMIRefresh > 5000)
+            {
 
-                switch (HMI.getCurrentPageId()) {
+                switch (HMI.getCurrentPageId())
+                {
                 case HMIPageElems::calibrations:
                 case HMIPageElems::DisplayRawValues:
                 case HMIPageElems::DisplayRcValues:
@@ -847,20 +918,24 @@ void updateHMITask(void* parameter) {
     }
 }
 
-void processIOInterrupt(void* parameter) {
-    while (true) {
+void processIOInterrupt(void *parameter)
+{
+    while (true)
+    {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
     }
 }
 
-void processCALInterrupt(void* parameter) {
-    while (1) {
+void processCALInterrupt(void *parameter)
+{
+    while (1)
+    {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         xSemaphoreTake(i2c_mutex, portMAX_DELAY);
         uint16_t buttons = calButtonExpender.readGPIOAB();
-        //Serial.print("CAL Interrupt ");
-        //printBits(&Serial, buttons, true);
+        // Serial.print("CAL Interrupt ");
+        // printBits(&Serial, buttons, true);
         for (int i = 0; i < 6; i++)
         {
             uint8_t btn = i * 2;
@@ -887,21 +962,25 @@ void processCALInterrupt(void* parameter) {
     }
 }
 
-void handlePlotter(void* parameter) {
-    while (true) {
+void handlePlotter(void *parameter)
+{
+    while (true)
+    {
         Plotter.loop();
         vTaskDelay((Plotter.getTransmitInterval() + 2) / portTICK_RATE_MS);
     }
 }
 
-void handleSerialControl(void* parameter) {
-    while (true) {
+void handleSerialControl(void *parameter)
+{
+    while (true)
+    {
         scl.loop();
         vTaskDelay(10 / portTICK_RATE_MS);
     }
 }
 
-void miscTask(void* param)
+void miscTask(void *param)
 {
     while (true)
     {
@@ -910,7 +989,8 @@ void miscTask(void* param)
             Serial.print("IOExpander IRQ. ");
             printBits(&Serial, IOExpanderBits, false);
             Serial.print(" Changed bits: ");
-            for (int b = 0; b < 32; b++) {
+            for (int b = 0; b < 32; b++)
+            {
                 if (bitRead(prevIOExpanderBits, b) != bitRead(IOExpanderBits, b))
                 {
                     if (bitRead(IOExpanderBits, b) && detectingIO != 0)
@@ -941,7 +1021,8 @@ void miscTask(void* param)
     }
 }
 
-void initFreeRTOS() {
+void initFreeRTOS()
+{
     hmi_mutex = xSemaphoreCreateMutex();
     nrf_mutex = xSemaphoreCreateMutex();
     i2c_mutex = xSemaphoreCreateMutex();
@@ -951,7 +1032,7 @@ void initFreeRTOS() {
     xTaskCreate(processCALInterrupt, "calibrate_task", 50, NULL, 10, &cal_taskHandle);
     xTaskCreate(processIOInterrupt, "IOExpander", 10, NULL, 10, &io_taskHandle);
     xTaskCreate(processEncoder, "encoder", 50, NULL, 10, &encoder_taskHandle);
-    //xTaskCreate(handlePlotter, "plotter", 256, NULL,1, &plotter_taskHandle);
+    // xTaskCreate(handlePlotter, "plotter", 256, NULL,1, &plotter_taskHandle);
 #if ENABLE_HMI
     xTaskCreate(updateHMITask, "HMI", 256, NULL, 6, &hmi_taskHandle);
 #endif
@@ -967,20 +1048,21 @@ void initFreeRTOS() {
 #endif
     xTaskCreate(miscTask, "MiscTask", 20, NULL, 1, &loop_taskHandle);
     delay(1000);
-    //xTaskCreate(printNrfStats,"nrfChannels",1024, NULL,1, &printNrfStats_taskHandle);
+    // xTaskCreate(printNrfStats,"nrfChannels",1024, NULL,1, &printNrfStats_taskHandle);
 }
 #pragma endregion
 
-
 #pragma region Setup Hardware/Software
 
-void initAuxSerial(){
+void initAuxSerial()
+{
     AUX_Serial_reader.init(&auxSerial);
     AUX_Serial_reader.setProtocol(Aux_Serial_Reader::IBUS);
     AUX_Serial_reader.begin();
 }
 
-void initSerialControl() {
+void initSerialControl()
+{
     scl.init(&Serial1);
     scl.addVoidCallback("*", resetMCU);
     scl.addVoidCallback("t", setTransmitTest);
@@ -1000,7 +1082,7 @@ void initPlotter()
         snprintf(adcNum, sizeof(adcNum), "ADC%02d", i);
         Plotter.addPlotData(&ADCDMABuffer[i], adcNum);
     }
-    PlotterLib* chPlotter = Plotter.addNewPlotter("ChannelData");
+    PlotterLib *chPlotter = Plotter.addNewPlotter("ChannelData");
 
     for (int i = 1; i <= RC_MAX_CHANNELS; i++)
     {
@@ -1011,7 +1093,6 @@ void initPlotter()
     Plotter.setPlotState(false);
     chPlotter->setPlotState(false);
 }
-
 
 #pragma endregion
 
@@ -1134,4 +1215,3 @@ void loop()
 {
     // Not used because of FreeRTOS
 }
-

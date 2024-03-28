@@ -165,7 +165,7 @@ void UART_SendStr(char *string) {
 void setOutput(uint8_t index, uint16_t outputValue) {
     channelOutputConfig choc = channelsOutputConfig[index];
     uint32_t channelValue = outputValue;
-    channelValue += 1000;
+    channelValue += 500;
     channelValues[index - 1] = channelValue;
     if (channelValue == 2023) {
         channelValues[index - 1] = 0;

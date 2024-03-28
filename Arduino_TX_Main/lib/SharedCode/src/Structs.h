@@ -130,8 +130,4 @@ extern const char* OUTPUTMODE_STR_TABLE[];
 extern transmitTypes transmitterData;
 extern receiveTypes receiverData;
 
-
-extern Settings settings;
-extern Model* activeModel;
-
 void initStructs();

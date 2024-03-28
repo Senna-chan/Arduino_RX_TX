@@ -30,9 +30,10 @@ void handleCompanionControl(void* parameter) {
             switch (c) {
                 case 'R':
                 {
-                    int settingsLen = sizeof(Settings);
+                    int32_t settingsLen = sizeof(Settings);
+                    // output->write((uint8_t *)settingsLen, sizeof(settingsLen));
                     uint8_t* settingsPtr = (uint8_t*) &settings;
-                    int maxWriteAmount = output->availableForWrite();
+                    int32_t maxWriteAmount = output->availableForWrite();
                     int packetAmount = settingsLen / maxWriteAmount;
                     int packetsLeft = packetAmount;
                     Serial.printf("Transmitting %d bytes in %d packets\n", settingsLen, packetAmount);
@@ -64,10 +65,25 @@ void handleCompanionControl(void* parameter) {
 
                 case 'T': {
                     Serial.println("Settings from companion");
-                    Settings *newSettings = (Settings*)malloc(sizeof(Settings));
+                    // int32_t settingsSize;
+                    // output->readBytes((uint8_t *)settingsSize, sizeof(settingsSize));
+                    // if(sizeof(settings) != settingsSize)
+                    // {
+                    //     Serial.printf("Incorrect size Got %d want %d. Check companionapp\n", settingsSize, sizeof(Settings));
+                    //     Error_Handler();
+                    //     break;
+                    // }
+                    Settings *newSettings = (Settings *)malloc(sizeof(Settings));
                     size_t bytesRead = output->readBytes((uint8_t*)newSettings, sizeof(Settings));
                     if (bytesRead != sizeof(Settings)) {
                         Serial.printf("WRONG SIZE READ. Got %d bytes of %d\n", bytesRead, sizeof(Settings));
+                        free(newSettings);
+                        Error_Handler();
+                        break;
+                    }
+                    if(newSettings->version != settings.version)
+                    {
+                        Serial.printf("SETTINGS NOT THE SAME VERSION. Got %d, should be %d\n", newSettings->version, settings.version);
                         free(newSettings);
                         Error_Handler();
                         break;
@@ -115,7 +131,7 @@ void handleCompanionControl(void* parameter) {
                     }
                     if (c == 'C') // Channel
                     {
-                        uint16_t rcValue = parseRCChannel(0, &localChannelConfig,reverseChannel, parsedChannels, IOExpanderBits, AUXRXChannels);
+                        uint16_t rcValue = parseRCChannel(0, &localChannelConfig, &activeModel->rateLimitConfig, &activeModel->outputEnable, reverseChannel, parsedChannels, IOExpanderBits, AUXRXChannels);
                         output->write((uint8_t *)&rcValue, 2);
                     }
                 }

@@ -10,7 +10,7 @@ namespace ControllerCompanion
 {
     internal class InputDetector
     {
-        static bool detectionRunning = false;
+        public static bool detectionRunning = false;
         static private UInt32 IOBits = 0;
         static private ushort[] ADCChannels = new ushort[Config.RC_MAX_CHANNELS];
         static private ushort[] AUX_Serial_Channels = new ushort[Config.RC_MAX_CHANNELS];
@@ -18,7 +18,7 @@ namespace ControllerCompanion
         static private ushort[] InitialADCChannels = new ushort[Config.RC_MAX_CHANNELS];
         static private ushort[] InitialAUX_Serial_Channels = new ushort[Config.RC_MAX_CHANNELS];
 
-        public static bool detectSequence(ChannelSetup channelSetup, byte input)
+        public static bool detectSequence(Action<byte, byte, byte> setChannelMapping, byte input)
         {
             if (detectionRunning)
             {
@@ -31,7 +31,7 @@ namespace ControllerCompanion
                 Console.WriteLine("Starting input detection");
                 TX_Communicator.requestAndReadDetectionVars(InitialADCChannels, InitialAUX_Serial_Channels, ref InitialIOBits);
 
-                while (true)
+                while (detectionRunning)
                 {
                     TX_Communicator.requestAndReadDetectionVars(ADCChannels, AUX_Serial_Channels, ref IOBits);
                     for (byte i = 0; i < Config.RC_MAX_CHANNELS; i++)
@@ -45,7 +45,7 @@ namespace ControllerCompanion
                             if(Math.Abs(initADC - curADC) > 200)
                             {
                                 Console.WriteLine($"ADCChannel {i} detected", i);
-                                channelSetup.setChannelMapping(ChannelInputTypes.ADC, i, input);
+                                setChannelMapping(ChannelInputTypes.ADC, i, input);
                                 detectionRunning = false;
                                 return;
                             }
@@ -53,7 +53,7 @@ namespace ControllerCompanion
                         if (Math.Abs(initAS - curAS) > 200)
                         {
                             Console.WriteLine($"AUX_SerialChannel {i} detected", i);
-                            channelSetup.setChannelMapping(ChannelInputTypes.AUX_SERIAL, i, input);
+                            setChannelMapping(ChannelInputTypes.AUX_SERIAL, i, input);
                             detectionRunning = false;
                             return;
                         }
@@ -62,7 +62,7 @@ namespace ControllerCompanion
                         if(newbit != prevbit)
                         {
                             Console.WriteLine($"IOBit {i} detected", i);
-                            channelSetup.setChannelMapping(ChannelInputTypes.IO, i, input);
+                            setChannelMapping(ChannelInputTypes.IO, i, input);
                             detectionRunning = false;
                             return;
                         }
