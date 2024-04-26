@@ -60,6 +60,7 @@ uint16_t parseRCChannel(const uint8_t channel_number, const channelConfigs *chan
     {
         return returnValue;
     }
+
     if (io1t != CTYPE_NONE && io2t == CTYPE_NONE)  // Single channel mapped
     {
         switch (io1t)

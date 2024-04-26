@@ -1,6 +1,10 @@
+#include <stdio.h>
+#include <string.h>
+
 #if PIO_UNIT_TESTING
 #include <unity.h>
 #define DEBUGPRINTF TEST_PRINTF
+#define DEBUGPRINT TEST_MESSAGE
 #elif _MANAGED
 #include <stdarg.h>
 #include <stdio.h>
@@ -10,7 +14,6 @@ void CLRPrintf(const char* format, ...)
 {
     va_list ap;
     va_start(ap, format);
-
     vprintf(format, ap);
     va_end(ap);
 }
@@ -93,19 +96,19 @@ bool RobustCommunication::singleThreadLoop()
                     {
                         p = hardware.read();
                         currentBinaryPacket.header = b << 8 | p;
-                        DEBUGPRINTF("Header found\n");
+                        DEBUGPRINT("Header found\n");
                         currentReadState = READING_MODULE;
                         packetIsBinary = true;
                     }
                     else
                     {
-                        DEBUGPRINTF("Header not found correctly\n");
+                        DEBUGPRINT("Header not found correctly\n");
                     }
                 }
                 else if (b == '@')
                 {
                     packetIsBinary = false;
-                    DEBUGPRINTF("Header found\n");
+                    DEBUGPRINT("Header found\n");
                     currentReadState = READING_MODULE;
                 }
                 else if (b == '?')
@@ -118,11 +121,11 @@ bool RobustCommunication::singleThreadLoop()
                 }
                 else
                 {
-                    DEBUGPRINTF("Header not found while in header state");
+                    DEBUGPRINT("Header not found while in header state");
                 }
             }
             break;
-            
+
             case READING_MODULE:
             {
                 if (packetIsBinary)
@@ -142,7 +145,7 @@ bool RobustCommunication::singleThreadLoop()
                 }
             }
             break;
-            
+
             case READING_COMMAND:
             {
                 if (packetIsBinary)
@@ -172,7 +175,7 @@ bool RobustCommunication::singleThreadLoop()
                 }
             }
             break;
-            
+
             case READING_DATASIZE:
             {
                 if (packetIsBinary)
@@ -192,7 +195,7 @@ bool RobustCommunication::singleThreadLoop()
                 }
             }
             break;
-            
+
             case READING_CRC:
             {
                 if (packetIsBinary)
@@ -214,11 +217,11 @@ bool RobustCommunication::singleThreadLoop()
                 }
             }
             break;
-            
+
             case READING_DATA:
             {
                 if (packetIsBinary)
-                {   
+                {
                     for (int i = 0; i < maxReadCyclesPerCall; i++)
                     {
                         dataReadBuffer[dataReadBufferIndex++] = hardware.read();
@@ -312,14 +315,14 @@ bool RobustCommunication::singleThreadLoop()
 
                             int charsRead = 0;
                             int sscanfResult = sscanf(dataP, format, bufPtr, &charsRead);
-                            if (sscanfResult != 1) 
+                            if (sscanfResult != 1)
                             {
-                                DEBUGPRINTF("Something went wrong\n");
+                                DEBUGPRINT("Something went wrong\n");
                                 break;
                             }
                             if (charsRead == 0)
                             {
-                                DEBUGPRINTF("Uh... didn't read anything\n");
+                                DEBUGPRINT("Uh... didn't read anything\n");
                             }
                             dataP += charsRead;
                             bufPtr += charsRead;
@@ -350,10 +353,6 @@ bool RobustCommunication::singleThreadLoop()
                     {
                         currentBinaryPacket.status.unknownCommand = 1;
                     }
-                    if(!currentBinaryPacket.status.oneshot)
-                    { 
-                        
-                    }
                 }
                 if (currentBinaryPacket.dataSize != 0)
                 {
@@ -370,9 +369,6 @@ bool RobustCommunication::singleThreadLoop()
 
 void RobustCommunication::attachHardwareAccess(HardwareAccess access)
 {
-    //if(access.read == nullptr)  Error_Handler();
-    //if(access.write == nullptr)  Error_Handler();
-    //if(access.available == nullptr)  Error_Handler();
     hardware = access;
 }
 
@@ -396,23 +392,23 @@ bool RobustCommunication::charPacketToDataArray(CharPacket packet, uint8_t* buff
 {
     uint8_t *bufferPtr = buffer;
     *bufferPtr++ = packet.header;
-    
+
     memcpy(bufferPtr, packet.moduleName, strlen(packet.moduleName));
     bufferPtr += strlen(packet.moduleName);
-    
+
     *bufferPtr++ = charSeperator;
-    
+
     memcpy(bufferPtr, packet.commandName, strlen(packet.commandName));
     bufferPtr += strlen(packet.commandName);
-    
+
     *bufferPtr++ = charSeperator;
-    
+
     memcpy(bufferPtr, packet.data, strlen(packet.data));
     bufferPtr += strlen(packet.data);
 
     *bufferPtr++ = packet.footer;
     *bufferPtr++ = '\0';
-    
+
     DEBUGPRINTF("Databuffer is %s", (char*)buffer);
     return true;
 }
@@ -449,7 +445,7 @@ void RobustCommunication::addCommsDefinition(CommsDefinition *definition)
                 {
                     DEBUGPRINTF("ERROR, token %s not found\n", dataLayoutToken);
                 }
-                else 
+                else
                 {
                     strcpy(&dataFormat[dataFormatIndex], foundFormat.scanfName);
                     dataFormatIndex += strlen(foundFormat.scanfName);
@@ -470,7 +466,7 @@ void RobustCommunication::addCommsDefinition(CommsDefinition *definition)
 
 void RobustCommunication::printHelp()
 {
-    DEBUGPRINTF("Available commands: \n");
+    DEBUGPRINT("Available commands: \n");
     for (int i = 0; i < freeDefinitionIndex; i++)
     {
         if (definitions[i].moduleName != NULL)
@@ -480,10 +476,10 @@ void RobustCommunication::printHelp()
             {
                 DEBUGPRINTF("%s", definitions[i].shortDesc);
             }
-            DEBUGPRINTF("\n");
+            DEBUGPRINT("\n");
         }
     }
-    
+
 }
 
 

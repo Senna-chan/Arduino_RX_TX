@@ -1,13 +1,6 @@
 #ifndef _SERIAL_COMMS_H
 #define _SERIAL_COMMS_H
 
-#ifdef PIO_UNIT_TESTING
-#include <unity.h>
-#define DEBUGPRINTF TEST_PRINTF
-#elif defined __ARDUINO__
-#include "Arduino.h"
-#endif
-
 #include <functional>
 
 class RobustCommunication
@@ -48,7 +41,7 @@ public:
             uint8_t unknownCommand : 1;
             uint8_t crcFault : 1;
             uint8_t dataSizeFault : 1;
-            uint8_t oneshot : 1;
+            uint8_t freeBit : 1;
         } status;
         //uint8_t packetNumber;
         uint16_t dataSize;
@@ -116,15 +109,15 @@ public:
     static bool binaryPacketToDataArray(BinaryPacket packet, uint8_t* buffer);
     /**
      * Converts a char packet to a data array.
-     * 
+     *
      * \param packet packet to convert
      * \param buffer Pre created data array
-     * \return 
+     * \return
      */
     static bool charPacketToDataArray(CharPacket packet, uint8_t* buffer);
 
     void addCommsDefinition(CommsDefinition *definition);
-   
+
     void printHelp();
 
 private:
@@ -146,7 +139,7 @@ private:
     static CommsDefinition definitions[definitionSize];
     static uint16_t freeDefinitionIndex;
     static uint8_t instanceAmount;
-    
+
     uint8_t transmittingPacketNumber;
     uint8_t receivedPacketNumber;
     HardwareAccess hardware;

@@ -12,7 +12,10 @@
         "*.tcc": "cpp",
         "stm32freertos.h": "c",
         "random": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "cstdint": "cpp",
+        "span": "cpp",
+        "system_error": "cpp"
     },
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
