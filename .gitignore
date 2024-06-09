@@ -6,5 +6,6 @@ build/
 Backup/
 Debug/
 Release/
+/Misc
 Doxygen/Output/
 Misc/

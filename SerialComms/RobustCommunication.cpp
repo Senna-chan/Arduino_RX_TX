@@ -52,7 +52,7 @@ const strTypeToFormat strTypeToFormatMap[] = {
     {"f", "%f", 8},
     {"d", "%f", 8},
     {"hex", "0x%02X", 2},
-    {"s", "%s", 0}, // Dunno why but this is needed
+    {"s", "%s", 0}, // Datasize is dynamic so that why a 0
     {"c", "%c", 1}
 };
 
@@ -336,7 +336,7 @@ bool RobustCommunication::singleThreadLoop()
                         free(formatStrTok);
                         currentBinaryPacket.dataSize += definitions[defIndex].expectedDataSize;
                     }
-                    if (!definitions[defIndex].commandFunction(currentBinaryPacket.data, currentBinaryPacket.dataSize))
+                    if (!definitions[defIndex].commandFunction(&currentBinaryPacket))
                     {
                         currentBinaryPacket.status.internalError = 1;
                     }
@@ -352,7 +352,9 @@ bool RobustCommunication::singleThreadLoop()
                     }
                     if(!currentBinaryPacket.status.oneshot)
                     { 
-                        
+                        free(currentBinaryPacket.data);
+                        currentBinaryPacket.dataSize = 0;
+                        writeBinaryPacket(&currentBinaryPacket);
                     }
                 }
                 if (currentBinaryPacket.dataSize != 0)
@@ -376,41 +378,44 @@ void RobustCommunication::attachHardwareAccess(HardwareAccess access)
     hardware = access;
 }
 
-bool RobustCommunication::binaryPacketToDataArray(BinaryPacket packet, uint8_t* buffer)
+bool RobustCommunication::binaryPacketToDataArray(BinaryPacket* packet, uint8_t* buffer, bool ignoreData)
 {
     uint16_t bufferIndex = 0;
     buffer[bufferIndex++] = 0xCC;
     buffer[bufferIndex++] = 0x44;
-    buffer[bufferIndex++] = packet.moduleClass;
-    buffer[bufferIndex++] = packet.command;
-    buffer[bufferIndex++] = packet.status.binary;
-    buffer[bufferIndex++] = (uint8_t)(packet.dataSize >> 8);
-    buffer[bufferIndex++] = (uint8_t)(packet.dataSize & 0xFF);
-    buffer[bufferIndex++] = (uint8_t)(packet.crc >> 8);
-    buffer[bufferIndex++] = (uint8_t)(packet.crc & 0xFF);
-    memcpy(&buffer[bufferIndex], packet.data, packet.dataSize);
+    buffer[bufferIndex++] = packet->moduleClass;
+    buffer[bufferIndex++] = packet->command;
+    buffer[bufferIndex++] = packet->status.binary;
+    buffer[bufferIndex++] = (uint8_t)(packet->dataSize >> 8);
+    buffer[bufferIndex++] = (uint8_t)(packet->dataSize & 0xFF);
+    buffer[bufferIndex++] = (uint8_t)(packet->crc >> 8);
+    buffer[bufferIndex++] = (uint8_t)(packet->crc & 0xFF);
+    if (!ignoreData)
+    {
+        memcpy(&buffer[bufferIndex], packet->data, packet->dataSize);
+    }
     return true;
 }
 
-bool RobustCommunication::charPacketToDataArray(CharPacket packet, uint8_t* buffer)
+bool RobustCommunication::charPacketToDataArray(CharPacket* packet, uint8_t* buffer)
 {
     uint8_t *bufferPtr = buffer;
-    *bufferPtr++ = packet.header;
+    *bufferPtr++ = packet->header;
     
-    memcpy(bufferPtr, packet.moduleName, strlen(packet.moduleName));
-    bufferPtr += strlen(packet.moduleName);
-    
-    *bufferPtr++ = charSeperator;
-    
-    memcpy(bufferPtr, packet.commandName, strlen(packet.commandName));
-    bufferPtr += strlen(packet.commandName);
+    memcpy(bufferPtr, packet->moduleName, strlen(packet->moduleName));
+    bufferPtr += strlen(packet->moduleName);
     
     *bufferPtr++ = charSeperator;
     
-    memcpy(bufferPtr, packet.data, strlen(packet.data));
-    bufferPtr += strlen(packet.data);
+    memcpy(bufferPtr, packet->commandName, strlen(packet->commandName));
+    bufferPtr += strlen(packet->commandName);
+    
+    *bufferPtr++ = charSeperator;
+    
+    memcpy(bufferPtr, packet->data, strlen(packet->data));
+    bufferPtr += strlen(packet->data);
 
-    *bufferPtr++ = packet.footer;
+    *bufferPtr++ = packet->footer;
     *bufferPtr++ = '\0';
     
     DEBUGPRINTF("Databuffer is %s", (char*)buffer);
@@ -484,6 +489,31 @@ void RobustCommunication::printHelp()
         }
     }
     
+}
+
+void RobustCommunication::writeBinaryPacket(BinaryPacket* packet)
+{
+    uint8_t returnPacket[BinaryPacketInformationSize];
+    binaryPacketToDataArray(packet, returnPacket, true);
+    for (int i = 0; i < BinaryPacketInformationSize; i++)
+    {
+        hardware.write(returnPacket[i]);
+    }
+    for (int i = 0; i < packet->dataSize; i++)
+    {
+        hardware.write(packet->data[i]);
+    }
+}
+
+
+void RobustCommunication::writeCharPacket(CharPacket* packet)
+{
+    uint8_t returnPacket[2024];
+    charPacketToDataArray(packet, returnPacket);
+    for (int i = 0; i < BinaryPacketInformationSize; i++)
+    {
+        hardware.write(returnPacket[i]);
+    }
 }
 
 

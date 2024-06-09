@@ -1,4 +1,6 @@
 #include "RobustCommunication.h"
+#include <stdarg.h>
+#include <stdio.h>
 
 using namespace System;
 RobustCommunication rc;
@@ -80,7 +82,21 @@ void setupSimplePacket()
     //SimpleCommand.packetNumber = 1;
     testData[0].packetSize = RobustCommunication::BinaryPacketInformationSize + 1;
     testData[0].packetBytes = (uint8_t*)malloc(testData[0].packetSize);
-    RobustCommunication::binaryPacketToDataArray(testData[0].packet, testData[0].packetBytes);
+    RobustCommunication::binaryPacketToDataArray(&testData[0].packet, testData[0].packetBytes);
+}
+
+void setupSimplePacket()
+{
+    testData[2] = TestData{};
+    testData[2].packet.header = 0xCC44;
+    testData[2].packet.moduleClass = 0x01;
+    testData[2].packet.command = 0x01;
+    testData[2].packet.dataSize = 1;
+    testData[2].packet.data = new uint8_t{ 0x01 };
+    //SimpleCommand.packetNumber = 1;
+    testData[2].packetSize = RobustCommunication::BinaryPacketInformationSize + 1;
+    testData[2].packetBytes = (uint8_t*)malloc(testData[0].packetSize);
+    RobustCommunication::binaryPacketToDataArray(&testData[0].packet, testData[0].packetBytes);
 }
 
 void setupSimpleCharPacket()
@@ -89,14 +105,26 @@ void setupSimpleCharPacket()
     testData[1].cpacket = createCharPacket("CC", "setchannel", "1,1500");
     testData[1].packetSize = 40;
     testData[1].packetBytes = (uint8_t*)malloc(testData[1].packetSize);
-    RobustCommunication::charPacketToDataArray(testData[1].cpacket, testData[1].packetBytes);    
+    RobustCommunication::charPacketToDataArray(&testData[1].cpacket, testData[1].packetBytes);    
     testData[1].packetSize = strlen((char*)testData[1].packetBytes);
 }
 
-bool setChannel(uint8_t* data, uint16_t dataSize)
+uint16_t channelValue = 0;
+
+bool setChannel(RobustCommunication::BinaryPacket* packet)
 {
-    Console::WriteLine("Datasize is {0}", dataSize);
-    Console::WriteLine("set channel {0} to {1}", data[0], data[2] << 8 | data[1]);
+    Console::WriteLine("Datasize is {0}", packet->dataSize);
+    channelValue = packet->data[2] << 8 | packet->data[1];
+    Console::WriteLine("set channel {0} to {1}", packet->data[0], channelValue);
+    packet->status.ack = 1;
+    return true;
+}
+
+bool getChannel(RobustCommunication::BinaryPacket* packet)
+{
+    packet->data[1] = channelValue << 8;
+    packet->data[0] = channelValue &= 0xFF;
+    packet->status.ack = 1;
     return true;
 }
 

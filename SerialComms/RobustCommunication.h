@@ -75,7 +75,7 @@ public:
         const char* moduleName;
         uint8_t commandClass;
         const char* commandName;
-        std::function<bool(uint8_t*, uint16_t)> commandFunction;
+        std::function<bool(BinaryPacket*)> commandFunction;
         const char* dataStringLayout;
         const char* shortDesc;
         char* sscanfFormat;
@@ -113,7 +113,7 @@ public:
      * \param buffer Pre created data array
      * \return
      */
-    static bool binaryPacketToDataArray(BinaryPacket packet, uint8_t* buffer);
+    static bool binaryPacketToDataArray(BinaryPacket* packet, uint8_t* buffer, bool ignoreData = false);
     /**
      * Converts a char packet to a data array.
      * 
@@ -121,7 +121,7 @@ public:
      * \param buffer Pre created data array
      * \return 
      */
-    static bool charPacketToDataArray(CharPacket packet, uint8_t* buffer);
+    static bool charPacketToDataArray(CharPacket* packet, uint8_t* buffer);
 
     void addCommsDefinition(CommsDefinition *definition);
    
@@ -140,6 +140,9 @@ private:
         READING_FOOTER,
         READING_DONE
     };
+
+    void writeBinaryPacket(BinaryPacket* packet);
+    void writeCharPacket(CharPacket* packet);
 
     readState currentReadState = READING_HEADER;
     static const uint16_t definitionSize = 300;
