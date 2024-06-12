@@ -90,7 +90,7 @@ uint16_t detectingAUXRXChannels[RC_MAX_CHANNELS]; // AUX Serial channels refresi
 
 HardwareSerial HMISerial = HardwareSerial(HMI_RX, HMI_TX);
 HardwareSerial auxSerial = HardwareSerial(AUX_RX, AUX_TX);
-TwoWire Wire2 = TwoWire(PB10, PB11);
+// TwoWire Wire2 = TwoWire(PB10, PB11);
 bool eepromFound = false;
 
 uint32_t prevSendTime;
@@ -1166,7 +1166,10 @@ void setup()
     PrintCalValues();
 
 #if ENABLE_ENCODER
-    configureEncoder();
+    if(setupEncoder())
+    {
+        configureEncoderValues(activeSettings.)
+    }
 #endif
 
     pinMode(cePin, OUTPUT);

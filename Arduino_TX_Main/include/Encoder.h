@@ -16,10 +16,10 @@ extern TaskHandle_t encoder_taskHandle;			// Task for handling encoder
 
 extern i2cEncoderLibV2 encoder;
 
-/**
- * @brief (re)configured encoders.
- */
-void configureEncoder();
+bool setupEncoder();
+
+void setEncoderValues(encoderStruct* values);
+
 void processEncoder(void* parameter);
 
 #endif

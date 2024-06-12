@@ -7,7 +7,7 @@
 void setupWire1()
 {
     Wire.setSCL(WIRE1_SCL);
-    Wire.setSDA(WIRE1_SCL);
+    Wire.setSDA(WIRE1_SDA);
     Wire.begin();
     Wire.setClock(100000);
 }
