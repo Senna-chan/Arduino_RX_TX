@@ -11,6 +11,7 @@
 #include <i2cEncoderLibV2.h>
 #include <Wire.h>
 #include "config.h"
+#include <settingsStructs.h>
 
 extern TaskHandle_t encoder_taskHandle;			// Task for handling encoder
 
@@ -23,5 +24,3 @@ void setEncoderValues(encoderStruct* values);
 void processEncoder(void* parameter);
 
 #endif
-
-

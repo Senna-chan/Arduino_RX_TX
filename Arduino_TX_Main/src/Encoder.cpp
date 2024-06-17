@@ -35,7 +35,7 @@ bool setupEncoder(){
     encoderSetup = true;
 }
 
-void setEncoderValues(encoderStruct* values);
+void setEncoderValues(encoderStruct* values)
 {
     encoder.writeCounter(values->curValue); /* Reset the counter value */
     encoder.writeMax(values->maxValue); /* Set the maximum threshold */

@@ -1168,7 +1168,7 @@ void setup()
 #if ENABLE_ENCODER
     if(setupEncoder())
     {
-        configureEncoderValues(activeSettings.)
+        setEncoderValues(&activeModel->encoderSettings[0]);
     }
 #endif
 
