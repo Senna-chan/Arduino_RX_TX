@@ -104,11 +104,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\RobustCommunicationsLib\RobustCommunicationLib.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="RobustCommunicationLib.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RobustCommunicationLib.cpp" />
+    <ClCompile Include="..\RobustCommunicationsLib\RobustCommunicationLib.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

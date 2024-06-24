@@ -40,7 +40,7 @@ public:
         union
         {
             uint8_t binary;
-            uint8_t requestType : 1;    // If 0 then it is a request. If 1 then it is a response
+            uint8_t requestType : 1;    // If 0 then it is a request. If 1 then it is a response. If being used with a char packet then 0 is setter, 1 is getter
             uint8_t ack : 1;    
             uint8_t internalError : 1;  // Error in the handling of data
             uint8_t unknownModule : 1; 
@@ -61,7 +61,7 @@ public:
 
     struct CharPacket
     {
-        char header;
+        char header[2];
         char moduleName[10];
         char commandName[30];
         char data[2024];

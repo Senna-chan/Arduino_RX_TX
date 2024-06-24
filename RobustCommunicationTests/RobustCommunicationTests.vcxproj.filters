@@ -3,11 +3,11 @@
   <ItemGroup>
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="RobustCommunicationLib.cpp" />
+    <ClCompile Include="..\RobustCommunicationsLib\RobustCommunicationLib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="RobustCommunicationLib.h" />
+    <ClInclude Include="..\RobustCommunicationsLib\RobustCommunicationLib.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -4,10 +4,12 @@
 #elif PIO_UNIT_TESTING
 #include <unity.h>
 #define DEBUGPRINTF TEST_PRINTF
+#define TRACEPRINTF TEST_PRINTF
 #else
 #include <stdarg.h>
 #include <stdio.h>
 #define DEBUGPRINTF CLRPrintf
+#define TRACEPRINTF 
 
 void CLRPrintf(const char* format, ...)
 {
@@ -81,7 +83,7 @@ bool RobustCommunication::singleThreadLoop()
 		}
 		readCycleCounter--;
 
-		DEBUGPRINTF("Current read state %s byte to read %c(0x%02X)\n", readStateStr[currentReadState], hardware.peek(), hardware.peek());
+		TRACEPRINTF("Current read state %s byte to read %c(0x%02X)\n", readStateStr[currentReadState], hardware.peek(), hardware.peek());
 
 		switch (currentReadState)
 		{
@@ -108,6 +110,19 @@ bool RobustCommunication::singleThreadLoop()
 			{
 				packetIsBinary = false;
 				DEBUGPRINTF("Header found\n");
+				int p = hardware.peek();
+				if (p == '>')
+				{
+					DEBUGPRINTF("SETTER found");
+					hardware.read();
+					currentBinaryPacket.status.requestType = 0;
+				}
+				else if (p == '<')
+				{
+					DEBUGPRINTF("GETTER found");
+					hardware.read();
+					currentBinaryPacket.status.requestType = 1;
+				}
 				currentReadState = READING_MODULE;
 			}
 			else if (b == '?')
@@ -425,8 +440,11 @@ void RobustCommunication::parseCharPacket()
 			currentBinaryPacket.status.internalError = 1;
 		}
 	}
+	if (currentBinaryPacket.status.requestType)
+	{
+		DEBUGPRINTF("WORK IN PROGRESS!");
 
-	DEBUGPRINTF("WORK IN PROGRESS!");
+	}
 
 	//writeBinaryPacket(&currentBinaryPacket);
 	if (currentBinaryPacket.dataSize != 0)
@@ -466,7 +484,8 @@ bool RobustCommunication::binaryPacketToDataArray(RobustCommunication::BinaryPac
 bool RobustCommunication::charPacketToDataArray(RobustCommunication::CharPacket* packet, uint8_t* buffer)
 {
 	uint8_t* bufferPtr = buffer;
-	*bufferPtr++ = packet->header;
+	*bufferPtr++ = packet->header[0];
+	*bufferPtr++ = packet->header[1];
 
 	memcpy(bufferPtr, packet->moduleName, strlen(packet->moduleName));
 	bufferPtr += strlen(packet->moduleName);

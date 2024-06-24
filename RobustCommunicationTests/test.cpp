@@ -136,10 +136,11 @@ protected:
     CharTestFixture() {
     }
 
-    RobustCommunication::CharPacket createCharPacket(const char* moduleName, const char* command, const char* data)
+    RobustCommunication::CharPacket createCharPacket(const char* moduleName, const char* command, const char* data, bool getter)
     {
         RobustCommunication::CharPacket charPacket;
-        charPacket.header = '@';
+        charPacket.header[0] = '@';
+        charPacket.header[1] = getter ? '<' : '>';
         charPacket.footer = '\n';
         strcpy(charPacket.moduleName, moduleName);
         strcpy(charPacket.commandName, command);
@@ -174,13 +175,13 @@ TEST_F(BinaryTestFixture,test_binary_packet_to_array)
 TEST_F(CharTestFixture, test_char_packet_to_array)
 {
     TestData testData;
-    testData.cpacket = createCharPacket("CC", "setchannel", "1,1500");
+    testData.cpacket = createCharPacket("CC", "setchannel", "1,1500", false);
     testData.packetSize = 40;
     testData.packetBytes = (uint8_t*)malloc(testData.packetSize);
     RobustCommunication::charPacketToDataArray(&testData.cpacket, testData.packetBytes);
     testData.packetSize = strlen((char*)testData.packetBytes);
     ASSERT_EQ(testData.packetSize, 22) << (char*)testData.packetBytes;
-    ASSERT_STREQ((char*)testData.packetBytes, "@CC|setchannel|1,1500\n");
+    ASSERT_STREQ((char*)testData.packetBytes, "@>CC|setchannel|1,1500\n");
 }
 
 TEST_F(BinaryTestFixture, DISABLED_set_via_bin_packet)
@@ -221,7 +222,7 @@ TEST_F(BinaryTestFixture, DISABLED_get_via_bin_packet)
 TEST_F(CharTestFixture, set_via_char_packet)
 {
     TestData testData;
-    testData.cpacket = createCharPacket("CC", "setchannel", "1,1500");
+    testData.cpacket = createCharPacket("CC", "setchannel", "1,1500", false);
     testData.packetSize = 40;
     testData.packetBytes = (uint8_t*)malloc(testData.packetSize);
     RobustCommunication::charPacketToDataArray(&testData.cpacket, testData.packetBytes);
@@ -239,7 +240,7 @@ TEST_F(CharTestFixture, set_via_char_packet)
 TEST_F(CharTestFixture, get_via_char_packet)
 {
     TestData testData;
-    testData.cpacket = createCharPacket("CC", "getchannel", "1");
+    testData.cpacket = createCharPacket("CC", "getchannel", "1", true);
     testData.packetSize = 40;
     testData.packetBytes = (uint8_t*)malloc(testData.packetSize);
     RobustCommunication::charPacketToDataArray(&testData.cpacket, testData.packetBytes);
