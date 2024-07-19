@@ -1,6 +1,0 @@
-/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/CMakeFiles/Ardu_TX_HMI_Linux.dir
-/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/CMakeFiles/edit_cache.dir
-/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/CMakeFiles/rebuild_cache.dir
-/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice/CMakeFiles/GUISlice.dir
-/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice/CMakeFiles/edit_cache.dir
-/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/build/GUISlice/CMakeFiles/rebuild_cache.dir
