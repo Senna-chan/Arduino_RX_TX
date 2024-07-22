@@ -8,8 +8,6 @@
 #define RC_OUTPUT_HTL 1
 #define RC_OUTPUT_LTH 0
 
-#define DEBUG 1
-
 #define SETTINGSDATASIZE 27
 #define RFPACKETLENGTH 32
 
