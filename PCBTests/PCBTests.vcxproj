@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{005a9e55-ed4d-41da-bce3-792ee945ef40}</ProjectGuid>
+    <Keyword>Linux</Keyword>
+    <RootNamespace>PCBTests</RootNamespace>
+    <ProjectName>PCBTests</ProjectName>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ApplicationType>Linux</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+    <TargetLinuxPlatform>Generic</TargetLinuxPlatform>
+    <LinuxProjectType>{D51BCBC9-82E9-4017-911E-C93873C4EA2B}</LinuxProjectType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared">
+    <Import Project="..\Libs\Shared\nrf24l01\nrf24l01.vcxitems" Label="Shared" />
+    <Import Project="..\Libs\Shared\SharedIndependantCode\SharedIndependantCode.vcxitems" Label="Shared" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <LinuxIncludePath>c:\visualmicro\ignore</LinuxIncludePath>
+    <wiringPiIncludePath>c:\visualmicro\pi-ignore</wiringPiIncludePath>
+    <TargetOSAndVersion>Arduino</TargetOSAndVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="PCBTests.ino">
+      <FileType>CppCode</FileType>
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\arduino folders read me.txt">
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectCapability Include="VisualMicro" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="__vm\.PCBTests.vsarduino.h" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)..\..\..\..\Arduino\portable\sketchbook\libraries\AUnit\src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.8.0-dev\libraries\Wire\src;$(ProjectDir)..\..\..\..\Arduino\portable\sketchbook\libraries\MyHelpers;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.8.0-dev\libraries\SrcWrapper\src;c:\\program files\\microsoft visual studio\\2022\\community\\common7\\ide\\extensions\\xvurmh3x.xyk\\Micro Platforms\\default;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\avr;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\LL;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\usb;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\OpenAMP;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\usb\hid;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\usb\cdc;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Drivers\STM32F4xx_HAL_Driver\Inc;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Drivers\STM32F4xx_HAL_Driver\Src;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\STM32F4xx;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\ST\STM32_USB_Device_Library\Core\Inc;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\ST\STM32_USB_Device_Library\Core\Src;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\OpenAMP;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\OpenAMP\open-amp\lib\include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\OpenAMP\libmetal\lib\include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\OpenAMP\virtual_driver;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\CMSIS\\5.9.0\CMSIS\Core\Include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Drivers\CMSIS\Device\ST\STM32F4xx\Include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\gcc;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\CMSIS\\5.9.0\CMSIS\DSP\Include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\CMSIS\\5.9.0\CMSIS\DSP\PrivateInclude;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\variants\\STM32F4xx\\F407V(E-G)T_F417V(E-G)T;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\arm-none-eabi\include\c++\13.2.1;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\arm-none-eabi\include\c++\13.2.1\arm-none-eabi\thumb\v7e-m+fp\hard;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\arm-none-eabi\include\c++\13.2.1\backward;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\lib\gcc\arm-none-eabi\13.2.1\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\lib\gcc\arm-none-eabi\13.2.1\include-fixed;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\arm-none-eabi\include;$(ProjectDir)..\..\..\..\Arduino\portable\sketchbook\libraries\AUnit\src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.8.0-dev\libraries\Wire\src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.8.0-dev\libraries\Wire\src\utility;$(ProjectDir)..\Libs\Shared\nrf24l01\src;$(ProjectDir)..\..\..\..\Arduino\portable\sketchbook\libraries\MyHelpers;$(ProjectDir)..\Libs\Shared\SharedIndependantCode\src</IncludePath>
+    <RemoteCCompileToolExe>$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\xpack-arm-none-eabi-gcc\\13.2.1-1.1\bin\arm-none-eabi-g++</RemoteCCompileToolExe>
+    <RemoteCppCompileToolExe>$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\xpack-arm-none-eabi-gcc\\13.2.1-1.1\bin\arm-none-eabi-g++</RemoteCppCompileToolExe>
+    <ValidateArchitecture>false</ValidateArchitecture>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\Arduino\portable\sketchbook\libraries\AUnit\src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.8.0-dev\libraries\Wire\src;$(ProjectDir)..\..\..\..\Arduino\portable\sketchbook\libraries\MyHelpers;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.8.0-dev\libraries\SrcWrapper\src;c:\\program files\\microsoft visual studio\\2022\\community\\common7\\ide\\extensions\\xvurmh3x.xyk\\Micro Platforms\\default;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\avr;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\LL;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\usb;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\OpenAMP;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\usb\hid;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino\stm32\usb\cdc;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Drivers\STM32F4xx_HAL_Driver\Inc;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Drivers\STM32F4xx_HAL_Driver\Src;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\STM32F4xx;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\ST\STM32_USB_Device_Library\Core\Inc;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\ST\STM32_USB_Device_Library\Core\Src;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\OpenAMP;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\OpenAMP\open-amp\lib\include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\OpenAMP\libmetal\lib\include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Middlewares\OpenAMP\virtual_driver;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\CMSIS\\5.9.0\CMSIS\Core\Include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Drivers\CMSIS\Device\ST\STM32F4xx\Include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\system\Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\gcc;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\CMSIS\\5.9.0\CMSIS\DSP\Include;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\CMSIS\\5.9.0\CMSIS\DSP\PrivateInclude;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\cores\\arduino;$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\hardware\\stm32\\2.8.0-dev\\variants\\STM32F4xx\\F407V(E-G)T_F417V(E-G)T;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\arm-none-eabi\include\c++\13.2.1;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\arm-none-eabi\include\c++\13.2.1\arm-none-eabi\thumb\v7e-m+fp\hard;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\arm-none-eabi\include\c++\13.2.1\backward;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\lib\gcc\arm-none-eabi\13.2.1\include;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\lib\gcc\arm-none-eabi\13.2.1\include-fixed;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\tools\xpack-arm-none-eabi-gcc\13.2.1-1.1\arm-none-eabi\include;$(ProjectDir)..\..\..\..\Arduino\portable\sketchbook\libraries\AUnit\src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.8.0-dev\libraries\Wire\src;$(ProjectDir)..\..\..\..\Arduino\portable\packages\STMicroelectronics\hardware\stm32\2.8.0-dev\libraries\Wire\src\utility;$(ProjectDir)..\Libs\Shared\nrf24l01\src;$(ProjectDir)..\..\..\..\Arduino\portable\sketchbook\libraries\MyHelpers;$(ProjectDir)..\Libs\Shared\SharedIndependantCode\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <GccToolChain>$(ProjectDir)..\..\..\..\\Arduino\\portable\\packages\\STMicroelectronics\\tools\\xpack-arm-none-eabi-gcc\\13.2.1-1.1\bin\arm-none-eabi-g++</GccToolChain>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <CLanguageStandard>gnu11</CLanguageStandard>
+      <CAdditionalWarning />
+      <CppAdditionalWarning />
+      <ForcedIncludeFiles>c:\program files\microsoft visual studio\2022\community\common7\ide\extensions\xvurmh3x.xyk\Micro Platforms\default\vm-intelli-pre.h;C:\Users\Senna\AppData\Local\Temp\VMBuilds\PCBTests\STMicroelectronics_GenF4\Debug\.vmintelli\d7d8afa575152ddf2ac67ae3ee6edf51\vm-intelli-gcc-defines.h;c:\program files\microsoft visual studio\2022\community\common7\ide\extensions\xvurmh3x.xyk\Micro Platforms\default\vm-intelli-post.h;$(ProjectDir)__vm\.PCBTests.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <UndefineAllPreprocessorDefinitions>true</UndefineAllPreprocessorDefinitions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>_VMICRO_INTELLISENSE;_VMDEBUG=1;VECT_TAB_OFFSET=0x0;USE_HAL_DRIVER;USE_FULL_LL_DRIVER;STM32F4xx;ARDUINO=108019;ARDUINO_BLACK_F407VE;ARDUINO_ARCH_STM32;BOARD_NAME=BLACK_F407VE;VARIANT_H=variant_BLACK_F407VX.h;STM32F407xx;USBCON;USBD_VID=0;USBD_PID=-1;HAL_PCD_MODULE_ENABLED;USBD_USE_CDC;DISABLE_GENERIC_SERIALUSB;HAL_UART_MODULE_ENABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties config.Debug.customdebug_STMicroelectronics_GenF4_debugger_type="universal" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
