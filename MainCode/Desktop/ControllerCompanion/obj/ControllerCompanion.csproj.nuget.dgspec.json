@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX_PIO\\MainCode\\Desktop\\ControllerCompanion\\ControllerCompanion.csproj": {}
+    "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX\\MainCode\\Desktop\\ControllerCompanion\\ControllerCompanion.csproj": {}
   },
   "projects": {
-    "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX_PIO\\MainCode\\Desktop\\ControllerCompanion\\ControllerCompanion.csproj": {
+    "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX\\MainCode\\Desktop\\ControllerCompanion\\ControllerCompanion.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX_PIO\\MainCode\\Desktop\\ControllerCompanion\\ControllerCompanion.csproj",
+        "projectUniqueName": "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX\\MainCode\\Desktop\\ControllerCompanion\\ControllerCompanion.csproj",
         "projectName": "ControllerCompanion",
-        "projectPath": "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX_PIO\\MainCode\\Desktop\\ControllerCompanion\\ControllerCompanion.csproj",
+        "projectPath": "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX\\MainCode\\Desktop\\ControllerCompanion\\ControllerCompanion.csproj",
         "packagesPath": "C:\\Users\\Senna\\.nuget\\packages\\",
-        "outputPath": "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX_PIO\\MainCode\\Desktop\\ControllerCompanion\\obj\\",
+        "outputPath": "L:\\Projects\\ArduinoProjects\\Arduino_RX_TX\\MainCode\\Desktop\\ControllerCompanion\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

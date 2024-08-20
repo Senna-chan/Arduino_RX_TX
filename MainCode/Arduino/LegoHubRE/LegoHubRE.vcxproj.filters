@@ -1,0 +1,824 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Misc Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>xml;json;txt;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{49315871-05f7-4229-b8b0-9562aae66b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly">
+      <UniqueIdentifier>{e28c17fd-6102-46de-ac2c-dd42b680708b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core">
+      <UniqueIdentifier>{60d48bee-0eaa-4f3e-82db-7a873ff89caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\apps">
+      <UniqueIdentifier>{1a45dad0-04df-43a2-8b3c-319905402f53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\apps\sntp">
+      <UniqueIdentifier>{4a8f85b7-6a0c-4b00-8e10-1abeec8c5ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\core\libb64">
+      <UniqueIdentifier>{9bd2047d-b711-4e3d-9ae5-c5e16fadeb97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries">
+      <UniqueIdentifier>{76eeba49-6a46-4d07-a581-676b81020460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\ArduinoBLE">
+      <UniqueIdentifier>{21d6baf4-90c9-4921-b42e-d744e92e4936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\_micro-api-readonly\libraries\BLE">
+      <UniqueIdentifier>{40a411ac-d927-4e0a-91d1-462748adaa4e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\arduino folders read me.txt">
+      <Filter>Misc Files</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\library.properties">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LegoHubRE.ino" />
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\base64.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\cbuf.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Esp.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-adc.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-bt.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-cpu.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-dac.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-gpio.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-i2c-slave.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-i2c.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-ledc.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-matrix.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-misc.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-psram.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-rgb-led.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-rmt.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-sigmadelta.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-spi.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-time.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-timer.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-tinyusb.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-touch.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-uart.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\FirmwareMSC.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\firmware_msc_fat.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\FunctionalInterrupt.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\HardwareSerial.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\HWCDC.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\IPAddress.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\IPv6Address.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\main.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\MD5Builder.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Print.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\stdlib_noniso.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Stream.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\StreamString.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Tone.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\USB.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\USBCDC.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\USBMSC.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\wiring_pulse.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\wiring_shift.c">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\WMath.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\WString.cpp">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\Arduino.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_main.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_advertising_data\FakeBLELocalDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_advertising_data\test_advertising_data.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_advertising_data\test_local_name.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_advertising_data\test_manufacturer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_advertising_data\test_service.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_discovered_device\FakeGAP.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_discovered_device\test_discovered_device.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\test_uuid\test_uuid.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\util\Common.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\util\HCIFakeTransport.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\util\itoa.c">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\util\String.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\src\util\TestUtil.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEAdvertisingData.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLECharacteristic.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEDescriptor.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEService.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEStringCharacteristic.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLETypedCharacteristics.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalAttribute.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalCharacteristic.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalDescriptor.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalService.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteAttribute.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteCharacteristic.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteDescriptor.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteService.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\ATT.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\bitDescriptions.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\BLEUuid.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\btct.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\GAP.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\GATT.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCI.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCICordioTransport.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCISilabsTransport.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCIUartTransport.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCIVirtualTransport.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCIVirtualTransportAT.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\keyDistribution.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\L2CAPSignaling.cpp">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLE2902.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLE2904.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEAddress.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEAdvertisedDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEAdvertising.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEBeacon.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLECharacteristic.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLECharacteristicMap.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEClient.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEDescriptor.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEDescriptorMap.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEEddystoneTLM.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEEddystoneURL.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEExceptions.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEHIDDevice.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLERemoteCharacteristic.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLERemoteDescriptor.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLERemoteService.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEScan.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLESecurity.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEServer.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEService.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEServiceMap.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEUtils.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEUUID.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEValue.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\FreeRTOS.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\GeneralUtils.cpp">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="CheapLegoHub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="__vm\.LegoHubRE.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Arduino.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\base64.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\binary.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\cbuf.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Client.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\core_version.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Esp.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-adc.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-bt.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-cpu.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-dac.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-gpio.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-i2c-slave.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-i2c.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-ledc.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-log.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-matrix.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-psram.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-rgb-led.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-rmt.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-sigmadelta.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-spi.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-timer.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-tinyusb.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-touch.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal-uart.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp32-hal.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp8266-compat.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\esp_arduino_version.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\FirmwareMSC.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\firmware_msc_fat.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\FunctionalInterrupt.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\HardwareSerial.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\HWCDC.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\io_pin_remap.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\IPAddress.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\IPv6Address.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\MD5Builder.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\pgmspace.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Print.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Printable.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Server.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\stdlib_noniso.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Stream.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\StreamString.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\Udp.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\USB.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\USBCDC.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\USBMSC.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\WCharacter.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\wiring_private.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\WString.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\apps\sntp\sntp.h">
+      <Filter>src\_micro-api-readonly\core\apps\sntp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\libb64\cdecode.h">
+      <Filter>src\_micro-api-readonly\core\libb64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\cores\esp32\libb64\cencode.h">
+      <Filter>src\_micro-api-readonly\core\libb64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\variants\esp32\pins_arduino.h">
+      <Filter>src\_micro-api-readonly\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\Arduino.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\test_advertising_data\FakeBLELocalDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\test_discovered_device\FakeGAP.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\util\Common.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\util\HCIFakeTransport.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\util\itoa.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\util\Stream.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\util\String.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\include\util\TestUtil.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\ArduinoBLE.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEAdvertisingData.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLECharacteristic.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEDescriptor.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEProperty.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEService.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLEStringCharacteristic.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLETypedCharacteristic.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\BLETypedCharacteristics.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalAttribute.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalCharacteristic.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalDescriptor.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\local\BLELocalService.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteAttribute.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteCharacteristic.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteDescriptor.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\remote\BLERemoteService.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\ATT.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\bitDescriptions.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\BLELinkedList.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\BLEUuid.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\btct.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\CordioHCICustomDriver.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\GAP.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\GATT.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCI.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCICordioTransport.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCISilabsTransport.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCITransport.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCIUartTransport.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCIVirtualTransport.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\HCIVirtualTransportAT.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\keyDistribution.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\src\utility\L2CAPSignaling.h">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLE2902.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLE2904.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEAddress.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEAdvertisedDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEAdvertising.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEBeacon.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLECharacteristic.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEClient.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEDescriptor.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEEddystoneTLM.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEEddystoneURL.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEExceptions.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEHIDDevice.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLERemoteCharacteristic.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLERemoteDescriptor.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLERemoteService.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEScan.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLESecurity.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEServer.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEService.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEUtils.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEUUID.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\BLEValue.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\GeneralUtils.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\HIDKeyboardTypes.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\HIDTypes.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\Arduino\portable\packages\esp32\hardware\esp32\2.0.17\libraries\BLE\src\RTOS.h">
+      <Filter>src\_micro-api-readonly\libraries\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="CheapLegoHub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\keywords.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </Text>
+    <Text Include="..\..\..\..\..\..\Arduino\portable\sketchbook\libraries\ArduinoBLE\extras\test\CMakeLists.txt">
+      <Filter>src\_micro-api-readonly\libraries\ArduinoBLE</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
