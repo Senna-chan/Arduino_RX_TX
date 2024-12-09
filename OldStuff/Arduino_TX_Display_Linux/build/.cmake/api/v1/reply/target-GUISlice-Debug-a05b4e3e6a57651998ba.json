@@ -1,0 +1,1025 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "GUISlice/libGUISlice.a"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"_add_library",
+			"add_library",
+			"target_compile_options",
+			"include_directories",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"/home/senna/sourcebuilding/vcpkg/scripts/buildsystems/vcpkg.cmake",
+			"GUISlice/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 24,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 639,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 38,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 1,
+				"line" : 86,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-O0"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-ggdb"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wshadow"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-Wno-unused-parameter"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-exceptions"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/senna/sourcebuilding/vcpkg/installed/x64-linux/include/SDL"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/usr/include/SDL"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/mnt/l/Projects/ArduinoProjects/Arduino_RX_TX/Arduino_TX_Display_Linux/GUISlice/src/elem"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				80,
+				86,
+				91,
+				96,
+				98,
+				100,
+				102,
+				104,
+				107,
+				110,
+				112,
+				114,
+				116,
+				118,
+				120,
+				122,
+				124,
+				126,
+				128,
+				130,
+				132,
+				134,
+				136
+			]
+		}
+	],
+	"id" : "GUISlice::@ddbbbf0cccb990835c70",
+	"name" : "GUISlice",
+	"nameOnDisk" : "libGUISlice.a",
+	"paths" : 
+	{
+		"build" : "GUISlice",
+		"source" : "GUISlice"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29,
+				30,
+				31,
+				32,
+				33,
+				34,
+				35,
+				36,
+				37,
+				38,
+				39,
+				40,
+				41,
+				42,
+				43,
+				44,
+				45,
+				46,
+				47,
+				48,
+				49,
+				50,
+				51,
+				52,
+				53,
+				54,
+				55,
+				56,
+				57,
+				58,
+				59,
+				60,
+				61,
+				62,
+				63,
+				64,
+				65,
+				66,
+				67,
+				68,
+				69,
+				70,
+				71,
+				72,
+				73,
+				74,
+				75,
+				76,
+				77,
+				78,
+				79,
+				81,
+				82,
+				83,
+				84,
+				85,
+				87,
+				88,
+				89,
+				90,
+				92,
+				93,
+				94,
+				95,
+				97,
+				99,
+				101,
+				103,
+				105,
+				106,
+				108,
+				109,
+				111,
+				113,
+				115,
+				117,
+				119,
+				121,
+				123,
+				125,
+				127,
+				129,
+				131,
+				133,
+				135,
+				137
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				80,
+				86,
+				91,
+				96,
+				98,
+				100,
+				102,
+				104,
+				107,
+				110,
+				112,
+				114,
+				116,
+				118,
+				120,
+				122,
+				124,
+				126,
+				128,
+				130,
+				132,
+				134,
+				136
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-hx8347-xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-hx8357-ft6206.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-hx8357-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-hx8357-simple.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-hx8357-stmpe610.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ili9225-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ili9341-ft6206.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ili9341-input.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ili9341-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ili9341-simple.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ili9341-stmpe610.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ili9341-xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ili9488-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-pcd8544-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ra8875-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ra8875-simple_int.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ra8876-ft5206.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ra8876-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-ssd1306-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-adagfx-st7735-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-lcdgfx-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-lcdgfx-stmpe610.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-adafruit_18_joy.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-adafruit_28_cap.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-adafruit_28_res.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-eastrising_35_ili9488_cap.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-eastrising_50_ra8875_res.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-eastrising_50_ra8875_sumo_res.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-eastrising_50_ssd1963_res.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-eastrising_70_ra8876_gv.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-elegoo_28_res.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-generic1_35_touch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-generic1_35_touch1.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-gevino_opto.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-gevino_tft.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-ili9341_16b_urtouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-mcufriend.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-mcufriend_4wire.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-mcufriend_xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-osmart_22_68130_touch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-utft-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-waveshare_28_touch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-waveshare_40_notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/ard-shld-waveshare_40_xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/due-adagfx-ili9225-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/due-adagfx-ili9341-ft6206.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/due-adagfx-ili9341-urtouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/due-adagfx-ra8875-urtouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-aztouch-mod-ili9341-xpt2046-esp32.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-aztouch-mod-ili9341-xpt2046-esp8266.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-shld-adafruit_24_feather_touch-espi.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-shld-m5stack.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-shld-ttgo_btc_ticker.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-shld-wio-input.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-shld-wio-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-tftespi-default-ft6206.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-tftespi-default-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-tftespi-default-simple.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-tftespi-default-stmpe610.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-tftespi-default-xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/esp-tftespi-default-xpt2046_int.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/hmi-adagfx-ili9341_16b-xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/linux-sdl1-default-mouse.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/linux-sdl2-default-mouse.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/mult-shld-adafruit_24_feather_touch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/mult-shld-adafruit_35_feather_touch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/rpi-sdl1-default-sdl.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/rpi-sdl1-default-tslib.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/rpi-sdl2-default-sdl.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/rpi-sdl2-default-tslib.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/stm32-adagfx-mcufriend-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/stm32-adagfx-mcufriend-simple.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/stm32-adagfxas-ili9341-notouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/stm32-adagfxas-ili9341-urtouch.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/stm32-adagfxas-ili9341-xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/teensy-adagfx-ili9341-xpt2046-audio.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/teensy-adagfx-ili9341-xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/teensy-adagfx-ili9341_t3-notouch-audio.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/teensy-adagfx-ili9341_t3-xpt2046-audio.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/configs/teensy-adagfx-ili9341_t3-xpt2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/GUIslice.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_config.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_drv.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_drv_adagfx.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_drv_m5stack.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/GUIslice_drv_sdl.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_drv_sdl.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_drv_tft_espi.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_drv_utft.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_ex.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/GUIslice_hmi.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_hmi.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_th.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_th_XPT2046.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/GUIslice_version.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XCheckbox.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XCheckbox.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XGauge.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XGauge.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XGlowball.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XGlowball.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XGraph.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XGraph.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XKeyPad.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XKeyPad.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XKeyPad_Alpha-setup.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XKeyPad_Alpha.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XKeyPad_Alpha.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XKeyPad_Num-setup.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XKeyPad_Num.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XKeyPad_Num.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XListbox.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XListbox.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XProgress.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XProgress.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XRadial.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XRadial.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XRamp.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XRamp.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XRingGauge.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XRingGauge.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XSeekbar.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XSeekbar.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XSelNum.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XSelNum.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XSlider.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XSlider.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XSpinner.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XSpinner.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XTemplate.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XTemplate.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XTextbox.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XTextbox.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XToggleImgbtn.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XToggleImgbtn.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "GUISlice/src/elem/XTogglebtn.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "GUISlice/src/elem/XTogglebtn.h",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}
