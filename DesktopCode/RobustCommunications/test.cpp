@@ -1,4 +1,4 @@
-#include "pch.h"
+#include <gtest/gtest.h>
 #include "RobustCommunicationLib.h"
 
 struct TestData
@@ -247,7 +247,7 @@ TEST_F(CharTestFixture, get_via_char_packet)
     testData.packetSize = strlen((char*)testData.packetBytes);
 
     attachTestDefinitions();
-
+dataStringLayout
     processPacket(testData);
 
     //ASSERT_FALSE(testData.packet.status.internalError);
