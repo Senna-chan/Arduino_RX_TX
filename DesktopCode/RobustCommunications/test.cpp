@@ -19,7 +19,7 @@ bool setChannel(RobustCommunication::BinaryPacket* packet)
     if (packet->dataSize != 3) return false;
 
     channelNumber = packet->data[0];
-    channelValue = packet->data[2] << 8 | packet->data[1];
+    channelValue = packet->data[1] | packet->data[2] << 8;
 
     if (channelNumber != 1) return false;
     if (channelValue != 1500) return false;
@@ -29,7 +29,7 @@ bool setChannel(RobustCommunication::BinaryPacket* packet)
 
 bool getChannel(RobustCommunication::BinaryPacket* packet)
 {
-    packet->data[1] = channelValue << 8;
+    packet->data[1] = channelValue >> 8;
     packet->data[0] = channelValue &= 0xFF;
     packet->status.ack = 1;
     return true;
@@ -102,7 +102,7 @@ protected:
         setChannelPacket.moduleName = "CC";
         setChannelPacket.commandClass = 0x01;
         setChannelPacket.commandName = "setchannel";
-        setChannelPacket.dataStringLayout = "u8,u16";
+        setChannelPacket.incomingHRDataStringLayout = "u8,u16";
         setChannelPacket.commandFunction = setChannel;
         rc.addCommsDefinition(&setChannelPacket);
 
@@ -111,7 +111,8 @@ protected:
         getChannelPacket.moduleName = "CC";
         getChannelPacket.commandClass = 0x01;
         getChannelPacket.commandName = "getchannel";
-        getChannelPacket.dataStringLayout = "u8,u16";
+        getChannelPacket.incomingHRDataStringLayout = "u8";
+        getChannelPacket.outgoingHRDataStringLayout = "u16";
         getChannelPacket.commandFunction = getChannel;
         rc.addCommsDefinition(&getChannelPacket);
     }
@@ -156,7 +157,7 @@ protected:
     }
 };
 
-TEST_F(BinaryTestFixture, DISABLED_test_binary_packet_to_array)
+TEST_F(BinaryTestFixture, test_binary_packet_to_array)
 {
     TestData testData;
     testData.packet.header = 0xCC44;
@@ -172,7 +173,7 @@ TEST_F(BinaryTestFixture, DISABLED_test_binary_packet_to_array)
     ASSERT_EQ(0x44, testData.packetBytes[1]);
 }
 
-TEST_F(CharTestFixture, DISABLED_test_char_packet_to_array)
+TEST_F(CharTestFixture, test_char_packet_to_array)
 {
     TestData testData;
     testData.cpacket = createCharPacket("CC", "setchannel", "1,1500", false);
@@ -180,18 +181,18 @@ TEST_F(CharTestFixture, DISABLED_test_char_packet_to_array)
     testData.packetBytes = (uint8_t*)malloc(testData.packetSize);
     RobustCommunication::charPacketToDataArray(&testData.cpacket, testData.packetBytes);
     testData.packetSize = strlen((char*)testData.packetBytes);
-    ASSERT_EQ(testData.packetSize, 22) << (char*)testData.packetBytes;
+    ASSERT_EQ(testData.packetSize, 23) << (char*)testData.packetBytes;
     ASSERT_STREQ((char*)testData.packetBytes, "@>CC|setchannel|1,1500\n");
 }
 
-TEST_F(BinaryTestFixture, DISABLED_set_via_bin_packet)
+TEST_F(BinaryTestFixture, set_via_bin_packet)
 {
     TestData testData;
     testData.packet.header = 0xCC44;
     testData.packet.moduleClass = 0x01;
     testData.packet.command = 0x01;
     testData.packet.dataSize = 3;
-    testData.packet.data = new uint8_t[3]{ 0x01, (uint8_t)(TestChannelValue << 8), (uint8_t)(TestChannelValue & 0xFF) };
+    testData.packet.data = new uint8_t[3]{ 0x01, (uint8_t)(TestChannelValue & 0xFF), (uint8_t)(TestChannelValue >> 8) };
     testData.packetSize = RobustCommunication::BinaryPacketInformationSize + 3;
     testData.packetBytes = (uint8_t*)malloc(testData.packetSize);
     RobustCommunication::binaryPacketToDataArray(&testData.packet, testData.packetBytes);
@@ -201,7 +202,7 @@ TEST_F(BinaryTestFixture, DISABLED_set_via_bin_packet)
     ASSERT_EQ(channelValue, 1500);
 }
 
-TEST_F(BinaryTestFixture, DISABLED_get_via_bin_packet)
+TEST_F(BinaryTestFixture, get_via_bin_packet)
 {
 
     TestData testData;
@@ -247,7 +248,6 @@ TEST_F(CharTestFixture, get_via_char_packet)
     testData.packetSize = strlen((char*)testData.packetBytes);
 
     attachTestDefinitions();
-dataStringLayout
     processPacket(testData);
 
     //ASSERT_FALSE(testData.packet.status.internalError);

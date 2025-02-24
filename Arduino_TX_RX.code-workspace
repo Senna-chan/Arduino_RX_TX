@@ -1,21 +1,30 @@
 {
 	"folders": [
-		{
-			"path": "Arduino_TX_Main"
-		},
-		{
-			"path": "Arduino_RX"
-		},
-		{
-			"path": "Arduino_TX_Display"
-		},
-		{
-			"path": "ControllerCompanion"
-		},
-		{
-			"path": "RX_To_LegoHub"
-		}
-	],
+        {
+            "name": "Arduino_TX_Main",
+            "path": "Arduino_TX_Main"
+        },
+        {
+            "name": "Arduino_RX",
+            "path": "Arduino_RX"
+        },
+        {
+            "name": "Arduino_TX_Display",
+            "path": "Arduino_TX_Display"
+        },
+        {
+            "name": "ControllerCompanion",
+            "path": "ControllerCompanion"
+        },
+        {
+            "name": "RX_To_LegoHub",
+            "path": "RX_To_LegoHub"
+        },
+        {
+            "name": "RobustCommunications",
+            "path": "DesktopCode/RobustCommunications"
+        }
+    ],
     "settings": {
         "files.associations": {
             "array": "cpp",

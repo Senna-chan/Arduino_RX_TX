@@ -7,10 +7,15 @@
 #include "Arduino.h"
 #endif
 
+#include <cstring>
 #include <functional>
+#include <vector>
+#include <stdint.h>
 
 class RobustCommunication
 {
+protected: 
+
 public:
     RobustCommunication()
     {
@@ -24,10 +29,10 @@ public:
         {
             for (auto definition : definitions)
             {
-                if (definition.dataStringLayout != NULL)
-                {
-                    //free(definition.sscanfFormat);
-                }
+                // if (definition.dataStringLayout != NULL)
+                // {
+                //     //free(definition.sscanfFormat);
+                // }
             }
         }
     }
@@ -40,6 +45,7 @@ public:
         union
         {
             uint8_t binary;
+            struct{
             uint8_t requestType : 1;    // If 0 then it is a request. If 1 then it is a response. If being used with a char packet then 0 is setter, 1 is getter
             uint8_t ack : 1;    
             uint8_t internalError : 1;  // Error in the handling of data
@@ -48,6 +54,7 @@ public:
             uint8_t crcFault : 1;
             uint8_t dataSizeFault : 1;
             uint8_t oneshot : 1;    // If set then handle and forget
+            };
         } status;
         //uint8_t packetNumber;
         uint16_t dataSize;
@@ -68,6 +75,30 @@ public:
         char footer;
     };
 
+    static const uint8_t maxFormatsDefined = 50;
+    
+    typedef struct {
+            const char* shortName;
+            const char* format;
+            uint8_t byteSize;
+    } strTypeToFormat;
+    
+    constexpr static strTypeToFormat strTypeToFormatMap[16] = {
+        {"u8", "%hhu", 1},
+        {"s8", "%hhd", 1},
+        {"u16", "%hu", 2},
+        {"s16", "%hd", 2},
+        {"u32", "%u", 4},
+        {"s32", "%d", 4},
+        {"u64", "%lu", 8},
+        {"s64", "%ld", 8},
+        {"int", "%d", 4},
+        {"f", "%f", 8},
+        {"d", "%f", 8},
+        {"hex", "0x%02X", 2},
+        {"s", "%s", 0}, // Datasize is dynamic so that why a 0
+        {"c", "%c", 1}
+    };
     struct CommsDefinition
     {
         uint8_t moduleClass;    //<! Byte based module class
@@ -82,8 +113,8 @@ public:
         
         const char* incomingHRDataStringLayout; //<! Incoming human readable data layout
         const char* outgoingHRDataStringLayout; //<! Outgoing human readable data layout
-        char* sscanfFormat; //<! Incoming machine readable data layout
-        char* sprintfFormat; //<! Outgoing machine readable data layout
+        std::vector<strTypeToFormat*> sscanfFormat; //<! Incoming machine readable data layout
+        std::vector<strTypeToFormat*> sprintfFormat; //<! Outgoing machine readable data layout
         uint16_t expectedsscanfDataSize; //<! Expected incoming datasize
         uint16_t expectedsprintfDataSize; //<! Expected outgoing datasize
     };

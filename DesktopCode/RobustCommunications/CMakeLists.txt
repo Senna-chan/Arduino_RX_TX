@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.14)
 project(my_project)
 
 # GoogleTest requires at least C++14
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -17,14 +18,25 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+file(GLOB source_files 
+  "test.cpp" 
+  "RobustCommunicationLib.cpp"
+)
+file(GLOB header_files 
+  "RobustCommunicationLib.h"
+)
+
 add_executable(
   RobustCommsTest
-  test.cpp
+  ${source_files}
+
+  ${header_files}
 )
+
 target_link_libraries(
   RobustCommsTest
   GTest::gtest_main
 )
-
+target_compile_features(RobustCommsTest PUBLIC cxx_std_23)
 include(GoogleTest)
 gtest_discover_tests(RobustCommsTest)
