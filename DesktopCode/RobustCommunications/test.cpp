@@ -29,10 +29,14 @@ bool setChannel(RobustCommunication::BinaryPacket* packet)
 
 bool getChannel(RobustCommunication::BinaryPacket* packet)
 {
-    packet->data[1] = channelValue >> 8;
-    packet->data[0] = channelValue &= 0xFF;
-    packet->status.ack = 1;
-    return true;
+    if(packet->data[0] == 1)
+    {
+        packet->data[1] = TestChannelValue >> 8;
+        packet->data[0] = TestChannelValue & 0xFF;
+        packet->status.ack = 1;
+        return true;
+    }
+    return false;
 }
 
 
@@ -109,7 +113,7 @@ protected:
         RobustCommunication::CommsDefinition getChannelPacket = { 0 };
         getChannelPacket.moduleClass = 0x01;
         getChannelPacket.moduleName = "CC";
-        getChannelPacket.commandClass = 0x01;
+        getChannelPacket.commandClass = 0x02;
         getChannelPacket.commandName = "getchannel";
         getChannelPacket.incomingHRDataStringLayout = "u8";
         getChannelPacket.outgoingHRDataStringLayout = "u16";
@@ -249,8 +253,7 @@ TEST_F(CharTestFixture, get_via_char_packet)
 
     attachTestDefinitions();
     processPacket(testData);
-
     //ASSERT_FALSE(testData.packet.status.internalError);
     //ASSERT_TRUE(testData.packet.status.ack);
-    ASSERT_EQ(channelValue, 1500);
+    ASSERT_STREQ((char*)returnedPacket, "@=CC|getchannel|1500\n");
 }

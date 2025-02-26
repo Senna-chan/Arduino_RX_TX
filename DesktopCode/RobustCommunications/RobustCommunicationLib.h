@@ -113,8 +113,8 @@ public:
         
         const char* incomingHRDataStringLayout; //<! Incoming human readable data layout
         const char* outgoingHRDataStringLayout; //<! Outgoing human readable data layout
-        std::vector<strTypeToFormat*> sscanfFormat; //<! Incoming machine readable data layout
-        std::vector<strTypeToFormat*> sprintfFormat; //<! Outgoing machine readable data layout
+        std::vector<uint8_t> sscanfFormat; //<! Incoming machine readable data layout indexes
+        std::vector<uint8_t> sprintfFormat; //<! Outgoing machine readable data layout indexes
         uint16_t expectedsscanfDataSize; //<! Expected incoming datasize
         uint16_t expectedsprintfDataSize; //<! Expected outgoing datasize
     };
