@@ -19,6 +19,8 @@
 #include <i2cEncoderLibV2.h>
 #include <nrf24.hpp>
 
+#include <RobustCommunicationLib.hpp>
+
 // My includes
 #include "AUX_Serial_reader.h"
 #include "Arduino_TX_Display_hmi.h"
@@ -76,7 +78,8 @@ SemaphoreHandle_t nrf_mutex;    // Lock for nRF
 SemaphoreHandle_t serial_mutex; // Lock for everything Serial
 
 CRC_HandleTypeDef crc_t;
-SerialControlLibrary scl;
+
+RobustCommunications::RobustCommunication rc;
 
 bool debugging = true;
 
