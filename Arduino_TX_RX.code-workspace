@@ -1,21 +1,25 @@
 {
 	"folders": [
-		{
-			"path": "Arduino_TX_Main"
-		},
-		{
-			"path": "Arduino_RX"
-		},
-		{
-			"path": "Arduino_TX_Display"
-		},
-		{
-			"path": "ControllerCompanion"
-		},
-		{
-			"path": "RX_To_LegoHub"
-		}
-	],
+        {
+            "path": "Arduino_TX_Main"
+        },
+        {
+            "path": "Arduino_RX"
+        },
+        {
+            "path": "Arduino_TX_Display"
+        },
+        {
+            "path": "ControllerCompanion"
+        },
+        {
+            "path": "RX_To_LegoHub"
+        },
+        {
+            "name": "Arduino_TX_HAL",
+            "path": "Arduino_TX_HAL"
+        }
+    ],
     "settings": {
         "files.associations": {
             "array": "cpp",
@@ -46,7 +50,10 @@
             "xhash": "cpp",
             "xstring": "cpp",
             "xtree": "cpp",
-            "xutility": "cpp"
+            "xutility": "cpp",
+            "regex": "cpp",
+            "bitset": "cpp",
+            "task.h": "c"
         },
         "cpp-check-lint.cpplint.--filter=": "-whitespace/comments,-readability/todo,-whitespace/line_length,-whitespace/braces,-legal/copyright,-build/header_guard,-whitespace/line_length",
         "cpp-check-lint.cppcheck.--max-ctu-depth=": 4,

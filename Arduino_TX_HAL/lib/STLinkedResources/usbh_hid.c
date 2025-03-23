@@ -1,0 +1,1 @@
+/home/senyaa/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Middlewares/ST/STM32_USB_Host_Library/Class/HID/Src/usbh_hid.c

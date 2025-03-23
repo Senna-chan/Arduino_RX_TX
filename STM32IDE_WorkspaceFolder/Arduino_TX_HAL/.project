@@ -152,6 +152,16 @@
 			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sram.c</locationURI>
 		</link>
 		<link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim.c</name>
+			<type>1</type>
+			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_tim_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</locationURI>
+		</link>
+		<link>
 			<name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_uart.c</name>
 			<type>1</type>
 			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c</locationURI>
@@ -295,86 +305,6 @@
 			<name>Middlewares/USB_Host_Library/usbh_pipes.c</name>
 			<type>1</type>
 			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_pipes.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/CDC_ACM/usbd_cdc_acm.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Class/CDC_ACM/Src/usbd_cdc_acm.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/CDC_ACM/usbd_cdc_acm_if.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/App/usbd_cdc_acm_if.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/COMPOSITE/usbd_composite.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Class/COMPOSITE/Src/usbd_composite.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/Core/usb_device.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/App/usb_device.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/Core/usbd_conf.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Target/usbd_conf.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/Core/usbd_core.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Core/Src/usbd_core.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/Core/usbd_ctlreq.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Core/Src/usbd_ctlreq.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/Core/usbd_desc.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/App/usbd_desc.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/Core/usbd_ioreq.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Core/Src/usbd_ioreq.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/DFU/usbd_dfu.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Class/DFU/Src/usbd_dfu.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/DFU/usbd_dfu_if.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/App/usbd_dfu_if.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/MSC_BOT/usbd_msc.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Class/MSC/Src/usbd_msc.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/MSC_BOT/usbd_msc_bot.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Class/MSC/Src/usbd_msc_bot.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/MSC_BOT/usbd_msc_data.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Class/MSC/Src/usbd_msc_data.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/MSC_BOT/usbd_msc_if.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/App/usbd_msc_if.c</locationURI>
-		</link>
-		<link>
-			<name>Middlewares/Composite/USB/COMPOSITE/MSC_BOT/usbd_msc_scsi.c</name>
-			<type>1</type>
-			<locationURI>PARENT-5-PROJECT_LOC/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/Class/MSC/Src/usbd_msc_scsi.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
