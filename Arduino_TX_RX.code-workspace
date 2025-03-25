@@ -53,7 +53,15 @@
             "xutility": "cpp",
             "regex": "cpp",
             "bitset": "cpp",
-            "task.h": "c"
+            "task.h": "c",
+            "freertos.h": "c",
+            "cmsis_os.h": "c",
+            "hash_map": "cpp",
+            "hash_set": "cpp",
+            "usbd_cdc_acm_if.h": "c",
+            "usbd_dfu_if.h": "c",
+            "usbd_dfu.h": "c",
+            "usb_otg.h": "c"
         },
         "cpp-check-lint.cpplint.--filter=": "-whitespace/comments,-readability/todo,-whitespace/line_length,-whitespace/braces,-legal/copyright,-build/header_guard,-whitespace/line_length",
         "cpp-check-lint.cppcheck.--max-ctu-depth=": 4,

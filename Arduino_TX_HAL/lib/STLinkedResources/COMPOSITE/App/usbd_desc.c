@@ -1,0 +1,1 @@
+/home/senyaa/STM32Cube/Repository/Packs/AL94/I-CUBE-USBD-COMPOSITE/1.0.3/Middlewares/Third_Party/COMPOSITE/App/usbd_desc.c

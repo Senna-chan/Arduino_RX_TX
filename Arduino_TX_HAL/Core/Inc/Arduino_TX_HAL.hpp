@@ -13,6 +13,7 @@ extern "C"
     #include <stdio.h>
     #include <stdlib.h>
     #include "main.h"
+    #include "freertos.h"
 	void Error_Handler_CPP(char * file, int line);
 #ifdef __cplusplus
 }

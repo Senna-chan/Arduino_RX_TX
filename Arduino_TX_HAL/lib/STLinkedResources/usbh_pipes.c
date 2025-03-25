@@ -1,1 +1,0 @@
-/home/senyaa/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_pipes.c
