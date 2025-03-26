@@ -57,7 +57,7 @@ void MX_GPIO_Init(void)
                           |C41_CYRF_RST_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, TOUCH_PEN_Pin|AUX_MUX_S1_Pin|AUX_MUX_S2_Pin|GPIO_PIN_9, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, TOUCH_PEN_Pin|AUX_MUX_S1_Pin|AUX_MUX_S2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SPI_FS_CS_Pin|BACK_LIGHT_Pin|NRF_CE_Pin|NRF_CSN_Pin, GPIO_PIN_RESET);
@@ -71,8 +71,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TOUCH_PEN_Pin AUX_MUX_S1_Pin AUX_MUX_S2_Pin PC9 */
-  GPIO_InitStruct.Pin = TOUCH_PEN_Pin|AUX_MUX_S1_Pin|AUX_MUX_S2_Pin|GPIO_PIN_9;
+  /*Configure GPIO pins : TOUCH_PEN_Pin AUX_MUX_S1_Pin AUX_MUX_S2_Pin */
+  GPIO_InitStruct.Pin = TOUCH_PEN_Pin|AUX_MUX_S1_Pin|AUX_MUX_S2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -87,15 +87,25 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : NRF_IRQ_Pin ENC_IRQ_Pin */
   GPIO_InitStruct.Pin = NRF_IRQ_Pin|ENC_IRQ_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : CAL_IRQ_Pin MCP_IRQ_Pin */
-  GPIO_InitStruct.Pin = CAL_IRQ_Pin|MCP_IRQ_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  /*Configure GPIO pins : CAL_IEQ_Pin MCP_IRQ_Pin */
+  GPIO_InitStruct.Pin = CAL_IEQ_Pin|MCP_IRQ_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 }
 

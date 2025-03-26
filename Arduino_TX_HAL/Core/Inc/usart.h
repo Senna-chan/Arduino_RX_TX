@@ -39,7 +39,9 @@ extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN Private defines */
-
+#define UserSerial huart1
+#define AUXSerial  huart3
+#define HMISerial  huart5
 /* USER CODE END Private defines */
 
 void MX_UART5_Init(void);

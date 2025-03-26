@@ -1,5 +1,7 @@
 #include "Arduino_TX_HAL.hpp"
 
+
+
 /**
  * @brief  This function is executed in case of error occurrence.
  * @retval None
@@ -21,7 +23,6 @@ void Error_Handler_CPP(char *file, int line) {
         if (printCount == 100){
             HAL_NVIC_SystemReset();
         }
-        
     }
     /* USER CODE END Error_Handler_Debug */
 }

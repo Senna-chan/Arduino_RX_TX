@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "freertos.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -91,12 +91,16 @@ void Error_Handler(void);
 #define NRF_CSN_GPIO_Port GPIOB
 #define NRF_IRQ_Pin GPIO_PIN_8
 #define NRF_IRQ_GPIO_Port GPIOB
+#define NRF_IRQ_EXTI_IRQn EXTI9_5_IRQn
 #define ENC_IRQ_Pin GPIO_PIN_9
 #define ENC_IRQ_GPIO_Port GPIOB
-#define CAL_IRQ_Pin GPIO_PIN_0
-#define CAL_IRQ_GPIO_Port GPIOE
+#define ENC_IRQ_EXTI_IRQn EXTI9_5_IRQn
+#define CAL_IEQ_Pin GPIO_PIN_0
+#define CAL_IEQ_GPIO_Port GPIOE
+#define CAL_IEQ_EXTI_IRQn EXTI0_IRQn
 #define MCP_IRQ_Pin GPIO_PIN_1
 #define MCP_IRQ_GPIO_Port GPIOE
+#define MCP_IRQ_EXTI_IRQn EXTI1_IRQn
 
 /* USER CODE BEGIN Private defines */
 
