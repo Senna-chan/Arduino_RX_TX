@@ -47,13 +47,24 @@ extern "C" {
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 
+void _Error_Handler(const char *, int);
+
+#define GET_MACRO( _0, _1, NAME, ... ) NAME
+
+#define Error_Handler(...) GET_MACRO( _0, ##__VA_ARGS__, Error_Handler1, Error_Handler0 )()
+
+#define Error_Handler0() _Error_Handler( __FILE__, __LINE__ )
+
+#define Error_Handler1(unused) _Error_Handler(const char * file, int line )
+
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+extern void Error_Handler_CPP(const char * file, int line);
+extern void setupCPP();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -67,8 +78,9 @@ void Error_Handler(void);
 #define C41_CYRF_CS_GPIO_Port GPIOE
 #define C41_CYRF_RST_Pin GPIO_PIN_6
 #define C41_CYRF_RST_GPIO_Port GPIOE
-#define TOUCH_PEN_Pin GPIO_PIN_5
-#define TOUCH_PEN_GPIO_Port GPIOC
+#define TOUCH_IRQ_Pin GPIO_PIN_5
+#define TOUCH_IRQ_GPIO_Port GPIOC
+#define TOUCH_IRQ_EXTI_IRQn EXTI9_5_IRQn
 #define SPI_FS_CS_Pin GPIO_PIN_0
 #define SPI_FS_CS_GPIO_Port GPIOB
 #define BACK_LIGHT_Pin GPIO_PIN_1
@@ -95,9 +107,9 @@ void Error_Handler(void);
 #define ENC_IRQ_Pin GPIO_PIN_9
 #define ENC_IRQ_GPIO_Port GPIOB
 #define ENC_IRQ_EXTI_IRQn EXTI9_5_IRQn
-#define CAL_IEQ_Pin GPIO_PIN_0
-#define CAL_IEQ_GPIO_Port GPIOE
-#define CAL_IEQ_EXTI_IRQn EXTI0_IRQn
+#define CAL_IRQ_Pin GPIO_PIN_0
+#define CAL_IRQ_GPIO_Port GPIOE
+#define CAL_IRQ_EXTI_IRQn EXTI0_IRQn
 #define MCP_IRQ_Pin GPIO_PIN_1
 #define MCP_IRQ_GPIO_Port GPIOE
 #define MCP_IRQ_EXTI_IRQn EXTI1_IRQn

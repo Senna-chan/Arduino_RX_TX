@@ -45,7 +45,20 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+TaskHandle_t nRFData_taskHandle;         // nRF Receive task
+TaskHandle_t plotter_taskHandle;         // Task for plotter stuff
+TaskHandle_t hmi_taskHandle;             // Task for HMI Data transmission things
+TaskHandle_t serialControl_taskHandle;   // Task for serial control library
+TaskHandle_t companionSerial_taskHandle; // Task for serial communication with the companion app. Custom protocol that bypasses SerialControl for easy use
+TaskHandle_t nrfTransmitTest_taskHandle; // Task for nrf transmission testing
+TaskHandle_t nrfTransit_taskHandle;      // Task for nrf transmission
+TaskHandle_t printNrfStats_taskHandle;   // Task for printing nrf communication stats
+TaskHandle_t encoder_taskHandle;         // Task for encoder processing
 
+SemaphoreHandle_t hmi_mutex;    // Lock for HMI
+SemaphoreHandle_t nrf_mutex;    // Lock for nRF
+SemaphoreHandle_t i2c_mutex;    // Lock for I2C
+SemaphoreHandle_t main_serial_mutex; // Lock for everything Serial
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -114,7 +127,6 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  return; // I don't need the default task. I will create my own tasks
   /* Infinite loop */
   for(;;)
   {

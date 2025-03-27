@@ -57,10 +57,13 @@ void MX_GPIO_Init(void)
                           |C41_CYRF_RST_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, TOUCH_PEN_Pin|AUX_MUX_S1_Pin|AUX_MUX_S2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SPI_FS_CS_Pin|NRF_CSN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SPI_FS_CS_Pin|BACK_LIGHT_Pin|NRF_CE_Pin|NRF_CSN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, BACK_LIGHT_Pin|NRF_CE_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, AUX_MUX_S1_Pin|AUX_MUX_S2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : C41_NRF_CS_Pin C41_CC23_CS_Pin C41_A7105_CS_Pin C41_CYRF_CS_Pin
                            C41_CYRF_RST_Pin */
@@ -71,12 +74,11 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TOUCH_PEN_Pin AUX_MUX_S1_Pin AUX_MUX_S2_Pin */
-  GPIO_InitStruct.Pin = TOUCH_PEN_Pin|AUX_MUX_S1_Pin|AUX_MUX_S2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  /*Configure GPIO pin : TOUCH_IRQ_Pin */
+  GPIO_InitStruct.Pin = TOUCH_IRQ_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  HAL_GPIO_Init(TOUCH_IRQ_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SPI_FS_CS_Pin BACK_LIGHT_Pin NRF_CE_Pin NRF_CSN_Pin */
   GPIO_InitStruct.Pin = SPI_FS_CS_Pin|BACK_LIGHT_Pin|NRF_CE_Pin|NRF_CSN_Pin;
@@ -85,14 +87,21 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : AUX_MUX_S1_Pin AUX_MUX_S2_Pin */
+  GPIO_InitStruct.Pin = AUX_MUX_S1_Pin|AUX_MUX_S2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pins : NRF_IRQ_Pin ENC_IRQ_Pin */
   GPIO_InitStruct.Pin = NRF_IRQ_Pin|ENC_IRQ_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : CAL_IEQ_Pin MCP_IRQ_Pin */
-  GPIO_InitStruct.Pin = CAL_IEQ_Pin|MCP_IRQ_Pin;
+  /*Configure GPIO pins : CAL_IRQ_Pin MCP_IRQ_Pin */
+  GPIO_InitStruct.Pin = CAL_IRQ_Pin|MCP_IRQ_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);

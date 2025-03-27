@@ -1,13 +1,9 @@
-#pragma once
+#ifndef _SC_STRUCTS_H
+#define _SC_STRUCTS_H
 
-#ifdef ARDUINO
-    #include <Arduino.h>
-#else
-    #include <stdint.h>
-#endif
-
+#include <stdint.h>
 #include "SharedVars.h"
-#include "settingsStructs.h"
+#include "SettingsStructs.h"
 
 // #define CTYPE_NONE   0
 // #define CTYPE_ADC    -1
@@ -130,8 +126,6 @@ extern const char* OUTPUTMODE_STR_TABLE[];
 extern transmitTypes transmitterData;
 extern receiveTypes receiverData;
 
-
-extern Settings settings;
-extern Model* activeModel;
-
 void initStructs();
+
+#endif

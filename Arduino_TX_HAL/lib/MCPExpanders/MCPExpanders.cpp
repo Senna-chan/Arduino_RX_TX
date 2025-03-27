@@ -4,8 +4,13 @@
 
 #include "MCPExpanders.h"
 
+#include "Config.h"
+
+#include <stdio.h>
+
 #include "main.h"
 #include "i2c.h"
+#include "I2CHelpers.h"
 
 TaskHandle_t cal_taskHandle;				// Task for handling calibration buttons(Super high prio but only run when needed, Gets data via queue)
 TaskHandle_t io_taskHandle;					// Task for handling IO expanders
@@ -23,12 +28,14 @@ static void setIOExpanderIRQFlas() {
 
 void enableExpender(MCP23017* expender, uint8_t address)
 {
-	while (!I2CDeviceConnected(&Wire, 0x20 + address)) {
-		Serial.printf("EXPANDER(0x%02X) not found\r\n", 0x20 + address);
-		digitalWrite(LED_BUILTIN, LOW);
-		delay(500);
-		digitalWrite(LED_BUILTIN, HIGH);
-		delay(500);
+	uint8_t fullAddress = 0x20 + address;
+	while (!I2CDeviceConnected(&hi2c2, fullAddress)) {
+		printf("EXPANDER(0x%02X) not found\r\n", fullAddress);
+		HAL_Delay(500);
+		// digitalWrite(LED_BUILTIN, LOW);
+		// delay(500);
+		// digitalWrite(LED_BUILTIN, HIGH);
+		// delay(500);
 	}
 
 	expender->begin(&hi2c2, address);
@@ -41,8 +48,7 @@ void enableExpender(MCP23017* expender, uint8_t address)
 
 void setupMCPChips() 
 {
-
-	Serial.printf("Twoway %s OneWay %s Calc %s\n", I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER1_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + IOEXPANDER2_ADDR) ? "found" : "not found", I2CDeviceConnected(&Wire, 0x20 + CALEXPENDER_ADDR) ? "found" : "not found");
+	printf("Twoway %s OneWay %s Calc %s\n", I2CDeviceConnected(&hi2c2, 0x20 + IOEXPANDER1_ADDR) ? "found" : "not found", I2CDeviceConnected(&hi2c2, 0x20 + IOEXPANDER2_ADDR) ? "found" : "not found", I2CDeviceConnected(&hi2c2, 0x20 + CALEXPENDER_ADDR) ? "found" : "not found");
 	enableExpender(&IOExpander1, IOEXPANDER1_ADDR);
 	enableExpender(&IOExpander2, IOEXPANDER2_ADDR);
 	enableExpender(&calButtonExpender, CALEXPENDER_ADDR);

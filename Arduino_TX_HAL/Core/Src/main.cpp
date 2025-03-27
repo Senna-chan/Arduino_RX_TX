@@ -32,7 +32,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 
+#include "usb_device.h"
+
+#include "Arduino_TX_HAL.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,7 +46,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -60,12 +63,44 @@
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+int _read(int file, char *ptr, int len) {
+  HAL_StatusTypeDef hstatus;
+  hstatus = HAL_UART_Receive(&huart1, (uint8_t*) ptr, 1, HAL_MAX_DELAY);
+  if (hstatus == HAL_OK)
+      return 1;
+  else
+      return 0;
+}
+
+int _write(int file, char *ptr, int len) {
+// SerialPrint(ptr, len);
+// return len;
+  HAL_StatusTypeDef hstatus;
+  hstatus = HAL_UART_Transmit(&huart1, (uint8_t*) ptr, len, 100);
+  if (hstatus == HAL_OK)
+      return len;
+
+  if(hstatus == HAL_TIMEOUT){
+    HAL_UART_DeInit(&huart1);
+    MX_USART1_UART_Init();
+  }
+//    	HAL_UART_AbortTransmit(&huart1); // Discard what was still being transmitted. Wil this work?
+  return 0;
+}
+
+void __io_putchar(uint8_t ch) {
+HAL_UART_Transmit(&huart1, &ch, 1, 1);
+}
+
+
+void HAL_Delay(uint32_t Delay){
+  vTaskDelay(Delay / portTICK_PERIOD_MS);
+}
 /* USER CODE END 0 */
 
 /**
@@ -101,7 +136,6 @@ int main(void)
   MX_ADC1_Init();
   MX_FSMC_Init();
   MX_I2C2_Init();
-  MX_SPI1_Init();
   MX_SPI2_Init();
   MX_UART5_Init();
   MX_USART1_UART_Init();
@@ -109,8 +143,11 @@ int main(void)
   MX_CRC_Init();
   MX_TIM6_Init();
   MX_USB_OTG_FS_PCD_Init();
+  MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
   MX_USB_DEVICE_Init();
+  printf("Initialized MX code.");
+  setupCPP();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -214,10 +251,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+  Error_Handler_CPP(file, line);
   /* USER CODE END Error_Handler_Debug */
 }
 

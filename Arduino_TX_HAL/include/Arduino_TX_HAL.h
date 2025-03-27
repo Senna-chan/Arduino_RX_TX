@@ -1,10 +1,11 @@
 
-#ifndef INC_RC_RX_HPP_
-#define INC_RC_RX_HPP_
+#ifndef _ATXH_MAIN_H
+#define _ATXH_MAIN_H
+
+#include "Config.h" // Config is the most important, include it first
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
     #include "spi.h"
     #include "tim.h"
@@ -14,10 +15,15 @@ extern "C"
     #include <stdlib.h>
     #include "main.h"
     #include "freertos.h"
-	void Error_Handler_CPP(char * file, int line);
 #ifdef __cplusplus
 }
 #endif
 
+void setupCPP();
 
+class Arduino_TX_HAL{
+public:
+
+};
+        
 #endif

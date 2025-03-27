@@ -314,12 +314,14 @@ if not 'SRC_FILTER' in env:
     env['SRC_FILTER'] = []
 # we explicitly add the Core files at the beginning
 env['SRC_FILTER'] += ['+<Core/Src/>']
+env['SRC_FILTER'] += ['+<src/>']
 # Now we add the collected source directories to the src_filter
 env['SRC_FILTER'] += src_dirs
 # Create the list of all needed include directories that we have collected
 if not 'BUILD_FLAGS' in env:
     env['BUILD_FLAGS'] = []
 # Add the collected include directories to the build_flags
+include_dirs.append("-Iinclude")
 env['BUILD_FLAGS'] += include_dirs
 # Add the necessary build flags to compiler and linker flags.
 env['BUILD_FLAGS'] += cc_only_flags

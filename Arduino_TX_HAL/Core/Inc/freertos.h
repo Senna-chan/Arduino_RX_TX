@@ -16,17 +16,21 @@ extern "C"
 }
 #endif
 
-TaskHandle_t nRFData_taskHandle;         // nRF Receive task
-TaskHandle_t plotter_taskHandle;         // Task for plotter stuff
-TaskHandle_t hmi_taskHandle;             // Task for HMI Data transmission things
-TaskHandle_t serialControl_taskHandle;   // Task for serial control library
-TaskHandle_t companionSerial_taskHandle; // Task for serial communication with the companion app. Custom protocol that bypasses SerialControl for easy use
-TaskHandle_t nrfTransmitTest_taskHandle; // Task for nrf transmission testing
-TaskHandle_t nrfTransit_taskHandle;      // Task for nrf transmission
-TaskHandle_t printNrfStats_taskHandle;   // Task for printing nrf communication stats
+extern TaskHandle_t nRFData_taskHandle;         // nRF Receive task
+extern TaskHandle_t plotter_taskHandle;         // Task for plotter stuff
+extern TaskHandle_t hmi_taskHandle;             // Task for HMI Data transmission things
+extern TaskHandle_t serialControl_taskHandle;   // Task for serial control library
+extern TaskHandle_t companionSerial_taskHandle; // Task for serial communication with the companion app. Custom protocol that bypasses SerialControl for easy use
+extern TaskHandle_t nrfTransmitTest_taskHandle; // Task for nrf transmission testing
+extern TaskHandle_t nrfTransit_taskHandle;      // Task for nrf transmission
+extern TaskHandle_t printNrfStats_taskHandle;   // Task for printing nrf communication stats
+extern TaskHandle_t encoder_taskHandle;         // Task for encoder processing
 
-SemaphoreHandle_t hmi_mutex;    // Lock for HMI
-SemaphoreHandle_t nrf_mutex;    // Lock for nRF
-SemaphoreHandle_t main_serial_mutex; // Lock for everything Serial
+extern SemaphoreHandle_t hmi_mutex;    // Lock for HMI
+extern SemaphoreHandle_t nrf_mutex;    // Lock for nRF
+extern SemaphoreHandle_t i2c_mutex;    // Lock for I2C
+extern SemaphoreHandle_t main_serial_mutex; // Lock for everything Serial
+
+void MX_FREERTOS_Init(void);
 
 #endif

@@ -146,14 +146,14 @@ enum DynamicPayload : uint8_t {
 
 // Enumeration of RX pipe addresses and TX address
 enum Addresses : uint8_t {
-	PIPE0  = 0x00, // pipe0
-	PIPE1  = 0x01, // pipe1
-	PIPE2  = 0x02, // pipe2
-	PIPE3  = 0x03, // pipe3
-	PIPE4  = 0x04, // pipe4
-	PIPE5  = 0x05, // pipe5
-	PIPETX = 0x06, // TX address (not a pipe in fact)
-	NONE   = 0xff  // No pipe
+	PIPE0  = (uint8_t)0x00, // pipe0
+	PIPE1  = (uint8_t)0x01, // pipe1
+	PIPE2  = (uint8_t)0x02, // pipe2
+	PIPE3  = (uint8_t)0x03, // pipe3
+	PIPE4  = (uint8_t)0x04, // pipe4
+	PIPE5  = (uint8_t)0x05, // pipe5
+	PIPETX = (uint8_t)0x06, // TX address (not a pipe in fact)
+	NONE   = (uint8_t)0xff  // No pipe
 };
 
 // State of auto acknowledgment for specified pipe

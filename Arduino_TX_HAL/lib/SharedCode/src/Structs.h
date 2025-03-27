@@ -1,13 +1,9 @@
-#pragma once
+#ifndef _SC_STRUCTS_H
+#define _SC_STRUCTS_H
 
-#ifdef ARDUINO
-    #include <Arduino.h>
-#else
 #include <stdint.h>
-#endif
-
 #include "SharedVars.h"
-#include "settingsStructs.h"
+#include "SettingsStructs.h"
 
 // #define CTYPE_NONE   0
 // #define CTYPE_ADC    -1
@@ -131,3 +127,5 @@ extern transmitTypes transmitterData;
 extern receiveTypes receiverData;
 
 void initStructs();
+
+#endif

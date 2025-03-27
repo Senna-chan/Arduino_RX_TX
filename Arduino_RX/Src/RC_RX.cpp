@@ -25,7 +25,7 @@
 #include "TimerHelpers.hpp"
 #include "sbus.hpp"
 #include "nrf24.hpp"
-
+#include "SharedNRF.h"
 #include "SharedFunctions.h"
 #include "SharedVars.h"
 #include "w25qxx.h"
@@ -86,72 +86,6 @@ void setStatusLed(uint8_t R, uint8_t G, uint8_t B) {
     HAL_GPIO_WritePin(SLEDR_GPIO_Port, SLEDR_Pin,(R ? GPIO_PIN_SET : GPIO_PIN_RESET));
     HAL_GPIO_WritePin(SLEDG_GPIO_Port, SLEDG_Pin,(G ? GPIO_PIN_SET : GPIO_PIN_RESET));
     HAL_GPIO_WritePin(SLEDB_GPIO_Port, SLEDB_Pin,(B ? GPIO_PIN_SET : GPIO_PIN_RESET));
-}
-
-void common_nRFInit() {
-    nRF24_SetCEPin(nRF_CE_GPIO_Port, nRF_CE_Pin);
-    nRF24_SetCSNPin(nRF_CSN_GPIO_Port, nRF_CSN_Pin);
-    nRF24_CE_L();
-    delay(20);
-    if (!nRF24_Check()) {
-        UART_SendStr("NRF Module not found");
-        Error_Handler();
-    }
-
-    nRF24_Init();
-
-    // Set RF channel
-    nRF24_SetRFChannel(40);
-
-    // Set data rate
-    nRF24_SetDataRate(nRF24_DR_1Mbps);
-
-    // Set CRC scheme
-    nRF24_SetCRCScheme(nRF24_CRC_2byte);
-
-    // Set address width, its common for all pipes (RX and TX)
-    nRF24_SetAddrWidth(3);
-
-    // Configure RX PIPE
-    if (!isTransmitter) {
-        nRF24_SetAddr(nRF24_PIPE0, nrfAddress);     // Set RX Pipe
-    } else {
-        nRF24_SetAddr(nRF24_PIPE0, nrfAddress);     // Set RX Pipe
-        nRF24_SetAddr(nRF24_PIPETX, nrfAddress);   // Set TX Pipe
-        nRF24_SetAutoRetr(nRF24_ARD_250us, 10);
-    }
-    nRF24_SetRXPipe(nRF24_PIPE0, nRF24_AA_ON, 32); // Auto-ACK: enabled, payload length: 32 bytes
-
-    // Set TX power
-    nRF24_SetTXPower(nRF24_TXPWR_0dBm);
-
-    // Enable DPL
-    nRF24_SetDynamicPayloadLength(nRF24_DPL_ON);
-
-    nRF24_SetPayloadWithAck(1);
-
-    // Enable Auto-ACK for pipe#0 (for ACK packets)
-    nRF24_EnableAA(nRF24_PIPE0);
-
-    if (!isTransmitter) {
-        // Set operational mode (PRX == receiver)
-        nRF24_SetOperationalMode(nRF24_MODE_RX);
-    } else {
-        nRF24_SetAutoRetr(nRF24_ARD_250us, 3);
-
-        nRF24_SetOperationalMode(nRF24_MODE_TX);
-    }
-    // Clear any pending IRQ flags
-    nRF24_ClearIRQFlags();
-
-    // Wake the transceiver
-    nRF24_SetPowerMode(nRF24_PWR_UP);
-
-    //nRF24_DumpConfig();
-    if (!isTransmitter) {
-        // Put the transceiver to the RX mode
-        nRF24_CE_H();
-    }
 }
 
 void UART_SendChar(char b) {
@@ -226,8 +160,8 @@ void setOutput(uint8_t index, uint16_t outputValue) {
 
 
 uint16_t receivedSettingsPacket;
-void parseRFPacket(uint8_t *buf, uint8_t length, nRF24_RXResult pipeLine) {
-    if (pipeLine == nRF24_RX_EMPTY) {
+void parseRFPacket(uint8_t *buf, uint8_t length, nRF24::Addresses pipeLine) {
+    if (pipeLine == nRF24::Addresses::NONE) {
         printf("Pipeline is empty");
         return;
     }
@@ -271,7 +205,7 @@ void parseRFPacket(uint8_t *buf, uint8_t length, nRF24_RXResult pipeLine) {
             txBuf[3] = now >> 16 & 0xFF;
             txBuf[4] = now >> 8 & 0xFF;
             txBuf[5] = now >> 0 & 0xFF;
-            nRF24_WriteAckPayload(pipeLine, txBuf, 6);
+            Main_nRF.WriteAckPayload(pipeLine, txBuf, 6);
             sbusTx.set_ch(1, transmitterData.ch_data.channel1);
             sbusTx.set_ch(2, transmitterData.ch_data.channel2);
             sbusTx.set_ch(3, transmitterData.ch_data.channel3);
@@ -292,7 +226,7 @@ void parseRFPacket(uint8_t *buf, uint8_t length, nRF24_RXResult pipeLine) {
             sbusTx.lost_frame(false);
             chPacketReceived = true;
 //                  receiverData.bytesUnion.u8[0] = SETTINGSDATAID;
-//                  nRF24_WriteAckPayload(pipeLine, receiverData.bytesUnion.u8, 6);
+//                  Main_nRF.WriteAckPayload(pipeLine, receiverData.bytesUnion.u8, 6);
 //                  memset(&receivedSettings, 0, sizeof(Settings));
             break;
         }
@@ -311,7 +245,7 @@ void parseRFPacket(uint8_t *buf, uint8_t length, nRF24_RXResult pipeLine) {
                 readingSettingsPacketAmount = (transmitterData.bytesUnion.u8[1] << 8) | transmitterData.bytesUnion.u8[2];
                 readingSettingsPacketAmountRest = transmitterData.bytesUnion.u8[3];
                 receiverData.bytesUnion.u8[0] = SETTINGSDATAID;
-                nRF24_WriteAckPayload(pipeLine, receiverData.bytesUnion.u8, 1);
+                Main_nRF.WriteAckPayload(pipeLine, receiverData.bytesUnion.u8, 1);
                 memset(receivedSettings, 0, sizeof(Settings));
                 printf("PS %d MOD %d\r\n", readingSettingsPacketAmount, readingSettingsPacketAmountRest);
             }
@@ -391,7 +325,7 @@ void parseRFPacket(uint8_t *buf, uint8_t length, nRF24_RXResult pipeLine) {
                     Error_Handler();
                 }
             }
-            nRF24_WriteAckPayload(pipeLine, receiverData.bytesUnion.u8, 5);
+            Main_nRF.WriteAckPayload(pipeLine, receiverData.bytesUnion.u8, 5);
             break;
         }
         }
@@ -613,10 +547,14 @@ void setup(void) {
     huart5.TxCpltCallback = &customUartDataTransmitted;
     huart5.ErrorCallback = &customUartError;
     HAL_UART_Receive_IT(&customUart, customUartRXBuffer, customHeaderSize);
-    common_nRFInit();
+
+    Main_nRF.SetCEPin(nRF_CE_GPIO_Port, nRF_CE_Pin);
+    Main_nRF.SetCSNPin(nRF_CSN_GPIO_Port, nRF_CSN_Pin);
+    Main_nRF.SetSPI(&hspi2);
+    common_nRFInit(false);
 
     // Check if connection is active. If not then do not do anything
-    //  nRF24_RXResult pipeLine = nRF24_ReadPayloadDpl(buf, &length);
+    //  Main_nRF.RXResult pipeLine = Main_nRF.ReadPayloadDpl(buf, &length);
     //  while(!gotData){
     //    HAL_GPIO_TogglePin(SLEDB_GPIO_Port, SLEDB_Pin);
     //    HAL_Delay(250);
@@ -659,7 +597,7 @@ void loop() {
         uint8_t buf[32];
         uint8_t length = 0;
 
-        nRF24_RXResult pipeLine = nRF24_ReadPayloadDpl(buf, &length);
+        nRF24::Addresses pipeLine = Main_nRF.ReadPayloadDpl(buf, &length);
         //printf("%s Message size '%d'. Data: ", isTransmitter ? "ACK" : "Message", length);
         parseRFPacket(buf, length, pipeLine);
 
@@ -741,40 +679,40 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
             return;
         }
         uint8_t tx, fail, rx;
-        uint8_t status = nRF24_GetIRQFlags();
-//      uint8_t rxStat = nRF24_GetStatus_RXFIFO();
-//      if(rxStat == nRF24_STATUS_RXFIFO_FULL){
+        uint8_t status = Main_nRF.GetIRQFlags();
+//      uint8_t rxStat = Main_nRF.GetStatus_RXFIFO();
+//      if(rxStat == Main_nRF.STATUS_RXFIFO_FULL){
 ////            printf("RXFIFO FULL");
 //      }
-        tx = (status & nRF24_FLAG_TX_DS ) != 0;
-        fail = (status & nRF24_FLAG_MAX_RT ) != 0;
-        rx = (status & nRF24_FLAG_RX_DR ) != 0;
+        tx = (status & nRF24::FLAG_TX_DS ) != 0;
+        fail = (status & nRF24::FLAG_MAX_RT ) != 0;
+        rx = (status & nRF24::FLAG_RX_DR ) != 0;
 //      printf("T%dF%dR%d\r\n",tx,fail,rx);
 
         if (tx) {                           // Have we successfully transmitted?
-            if (isTransmitter) {
-                printf("Send:OK");
-            }
-            if (!isTransmitter) {
-//              printf("AOK\n");
-            }
+//             if (isTransmitter) {
+//                 printf("Send:OK");
+//             }
+//             if (!isTransmitter) {
+// //              printf("AOK\n");
+//             }
         }
 
         if (fail) {                               // Have we failed to transmit?
             txfailratio[1]++;
-            if (isTransmitter) {
-                printf("Send:Failed");
-            }
-            if (!isTransmitter) {
-//              printf("AFAIL\n");
-            }
+//             if (isTransmitter) {
+//                 printf("Send:Failed");
+//             }
+//             if (!isTransmitter) {
+// //              printf("AFAIL\n");
+//             }
         }
 
         if (rx) {                      // Did we receive a message?
             txfailratio[0]++;
             gotData = 1;
         }
-        nRF24_ClearIRQFlags();
+        Main_nRF.ClearIRQFlags();
     }
 }
 

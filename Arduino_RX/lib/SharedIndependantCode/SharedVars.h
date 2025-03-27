@@ -2,6 +2,7 @@
 #define _SHARED_VARS_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #define RC_OUTPUT_DAC 4
 #define RC_OUTPUT_PWM 2

@@ -159,7 +159,6 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 #define customUart huart5
 #define SBUSUart huart3
-#define isTransmitter 0
 #define delay(time) HAL_Delay(time)
 /* USER CODE END Private defines */
 

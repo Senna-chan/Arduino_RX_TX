@@ -1,7 +1,8 @@
 #ifndef SHARED_CODE_H
 #define SHARED_CODE_H
 
-#include <Arduino.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #define ENABLE_HMI                      1
 #define ENABLE_MCPIO                    0
@@ -64,7 +65,7 @@ extern bool isTransmitter;
 // ADC defines
 #define batIndex                10      // Index in ADCDMA buffer for battery
 #define ADCCHANNELNUMBERS       10      // Amount of RC ADC Channels
-#define DMABUFFERSIZE           15      // Amount of ADC DMA channels
+#define DMABUFFERSIZE           12      // Amount of ADC DMA channels
 extern uint16_t ADCDMABuffer[DMABUFFERSIZE];
 
 // I2C defines

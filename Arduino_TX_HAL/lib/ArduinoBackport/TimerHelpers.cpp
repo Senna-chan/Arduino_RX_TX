@@ -319,14 +319,14 @@ void TIM_setOverflow(TIM_HandleTypeDef *_timer, uint32_t overflow, TimerFormat_t
   *           HERTZ_FORMAT:    compare is the frequency in hertz
   * @retval None
   */
-void TIM_setCaptureCompare(TIM_HandleTypeDef *_timer,uint32_t timChannel, uint32_t compare, TimerCompareFormat_t format)
+void TIM_setCaptureCompare(TIM_HandleTypeDef *_timer, uint32_t timChannel, uint32_t compare, TimerCompareFormat_t format)
 {
   uint32_t Prescalerfactor = _timer->Instance->PSC + 1;
   uint32_t CCR_RegisterValue;
 
-  if (timChannel == -1) {
-    Error_Handler();
-  }
+  // if (timChannel == -1) {
+  //   Error_Handler();
+  // }
 
   switch (format) {
     case MICROSEC_COMPARE_FORMAT:
@@ -383,9 +383,9 @@ uint32_t TIM_getCaptureCompare(TIM_HandleTypeDef *_timer, uint32_t timChannel,  
   uint32_t Prescalerfactor = _timer->Instance->PSC + 1;
   uint32_t return_value;
 
-  if (timChannel == -1) {
-    Error_Handler();
-  }
+  // if (timChannel == -1) {
+  //   Error_Handler();
+  // }
 
   switch (format) {
     case MICROSEC_COMPARE_FORMAT:
