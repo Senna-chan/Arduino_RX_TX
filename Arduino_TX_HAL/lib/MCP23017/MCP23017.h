@@ -42,11 +42,14 @@ public:
     uint8_t getLastInterruptPin();
     uint8_t getLastInterruptPinValue();
 
-
     uint8_t readRegister(uint8_t addr);
     void writeRegister(uint8_t addr, uint8_t value);
     uint16_t readRegister16(uint8_t addr);
     void writeRegister16(uint8_t addr, uint16_t value);
+
+    uint16_t readGPIOAB(){return readRegister16(MCP23017_GPIOA);}
+    uint8_t readGPIOA(){return readRegister(MCP23017_GPIOA);}
+    uint8_t readGPIOB(){return readRegister(MCP23017_GPIOB);}
 private:
     uint8_t bitForPin(uint8_t pin);
     uint8_t regForPin(uint8_t pin, uint8_t portAaddr, uint8_t portBaddr);

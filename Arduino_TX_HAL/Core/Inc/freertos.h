@@ -26,10 +26,13 @@ extern TaskHandle_t nrfTransit_taskHandle;      // Task for nrf transmission
 extern TaskHandle_t printNrfStats_taskHandle;   // Task for printing nrf communication stats
 extern TaskHandle_t encoder_taskHandle;         // Task for encoder processing
 
-extern SemaphoreHandle_t hmi_mutex;    // Lock for HMI
-extern SemaphoreHandle_t nrf_mutex;    // Lock for nRF
-extern SemaphoreHandle_t i2c_mutex;    // Lock for I2C
-extern SemaphoreHandle_t main_serial_mutex; // Lock for everything Serial
+extern TaskHandle_t cal_taskHandle;				// Task for handling calibration buttons(Super high prio but only run when needed, Gets data via queue)
+extern TaskHandle_t io_taskHandle;				// Task for handling IO expanders
+
+extern SemaphoreHandle_t hmi_mutex;             // Lock for HMI
+extern SemaphoreHandle_t nrf_mutex;             // Lock for nRF
+extern SemaphoreHandle_t i2c_mutex;             // Lock for I2C
+extern SemaphoreHandle_t main_serial_mutex;     // Lock for everything Serial
 
 void MX_FREERTOS_Init(void);
 

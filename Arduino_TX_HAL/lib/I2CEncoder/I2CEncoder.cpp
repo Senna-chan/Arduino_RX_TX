@@ -492,13 +492,13 @@ void I2CEncoder::writeEEPROM(uint8_t add, uint8_t data) {
 /** Read 1 byte from the encoder **/
 uint8_t I2CEncoder::readEncoderByte(uint8_t reg) {
 
-	HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 1, 0xFF);
+	auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 1, 0xFF);
 	return _tem_data.bval[0];
 }
 
 /** Read 2 bytes from the encoder **/
 int16_t I2CEncoder::readEncoderInt(uint8_t reg) {
-	HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 2, 0xFF);
+	auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 2, 0xFF);
 	// _wire->beginTransmission(_add);
 	// _wire->write(reg);
 	// _wire->endTransmission();
@@ -513,7 +513,7 @@ int16_t I2CEncoder::readEncoderInt(uint8_t reg) {
 /** Read 4 bytes from the encoder **/
 int32_t I2CEncoder::readEncoderLong(uint8_t reg) {
 
-	HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 4, 0xFF);
+	auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 4, 0xFF);
 	// _wire->beginTransmission(_add);
 	// _wire->write(reg);
 	// _wire->endTransmission();
@@ -530,7 +530,7 @@ int32_t I2CEncoder::readEncoderLong(uint8_t reg) {
 /** Read 4 bytes from the encoder **/
 float I2CEncoder::readEncoderFloat(uint8_t reg) {
 
-	HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 4, 0xFF);
+	auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 4, 0xFF);
 	// _wire->beginTransmission(_add);
 	// _wire->write(reg);
 	// _wire->endTransmission();

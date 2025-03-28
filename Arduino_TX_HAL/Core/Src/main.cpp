@@ -68,6 +68,11 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+namespace std{
+  #ifdef __cplusplus
+  extern "C"{
+  #endif
+
 int _read(int file, char *ptr, int len) {
   HAL_StatusTypeDef hstatus;
   hstatus = HAL_UART_Receive(&huart1, (uint8_t*) ptr, 1, HAL_MAX_DELAY);
@@ -77,7 +82,7 @@ int _read(int file, char *ptr, int len) {
       return 0;
 }
 
-int _write(int file, char *ptr, int len) {
+size_t _write(int fd, char *ptr, size_t len){
 // SerialPrint(ptr, len);
 // return len;
   HAL_StatusTypeDef hstatus;
@@ -93,13 +98,38 @@ int _write(int file, char *ptr, int len) {
   return 0;
 }
 
+#ifdef __cplusplus
+}
+#endif
+}
+
 void __io_putchar(uint8_t ch) {
-HAL_UART_Transmit(&huart1, &ch, 1, 1);
+  HAL_UART_Transmit(&huart1, &ch, 1, 1);
 }
 
 
 void HAL_Delay(uint32_t Delay){
-  vTaskDelay(Delay / portTICK_PERIOD_MS);
+
+  TaskHandle_t currentTask = xTaskGetCurrentTaskHandle();
+  auto taskSchedulerState = xTaskGetSchedulerState();
+  if(currentTask == nullptr || taskSchedulerState != taskSCHEDULER_RUNNING)
+  {
+    uint32_t tickstart = HAL_GetTick();
+    uint32_t wait = Delay;
+
+    /* Add a freq to guarantee minimum wait */
+    if (wait < HAL_MAX_DELAY)
+    {
+      wait += (uint32_t)(uwTickFreq);
+    }
+    uint32_t currentTick = HAL_GetTick();
+    while((currentTick - tickstart) < wait)
+    {
+      currentTick = HAL_GetTick();
+    }
+  } else {
+    vTaskDelay(Delay / portTICK_PERIOD_MS);
+  }
 }
 /* USER CODE END 0 */
 
@@ -146,7 +176,8 @@ int main(void)
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
   MX_USB_DEVICE_Init();
-  printf("Initialized MX code.");
+  printf("Initialized MX code.\n");
+
   setupCPP();
   /* USER CODE END 2 */
 

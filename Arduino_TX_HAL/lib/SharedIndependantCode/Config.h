@@ -77,9 +77,9 @@ extern uint16_t ADCDMABuffer[DMABUFFERSIZE];
 // I2C Addresses
 #define ENCODER_ADDR            0x42
 #define EEPROM_ADDR             0x50    // 24LC256 EEPROM Address in i2c bus
-#define CALEXPENDER_ADDR        0b110
-#define IOEXPANDER1_ADDR        0b101
-#define IOEXPANDER2_ADDR        0b011
+#define CALEXPENDER_ADDR        0b000
+#define IOEXPANDER1_ADDR        0b100
+#define IOEXPANDER2_ADDR        0b101
 
 
 #define SETTINGSVERSION         25

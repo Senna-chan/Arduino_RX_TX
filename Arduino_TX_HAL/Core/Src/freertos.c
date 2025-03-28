@@ -55,6 +55,9 @@ TaskHandle_t nrfTransit_taskHandle;      // Task for nrf transmission
 TaskHandle_t printNrfStats_taskHandle;   // Task for printing nrf communication stats
 TaskHandle_t encoder_taskHandle;         // Task for encoder processing
 
+TaskHandle_t cal_taskHandle;				// Task for handling calibration buttons(Super high prio but only run when needed, Gets data via queue)
+TaskHandle_t io_taskHandle;					// Task for handling IO expanders
+
 SemaphoreHandle_t hmi_mutex;    // Lock for HMI
 SemaphoreHandle_t nrf_mutex;    // Lock for nRF
 SemaphoreHandle_t i2c_mutex;    // Lock for I2C
@@ -77,6 +80,25 @@ void StartDefaultTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
+/* Hook prototypes */
+void vApplicationMallocFailedHook(void);
+
+/* USER CODE BEGIN 5 */
+void vApplicationMallocFailedHook(void)
+{
+   /* vApplicationMallocFailedHook() will only be called if
+   configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h. It is a hook
+   function that will get called if a call to pvPortMalloc() fails.
+   pvPortMalloc() is called internally by the kernel whenever a task, queue,
+   timer or semaphore is created. It is also called by various parts of the
+   demo application. If heap_1.c or heap_2.c are used, then the size of the
+   heap available to pvPortMalloc() is defined by configTOTAL_HEAP_SIZE in
+   FreeRTOSConfig.h, and the xPortGetFreeHeapSize() API function can be used
+   to query the size of free heap space that remains (although it does not
+   provide information on how the remaining heap might be fragmented). */
+}
+/* USER CODE END 5 */
+
 /**
   * @brief  FreeRTOS initialization
   * @param  None
@@ -93,6 +115,11 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
+
+  hmi_mutex = xSemaphoreCreateMutex();
+  nrf_mutex = xSemaphoreCreateMutex();
+  i2c_mutex = xSemaphoreCreateMutex();
+  main_serial_mutex = xSemaphoreCreateMutex();
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */

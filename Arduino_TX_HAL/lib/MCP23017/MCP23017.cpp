@@ -18,7 +18,8 @@ uint8_t MCP23017::regForPin(uint8_t pin, uint8_t portAaddr,
  */
 uint8_t MCP23017::readRegister(uint8_t addr) {
   uint8_t data = 0;
-  HAL_I2C_Mem_Read(_hi2c, _i2caddress, addr, 1, &data, 1, 0xFF);
+  auto hal_status = HAL_I2C_Mem_Read(_hi2c, _i2caddress << 1, addr, 1, &data, 1, 0xFF);
+  if(hal_status != HAL_OK) Error_Handler();
   return data;
 }
 
@@ -26,7 +27,8 @@ uint8_t MCP23017::readRegister(uint8_t addr) {
  * Writes a given register of 8 bits
  */
 void MCP23017::writeRegister(uint8_t regAddr, uint8_t regValue) {
-  HAL_I2C_Mem_Write(_hi2c, _i2caddress, regAddr, 1, &regValue, 1, 0xFF);
+  auto hal_status = HAL_I2C_Mem_Write(_hi2c, _i2caddress << 1, regAddr, 1, &regValue, 1, 0xFF);
+  if(hal_status != HAL_OK) Error_Handler();
 }
 
 /**
@@ -34,8 +36,8 @@ void MCP23017::writeRegister(uint8_t regAddr, uint8_t regValue) {
  */
 uint16_t MCP23017::readRegister16(uint8_t addr) {
   uint8_t data[2] = {0};
-  HAL_I2C_Mem_Read(_hi2c, _i2caddress, addr, 2, data, 2, 0xFF);
-
+  auto hal_status = HAL_I2C_Mem_Read(_hi2c, _i2caddress << 1, addr, 1, data, 2, 0xFF);
+  if(hal_status != HAL_OK) Error_Handler();
   return data[1] << 8 | data[0];
 }
 
@@ -45,7 +47,8 @@ uint16_t MCP23017::readRegister16(uint8_t addr) {
 void MCP23017::writeRegister16(uint8_t regAddr, uint16_t regValue) {
 
   uint8_t data[2] = {regValue & 0xFF, regValue >> 8};
-  HAL_I2C_Mem_Write(_hi2c, _i2caddress, regAddr, 2, data, 2, 0xFF);
+  auto hal_status = HAL_I2C_Mem_Write(_hi2c, _i2caddress << 1, regAddr, 1, data, 2, 0xFF);
+  if(hal_status != HAL_OK) Error_Handler();
 }
 
 /**
@@ -81,16 +84,6 @@ void MCP23017::begin(I2C_HandleTypeDef *hi2c, uint16_t address) {
   }
   _i2caddress |= address;
   _hi2c = hi2c;
-
-  // set defaults!
-  // all inputs on port A and B
-  writeRegister16(MCP23017_IODIRA, 0xFFFF);
-
-  // Turn off interrupt triggers
-  writeRegister16(MCP23017_GPINTENA, 0x0000);
-
-  // Turn off pull up resistors
-  writeRegister16(MCP23017_GPPUA, 0x0000);
 }
 
 /**
