@@ -4,13 +4,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define ENABLE_HMI                      1
-#define ENABLE_MCPIO                    0
+#define ENABLE_HMI                      0
+#define ENABLE_MCPIO                    1
 #define ENABLE_EEPROM                   0
 #define ENABLE_ENCODER                  0
-#define ENABLE_AUX_SERIAL               1
-#define ENABLE_RADIO                    1
-#define ENABLE_CONTROLLER_COMPANION     1
+#define ENABLE_AUX_SERIAL               0
+#define ENABLE_RADIO                    0
+#define ENABLE_CONTROLLER_COMPANION     0
 
 #define DEBUG_WIRE                      0
 #define DEBUG                           0

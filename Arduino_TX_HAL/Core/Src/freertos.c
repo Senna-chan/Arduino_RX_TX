@@ -57,6 +57,7 @@ TaskHandle_t encoder_taskHandle;         // Task for encoder processing
 
 TaskHandle_t cal_taskHandle;				// Task for handling calibration buttons(Super high prio but only run when needed, Gets data via queue)
 TaskHandle_t io_taskHandle;					// Task for handling IO expanders
+TaskHandle_t main_taskHandle;				// Task for all main things
 
 SemaphoreHandle_t hmi_mutex;    // Lock for HMI
 SemaphoreHandle_t nrf_mutex;    // Lock for nRF
@@ -157,7 +158,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(100);
   }
   /* USER CODE END StartDefaultTask */
 }

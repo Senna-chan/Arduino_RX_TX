@@ -28,6 +28,7 @@ extern TaskHandle_t encoder_taskHandle;         // Task for encoder processing
 
 extern TaskHandle_t cal_taskHandle;				// Task for handling calibration buttons(Super high prio but only run when needed, Gets data via queue)
 extern TaskHandle_t io_taskHandle;				// Task for handling IO expanders
+extern TaskHandle_t main_taskHandle;
 
 extern SemaphoreHandle_t hmi_mutex;             // Lock for HMI
 extern SemaphoreHandle_t nrf_mutex;             // Lock for nRF

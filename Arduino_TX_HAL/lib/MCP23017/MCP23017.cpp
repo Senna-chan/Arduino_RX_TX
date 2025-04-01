@@ -86,11 +86,22 @@ void MCP23017::begin(I2C_HandleTypeDef *hi2c, uint16_t address) {
   _hi2c = hi2c;
 }
 
-/**
- * Sets the pin mode to either GPIO_MODE_INPUT or GPIO_MODE_OUTPUT
- * @param p Pin to set
- * @param d Mode to set the pin
- */
+void MCP23017::bulkPinMode(uint16_t pins, uint8_t mode, uint8_t pullup, bool invertSignal, bool interrupt, uint8_t interruptMode)
+{
+  writeRegister16(MCP23017_IODIRA, mode == GPIO_MODE_INPUT ? pins : ~pins);
+  writeRegister16(MCP23017_GPPUA, pullup == GPIO_PULLUP ? pins : ~pins);
+  writeRegister16(MCP23017_IPOLA, invertSignal ? pins : ~pins);
+  writeRegister16(MCP23017_GPINTENA, interrupt ? pins : ~pins);
+  if(!interrupt) return;
+  if(interruptMode == GPIO_MODE_IT_RISING_FALLING) {
+    writeRegister16(MCP23017_INTCONA, ~pins);
+  } else {
+    writeRegister16(MCP23017_INTCONA, pins);
+    writeRegister16(MCP23017_DEFVALA, interruptMode == GPIO_MODE_IT_RISING ? ~pins : pins);
+  }
+}
+
+
 void MCP23017::pinMode(uint8_t p, uint8_t d) {
   updateRegisterBit(p, (d == GPIO_MODE_INPUT), MCP23017_IODIRA, MCP23017_IODIRB);
 }

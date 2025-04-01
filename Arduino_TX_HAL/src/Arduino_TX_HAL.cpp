@@ -7,10 +7,13 @@
 #include "ArduMath.h"
 #include "MiscHelpers.hpp"
 #include "settingsHelper.h"
+#include "Config.h"
 
 uint32_t IOExpanderBits = 0;
 uint16_t lastCalButtons = 0;
 
+bool allowInterrupts = false; // In the beginning we are not allowed to process interrupts because of FreeRTOS
+uint16_t interruptsToProcess = 0x0000; // Capture the interrupt pins that we didn't process yet
 
 void processIOInterrupt(void *parameter)
 {
@@ -19,8 +22,8 @@ void processIOInterrupt(void *parameter)
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         xSemaphoreTake(i2c_mutex, portMAX_DELAY);
         IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
-        printBits(IOExpanderBits, true);
         xSemaphoreGive(i2c_mutex);
+        printBits(IOExpanderBits, true);
     }
 }
 
@@ -32,6 +35,7 @@ void processCALInterrupt(void *parameter)
         printf("CAL Interrupt ");
         xSemaphoreTake(i2c_mutex, portMAX_DELAY);
         uint16_t buttons = calButtonExpender.readGPIOAB();
+        xSemaphoreGive(i2c_mutex);
         printBits(buttons, true);
         for (int i = 0; i < 6; i++)
         {
@@ -54,7 +58,30 @@ void processCALInterrupt(void *parameter)
             }
         }
         lastCalButtons = buttons;
-        xSemaphoreGive(i2c_mutex);
+    }
+}
+
+void MainLoop(void* arg){
+    allowInterrupts = true;
+    for(int i = 0; i < 16; i++)
+    {
+        if(bitRead(interruptsToProcess, i)){
+            HAL_GPIO_EXTI_Callback(1 << i);
+        }
+    }
+    while(true)
+    {
+        #if ENABLE_MCPIO
+        if(HAL_GPIO_ReadPin(CAL_IRQ_GPIO_Port, CAL_IRQ_Pin) == GPIO_PIN_RESET)
+        {
+            vTaskNotifyGiveFromISR(cal_taskHandle, NULL);
+        }
+        if(HAL_GPIO_ReadPin(MCP_IRQ_GPIO_Port, MCP_IRQ_Pin) == GPIO_PIN_RESET)
+        {
+            vTaskNotifyGiveFromISR(io_taskHandle, NULL);
+        }
+        #endif
+        HAL_Delay(1000); // Nothing so just sleep
     }
 }
 
@@ -62,20 +89,32 @@ void setupCPP(){
     printf("setupCPP()\n");
     scanI2C(&hi2c2);
 
-    xTaskCreate(processCALInterrupt, "calibrate_task", 50, NULL, 10, &cal_taskHandle);
-    xTaskCreate(processIOInterrupt, "IOExpander", 10, NULL, 10, &io_taskHandle);
+    xTaskCreate(processCALInterrupt, "calibrate_task", 50, NULL, osPriorityHigh7, &cal_taskHandle);
+    xTaskCreate(processIOInterrupt, "IOExpander", 10, NULL, osPriorityHigh7, &io_taskHandle);
     
     loadSettings();
+    #if ENABLE_ENCODER
     configureEncoder();
+    #endif
+    #if ENABLE_MCPIO
     setupMCPChips();
+    #endif
+    #if ENABLE_RADIO
     Main_nRF.SetCEPin(NRF_CE_GPIO_Port, NRF_CE_Pin);
     Main_nRF.SetCSNPin(NRF_CSN_GPIO_Port, NRF_CSN_Pin);
     Main_nRF.SetSPI(&hspi3);
     Main_nRF.CSN_H();
     common_nRFInit(true);
+    #endif
+    xTaskCreate(MainLoop, "Main loop", 128, NULL, 10, &main_taskHandle);
 }
 
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+    if(!allowInterrupts) {
+        bitSet(interruptsToProcess, GPIO_Pin);
+        return;
+    }
     if(GPIO_Pin == ENC_IRQ_Pin){
         printf("ENC IRQ\n");
 	    vTaskNotifyGiveFromISR(encoder_taskHandle, NULL);

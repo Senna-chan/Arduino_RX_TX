@@ -107,12 +107,10 @@ void __io_putchar(uint8_t ch) {
   HAL_UART_Transmit(&huart1, &ch, 1, 1);
 }
 
-
-void HAL_Delay(uint32_t Delay){
-
+void HAL_Delay(uint32_t Delay, bool forceHAL){
   TaskHandle_t currentTask = xTaskGetCurrentTaskHandle();
   auto taskSchedulerState = xTaskGetSchedulerState();
-  if(currentTask == nullptr || taskSchedulerState != taskSCHEDULER_RUNNING)
+  if(currentTask == nullptr || taskSchedulerState != taskSCHEDULER_RUNNING || forceHAL)
   {
     uint32_t tickstart = HAL_GetTick();
     uint32_t wait = Delay;
@@ -130,6 +128,10 @@ void HAL_Delay(uint32_t Delay){
   } else {
     vTaskDelay(Delay / portTICK_PERIOD_MS);
   }
+}
+
+void HAL_Delay(uint32_t Delay){
+  HAL_Delay(Delay, true);
 }
 /* USER CODE END 0 */
 
@@ -175,7 +177,7 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
-  MX_USB_DEVICE_Init();
+  //MX_USB_DEVICE_Init();
   printf("Initialized MX code.\n");
 
   setupCPP();

@@ -37,12 +37,13 @@ void enableExpender(MCP23017* expender, uint8_t address)
 	}
 
 	expender->begin(&hi2c2, address);
-	expender->writeRegister16(MCP23017::MCP23017_IODIRA, 0xFFFF); // Set all as input
-	expender->writeRegister16(MCP23017::MCP23017_GPPUA, 0xFFFF);  // Enable pullup registers
-	expender->writeRegister16(MCP23017::MCP23017_IPOLA, 0xFFFF);  // Reverse the logic level(LOW is read as HIGH)
-	expender->writeRegister16(MCP23017::MCP23017_GPINTENA, 0xFFFF);  // Enable IRQ
-	expender->writeRegister16(MCP23017::MCP23017_INTCONA, 0x0000);  // Enable IRQ
-	expender->setupInterrupts(true, true, GPIO_PIN_SET);
+	// expender->writeRegister16(MCP23017::MCP23017_IODIRA, 0xFFFF); // Set all as input
+	// expender->writeRegister16(MCP23017::MCP23017_IPOLA, 0xFFFF);  // Reverse the logic level(LOW is read as HIGH)
+	// expender->writeRegister16(MCP23017::MCP23017_GPPUA, 0xFFFF);  // Enable pullup registers
+	// expender->writeRegister16(MCP23017::MCP23017_GPINTENA, 0xFFFF);  // Enable IRQ
+	// expender->writeRegister16(MCP23017::MCP23017_INTCONA, 0x0000);  // Enable IRQ
+	expender->readGPIOAB(); // Clearing any interrupts that may be active
+	expender->setupInterrupts(true, true, GPIO_PIN_RESET);
 
 }
 
@@ -53,5 +54,7 @@ void setupMCPChips()
 	enableExpender(&IOExpander2, IOEXPANDER2_ADDR);
 	enableExpender(&calButtonExpender, CALEXPENDER_ADDR);
 
-	calButtonExpender.readGPIOAB(); // Clearing any interrupts that may be active
+	IOExpander1.bulkPinMode(0xFFFF, MODE_INPUT, GPIO_PULLUP, true, true, GPIO_MODE_IT_RISING_FALLING);
+	IOExpander2.bulkPinMode(0xFFFF, MODE_INPUT, GPIO_PULLUP, true, true, GPIO_MODE_IT_RISING_FALLING);
+	calButtonExpender.bulkPinMode(0xFFFF, MODE_INPUT, GPIO_PULLUP, true, true, GPIO_MODE_IT_FALLING);
 }

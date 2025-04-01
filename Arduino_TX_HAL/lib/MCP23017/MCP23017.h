@@ -31,10 +31,26 @@ public:
     };
     const static int MCP23017_INT_ERR = 0xFF;
     void begin(I2C_HandleTypeDef *hi2c, uint16_t address);
-    void pinMode(uint8_t p, uint8_t d);
-    void digitalWrite(uint8_t p, uint8_t d);
-    void pullUp(uint8_t p, uint8_t d);
-    uint8_t digitalRead(uint8_t p);
+    /**
+     * @brief Configure pins with all options directly
+     * 
+     * @param pins Pins to configure. Can be any GPIO_PIN_X combined
+     * @param mode Mode, Either MODE_INPUT or MODE_OUTPUT
+     * @param pullup Pullup status, either GPIO_NOPULL or GPIO_PULLUP
+     * @param invertSignal Inverting of the signal, true for inverting, false for not
+     * @param interrupt Interrupt enabled?
+     * @param interruptMode Interrupt mode, Any of the GPIO_MODE_IT_X
+     */
+    void bulkPinMode(uint16_t pins, uint8_t mode, uint8_t pullup, bool invertSignal, bool interrupt, uint8_t interruptMode);
+    /**
+     * Sets the pin mode to either GPIO_MODE_INPUT or GPIO_MODE_OUTPUT
+     * @param p Pin to set
+     * @param d Mode to set the pin
+     */
+    void pinMode(uint8_t p, uint8_t d); // Arduino style
+    void digitalWrite(uint8_t p, uint8_t d); // Arduino style
+    void pullUp(uint8_t p, uint8_t d); 
+    uint8_t digitalRead(uint8_t p); // Arduino style
 
     void setupInterrupts(uint8_t mirroring, uint8_t open, uint8_t polarity);
     void setupInterruptPin(uint8_t pin, uint8_t mode);
