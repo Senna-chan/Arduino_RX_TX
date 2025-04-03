@@ -1,19 +1,22 @@
 #ifndef SHARED_CODE_H
 #define SHARED_CODE_H
 
-#include <Arduino.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-#define ENABLE_HMI                      1
-#define ENABLE_MCPIO                    0
+#define ENABLE_HMI                      0
+#define ENABLE_MCPIO                    1
 #define ENABLE_EEPROM                   0
 #define ENABLE_ENCODER                  0
-#define ENABLE_AUX_SERIAL               1
+#define ENABLE_AUX_SERIAL               0
 #define ENABLE_RADIO                    1
-#define ENABLE_CONTROLLER_COMPANION     1
+#define ENABLE_CONTROLLER_COMPANION     0
+#define ENABLE_ADC                      1
 
+#define DEBUG_ADC                       1
 #define DEBUG_WIRE                      0
-#define DEBUG                           0
-#define DEBUG_RADIO                     0
+#define DEBUG_MISC                      0
+#define DEBUG_RADIO                     1
 #define DEBUG_HMI                       0
 #define TRACE_HMI                       0
 
@@ -64,21 +67,21 @@ extern bool isTransmitter;
 // ADC defines
 #define batIndex                10      // Index in ADCDMA buffer for battery
 #define ADCCHANNELNUMBERS       10      // Amount of RC ADC Channels
-#define DMABUFFERSIZE           15      // Amount of ADC DMA channels
+#define DMABUFFERSIZE           (ADCCHANNELNUMBERS)      // Amount of ADC DMA channels
 extern uint16_t ADCDMABuffer[DMABUFFERSIZE];
 
 // I2C defines
-#define CALEXPENDER_INT_PIN     PE0    // Pin on which the calibratebutton expender interrupts
-#define IOEXPENDER_INT_PIN      PE1    // Pin on which the oneway expender interrupts
-#define ENCODER_INT_PIN         PB9    // Pin on which the encoder interrupts
+#define CALEXPENDER_INT_PIN     PB13    // Pin on which the calibratebutton expender interrupts
+#define IOEXPENDER_INT_PIN      PB14    // Pin on which the oneway expender interrupts
+#define ENCODER_INT_PIN         PB12    // Pin on which the encoder interrupts
 
 
 // I2C Addresses
 #define ENCODER_ADDR            0x42
 #define EEPROM_ADDR             0x50    // 24LC256 EEPROM Address in i2c bus
-#define CALEXPENDER_ADDR        0b110
-#define IOEXPANDER1_ADDR        0b101
-#define IOEXPANDER2_ADDR        0b011
+#define CALEXPENDER_ADDR        0b000
+#define IOEXPANDER1_ADDR        0b100
+#define IOEXPANDER2_ADDR        0b101
 
 
 #define SETTINGSVERSION         25

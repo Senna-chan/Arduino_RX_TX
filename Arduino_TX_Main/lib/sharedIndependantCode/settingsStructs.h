@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "sharedVars.h"
+#include "SharedVars.h"
 
 #define CTYPE_NONE          0
 #define CTYPE_ADC           1

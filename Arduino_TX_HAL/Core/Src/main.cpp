@@ -107,10 +107,10 @@ void __io_putchar(uint8_t ch) {
   HAL_UART_Transmit(&huart1, &ch, 1, 1);
 }
 
-void HAL_Delay(uint32_t Delay, bool forceHAL){
+void HAL_Delay(uint32_t Delay){
   TaskHandle_t currentTask = xTaskGetCurrentTaskHandle();
   auto taskSchedulerState = xTaskGetSchedulerState();
-  if(currentTask == nullptr || taskSchedulerState != taskSCHEDULER_RUNNING || forceHAL)
+  if(currentTask == nullptr || taskSchedulerState != taskSCHEDULER_RUNNING)
   {
     uint32_t tickstart = HAL_GetTick();
     uint32_t wait = Delay;
@@ -130,8 +130,10 @@ void HAL_Delay(uint32_t Delay, bool forceHAL){
   }
 }
 
-void HAL_Delay(uint32_t Delay){
-  HAL_Delay(Delay, true);
+void delay_us (uint16_t us)
+{
+	__HAL_TIM_SET_COUNTER(&htim13,0);  // set the counter value a 0
+	while (__HAL_TIM_GET_COUNTER(&htim13) < us);  // wait for the counter to reach the us input in the parameter
 }
 /* USER CODE END 0 */
 
@@ -173,13 +175,14 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
   MX_CRC_Init();
-  MX_TIM6_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_SPI3_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
   //MX_USB_DEVICE_Init();
   printf("Initialized MX code.\n");
 
+  NVIC_SetPriorityGrouping( NVIC_PRIORITYGROUP_4 ); 
   setupCPP();
   /* USER CODE END 2 */
 

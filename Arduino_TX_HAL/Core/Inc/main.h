@@ -31,6 +31,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdbool.h>
+
 #include "freertos.h"
 /* USER CODE END Includes */
 
@@ -65,6 +67,8 @@ void Error_Handler(void);
 /* USER CODE BEGIN EFP */
 extern void Error_Handler_CPP(const char * file, int line);
 extern void setupCPP();
+void delay_us(uint16_t us);
+// void HAL_Delay(uint32_t Delay, bool forceHAL);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

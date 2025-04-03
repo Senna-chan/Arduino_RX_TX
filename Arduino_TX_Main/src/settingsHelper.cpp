@@ -11,7 +11,7 @@ void PrintCalValues()
     Serial.println("ch\tmin\tmid\tmax\toffset\tfailsafe\tstartup\tendmin\tendmax\tIO1\tIO2");
     for (int i = 0; i < RC_MAX_CHANNELS; i++)
     {
-        auto chSetting = activeModel->channel_settings[i];
+        auto chSetting = settings.model[settings.activeModel].channel_settings[i];
         Serial.printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t\t%04d\t%04d\t%04d\t%6s%02d\t%6s%02d\r\n",
                       i + 1, chSetting.adcConfig.min, chSetting.adcConfig.mid, chSetting.adcConfig.max,
                       chSetting.trim, chSetting.failsafe, chSetting.startupVal,
@@ -59,7 +59,7 @@ void loadSettings(bool forceReset)
     {
         Serial.println("Failed to read settings. Using default settings. Send config via ControllerCompanion");
         generateDefaultSettings();
-        activeModel = &settings.model[settings.activeModel];
+        activeModel = &settings.model[0];
         return;
     }
     if (settings.version != SETTINGSVERSION)
@@ -94,7 +94,7 @@ void loadSettings(bool forceReset)
 void generateDefaultSettings()
 {
     Serial.println("(Re)creating default settings");
-
+    memset(&settings, 0, sizeof(settings));
     settings.version = SETTINGSVERSION;
     settings.activeModel = 0;
 
