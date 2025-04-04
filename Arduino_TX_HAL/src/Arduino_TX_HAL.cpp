@@ -97,14 +97,15 @@ void processCALInterrupt(void *parameter)
 {
     while (1)
     {
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        if(ulTaskNotifyTakeIndexed( 1, pdTRUE, 100 );
+
+
+        // ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         CALIRQNotProcessedLoops = 0;
         printf("CALTask");
         readCALExpander();
     }
-    printf("WHAT!");
 }
-
 
 void MainLoop(void* arg){
     allowInterrupts = true;
@@ -124,35 +125,20 @@ void MainLoop(void* arg){
             
             CALIRQNotProcessedLoops++;
             printf("CAL IRQ is set for %3d loops. Taskstate = %d\n", CALIRQNotProcessedLoops, taskStatus.eCurrentState);
-            ulTaskNotifyValueClear(cal_taskHandle, UINT32_MAX);
-            xTaskGenericNotify( ( cal_taskHandle ), ( 0 ), eNoAction, __null );
+            // ulTaskNotifyValueClear(cal_taskHandle, UINT32_MAX);
+            // xTaskGenericNotify( ( cal_taskHandle ), ( 0 ), eNoAction, __null );
+            vTaskResume(cal_taskHandle);
             readCALExpander();
         }
         if(HAL_GPIO_ReadPin(MCP_IRQ_GPIO_Port, MCP_IRQ_Pin) == GPIO_PIN_RESET)
         {
-            printf("IO IRQ is set for %3d loops\n", IOIRQNotProcessedLoops);
             IOIRQNotProcessedLoops++;
-            ulTaskNotifyValueClear(io_taskHandle, UINT32_MAX);
-            xTaskGenericNotify( ( io_taskHandle ), ( 0 ), eNoAction, __null );
+            printf("IO IRQ is set for %3d loops\n", IOIRQNotProcessedLoops);
+            vTaskResume(io_taskHandle);
+            // ulTaskNotifyValueClear(io_taskHandle, UINT32_MAX);
+            // xTaskGenericNotify( ( io_taskHandle ), ( 0 ), eNoAction, __null );
             readIOExpanders();
         }
-        
-        // xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-        // uint16_t calIntPin = calButtonExpender.getLastInterruptPin();
-        // uint16_t io1IntPin = IOExpander1.getLastInterruptPin();
-        // uint16_t io2IntPin = IOExpander2.getLastInterruptPin();
-        // xSemaphoreGive(i2c_mutex);
-        // if(calIntPin != MCP23017::MCP23017_INT_ERR)
-        // {
-        //     printf("Unhandled CAL MCP event, pin %d active\n",calIntPin);
-
-        //     xTaskGenericNotify( ( cal_taskHandle ), ( 0 ), eNoAction, __null );
-        // }
-        // if(io1IntPin != MCP23017::MCP23017_INT_ERR || io2IntPin != MCP23017::MCP23017_INT_ERR)
-        // {
-        //     printf("Unhandled IO MCP event, pinIO1 %d, pinIO2 %d\n",io1IntPin, io2IntPin);
-        //     xTaskGenericNotify( ( io_taskHandle ), ( 0 ), eNoAction, __null );
-        // }
         #endif
         #if DEBUG_ADC
             for(int i = 0; i < DMABUFFERSIZE; i++){
@@ -390,7 +376,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
     if(GPIO_Pin == ENC_IRQ_Pin){
         printf("ENC IRQ\n");
-	    vTaskNotifyGiveFromISR(encoder_taskHandle, &xHigherPriorityTaskWoken);
+        vTaskNotifyGiveIndexedFromISR(encoder_taskHandle, 1, )
+	    // vTaskNotifyGiveFromISR(encoder_taskHandle, &xHigherPriorityTaskWoken);
     } else if(GPIO_Pin == NRF_IRQ_Pin){
         //printf("NRF IRQ\n");
     } else if(GPIO_Pin == CAL_IRQ_Pin){
@@ -402,7 +389,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
     } else if(GPIO_Pin == TOUCH_IRQ_Pin){
         //printf("TOUCH IRQ\n");
     }
-    portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
+    portYIELD();
+    // portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
 }
 
 /**
