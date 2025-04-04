@@ -51,7 +51,7 @@ void MCP23017::writeRegister16(uint8_t regAddr, uint16_t regValue) {
 
 void MCP23017::updateRegister16(uint8_t regAddr, uint16_t regValue) {
   uint16_t value = readRegister16(regAddr);
-  value &= regValue;
+  value |= regValue;
   writeRegister16(regAddr, value);
 }
 
@@ -83,20 +83,37 @@ void MCP23017::begin(I2C_HandleTypeDef *hi2c, uint16_t address) {
   }
   _i2caddress |= address;
   _hi2c = hi2c;
+  // Reset the MCP23017 here
+  uint8_t defaultValues[] = {
+    0xFF,0xFF, // IODIR
+    0x00,0x00, // IPOL
+    0x00,0x00, // GPINTEN
+    0x00,0x00, // DEFVAL
+    0x00,0x00, // INTCON
+    0x00,0x00, // IOCON
+    0x00,0x00, // GPPU
+    0x00,0x00, // INTF
+    0x00,0x00, // INTCAP
+    0x00,0x00, // GPIO
+    0x00,0x00, // OLAT
+  };
+  HAL_I2C_Mem_Write(_hi2c, _i2caddress << 1, 0, 1, defaultValues, 22, 0xFFFF);
 }
 
 void MCP23017::bulkPinMode(uint32_t pins, uint32_t mode, uint32_t pullup, bool invertSignal, bool interrupt, uint32_t interruptMode)
 {
-  updateRegister16(MCP23017_IODIRA, mode == GPIO_MODE_INPUT ? pins : ~pins);
-  updateRegister16(MCP23017_GPPUA, pullup == GPIO_PULLUP ? pins : ~pins);
-  updateRegister16(MCP23017_IPOLA, invertSignal ? pins : ~pins);
-  updateRegister16(MCP23017_GPINTENA, interrupt ? pins : ~pins);
+  uint16_t setPins = pins;
+  uint16_t unsetPins = ~pins;
+  writeRegister16(MCP23017_IODIRA, mode == GPIO_MODE_INPUT ? setPins : unsetPins);
+  writeRegister16(MCP23017_GPPUA, pullup == GPIO_PULLUP ? setPins : unsetPins);
+  writeRegister16(MCP23017_IPOLA, invertSignal ? setPins : unsetPins);
+  writeRegister16(MCP23017_GPINTENA, interrupt ? setPins : unsetPins);
   if(!interrupt) return;
   if(interruptMode == GPIO_MODE_IT_RISING_FALLING) {
-    updateRegister16(MCP23017_INTCONA, ~pins);
+    writeRegister16(MCP23017_INTCONA, unsetPins);
   } else {
-    updateRegister16(MCP23017_INTCONA, pins);
-    updateRegister16(MCP23017_DEFVALA, interruptMode == GPIO_MODE_IT_FALLING ? pins : ~pins);
+    writeRegister16(MCP23017_INTCONA, setPins);
+    writeRegister16(MCP23017_DEFVALA, interruptMode == GPIO_MODE_IT_FALLING ? setPins : unsetPins);
   }
 }
 

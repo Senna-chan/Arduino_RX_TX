@@ -9,14 +9,15 @@
 #define ENABLE_EEPROM                   0
 #define ENABLE_ENCODER                  0
 #define ENABLE_AUX_SERIAL               0
-#define ENABLE_RADIO                    1
+#define ENABLE_RADIO                    0
 #define ENABLE_CONTROLLER_COMPANION     0
 #define ENABLE_ADC                      1
 
 #define DEBUG_ADC                       1
+#define DEBUG_I2C                       0
 #define DEBUG_WIRE                      0
 #define DEBUG_MISC                      0
-#define DEBUG_RADIO                     1
+#define DEBUG_RADIO                     0
 #define DEBUG_HMI                       0
 #define TRACE_HMI                       0
 

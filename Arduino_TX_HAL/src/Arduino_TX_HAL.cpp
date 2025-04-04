@@ -39,56 +39,72 @@ struct
 
 bool allowInterrupts = false; // In the beginning we are not allowed to process interrupts because of FreeRTOS
 uint16_t interruptsToProcess = 0x0000; // Capture the interrupt pins that we didn't process yet
+// Two counters because why TF doesn't the Tasks just run
+uint16_t CALIRQNotProcessedLoops = 0;
+uint16_t IOIRQNotProcessedLoops = 0;
+
+void readIOExpanders(){
+    xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+    vPortEnterCritical();
+    IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
+    vPortExitCritical();
+    xSemaphoreGive(i2c_mutex);
+}
 
 void processIOInterrupt(void *parameter)
 {
-    while (true)
+    while (1)
     {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-        vPortEnterCritical();
-        IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
-        vPortExitCritical();
-        xSemaphoreGive(i2c_mutex);
+        IOIRQNotProcessedLoops = 0;
+        printf("IOTask");
+        readIOExpanders();
         printBits(IOExpanderBits, true);
     }
 }
 
+void readCALExpander(){
+    xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+    vPortEnterCritical();
+    uint16_t buttons = calButtonExpender.readGPIOAB();
+    vPortExitCritical();
+    xSemaphoreGive(i2c_mutex);
+    printBits(buttons, true);
+    for (int i = 0; i < 6; i++)
+    {
+        uint8_t btn = i * 2;
+        int ch = i;
+        if (bitRead(buttons, btn) && bitRead(buttons, btn + 1))
+        {
+            printf("CH%02d offset reset\n", ch + 1);
+            settings.model[settings.activeModel].channel_settings[ch].trim = 0;
+        }
+        else if (bitRead(buttons, btn) && !bitRead(lastCalButtons, btn))
+        {
+            settings.model[settings.activeModel].channel_settings[ch].trim++;
+            printf("CH%02d offset ++ to %d\n", ch + 1, settings.model[settings.activeModel].channel_settings[i].trim);
+        }
+        else if (bitRead(buttons, btn + 1) && !bitRead(lastCalButtons, btn + 1))
+        {
+            settings.model[settings.activeModel].channel_settings[ch].trim--;
+            printf("CH%02d offset -- to %d\n", ch + 1, settings.model[settings.activeModel].channel_settings[i].trim);
+        }
+    }
+    lastCalButtons = buttons;
+}
+
 void processCALInterrupt(void *parameter)
 {
-    while (true)
+    while (1)
     {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        printf("CAL Interrupt ");
-        xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-        vPortEnterCritical();
-        uint16_t buttons = calButtonExpender.readGPIOAB();
-        vPortExitCritical();
-        xSemaphoreGive(i2c_mutex);
-        printBits(buttons, true);
-        for (int i = 0; i < 6; i++)
-        {
-            uint8_t btn = i * 2;
-            int ch = i;
-            if (bitRead(buttons, btn) && bitRead(buttons, btn + 1))
-            {
-                printf("CH%02d offset reset\n", ch + 1);
-                settings.model[settings.activeModel].channel_settings[ch].trim = 0;
-            }
-            else if (bitRead(buttons, btn) && !bitRead(lastCalButtons, btn))
-            {
-                settings.model[settings.activeModel].channel_settings[ch].trim++;
-                printf("CH%02d offset ++ to %d\n", ch + 1, settings.model[settings.activeModel].channel_settings[i].trim);
-            }
-            else if (bitRead(buttons, btn + 1) && !bitRead(lastCalButtons, btn + 1))
-            {
-                settings.model[settings.activeModel].channel_settings[ch].trim--;
-                printf("CH%02d offset -- to %d\n", ch + 1, settings.model[settings.activeModel].channel_settings[i].trim);
-            }
-        }
-        lastCalButtons = buttons;
+        CALIRQNotProcessedLoops = 0;
+        printf("CALTask");
+        readCALExpander();
     }
+    printf("WHAT!");
 }
+
 
 void MainLoop(void* arg){
     allowInterrupts = true;
@@ -101,29 +117,42 @@ void MainLoop(void* arg){
     while(true)
     {
         #if ENABLE_MCPIO
-        xSemaphoreTake(i2c_mutex, portMAX_DELAY);
         if(HAL_GPIO_ReadPin(CAL_IRQ_GPIO_Port, CAL_IRQ_Pin) == GPIO_PIN_RESET)
         {
-            xTaskNotifyGive(cal_taskHandle);
+            TaskStatus_t taskStatus;
+            vTaskGetInfo(cal_taskHandle, &taskStatus, pdTRUE, eInvalid);
+            
+            CALIRQNotProcessedLoops++;
+            printf("CAL IRQ is set for %3d loops. Taskstate = %d\n", CALIRQNotProcessedLoops, taskStatus.eCurrentState);
+            ulTaskNotifyValueClear(cal_taskHandle, UINT32_MAX);
+            xTaskGenericNotify( ( cal_taskHandle ), ( 0 ), eNoAction, __null );
+            readCALExpander();
         }
         if(HAL_GPIO_ReadPin(MCP_IRQ_GPIO_Port, MCP_IRQ_Pin) == GPIO_PIN_RESET)
         {
-            xTaskNotifyGive(io_taskHandle);
+            printf("IO IRQ is set for %3d loops\n", IOIRQNotProcessedLoops);
+            IOIRQNotProcessedLoops++;
+            ulTaskNotifyValueClear(io_taskHandle, UINT32_MAX);
+            xTaskGenericNotify( ( io_taskHandle ), ( 0 ), eNoAction, __null );
+            readIOExpanders();
         }
-        uint16_t calIntPin = calButtonExpender.getLastInterruptPin();
-        if(calIntPin != MCP23017::MCP23017_INT_ERR)
-        {
-            printf("Unhandled CAL MCP event, pin %d active\n",calIntPin);
-            xTaskNotifyGive(cal_taskHandle);
-        }
-        uint16_t io1IntPin = IOExpander1.getLastInterruptPin();
-        uint16_t io2IntPin = IOExpander2.getLastInterruptPin();
-        if(io1IntPin != MCP23017::MCP23017_INT_ERR || io2IntPin != MCP23017::MCP23017_INT_ERR)
-        {
-            printf("Unhandled IO MCP event, pinIO1 %d, pinIO2 %d\n",io1IntPin, io2IntPin);
-            xTaskNotifyGive(io_taskHandle);
-        }
-        xSemaphoreGive(i2c_mutex);
+        
+        // xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+        // uint16_t calIntPin = calButtonExpender.getLastInterruptPin();
+        // uint16_t io1IntPin = IOExpander1.getLastInterruptPin();
+        // uint16_t io2IntPin = IOExpander2.getLastInterruptPin();
+        // xSemaphoreGive(i2c_mutex);
+        // if(calIntPin != MCP23017::MCP23017_INT_ERR)
+        // {
+        //     printf("Unhandled CAL MCP event, pin %d active\n",calIntPin);
+
+        //     xTaskGenericNotify( ( cal_taskHandle ), ( 0 ), eNoAction, __null );
+        // }
+        // if(io1IntPin != MCP23017::MCP23017_INT_ERR || io2IntPin != MCP23017::MCP23017_INT_ERR)
+        // {
+        //     printf("Unhandled IO MCP event, pinIO1 %d, pinIO2 %d\n",io1IntPin, io2IntPin);
+        //     xTaskGenericNotify( ( io_taskHandle ), ( 0 ), eNoAction, __null );
+        // }
         #endif
         #if DEBUG_ADC
             for(int i = 0; i < DMABUFFERSIZE; i++){
@@ -135,7 +164,7 @@ void MainLoop(void* arg){
         #if DEBUG_RADIO
             printf("NRFStats: TX %7u ACK %7u RX %7u FAIL %7u\n", radioStats.send, radioStats.txack, radioStats.rx, radioStats.fail);
         #endif
-        vTaskDelay(1000); // Nothing so just sleep
+        vTaskDelay(1000 / portTICK_RATE_MS); // Nothing so just sleep
     }
 }
 
@@ -314,34 +343,42 @@ void check_radio(void *parameters)
 
 void setupCPP(){
     printf("setupCPP()\n");
-    scanI2C(&hi2c2);
-    
+    #if DEBUG_I2C
+        scanI2C(&hi2c2);
+    #endif
+
     loadSettings();
+
     #if ENABLE_ENCODER
-    configureEncoder();
+        configureEncoder();
     #endif
+
     #if ENABLE_MCPIO
-    setupMCPChips();
-    xTaskCreate(processCALInterrupt, "calibrate_task", 50, NULL, osPriorityHigh7, &cal_taskHandle);
-    xTaskCreate(processIOInterrupt, "IOExpander", 10, NULL, osPriorityHigh7, &io_taskHandle);
+        setupMCPChips();
+        xTaskCreate(processCALInterrupt, "CALExpander", 20, NULL, osPriorityRealtime2, &cal_taskHandle);
+        xTaskCreate(processIOInterrupt, "IOExpander", 20, NULL, osPriorityRealtime, &io_taskHandle);
     #endif
+
     #if ENABLE_RADIO
-    Main_nRF.SetCEPin(NRF_CE_GPIO_Port, NRF_CE_Pin);
-    Main_nRF.SetCSNPin(NRF_CSN_GPIO_Port, NRF_CSN_Pin);
-    Main_nRF.SetSPI(&hspi3);
-    Main_nRF.CSN_H();
-    common_nRFInit(true);
-    xTaskCreate(check_radio, "checkRadio", 50, NULL, osPriorityRealtime, &nRFData_taskHandle);
-    xTaskCreate(nrfTransmitTest, "nrfTest", 10, NULL, osPriorityBelowNormal, &nrfTransmitTest_taskHandle);
-    vTaskSuspend(nrfTransmitTest_taskHandle);
-    xTaskCreate(nrfTransmitChannels, "nrfChannels", 100, NULL, osPriorityRealtime1, &nrfTransit_taskHandle);
-    printf("WARNING: NRF TRANSMISSION IS DISABLED\n");
+        Main_nRF.SetCEPin(NRF_CE_GPIO_Port, NRF_CE_Pin);
+        Main_nRF.SetCSNPin(NRF_CSN_GPIO_Port, NRF_CSN_Pin);
+        Main_nRF.SetSPI(&hspi3);
+        Main_nRF.CSN_H();
+        common_nRFInit(true);
+        xTaskCreate(check_radio, "checkRadio", 50, NULL, osPriorityRealtime, &nRFData_taskHandle);
+        xTaskCreate(nrfTransmitTest, "nrfTest", 10, NULL, osPriorityBelowNormal, &nrfTransmitTest_taskHandle);
+        vTaskSuspend(nrfTransmitTest_taskHandle);
+        xTaskCreate(nrfTransmitChannels, "nrfChannels", 100, NULL, osPriorityRealtime1, &nrfTransit_taskHandle);
+        printf("WARNING: NRF TRANSMISSION IS DISABLED\n");
     #endif
+
     #if ENABLE_ADC
-    memset(&ADCDMABuffer, 0, DMABUFFERSIZE * 2);
-    HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADCDMABuffer, DMABUFFERSIZE);
+        memset(&ADCDMABuffer, 0, DMABUFFERSIZE * 2);
+        HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADCDMABuffer, DMABUFFERSIZE);
     #endif
-    xTaskCreate(MainLoop, "Main loop", 128, NULL, osPriorityLow2, &main_taskHandle);
+
+    xTaskCreate(MainLoop, "Main loop", 128, NULL, osPriorityLow, &main_taskHandle);
+    
 }
 
 

@@ -135,6 +135,9 @@ void delay_us (uint16_t us)
 	__HAL_TIM_SET_COUNTER(&htim13,0);  // set the counter value a 0
 	while (__HAL_TIM_GET_COUNTER(&htim13) < us);  // wait for the counter to reach the us input in the parameter
 }
+
+const volatile UBaseType_t uxTopUsedPriority = configMAX_PRIORITIES - 1U;
+
 /* USER CODE END 0 */
 
 /**
@@ -142,8 +145,8 @@ void delay_us (uint16_t us)
   * @retval int
   */
 int main(void)
-{
-
+ {
+  (void) uxTopUsedPriority; // Please work
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
