@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
 #include "adc.h"
 #include "crc.h"
 #include "dma.h"
@@ -61,7 +60,6 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 /* USER CODE END PFP */
 
@@ -136,7 +134,6 @@ void delay_us (uint16_t us)
 	while (__HAL_TIM_GET_COUNTER(&htim13) < us);  // wait for the counter to reach the us input in the parameter
 }
 
-const volatile UBaseType_t uxTopUsedPriority = configMAX_PRIORITIES - 1U;
 
 /* USER CODE END 0 */
 
@@ -145,9 +142,9 @@ const volatile UBaseType_t uxTopUsedPriority = configMAX_PRIORITIES - 1U;
   * @retval int
   */
 int main(void)
- {
+{
+
   /* USER CODE BEGIN 1 */
-  (void) uxTopUsedPriority; // Please work
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -183,24 +180,15 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //MX_USB_DEVICE_Init();
   printf("Initialized MX code.\n");
-
+  
   NVIC_SetPriorityGrouping( NVIC_PRIORITYGROUP_4 ); 
   setupCPP();
+  startFreeRTOS();
   /* USER CODE END 2 */
-
-  /* Init scheduler */
-  osKernelInitialize();
-
-  /* Call init function for freertos objects (in cmsis_os2.c) */
-  MX_FREERTOS_Init();
-
-  /* Start scheduler */
-  osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // Useless loop, we should not get into this one
   while (1)
   {
     /* USER CODE END WHILE */

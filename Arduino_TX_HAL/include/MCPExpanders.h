@@ -7,9 +7,7 @@
 	#include <Arduino.h>
 	#include "STMRTOSIncludes.h"
 #else
-#include <FreeRTOS.h>
-#include <task.h>
-#include <cmsis_os.h>
+#include <freertos.h>
 #endif
 
 #include <MCP23017.h>

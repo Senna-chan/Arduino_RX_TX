@@ -45,9 +45,11 @@ uint16_t IOIRQNotProcessedLoops = 0;
 
 void readIOExpanders(){
     xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-    vPortEnterCritical();
-    IOExpanderBits = (IOExpander1.readGPIOAB() << 16) | IOExpander2.readGPIOAB();
-    vPortExitCritical();
+    // vPortEnterCritical();
+    uint32_t lowBytes = IOExpander2.readGPIOAB();
+    uint32_t highBytes = IOExpander1.readGPIOAB();
+    IOExpanderBits = (highBytes << 16) | lowBytes;
+    // vPortExitCritical();
     xSemaphoreGive(i2c_mutex);
 }
 
@@ -60,14 +62,15 @@ void processIOInterrupt(void *parameter)
         printf("IOTask");
         readIOExpanders();
         printBits(IOExpanderBits, true);
+        ulTaskNotifyValueClear(NULL, UINT32_MAX);
     }
 }
 
 void readCALExpander(){
     xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-    vPortEnterCritical();
+    // vPortEnterCritical();
     uint16_t buttons = calButtonExpender.readGPIOAB();
-    vPortExitCritical();
+    // vPortExitCritical();
     xSemaphoreGive(i2c_mutex);
     printBits(buttons, true);
     for (int i = 0; i < 6; i++)
@@ -122,9 +125,8 @@ void MainLoop(void* arg){
             
             CALIRQNotProcessedLoops++;
             printf("CAL IRQ is set for %3d loops. Taskstate = %d\n", CALIRQNotProcessedLoops, taskStatus.eCurrentState);
-            // ulTaskNotifyValueClear(cal_taskHandle, UINT32_MAX);
-            // xTaskGenericNotify( ( cal_taskHandle ), ( 0 ), eNoAction, __null );
-            vTaskResume(cal_taskHandle);
+            xTaskNotifyGive(cal_taskHandle);
+            // vTaskResume(cal_taskHandle);
             readCALExpander();
         }
         if(HAL_GPIO_ReadPin(MCP_IRQ_GPIO_Port, MCP_IRQ_Pin) == GPIO_PIN_RESET)
@@ -133,9 +135,8 @@ void MainLoop(void* arg){
             vTaskGetInfo(io_taskHandle, &taskStatus, pdTRUE, eInvalid);
             IOIRQNotProcessedLoops++;
             printf("IO IRQ is set for %3d loops. Taskstate = %d.\n", IOIRQNotProcessedLoops, taskStatus.eCurrentState);
-            vTaskResume(io_taskHandle);
-            // ulTaskNotifyValueClear(io_taskHandle, UINT32_MAX);
-            // xTaskGenericNotify( ( io_taskHandle ), ( 0 ), eNoAction, __null );
+            xTaskNotifyGive(io_taskHandle);
+            // vTaskResume(io_taskHandle);
             readIOExpanders();
         }
         #endif
@@ -149,7 +150,7 @@ void MainLoop(void* arg){
         #if DEBUG_RADIO
             printf("NRFStats: TX %7u ACK %7u RX %7u FAIL %7u\n", radioStats.send, radioStats.txack, radioStats.rx, radioStats.fail);
         #endif
-        vTaskDelay(1000 / portTICK_RATE_MS); // Nothing so just sleep
+        vTaskDelay(1000 / portTICK_PERIOD_MS); // Nothing so just sleep
     }
 }
 
@@ -232,7 +233,7 @@ void nrfTransmitChannels(void *parameter)
         updateValues(activeModel, &txData.ch_data, rawChannels, parsedChannels, mappedChannels, IOExpanderBits, AUXRXChannels);
         txData.ch_data.identifier = CHANNELDATAID;
         // SendDataToRX(txData.bytesUnion.u8, sizeof(transmitTypes));
-        vTaskDelay(7 / portTICK_RATE_MS);
+        vTaskDelay(7 / portTICK_PERIOD_MS);
     }
 }
 
@@ -260,7 +261,7 @@ void nrfTransmitTest(void *parameter)
 
         delay_us(10);
         Main_nRF.CE_L();
-        vTaskDelay(1000 / portTICK_RATE_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
 
@@ -270,7 +271,7 @@ void check_radio(void *parameters)
     while (true)
     {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        if (xSemaphoreTake(nrf_mutex, 7 / portTICK_RATE_MS) == pdFALSE)
+        if (xSemaphoreTake(nrf_mutex, 7 / portTICK_PERIOD_MS) == pdFALSE)
         {
             printf("CHECKRADIO: nRF_BUSY\n");
         }
@@ -326,6 +327,19 @@ void check_radio(void *parameters)
 //     }
 // }
 
+extern "C" void vApplicationGetRandomHeapCanary(portPOINTER_SIZE_TYPE* pxHeapCanary ) {
+	if (pxHeapCanary != NULL) {
+		*pxHeapCanary = 0x6E796161;
+	}
+}
+
+void startFreeRTOS(){
+  MX_FREERTOS_Init();
+
+  vTaskStartScheduler();
+  
+}
+
 void setupCPP(){
     printf("setupCPP()\n");
     #if DEBUG_I2C
@@ -340,8 +354,8 @@ void setupCPP(){
 
     #if ENABLE_MCPIO
         setupMCPChips();
-        xTaskCreate(processCALInterrupt, "CALExpander", 20, NULL, osPriorityRealtime2, &cal_taskHandle);
-        xTaskCreate(processIOInterrupt, "IOExpander", 20, NULL, osPriorityRealtime, &io_taskHandle);
+        xTaskCreate(processCALInterrupt, "CALExpander", 100, NULL, 21, &cal_taskHandle);
+        xTaskCreate(processIOInterrupt, "IOExpander", 100, NULL, 20, &io_taskHandle);
     #endif
 
     #if ENABLE_RADIO
@@ -350,10 +364,10 @@ void setupCPP(){
         Main_nRF.SetSPI(&hspi3);
         Main_nRF.CSN_H();
         common_nRFInit(true);
-        xTaskCreate(check_radio, "checkRadio", 50, NULL, osPriorityRealtime, &nRFData_taskHandle);
-        xTaskCreate(nrfTransmitTest, "nrfTest", 10, NULL, osPriorityBelowNormal, &nrfTransmitTest_taskHandle);
+        xTaskCreate(check_radio, "checkRadio", 50, NULL, 20, &nRFData_taskHandle);
+        xTaskCreate(nrfTransmitTest, "nrfTest", 10, NULL, 1, &nrfTransmitTest_taskHandle);
         vTaskSuspend(nrfTransmitTest_taskHandle);
-        xTaskCreate(nrfTransmitChannels, "nrfChannels", 100, NULL, osPriorityRealtime1, &nrfTransit_taskHandle);
+        xTaskCreate(nrfTransmitChannels, "nrfChannels", 100, NULL, 19, &nrfTransit_taskHandle);
         printf("WARNING: NRF TRANSMISSION IS DISABLED\n");
     #endif
 
@@ -362,7 +376,7 @@ void setupCPP(){
         HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADCDMABuffer, DMABUFFERSIZE);
     #endif
 
-    xTaskCreate(MainLoop, "Main loop", 128, NULL, osPriorityLow, &main_taskHandle);
+    xTaskCreate(MainLoop, "Main loop", 128, NULL, 1, &main_taskHandle);
     
 }
 
@@ -373,22 +387,28 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
         return;
     }
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+    TaskStatus_t taskStatus;
+    vTaskGetInfo(NULL, &taskStatus, pdTRUE, eInvalid);
     if(GPIO_Pin == ENC_IRQ_Pin){
-        printf("ENC IRQ\n");
+        printf("ENC IRQ ");
 	    vTaskNotifyGiveFromISR(encoder_taskHandle, &xHigherPriorityTaskWoken);
     } else if(GPIO_Pin == NRF_IRQ_Pin){
         //printf("NRF IRQ\n");
     } else if(GPIO_Pin == CAL_IRQ_Pin){
-        printf("CAL IRQ\n");
-        vTaskNotifyGiveFromISR(cal_taskHandle, &xHigherPriorityTaskWoken);
+        printf("CAL IRQ ");
+        xTaskNotifyFromISR(cal_taskHandle, 1, eSetValueWithOverwrite, &xHigherPriorityTaskWoken);
+        // vTaskNotifyGiveFromISR(cal_taskHandle, &xHigherPriorityTaskWoken);
+        // xTaskResumeFromISR(cal_taskHandle);
     } else if(GPIO_Pin == MCP_IRQ_Pin){
-        printf("IO IRQ\n");
-        vTaskNotifyGiveFromISR(io_taskHandle, &xHigherPriorityTaskWoken);
+        printf("IO IRQ ");
+        xTaskNotifyFromISR(io_taskHandle, 1, eSetValueWithOverwrite, &xHigherPriorityTaskWoken);
+        // vTaskNotifyGiveFromISR(io_taskHandle, &xHigherPriorityTaskWoken);
+        // xTaskResumeFromISR(io_taskHandle);
     } else if(GPIO_Pin == TOUCH_IRQ_Pin){
         //printf("TOUCH IRQ\n");
     }
-
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    printf("H%ld\n", xHigherPriorityTaskWoken);
+    portYIELD();
 }
 
 /**

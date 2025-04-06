@@ -31,6 +31,7 @@ void enableExpender(MCP23017* expender, uint8_t address)
 	expender->bulkPinMode(0xFFFF, MODE_INPUT, GPIO_PULLUP, true, true, address == CALEXPENDER_ADDR ? GPIO_MODE_IT_RISING : GPIO_MODE_IT_RISING_FALLING);
 	expender->setupInterrupts(true, true, GPIO_PIN_RESET);
 	expender->readGPIOAB(); // Clearing any interrupts that may be active
+	expender->readRegister16(MCP23017::MCP23017_INTCAPA);
 }
 
 void setupMCPChips() 

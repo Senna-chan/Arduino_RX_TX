@@ -17,7 +17,7 @@ void configureEncoder()
 		if (!encoder.begin(I2CEncoder::INT_DATA | I2CEncoder::WRAP_DISABLE | I2CEncoder::DIRE_RIGHT | I2CEncoder::IPUP_DISABLE | I2CEncoder::RMOD_X1 | I2CEncoder::STD_ENCODER)) {
 			printf("Failed to init encoder\n");
 		}
-		xTaskCreate(processEncoder, "encoder", 50, NULL, osPriorityBelowNormal1, &encoder_taskHandle);
+		xTaskCreate(processEncoder, "encoder", 50, NULL, 10, &encoder_taskHandle);
 	}
 	encoder.writeCounter(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].curValue); /* Reset the counter value */
 	encoder.writeMax(settings.model[settings.activeModel].encoderSettings[encoderSettingsIndex].maxValue); /* Set the maximum threshold*/

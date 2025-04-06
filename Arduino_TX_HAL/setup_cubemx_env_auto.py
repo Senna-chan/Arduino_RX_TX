@@ -33,10 +33,10 @@ lib_directory = "lib/"
 # set the project source dir
 env["PROJECT_SRC_DIR"] = project_dir
 
-# We simply take the first extra library dependency
+# We take the second one here because we want to compile freertos ASAP
 try:
     linked_resources_dir = path.join(
-        lib_directory, env.GetProjectOption("lib_deps")[0])
+        lib_directory, env.GetProjectOption("lib_deps")[1])
 except:
     raise SCons.Errors.BuildError(
         errstr="%s Error: The option 'lib_deps' is not set"

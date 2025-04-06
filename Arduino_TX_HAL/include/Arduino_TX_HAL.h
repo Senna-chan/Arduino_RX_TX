@@ -20,6 +20,7 @@ extern "C" {
 #endif
 
 void setupCPP();
+void startFreeRTOS();
 
 class Arduino_TX_HAL{
 public:
