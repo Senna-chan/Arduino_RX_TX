@@ -97,10 +97,7 @@ void processCALInterrupt(void *parameter)
 {
     while (1)
     {
-        if(ulTaskNotifyTakeIndexed( 1, pdTRUE, 100 );
-
-
-        // ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         CALIRQNotProcessedLoops = 0;
         printf("CALTask");
         readCALExpander();
@@ -132,8 +129,10 @@ void MainLoop(void* arg){
         }
         if(HAL_GPIO_ReadPin(MCP_IRQ_GPIO_Port, MCP_IRQ_Pin) == GPIO_PIN_RESET)
         {
+            TaskStatus_t taskStatus;
+            vTaskGetInfo(io_taskHandle, &taskStatus, pdTRUE, eInvalid);
             IOIRQNotProcessedLoops++;
-            printf("IO IRQ is set for %3d loops\n", IOIRQNotProcessedLoops);
+            printf("IO IRQ is set for %3d loops. Taskstate = %d.\n", IOIRQNotProcessedLoops, taskStatus.eCurrentState);
             vTaskResume(io_taskHandle);
             // ulTaskNotifyValueClear(io_taskHandle, UINT32_MAX);
             // xTaskGenericNotify( ( io_taskHandle ), ( 0 ), eNoAction, __null );
@@ -376,8 +375,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
     if(GPIO_Pin == ENC_IRQ_Pin){
         printf("ENC IRQ\n");
-        vTaskNotifyGiveIndexedFromISR(encoder_taskHandle, 1, )
-	    // vTaskNotifyGiveFromISR(encoder_taskHandle, &xHigherPriorityTaskWoken);
+	    vTaskNotifyGiveFromISR(encoder_taskHandle, &xHigherPriorityTaskWoken);
     } else if(GPIO_Pin == NRF_IRQ_Pin){
         //printf("NRF IRQ\n");
     } else if(GPIO_Pin == CAL_IRQ_Pin){
@@ -389,8 +387,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
     } else if(GPIO_Pin == TOUCH_IRQ_Pin){
         //printf("TOUCH IRQ\n");
     }
-    portYIELD();
-    // portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
+
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 /**

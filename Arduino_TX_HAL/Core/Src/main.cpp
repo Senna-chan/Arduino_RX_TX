@@ -146,9 +146,8 @@ const volatile UBaseType_t uxTopUsedPriority = configMAX_PRIORITIES - 1U;
   */
 int main(void)
  {
-  (void) uxTopUsedPriority; // Please work
   /* USER CODE BEGIN 1 */
-
+  (void) uxTopUsedPriority; // Please work
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
