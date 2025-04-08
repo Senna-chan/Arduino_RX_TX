@@ -63,8 +63,13 @@ void _Error_Handler(const char *, int);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+
 extern void Error_Handler_CPP(const char * file, int line);
 extern void setupCPP();
+
+extern void SerialPrint(const char* string);
+extern void SerialPrintf(const char *format, ...);
+
 void delay_us(uint16_t us);
 // void HAL_Delay(uint32_t Delay, bool forceHAL);
 /* USER CODE END EFP */

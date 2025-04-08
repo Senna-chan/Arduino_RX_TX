@@ -15,16 +15,13 @@ extern "C" {
     #include <stdlib.h>
     #include "main.h"
     #include "freertos.h"
+
+void setupCPP();
+void startFreeRTOS();
+void SerialPrint(const char* string);
+void SerialPrintf(const char *format, ...);
 #ifdef __cplusplus
 }
 #endif
 
-void setupCPP();
-void startFreeRTOS();
-
-class Arduino_TX_HAL{
-public:
-
-};
-        
 #endif

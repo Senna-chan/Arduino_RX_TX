@@ -50,6 +50,12 @@
    #include <stdint.h>
    extern uint32_t SystemCoreClock;
  #endif
+
+
+extern char _end; /* Defined in the linker script */
+extern char _estack; /* Defined in the linker script */
+extern char _Min_Stack_Size; /* Defined in the linker script */
+
  /* In most cases, configCPU_CLOCK_HZ must be set to the frequency of the clock
   * that drives the peripheral used to generate the kernels periodic tick
   * interrupt. The default value is set to 20MHz and matches the QEMU demo
@@ -683,5 +689,16 @@
  #define INCLUDE_xTaskGetHandle                 1
  #define INCLUDE_xTaskResumeFromISR             1
  
+
+ #ifndef configMINIMAL_STACK_SIZE
+ #define configMINIMAL_STACK_SIZE          ((uint16_t)((uint32_t)&_Min_Stack_Size/8))
+ #endif
+ #ifndef configTOTAL_HEAP_SIZE
+ #define configTOTAL_HEAP_SIZE             ((size_t)((uint32_t)&_estack - (uint32_t)&_Min_Stack_Size - (uint32_t)&_end))
+ #endif
+ #ifndef configISR_STACK_SIZE_WORDS
+ #define configISR_STACK_SIZE_WORDS        ((uint32_t)&_Min_Stack_Size/4)
+ #endif
+
  #endif /* FREERTOS_CONFIG_H */
  

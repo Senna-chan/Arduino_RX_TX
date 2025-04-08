@@ -66,49 +66,10 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-namespace std{
-  #ifdef __cplusplus
-  extern "C"{
-  #endif
-
-int _read(int file, char *ptr, int len) {
-  HAL_StatusTypeDef hstatus;
-  hstatus = HAL_UART_Receive(&huart1, (uint8_t*) ptr, 1, HAL_MAX_DELAY);
-  if (hstatus == HAL_OK)
-      return 1;
-  else
-      return 0;
-}
-
-size_t _write(int fd, char *ptr, size_t len){
-// SerialPrint(ptr, len);
-// return len;
-  HAL_StatusTypeDef hstatus;
-  hstatus = HAL_UART_Transmit(&huart1, (uint8_t*) ptr, len, 100);
-  if (hstatus == HAL_OK)
-      return len;
-
-  if(hstatus == HAL_TIMEOUT){
-    HAL_UART_DeInit(&huart1);
-    MX_USART1_UART_Init();
-  }
-//    	HAL_UART_AbortTransmit(&huart1); // Discard what was still being transmitted. Wil this work?
-  return 0;
-}
-
-#ifdef __cplusplus
-}
-#endif
-}
-
-void __io_putchar(uint8_t ch) {
-  HAL_UART_Transmit(&huart1, &ch, 1, 1);
-}
-
 void HAL_Delay(uint32_t Delay){
   TaskHandle_t currentTask = xTaskGetCurrentTaskHandle();
-  auto taskSchedulerState = xTaskGetSchedulerState();
-  if(currentTask == nullptr || taskSchedulerState != taskSCHEDULER_RUNNING)
+  BaseType_t taskSchedulerState = xTaskGetSchedulerState();
+  if(currentTask == NULL || taskSchedulerState != taskSCHEDULER_RUNNING)
   {
     uint32_t tickstart = HAL_GetTick();
     uint32_t wait = Delay;
@@ -134,7 +95,6 @@ void delay_us (uint16_t us)
 	while (__HAL_TIM_GET_COUNTER(&htim13) < us);  // wait for the counter to reach the us input in the parameter
 }
 
-
 /* USER CODE END 0 */
 
 /**
@@ -153,7 +113,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  setbuf(stdout, NULL);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -179,7 +139,8 @@ int main(void)
   MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
   //MX_USB_DEVICE_Init();
-  printf("Initialized MX code.\n");
+  const char* str = "Initialized MX code.\n";
+  HAL_UART_Transmit_IT(&huart1, (uint8_t*)str, strlen(str));
   
   NVIC_SetPriorityGrouping( NVIC_PRIORITYGROUP_4 ); 
   setupCPP();

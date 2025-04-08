@@ -65,7 +65,12 @@ extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern TIM_HandleTypeDef htim14;
 
 /* USER CODE BEGIN EV */
-
+#define HALT_IF_DEBUGGING()                              \
+  do {                                                   \
+    if ((*(volatile uint32_t *)0xE000EDF0) & (1 << 0)) { \
+      __asm("bkpt 1");                                   \
+    }                                                    \
+} while (0)
 /* USER CODE END EV */
 
 /******************************************************************************/

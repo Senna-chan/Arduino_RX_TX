@@ -34,6 +34,8 @@ extern SemaphoreHandle_t nrf_mutex;             // Lock for nRF
 extern SemaphoreHandle_t i2c_mutex;             // Lock for I2C
 extern SemaphoreHandle_t main_serial_mutex;     // Lock for everything Serial
 
+extern QueueHandle_t serialQueue;               // Queue for serial
+
 void MX_FREERTOS_Init(void);
 
 #endif

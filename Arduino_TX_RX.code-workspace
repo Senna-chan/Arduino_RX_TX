@@ -127,7 +127,11 @@
             "config.h": "c",
             "print": "cpp",
             "main.h": "c",
-            "arduino_tx_hal.h": "c"
+            "arduino_tx_hal.h": "c",
+            "freertosconfig.h": "c",
+            "freertosconfig_default.h": "c",
+            "newlib.h": "c",
+            "spi.h": "c"
         },
         "cpp-check-lint.cpplint.--filter=": "-whitespace/comments,-readability/todo,-whitespace/line_length,-whitespace/braces,-legal/copyright,-build/header_guard,-whitespace/line_length",
         "cpp-check-lint.cppcheck.--max-ctu-depth=": 4,

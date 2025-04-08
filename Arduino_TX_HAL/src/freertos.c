@@ -116,10 +116,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
 
-  hmi_mutex = xSemaphoreCreateMutex();
-  nrf_mutex = xSemaphoreCreateMutex();
-  i2c_mutex = xSemaphoreCreateMutex();
-  main_serial_mutex = xSemaphoreCreateMutex();
+  hmi_mutex = xSemaphoreCreateBinary();
+  nrf_mutex = xSemaphoreCreateBinary();
+  i2c_mutex = xSemaphoreCreateBinary();
+  main_serial_mutex = xSemaphoreCreateBinary();
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
