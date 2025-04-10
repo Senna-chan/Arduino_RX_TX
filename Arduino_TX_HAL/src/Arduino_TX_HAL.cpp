@@ -27,11 +27,13 @@ void UART1Error(UART_HandleTypeDef* huart)
 }
 
 std::queue<char*> serialTXBuffer;
-bool uart1TXBusy = false;
+size_t maxQueueSize = 20;
 char* stringToPrint;
+bool uartIRQWorking = false;
 
 void UART1TXDone(UART_HandleTypeDef* huart)
 {
+    uartIRQWorking = true;
     if (stringToPrint != nullptr) {
         free(stringToPrint);
         stringToPrint = nullptr;
@@ -41,34 +43,39 @@ void UART1TXDone(UART_HandleTypeDef* huart)
         serialTXBuffer.pop();
         HAL_UART_Transmit_IT(&huart1, (uint8_t*)stringToPrint, strlen(stringToPrint));
     } else {
-        uart1TXBusy = 0;
         xSemaphoreGiveFromISR(main_serial_mutex, NULL);
     }
 }
 
 void SerialPrint(const char* string)
 {
+    SerialPrintLen(string, strlen(string));
+}
+
+void SerialPrintLen(const char* string, size_t length)
+{
+    bool queueMessage = true;
     BaseType_t inISR = xPortIsInsideInterrupt();
-    size_t length = strlen(string);
-    BaseType_t semState = main_serial_mutex == nullptr ? pdTRUE : inISR ? pdFALSE
-                                                                        : xSemaphoreTake(main_serial_mutex, 0);
 
-    bool queueMessage = false;
-    if (uart1TXBusy && huart1.gState == HAL_UART_STATE_READY) {
-        uart1TXBusy = false; // Should have been reset...
-    }
-    if (semState == pdFALSE || uart1TXBusy) {
-        queueMessage = true;
+    if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED && !inISR) {
+        if (xSemaphoreTake(main_serial_mutex, 0)) {
+            queueMessage = false;
+        }
     }
 
+    if (huart1.gState == HAL_UART_STATE_READY) {
+        queueMessage = false;
+    }
+
+    size_t strLength = length == 0 ? strlen(string) : length;
     if (queueMessage) {
-        char* strPtr = (char*)malloc(length + 1);
-        memcpy(strPtr, string, length);
-        strPtr[length] = '\0';
+        char* strPtr = (char*)malloc(strLength);
+        strcpy(strPtr, string);
         serialTXBuffer.push(strPtr); // Please let this be safe to do
     } else {
-        uart1TXBusy = 1;
-        HAL_UART_Transmit_IT(&huart1, (uint8_t*)string, length);
+        stringToPrint = (char*)malloc(strLength);
+        strcpy(stringToPrint, string);
+        HAL_UART_Transmit_IT(&huart1, (uint8_t*)stringToPrint, strLength);
     }
 }
 
@@ -76,10 +83,11 @@ void SerialPrintf(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    char buffer[1024] = { 0 };
-    vsnprintf(buffer, 1024, format, args);
+    const size_t maxBufferSize = 256;
+    char buffer[maxBufferSize] = { 0 };
+    size_t stringLen = vsnprintf(buffer, maxBufferSize, format, args);
     va_end(args);
-    SerialPrint(buffer);
+    SerialPrintLen(buffer, stringLen);
 }
 
 namespace std {
@@ -105,7 +113,7 @@ int _read(int file, char* ptr, int len)
 
 size_t _write(int fd, char* ptr, size_t len)
 {
-    SerialPrint(ptr);
+    SerialPrintLen(ptr, len);
     return len;
     // HAL_StatusTypeDef hstatus;
     // if (!uart1TXBusy) {
@@ -164,13 +172,13 @@ uint16_t IOIRQNotProcessedLoops = 0;
 
 void readIOExpanders()
 {
-    xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-    // vPortEnterCritical();
+    // xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+    vPortEnterCritical();
     uint32_t lowBytes = IOExpander2.readGPIOAB();
     uint32_t highBytes = IOExpander1.readGPIOAB();
     IOExpanderBits = (highBytes << 16) | lowBytes;
-    // vPortExitCritical();
-    xSemaphoreGive(i2c_mutex);
+    vPortExitCritical();
+    // xSemaphoreGive(i2c_mutex);
 }
 
 void processIOInterrupt(void* parameter)
@@ -187,11 +195,11 @@ void processIOInterrupt(void* parameter)
 
 void readCALExpander()
 {
-    xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-    // vPortEnterCritical();
+    // xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+    vPortEnterCritical();
     uint16_t buttons = calButtonExpender.readGPIOAB();
-    // vPortExitCritical();
-    xSemaphoreGive(i2c_mutex);
+    vPortExitCritical();
+    // xSemaphoreGive(i2c_mutex);
     printBits(buttons, true);
     for (int i = 0; i < 6; i++) {
         uint8_t btn = i * 2;
@@ -223,6 +231,9 @@ void processCALInterrupt(void* parameter)
 void MainLoop(void* arg)
 {
     while (true) {
+        if (!uartIRQWorking && serialTXBuffer.size() > 20) {
+            __BKPT(0); // Just why
+        }
 #if ENABLE_MCPIO
         if (HAL_GPIO_ReadPin(CAL_IRQ_GPIO_Port, CAL_IRQ_Pin) == GPIO_PIN_RESET) {
             TaskStatus_t taskStatus;

@@ -16,15 +16,14 @@
 void PrintCalValues()
 {
     printf("ch\tmin\tmid\tmax\toffset\tfailsafe\tstartup\tendmin\tendmax\tIO1\tIO2\n");
-    for (int i = 0; i < RC_MAX_CHANNELS; i++)
-    {
+    for (int i = 0; i < RC_MAX_CHANNELS; i++) {
         auto chSetting = activeModel->channel_settings[i];
         printf("ch%d\t%04d\t%04d\t%04d\t%04d\t%04d\t\t%04d\t%04d\t%04d\t%6s%02d\t%6s%02d\r\n",
-                      i + 1, chSetting.adcConfig.min, chSetting.adcConfig.mid, chSetting.adcConfig.max,
-                      chSetting.trim, chSetting.failsafe, chSetting.startupVal,
-                      chSetting.endPoints.min, chSetting.endPoints.max,
-                      channel_types_str[chSetting.channelMapping[0].type], chSetting.channelMapping[0].index,
-                      channel_types_str[chSetting.channelMapping[1].type], chSetting.channelMapping[1].index);
+            i + 1, chSetting.adcConfig.min, chSetting.adcConfig.mid, chSetting.adcConfig.max,
+            chSetting.trim, chSetting.failsafe, chSetting.startupVal,
+            chSetting.endPoints.min, chSetting.endPoints.max,
+            channel_types_str[chSetting.channelMapping[0].type], chSetting.channelMapping[0].index,
+            channel_types_str[chSetting.channelMapping[1].type], chSetting.channelMapping[1].index);
     }
     printf("\n");
 }
@@ -36,8 +35,7 @@ void PrintCalValues()
 bool readSettings()
 {
 #if ENABLE_EEPROM
-    if (!eepromFound)
-    {
+    if (!eepromFound) {
         return false;
     }
     eeRead(0, settings);
@@ -50,8 +48,7 @@ bool readSettings()
 void saveSettings()
 {
 #if ENABLE_EEPROM
-    if (!eepromFound)
-    {
+    if (!eepromFound) {
         return;
     }
     eeWrite(0, settings);
@@ -60,24 +57,21 @@ void saveSettings()
 
 void loadSettings(bool forceReset)
 {
-    printf("Settings size is %d\n", sizeof(Settings));
-    if (!readSettings())
-    {
+    SerialPrintf("Settings size is %d\n", sizeof(Settings));
+    if (!readSettings()) {
 
 #if ENABLE_EEPROM
-        printf("Failed to read settings. Using default settings. Send config via ControllerCompanion\n");
+        SerialPrintf("Failed to read settings. Using default settings. Send config via ControllerCompanion\n");
 #endif
         generateDefaultSettings();
         activeModel = &settings.model[settings.activeModel];
         return;
     }
-    if (settings.version != SETTINGSVERSION)
-    {
-        printf("Incorrect version. Current %d, expected %d\r\n", settings.version, SETTINGSVERSION);
+    if (settings.version != SETTINGSVERSION) {
+        SerialPrintf("Incorrect version. Current %d, expected %d\r\n", settings.version, SETTINGSVERSION);
         bool reset = forceReset;
 
-        if (!forceReset)
-        {
+        if (!forceReset) {
             // Serial.println("Do you want to reset the settings? y/N\r\n");
             // int oriTimeout = Serial.getTimeout();
             // Serial.setTimeout(5000); // 5 seconds timeout
@@ -86,13 +80,10 @@ void loadSettings(bool forceReset)
             // Serial.setTimeout(oriTimeout);
             // Serial.printf("Read '%s'\r\n", buffer);
             // reset = buffer[0] == 'y';
+        } else {
+            SerialPrintf("Forcereset == true\n");
         }
-        else
-        {
-            printf("Forcereset == true\n");
-        }
-        if (reset)
-        {
+        if (reset) {
             generateDefaultSettings();
             saveSettings();
         }
@@ -102,15 +93,14 @@ void loadSettings(bool forceReset)
 
 void generateDefaultSettings()
 {
-    printf("(Re)creating default settings\n");
+    SerialPrintf("(Re)creating default settings\n");
 
     settings.version = SETTINGSVERSION;
     settings.activeModel = 0;
 
     settings.model[0].nameSize = 0;
     memset(settings.model[0].name, 0, 20); // Blank name
-    for (int i = 0; i < RC_MAX_CHANNELS; i++)
-    {
+    for (int i = 0; i < RC_MAX_CHANNELS; i++) {
         settings.model[0].channel_settings[i].adcConfig.min = 0;
         settings.model[0].channel_settings[i].adcConfig.mid = 0;
         settings.model[0].channel_settings[i].adcConfig.max = 1023;
@@ -134,8 +124,7 @@ void generateDefaultSettings()
     settings.model[0].deadzone = 20;
     settings.model[0].channelReversed = 0;
 
-    for (int i = 0; i < 8; i++)
-    {
+    for (int i = 0; i < 8; i++) {
         settings.model[0].channelMixing[i].source1 = 0;
         settings.model[0].channelMixing[i].source2 = 0;
         settings.model[0].channelMixing[i].dest1 = 0;
@@ -159,8 +148,7 @@ void generateDefaultSettings()
     settings.model[0].rateLimitConfig.outputValuesMax.s.mid = 60;
     settings.model[0].rateLimitConfig.outputValuesMax.s.max = 100;
 
-    for (int i = 1; i < 8; i++)
-    {
+    for (int i = 1; i < 8; i++) {
         settings.model[i] = settings.model[0];
     }
 }

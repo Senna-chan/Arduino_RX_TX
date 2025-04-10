@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.h
+ * @brief          : Header for main.c file.
+ *                   This file contains the common defines of the application.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2025 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -47,15 +47,15 @@ extern "C" {
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 
-void _Error_Handler(const char *, int);
+void _Error_Handler(const char*, int);
 
-#define GET_MACRO( _0, _1, NAME, ... ) NAME
+#define GET_MACRO(_0, _1, NAME, ...) NAME
 
-#define Error_Handler(...) GET_MACRO( _0, ##__VA_ARGS__, Error_Handler1, Error_Handler0 )()
+#define Error_Handler(...) GET_MACRO(_0, ##__VA_ARGS__, Error_Handler1, Error_Handler0)()
 
-#define Error_Handler0() _Error_Handler( __FILE__, __LINE__ )
+#define Error_Handler0() _Error_Handler(__FILE__, __LINE__)
 
-#define Error_Handler1(unused) _Error_Handler(const char * file, int line )
+#define Error_Handler1(unused) _Error_Handler(const char* file, int line)
 
 /* USER CODE END EM */
 
@@ -64,62 +64,63 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 
-extern void Error_Handler_CPP(const char * file, int line);
+extern void Error_Handler_CPP(const char* file, int line);
 extern void setupCPP();
 
 extern void SerialPrint(const char* string);
-extern void SerialPrintf(const char *format, ...);
+extern void SerialPrintLen(const char* string, size_t length);
+extern void SerialPrintf(const char* format, ...);
 
 void delay_us(uint16_t us);
 // void HAL_Delay(uint32_t Delay, bool forceHAL);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define C41_NRF_CS_Pin GPIO_PIN_2
-#define C41_NRF_CS_GPIO_Port GPIOE
-#define C41_CC23_CS_Pin GPIO_PIN_3
-#define C41_CC23_CS_GPIO_Port GPIOE
-#define C41_A7105_CS_Pin GPIO_PIN_4
+#define C41_NRF_CS_Pin         GPIO_PIN_2
+#define C41_NRF_CS_GPIO_Port   GPIOE
+#define C41_CC23_CS_Pin        GPIO_PIN_3
+#define C41_CC23_CS_GPIO_Port  GPIOE
+#define C41_A7105_CS_Pin       GPIO_PIN_4
 #define C41_A7105_CS_GPIO_Port GPIOE
-#define C41_CYRF_CS_Pin GPIO_PIN_5
-#define C41_CYRF_CS_GPIO_Port GPIOE
-#define C41_CYRF_RST_Pin GPIO_PIN_6
+#define C41_CYRF_CS_Pin        GPIO_PIN_5
+#define C41_CYRF_CS_GPIO_Port  GPIOE
+#define C41_CYRF_RST_Pin       GPIO_PIN_6
 #define C41_CYRF_RST_GPIO_Port GPIOE
-#define TOUCH_IRQ_Pin GPIO_PIN_5
-#define TOUCH_IRQ_GPIO_Port GPIOC
-#define TOUCH_IRQ_EXTI_IRQn EXTI9_5_IRQn
-#define SPI_FS_CS_Pin GPIO_PIN_0
-#define SPI_FS_CS_GPIO_Port GPIOB
-#define BACK_LIGHT_Pin GPIO_PIN_1
-#define BACK_LIGHT_GPIO_Port GPIOB
-#define AUX_MUX_S1_Pin GPIO_PIN_6
-#define AUX_MUX_S1_GPIO_Port GPIOC
-#define AUX_MUX_S2_Pin GPIO_PIN_7
-#define AUX_MUX_S2_GPIO_Port GPIOC
-#define AUX_TX_Pin GPIO_PIN_10
-#define AUX_TX_GPIO_Port GPIOC
-#define AUX_RX_Pin GPIO_PIN_11
-#define AUX_RX_GPIO_Port GPIOC
-#define HMI_TX_Pin GPIO_PIN_12
-#define HMI_TX_GPIO_Port GPIOC
-#define HMI_RX_Pin GPIO_PIN_2
-#define HMI_RX_GPIO_Port GPIOD
-#define NRF_CE_Pin GPIO_PIN_6
-#define NRF_CE_GPIO_Port GPIOB
-#define NRF_CSN_Pin GPIO_PIN_7
-#define NRF_CSN_GPIO_Port GPIOB
-#define NRF_IRQ_Pin GPIO_PIN_8
-#define NRF_IRQ_GPIO_Port GPIOB
-#define NRF_IRQ_EXTI_IRQn EXTI9_5_IRQn
-#define ENC_IRQ_Pin GPIO_PIN_9
-#define ENC_IRQ_GPIO_Port GPIOB
-#define ENC_IRQ_EXTI_IRQn EXTI9_5_IRQn
-#define CAL_IRQ_Pin GPIO_PIN_0
-#define CAL_IRQ_GPIO_Port GPIOE
-#define CAL_IRQ_EXTI_IRQn EXTI0_IRQn
-#define MCP_IRQ_Pin GPIO_PIN_1
-#define MCP_IRQ_GPIO_Port GPIOE
-#define MCP_IRQ_EXTI_IRQn EXTI1_IRQn
+#define TOUCH_IRQ_Pin          GPIO_PIN_5
+#define TOUCH_IRQ_GPIO_Port    GPIOC
+#define TOUCH_IRQ_EXTI_IRQn    EXTI9_5_IRQn
+#define SPI_FS_CS_Pin          GPIO_PIN_0
+#define SPI_FS_CS_GPIO_Port    GPIOB
+#define BACK_LIGHT_Pin         GPIO_PIN_1
+#define BACK_LIGHT_GPIO_Port   GPIOB
+#define AUX_MUX_S1_Pin         GPIO_PIN_6
+#define AUX_MUX_S1_GPIO_Port   GPIOC
+#define AUX_MUX_S2_Pin         GPIO_PIN_7
+#define AUX_MUX_S2_GPIO_Port   GPIOC
+#define AUX_TX_Pin             GPIO_PIN_10
+#define AUX_TX_GPIO_Port       GPIOC
+#define AUX_RX_Pin             GPIO_PIN_11
+#define AUX_RX_GPIO_Port       GPIOC
+#define HMI_TX_Pin             GPIO_PIN_12
+#define HMI_TX_GPIO_Port       GPIOC
+#define HMI_RX_Pin             GPIO_PIN_2
+#define HMI_RX_GPIO_Port       GPIOD
+#define NRF_CE_Pin             GPIO_PIN_6
+#define NRF_CE_GPIO_Port       GPIOB
+#define NRF_CSN_Pin            GPIO_PIN_7
+#define NRF_CSN_GPIO_Port      GPIOB
+#define NRF_IRQ_Pin            GPIO_PIN_8
+#define NRF_IRQ_GPIO_Port      GPIOB
+#define NRF_IRQ_EXTI_IRQn      EXTI9_5_IRQn
+#define ENC_IRQ_Pin            GPIO_PIN_9
+#define ENC_IRQ_GPIO_Port      GPIOB
+#define ENC_IRQ_EXTI_IRQn      EXTI9_5_IRQn
+#define CAL_IRQ_Pin            GPIO_PIN_0
+#define CAL_IRQ_GPIO_Port      GPIOE
+#define CAL_IRQ_EXTI_IRQn      EXTI0_IRQn
+#define MCP_IRQ_Pin            GPIO_PIN_1
+#define MCP_IRQ_GPIO_Port      GPIOE
+#define MCP_IRQ_EXTI_IRQn      EXTI1_IRQn
 
 /* USER CODE BEGIN Private defines */
 

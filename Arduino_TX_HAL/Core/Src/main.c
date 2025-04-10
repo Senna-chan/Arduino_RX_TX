@@ -113,7 +113,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  setbuf(stdout, NULL);
+  
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -140,7 +140,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //MX_USB_DEVICE_Init();
   const char* str = "Initialized MX code.\n";
-  HAL_UART_Transmit_IT(&huart1, (uint8_t*)str, strlen(str));
+  HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 50);
   
   NVIC_SetPriorityGrouping( NVIC_PRIORITYGROUP_4 ); 
   setupCPP();

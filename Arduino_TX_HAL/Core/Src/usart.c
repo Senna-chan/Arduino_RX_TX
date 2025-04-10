@@ -179,6 +179,10 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspInit 1 */
 
+  __HAL_UART_ENABLE_IT(&huart1, UART_IT_TXE);
+  __HAL_UART_ENABLE_IT(&huart1, UART_IT_TC);
+  __HAL_UART_ENABLE_IT(&huart1, UART_IT_ERR);
+
   /* USER CODE END USART1_MspInit 1 */
   }
   else if(uartHandle->Instance==USART3)
@@ -252,6 +256,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     /* USART1 interrupt Deinit */
     HAL_NVIC_DisableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspDeInit 1 */
+
+  __HAL_UART_DISABLE_IT(&huart1, UART_IT_TXE);
+  __HAL_UART_DISABLE_IT(&huart1, UART_IT_TC);
+  __HAL_UART_DISABLE_IT(&huart1, UART_IT_ERR);
 
   /* USER CODE END USART1_MspDeInit 1 */
   }

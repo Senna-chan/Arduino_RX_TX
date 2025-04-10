@@ -7,19 +7,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    #include "spi.h"
-    #include "tim.h"
-    #include "usart.h"
-    #include "gpio.h"
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include "main.h"
-    #include "freertos.h"
+#include "freertos.h"
+#include "gpio.h"
+#include "main.h"
+#include "spi.h"
+#include "tim.h"
+#include "usart.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void setupCPP();
 void startFreeRTOS();
 void SerialPrint(const char* string);
-void SerialPrintf(const char *format, ...);
+void SerialPrintLen(const char* string, size_t length);
+void SerialPrintf(const char* format, ...);
 #ifdef __cplusplus
 }
 #endif
