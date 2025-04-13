@@ -4,14 +4,6 @@
 #include <type_traits>
 #include <stdint.h>
 
-template<
-    typename T, //real type
-    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
->
-T map(T x, T in_min, T in_max, T out_min, T out_max){
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))
 
@@ -55,6 +47,34 @@ T map(T x, T in_min, T in_max, T out_min, T out_max){
 //         bitClear(val, bit);
 //     }
 // }
+
+template<
+    typename T, //real type
+    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+>
+T map(T x, T in_min, T in_max, T out_min, T out_max){
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+template<
+    typename T, //real type
+    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+>
+T min(T val1, T val2)
+{
+    if (val1 < val2) return val1;
+    return val2;
+}
+
+template<
+    typename T, //real type
+    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+>
+T max(T val1, T val2)
+{
+    if (val1 > val2) return val1;
+    return val2;
+}
 
 template<
     typename T, //real type

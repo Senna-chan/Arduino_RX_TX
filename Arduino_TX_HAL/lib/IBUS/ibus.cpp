@@ -25,7 +25,6 @@
     Checksum: DA F3 -> calculated by adding up all previous bytes, total must be FFFF
  */
 
-
 void IBusBM::begin(UART_HandleTypeDef *uart) {
   this->_huart = uart;
   this->state = DISCARD;
@@ -36,19 +35,18 @@ void IBusBM::begin(UART_HandleTypeDef *uart) {
   this->lchksum = 0;
 }
 
-// called from timer interrupt or mannually by user (if IBUSBM_NOTIMER set in begin())
-void IBusBM::loop(void)
-{
+// Called by user
+void IBusBM::loop(void){
+    uint8_t buf[1] = {0};
   // only process data already in our UART receive buffer
-  while (stream->available() > 0) {
+  while (HAL_UART_Receive(_huart, buf, 1, 0) == HAL_OK) {
     // only consider a new data package if we have not heard anything for >3ms
     uint32_t now = HAL_GetTick();
     if (now - last >= PROTOCOL_TIMEGAP){
       state = GET_LENGTH;
     }
     last = now;
-
-    uint8_t v = stream->read();
+    uint8_t v = buf[0];
     switch (state) {
       case GET_LENGTH:
         if (v <= PROTOCOL_LENGTH && v > PROTOCOL_OVERHEAD) {
@@ -92,39 +90,41 @@ void IBusBM::loop(void)
             // return messages from the UART TX port loop back to the RX port and are processed again. This is extra
             // precaution as it will also be prevented by the PROTOCOL_TIMEGAP required
            sensorinfo *s = &sensors[adr-1];
-           delayMicroseconds(100);
+           delay_us(100);
+           uint8_t txBuf[16] = {0};
+           uint8_t itxBuf = 0;
             switch (buffer[0] & 0x0f0) {
               case PROTOCOL_COMMAND_DISCOVER: // 0x80, discover sensor
                 cnt_poll++;
                 // echo discover command: 0x04, 0x81, 0x7A, 0xFF
-                stream->write(0x04);
-                stream->write(PROTOCOL_COMMAND_DISCOVER + adr);
+                txBuf[itxBuf++] = (0x04);
+                txBuf[itxBuf++] = (PROTOCOL_COMMAND_DISCOVER + adr);
                 chksum = 0xFFFF - (0x04 + PROTOCOL_COMMAND_DISCOVER + adr);
                 break;
               case PROTOCOL_COMMAND_TYPE: // 0x90, send sensor type
                 // echo sensortype command: 0x06 0x91 0x00 0x02 0x66 0xFF
-                stream->write(0x06);
-                stream->write(PROTOCOL_COMMAND_TYPE + adr);
-                stream->write(s->sensorType);
-                stream->write(s->sensorLength);
+                txBuf[itxBuf++] = (0x06);
+                txBuf[itxBuf++] = (PROTOCOL_COMMAND_TYPE + adr);
+                txBuf[itxBuf++] = (s->sensorType);
+                txBuf[itxBuf++] = (s->sensorLength);
                 chksum = 0xFFFF - (0x06 + PROTOCOL_COMMAND_TYPE + adr + s->sensorType + s->sensorLength);
                 break;
               case PROTOCOL_COMMAND_VALUE: // 0xA0, send sensor data
                 cnt_sensor++;
                 uint8_t t;
                 // echo sensor value command: 0x06 0x91 0x00 0x02 0x66 0xFF
-                stream->write(t = 0x04 + s->sensorLength);
+                txBuf[itxBuf++] = (t = 0x04 + s->sensorLength);
                 chksum = 0xFFFF - t;
-                stream->write(t = PROTOCOL_COMMAND_VALUE + adr);
+                txBuf[itxBuf++] = (t = PROTOCOL_COMMAND_VALUE + adr);
                 chksum -= t;
-                stream->write(t = s->sensorValue & 0x0ff);
+                txBuf[itxBuf++] = (t = s->sensorValue & 0x0ff);
                 chksum -= t;
-                stream->write(t = (s->sensorValue >> 8) & 0x0ff);
+                txBuf[itxBuf++] = (t = (s->sensorValue >> 8) & 0x0ff);
                 chksum -= t;
                 if (s->sensorLength==4) {
-                  stream->write(t = (s->sensorValue >> 16) & 0x0ff);
+                  txBuf[itxBuf++] = (t = (s->sensorValue >> 16) & 0x0ff);
                   chksum -= t;
-                  stream->write(t = (s->sensorValue >> 24) & 0x0ff);
+                  txBuf[itxBuf++] = (t = (s->sensorValue >> 24) & 0x0ff);
                   chksum -= t;
                 }
                 break;
@@ -133,8 +133,9 @@ void IBusBM::loop(void)
                 break;
             }
             if (adr>0) {
-              stream->write(chksum & 0x0ff);
-              stream->write(chksum >> 8);
+              txBuf[itxBuf++] = (chksum & 0x0ff);
+              txBuf[itxBuf++] = (chksum >> 8);
+              HAL_UART_Transmit(_huart, txBuf, itxBuf, 0xFF);
             }
           }
         }

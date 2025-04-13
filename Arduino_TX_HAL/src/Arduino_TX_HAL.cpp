@@ -1,8 +1,10 @@
 #include "Arduino_TX_HAL.h"
 
+#include "Config.h"
+
+#include "AUX_Serial_reader.h"
 #include "ArduMath.hpp"
 #include "ChannelFunctions.hpp"
-#include "Config.h"
 #include "Encoder.h"
 #include "I2CHelpers.h"
 #include "MCPExpanders.h"
@@ -13,135 +15,22 @@
 #include "i2c.h"
 #include "settingsHelper.h"
 #include "usart.h"
+#include <PlotterLib.h>
+#include <SerialControlLibrary.h>
+#include <SerialUtils.h>
 #include <cstring>
 #include <queue>
 #include <stdarg.h>
 #include <stdio.h>
 
-void UART1Error(UART_HandleTypeDef* huart)
-{
+void UART1Error(UART_HandleTypeDef* huart) {
 #ifdef DEBUG
     __BKPT(0);
 #endif
-    // ERror in main serial so what now?
+    // Error in main serial so what now?
 }
 
-std::queue<char*> serialTXBuffer;
-size_t maxQueueSize = 20;
-char* stringToPrint;
-bool uartIRQWorking = false;
-
-void UART1TXDone(UART_HandleTypeDef* huart)
-{
-    uartIRQWorking = true;
-    if (stringToPrint != nullptr) {
-        free(stringToPrint);
-        stringToPrint = nullptr;
-    }
-    if (!serialTXBuffer.empty()) {
-        stringToPrint = serialTXBuffer.front();
-        serialTXBuffer.pop();
-        HAL_UART_Transmit_IT(&huart1, (uint8_t*)stringToPrint, strlen(stringToPrint));
-    } else {
-        xSemaphoreGiveFromISR(main_serial_mutex, NULL);
-    }
-}
-
-void SerialPrint(const char* string)
-{
-    SerialPrintLen(string, strlen(string));
-}
-
-void SerialPrintLen(const char* string, size_t length)
-{
-    bool queueMessage = true;
-    BaseType_t inISR = xPortIsInsideInterrupt();
-
-    if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED && !inISR) {
-        if (xSemaphoreTake(main_serial_mutex, 0)) {
-            queueMessage = false;
-        }
-    }
-
-    if (huart1.gState == HAL_UART_STATE_READY) {
-        queueMessage = false;
-    }
-
-    size_t strLength = length == 0 ? strlen(string) : length;
-    if (queueMessage) {
-        char* strPtr = (char*)malloc(strLength);
-        strcpy(strPtr, string);
-        serialTXBuffer.push(strPtr); // Please let this be safe to do
-    } else {
-        stringToPrint = (char*)malloc(strLength);
-        strcpy(stringToPrint, string);
-        HAL_UART_Transmit_IT(&huart1, (uint8_t*)stringToPrint, strLength);
-    }
-}
-
-void SerialPrintf(const char* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    const size_t maxBufferSize = 256;
-    char buffer[maxBufferSize] = { 0 };
-    size_t stringLen = vsnprintf(buffer, maxBufferSize, format, args);
-    va_end(args);
-    SerialPrintLen(buffer, stringLen);
-}
-
-namespace std {
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-// void* realloc(void* ptr, size_t size) {
-//     free(ptr);
-//     return malloc(size);
-// }
-
-int _read(int file, char* ptr, int len)
-{
-    HAL_StatusTypeDef hstatus;
-    hstatus = HAL_UART_Receive(&huart1, (uint8_t*)ptr, 1, HAL_MAX_DELAY);
-    if (hstatus == HAL_OK) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-size_t _write(int fd, char* ptr, size_t len)
-{
-    SerialPrintLen(ptr, len);
-    return len;
-    // HAL_StatusTypeDef hstatus;
-    // if (!uart1TXBusy) {
-    //     hstatus = HAL_UART_Transmit_IT(&huart1, (uint8_t*)ptr, len);
-    // } else {
-    //     char* strPtr = (char*)malloc(len);
-    //     //      strcpy(strPtr, string);
-    //     memcpy(strPtr, ptr, len);
-    //     strPtr[len] = '\0';
-    //     serialTXBuffer.push(strPtr);
-    //     return len;
-    // }
-    // if (hstatus == HAL_OK) {
-    //     return len;
-    // }
-
-    // return 0;
-}
-
-#ifdef __cplusplus
-}
-#endif
-}
-
-void __io_putchar(uint8_t ch)
-{
-    HAL_UART_Transmit(&huart1, &ch, 1, 1);
-}
+SerialControlLibrary scl;
 
 uint16_t lastCalButtons = 0;
 uint16_t rawChannels[RC_MAX_CHANNELS];
@@ -150,7 +39,7 @@ uint32_t IOExpanderBits = 0;
 uint16_t prevRawChannels[RC_MAX_CHANNELS];
 uint16_t parsedChannels[RC_MAX_CHANNELS];
 uint16_t mappedChannels[RC_MAX_CHANNELS];
-uint16_t detectingRawChannels[RC_MAX_CHANNELS];   /// DMA'd ADC Channels
+uint16_t detectingRawChannels[RC_MAX_CHANNELS];   /// DMA'd ADC Channels                   // TODO: Rename this eventualy
 uint16_t detectedAUXRXChannels[RC_MAX_CHANNELS];  // AUX Serial channels refresing capture // TODO: Rename this eventualy
 uint16_t detectingAUXRXChannels[RC_MAX_CHANNELS]; // AUX Serial channels refresing capture // TODO: Rename this eventualy
 
@@ -170,8 +59,7 @@ uint16_t interruptsToProcess = 0x0000; // Capture the interrupt pins that we did
 uint16_t CALIRQNotProcessedLoops = 0;
 uint16_t IOIRQNotProcessedLoops = 0;
 
-void readIOExpanders()
-{
+void readIOExpanders() {
     // xSemaphoreTake(i2c_mutex, portMAX_DELAY);
     vPortEnterCritical();
     uint32_t lowBytes = IOExpander2.readGPIOAB();
@@ -181,8 +69,7 @@ void readIOExpanders()
     // xSemaphoreGive(i2c_mutex);
 }
 
-void processIOInterrupt(void* parameter)
-{
+void processIOInterrupt(void* parameter) {
     while (1) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         IOIRQNotProcessedLoops = 0;
@@ -193,8 +80,7 @@ void processIOInterrupt(void* parameter)
     }
 }
 
-void readCALExpander()
-{
+void readCALExpander() {
     // xSemaphoreTake(i2c_mutex, portMAX_DELAY);
     vPortEnterCritical();
     uint16_t buttons = calButtonExpender.readGPIOAB();
@@ -218,9 +104,8 @@ void readCALExpander()
     lastCalButtons = buttons;
 }
 
-void processCALInterrupt(void* parameter)
-{
-    while (1) {
+void processCALInterrupt(void* parameter) {
+    while (true) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         CALIRQNotProcessedLoops = 0;
         SerialPrint("CALTask: ");
@@ -228,38 +113,30 @@ void processCALInterrupt(void* parameter)
     }
 }
 
-void MainLoop(void* arg)
-{
+void MainLoop(void* arg) {
     while (true) {
-        if (!uartIRQWorking && serialTXBuffer.size() > 20) {
-            __BKPT(0); // Just why
-        }
 #if ENABLE_MCPIO
         if (HAL_GPIO_ReadPin(CAL_IRQ_GPIO_Port, CAL_IRQ_Pin) == GPIO_PIN_RESET) {
             TaskStatus_t taskStatus;
             vTaskGetInfo(cal_taskHandle, &taskStatus, pdTRUE, eInvalid);
-
             CALIRQNotProcessedLoops++;
             SerialPrintf("CAL IRQ is set for %3d loops. Taskstate = %d\n", CALIRQNotProcessedLoops, taskStatus.eCurrentState);
-            xTaskNotifyGive(cal_taskHandle);
-            // vTaskResume(cal_taskHandle);
-            readCALExpander();
         }
         if (HAL_GPIO_ReadPin(MCP_IRQ_GPIO_Port, MCP_IRQ_Pin) == GPIO_PIN_RESET) {
             TaskStatus_t taskStatus;
             vTaskGetInfo(io_taskHandle, &taskStatus, pdTRUE, eInvalid);
             IOIRQNotProcessedLoops++;
             SerialPrintf("IO IRQ is set for %3d loops. Taskstate = %d.\n", IOIRQNotProcessedLoops, taskStatus.eCurrentState);
-            xTaskNotifyGive(io_taskHandle);
-            // vTaskResume(io_taskHandle);
-            readIOExpanders();
         }
 #endif
 #if DEBUG_ADC
+        char buf[255] = { 0 };
+        char* bufPtr = buf;
         for (int i = 0; i < DMABUFFERSIZE; i++) {
-            SerialPrintf("ADC%02d: %04d  ", i, ADCDMABuffer[i]);
+            bufPtr += sprintf(bufPtr, "ADC%02d: %04d  ", i, ADCDMABuffer[i]);
         }
-        SerialPrint("\n");
+        *bufPtr = '\n';
+        SerialPrint(buf);
 #endif
 
 #if DEBUG_RADIO
@@ -280,8 +157,7 @@ void MainLoop(void* arg)
  * \param IO_bits               [in] IOExpender bits from IOExpender 1 and 2
  * \param AUX_Serial_channels   [in] Aux serial channels
  */
-void updateValues(Model* activeSettings, channelBitData* channel_data, const uint16_t* raw_channels, uint16_t* parsed_channels, uint16_t* mapped_channels, uint32_t IO_bits, uint16_t* AUX_Serial_Channels)
-{
+void updateValues(Model* activeSettings, channelBitData* channel_data, const uint16_t* raw_channels, uint16_t* parsed_channels, uint16_t* mapped_channels, uint32_t IO_bits, uint16_t* AUX_Serial_Channels) {
     // Parse ADC channels
     for (int i = 0; i < ADCCHANNELNUMBERS; i++) {
         auto chSettings = activeSettings->channel_settings[i];
@@ -333,12 +209,13 @@ void updateValues(Model* activeSettings, channelBitData* channel_data, const uin
     channel_data->channel20 = mapped_channels[19] - 500;
 }
 
-void nrfTransmitChannels(void* parameter)
-{
+void nrfTransmitChannels(void* parameter) {
     while (true) {
         transmitTypes txData;
         memcpy(rawChannels, ADCDMABuffer, ADCCHANNELNUMBERS * 2);
-        // AUX_Serial_reader.getChannels(AUXRXChannels);
+#if ENABLE_AUX_SERIAL
+        AUX_Serial_reader.getChannels(AUXRXChannels);
+#endif
         updateValues(activeModel, &txData.ch_data, rawChannels, parsedChannels, mappedChannels, IOExpanderBits, AUXRXChannels);
         txData.ch_data.identifier = CHANNELDATAID;
         // SendDataToRX(txData.bytesUnion.u8, sizeof(transmitTypes));
@@ -346,8 +223,7 @@ void nrfTransmitChannels(void* parameter)
     }
 }
 
-void nrfTransmitTest(void* parameter)
-{
+void nrfTransmitTest(void* parameter) {
     while (true) {
         uint32_t now = HAL_GetTick();
         uint8_t txBuf[32];
@@ -374,8 +250,7 @@ void nrfTransmitTest(void* parameter)
 }
 
 // TODO: Check what this function does fully
-void check_radio(void* parameters)
-{
+void check_radio(void* parameters) {
     while (true) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         if (xSemaphoreTake(nrf_mutex, 7 / portTICK_PERIOD_MS) == pdFALSE) {
@@ -392,11 +267,15 @@ void check_radio(void* parameters)
 
             if (tx) {
                 radioStats.txack++;
-                // if(debugging) Serial.println("TXOK");
+#if DEBUG_RADIO
+                SerialPrint("TXOK\n");
+#endif
             }
             if (fail) { // TXFail
                 radioStats.fail++;
-                // if (debugging) Serial.println("TXFERR");
+#if DEBUG_RADIO
+                SerialPrint("TXFERR\n");
+#endif
             }
 
             if (rx) { // Did we receive a message?
@@ -409,40 +288,270 @@ void check_radio(void* parameters)
     }
 }
 
-// void handlePlotter(void *parameter)
-// {
-//     while (true)
-//     {
-//         Plotter.loop();
-//         vTaskDelay((Plotter.getTransmitInterval() + 2) / portTICK_RATE_MS);
-//     }
-// }
+void handlePlotter(void* parameter) {
+    Plotter.init(&huart1, "Raw channels", &scl);
+    for (int i = 0; i < ADCCHANNELNUMBERS; i++) {
+        char adcNum[10];
+        snprintf(adcNum, sizeof(adcNum), "ADC%02d", i);
+        Plotter.addPlotData(&ADCDMABuffer[i], adcNum);
+    }
+    PlotterLib* chPlotter = Plotter.addNewPlotter("ChannelData");
 
-// void handleSerialControl(void *parameter)
-// {
-//     while (true)
-//     {
-//         scl.loop();
-//         vTaskDelay(10 / portTICK_RATE_MS);
-//     }
-// }
+    for (int i = 1; i <= RC_MAX_CHANNELS; i++) {
+        char chNum[10];
+        snprintf(chNum, sizeof(chNum), "CH%02d", i);
+        chPlotter->addPlotData(&mappedChannels[i], chNum);
+    }
+    Plotter.setPlotState(false);
+    chPlotter->setPlotState(false);
 
-extern "C" void vApplicationGetRandomHeapCanary(portPOINTER_SIZE_TYPE* pxHeapCanary)
-{
+    while (true) {
+        Plotter.loop();
+        vTaskDelay((Plotter.getTransmitInterval() + 2) / portTICK_PERIOD_MS);
+    }
+}
+
+#pragma region SerialControl Functions
+// TODO: mMake this function less complex
+void transmitSettingsToRX() {
+#if 0
+    vTaskSuspend(nrfTransit_taskHandle);
+    saveSettings(); // Be sure that we have saved the settings to EEPROM. This will do an update(read and write if needed)
+    p_transmittingSettings.navigateTo();
+    double settingsSizeAmountD = sizeof(Settings) / (double)SETTINGSDATASIZE;
+    uint16_t settingsSizeAmount = (uint16_t)settingsSizeAmountD;
+    uint8_t settingsModulo = sizeof(Settings) % SETTINGSDATASIZE;
+    uint8_t* settingsPtr = (uint8_t*)&settings;
+
+    Serial.printf("Transmitting settings to RX. Settings size %d. Settings packets %d(%5.2f) rest %d. Settings / 4 %f\n", sizeof(Settings), settingsSizeAmount, settingsSizeAmountD, settingsModulo, sizeof(Settings) / 4.0);
+    int counter = 0;
+    // Main CRC
+    uint32_t settingscrc = HAL_CRC_Calculate(&crc_t, (uint32_t*)settingsPtr, sizeof(Settings) / 4);
+
+    // start header packet
+    memset(transmitterData.bytesUnion.u8, 0, 32);
+    transmitterData.bytesUnion.u8[0] = SETTINGSDATASETUPID;
+    transmitterData.bytesUnion.u8[1] = settingsSizeAmount >> 8;
+    transmitterData.bytesUnion.u8[2] = settingsSizeAmount & 0xFF;
+    transmitterData.bytesUnion.u8[3] = settingsModulo;
+    uint16_t crc = gencrc(transmitterData.bytesUnion.u8, RFPACKETLENGTH - 2);
+    transmitterData.settingsData.crc = crc;
+    allowSettingsSend = false;
+    counter = 0;
+    int maxCounterVal = 200;
+    int warningCounterVal = 10;
+
+    // Serial.print("Header packet: ");
+    // for (int b = 0; b < 32; b++) {
+    //     Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
+    // }
+    // Serial.println();
+    do {
+        SendDataToRX(transmitterData.bytesUnion.u8, 32);
+        vTaskDelay(10);
+    } while (!allowSettingsSend && ++counter < maxCounterVal);
+    if (counter >= maxCounterVal) {
+        Serial.println("Failed to transmit settingsheader");
+        Error_Handler();
+    }
+    if (counter >= warningCounterVal) {
+        Serial.printf("SettingsTX To long. c %d\r\n", counter);
+    }
+    // End header packet
+
+    // Start data packets
+    for (int i = 0; i < settingsSizeAmount; i++) {
+        memset(transmitterData.bytesUnion.u8, 0, 32); // Clear mem
+        transmitterData.settingsData.id = SETTINGSDATAID;
+        transmitterData.settingsData.packetNumber = i;
+        uint8_t* txsdPtr = (uint8_t*)&transmitterData.settingsData.data;
+        memcpy(txsdPtr, settingsPtr, SETTINGSDATASIZE);
+        crc = gencrc(transmitterData.bytesUnion.u8, RFPACKETLENGTH - 2);
+        transmitterData.settingsData.crc = crc;
+        settingsPtr += SETTINGSDATASIZE;
+        allowSettingsSend = false;
+        counter = 0;
+        if (i % 40 == 0) {
+            Serial.println("HMI Settings Update");
+            char buf[52];
+            sprintf(buf, "Currently at packet %d of %d", i, settingsSizeAmount);
+            e_settingstxtorxprogress.setValue(buf);
+        }
+        // Serial.printf("packet_%d: ", i);
+        // for (int b = 0; b < 32; b++) {
+        //     Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
+        // }
+        // Serial.println();
+        do {
+            SendDataToRX(transmitterData.bytesUnion.u8, 32);
+            vTaskDelay(10);
+            if (allowSettingsSend) {
+                if (settingsAckValue != i) {
+                    // Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, i);
+                } else if (settingsAckValue == i) {
+                    break;
+                }
+            }
+        } while (++counter < maxCounterVal);
+        if (counter >= maxCounterVal) {
+            Serial.printf("Failed to transmit settings packet %d. %d packets remaining\r\n", i, settingsSizeAmount - i);
+            Error_Handler();
+        }
+        if (counter >= warningCounterVal) {
+            Serial.printf("SettingsTX To long. c %d\r\n", counter);
+        }
+    }
+    // End data packets
+
+    // Start modulo packet
+    transmitterData.settingsData.id = SETTINGSDATAID;
+    transmitterData.settingsData.packetNumber = settingsSizeAmount;
+
+    uint8_t* txsdPtr = (uint8_t*)&transmitterData.settingsData.data;
+    memset(txsdPtr, 0, SETTINGSDATASIZE);
+    counter = 0;
+    if (settingsModulo != 0) { // Transmit last packet
+        memcpy(txsdPtr, settingsPtr, settingsModulo);
+    }
+    crc = gencrc(transmitterData.bytesUnion.u8, RFPACKETLENGTH - 2);
+    transmitterData.settingsData.crc = crc;
+
+    allowSettingsSend = false;
+
+    // Serial.print("modulo packet: ");
+    // for (int b = 0; b < 32; b++) {
+    //     Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
+    // }
+    // Serial.println();
+    do {
+        SendDataToRX(transmitterData.bytesUnion.u8, 32);
+        if (allowSettingsSend) {
+            if (settingsAckValue != transmitterData.settingsData.packetNumber) {
+                // Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, transmitterData.bytesUnion.u8[1]);
+            } else if (settingsAckValue == transmitterData.settingsData.packetNumber) {
+                break;
+            }
+        }
+        vTaskDelay(10);
+    } while (++counter < maxCounterVal);
+    if (counter >= maxCounterVal) {
+        Error_Handler();
+    }
+    if (counter >= warningCounterVal) {
+        Serial.printf("SettingsTX To long. c %d\r\n", counter);
+    }
+    counter = 0;
+    // End modulo packet
+
+    // Start finish packet
+    memset(&transmitterData.bytesUnion.u8, 0, 32);
+    transmitterData.settingsData.id = SETTINGSDATAID;
+    transmitterData.settingsData.packetNumber = settingsSizeAmount + 1;
+    transmitterData.bytesUnion.u32[1] = settingscrc;
+    crc = gencrc(transmitterData.bytesUnion.u8, RFPACKETLENGTH - 2);
+    transmitterData.settingsData.crc = crc;
+    // Serial.printf("SettingsCRC %u\r\n", crc);
+    allowSettingsSend = false;
+
+    // Serial.print("Final packet: ");
+    // for (int b = 0; b < 32; b++) {
+    //     Serial.printf("0x%02X ", transmitterData.bytesUnion.u8[b]);
+    // }
+    // Serial.println();
+    do {
+        SendDataToRX(transmitterData.bytesUnion.u8, 32);
+        if (allowSettingsSend) {
+            if (settingsAckValue != transmitterData.settingsData.packetNumber) {
+                // Serial.printf("Wrong settings ack. Got %d want %d\r\n", settingsAckValue, transmitterData.bytesUnion.u8[1]);
+            } else if (settingsAckValue == transmitterData.settingsData.packetNumber) {
+                break;
+            }
+        }
+        vTaskDelay(10);
+    } while (++counter < maxCounterVal);
+    if (counter >= maxCounterVal) {
+        Error_Handler();
+    }
+    if (counter >= warningCounterVal) {
+        Serial.printf("SettingsTX To long. c %d\r\n", counter);
+    }
+    // End finish packet
+
+    Serial.println("Finished transmitting settings");
+    p_transmittingSettings.close();
+    vTaskResume(nrfTransit_taskHandle);
+#endif
+}
+
+void wipeEeprom() {
+    SerialPrint("Wiping EEPROM\n");
+    memset(&settings, 0, sizeof(Settings));
+    generateDefaultSettings();
+    activeModel = &settings.model[settings.activeModel];
+    saveSettings();
+    PrintCalValues();
+    SerialPrint("Wipe done\n");
+}
+
+void resetMCU() {
+    NVIC_SystemReset();
+}
+void setTransmitTest() {
+#if ENABLE_RADIO
+
+    TaskStatus_t taskStatus;
+    vTaskGetInfo(nrfTransit_taskHandle, &taskStatus, pdTRUE, eInvalid);
+    if (taskStatus.eCurrentState == eSuspended) {
+        vTaskSuspend(nrfTransit_taskHandle);
+        vTaskResume(nrfTransmitTest_taskHandle);
+    } else {
+        vTaskSuspend(nrfTransmitTest_taskHandle);
+        vTaskResume(nrfTransit_taskHandle);
+    }
+#endif
+}
+
+void getAuxChannels() {
+#if ENABLE_AUX_SERIAL
+    SerialPrint("Aux channel data\n");
+    char buf[255] = { 0 };
+    char* bufPtr = buf;
+    for (int i = 0; i < 14; i++) {
+        bufPtr += sprintf(bufPtr, "AUX%i:%d\t", i, AUX_Serial_reader.getChannel(i));
+    }
+    *bufPtr = '\n';
+    SerialPrint(buf);
+#endif
+}
+
+#pragma endregion
+
+void handleSerialControl(void* parameter) {
+    scl.init(&huart1);
+    scl.addVoidCallback("*", resetMCU);
+    scl.addVoidCallback("t", setTransmitTest);
+    scl.addVoidCallback("w", wipeEeprom);
+    scl.addVoidCallback("s", transmitSettingsToRX);
+    scl.addVoidCallback("AUXc", getAuxChannels);
+    while (true) {
+        scl.loop();
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+    }
+}
+
+extern "C" void vApplicationGetRandomHeapCanary(portPOINTER_SIZE_TYPE* pxHeapCanary) {
     if (pxHeapCanary != NULL) {
         *pxHeapCanary = 0x6E796161;
     }
 }
 
-void startFreeRTOS()
-{
+void startFreeRTOS() {
     MX_FREERTOS_Init();
 
     vTaskStartScheduler();
 }
 
-void setupCPP()
-{
+void setupCPP() {
     HAL_UART_RegisterCallback(&huart1, HAL_UART_TX_COMPLETE_CB_ID, UART1TXDone);
     HAL_UART_RegisterCallback(&huart1, HAL_UART_ERROR_CB_ID, UART1Error);
     SerialPrint("setupCPP()\n");
@@ -462,6 +571,14 @@ void setupCPP()
     xTaskCreate(processIOInterrupt, "IOExpander", 100, NULL, 20, &io_taskHandle);
 #endif
 
+#if ENABLE_SERIAL_CONTROL
+    xTaskCreate(handleSerialControl, "SerialControl", 100, NULL, 3, &serialControl_taskHandle);
+#endif
+
+#if ENABLE_PLOTTER
+    xTaskCreate(handlePlotter, "Plotter", 100, NULL, 4, &plotter_taskHandle);
+#endif
+
 #if ENABLE_RADIO
     Main_nRF.SetCEPin(NRF_CE_GPIO_Port, NRF_CE_Pin);
     Main_nRF.SetCSNPin(NRF_CSN_GPIO_Port, NRF_CSN_Pin);
@@ -477,14 +594,13 @@ void setupCPP()
 
 #if ENABLE_ADC
     memset(&ADCDMABuffer, 0, DMABUFFERSIZE * 2);
-    HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADCDMABuffer, DMABUFFERSIZE);
+    HAL_ADC_Start_DMA(&hadc1, reinterpret_cast<uint32_t*>(ADCDMABuffer), DMABUFFERSIZE);
 #endif
 
-    xTaskCreate(MainLoop, "Main loop", 128, NULL, 1, &main_taskHandle);
+    xTaskCreate(MainLoop, "Main loop", 1280, NULL, 1, &main_taskHandle);
 }
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
     TaskStatus_t taskStatus;
     vTaskGetInfo(NULL, &taskStatus, pdTRUE, eInvalid);
@@ -516,8 +632,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
 }
 
-void Error_Handler_CPP(const char* file, int line)
-{
+void Error_Handler_CPP(const char* file, int line) {
     vTaskSuspendAll();
     TaskHandle_t currentTask = xTaskGetCurrentTaskHandle();
     TaskStatus_t taskStatus;

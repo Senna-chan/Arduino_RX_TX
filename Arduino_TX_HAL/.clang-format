@@ -107,7 +107,7 @@ BreakAfterJavaFieldAnnotations: false
 BreakAfterReturnType: None
 BreakArrays: true
 BreakBeforeBinaryOperators: All
-BreakBeforeBraces: WebKit
+BreakBeforeBraces: Attach
 BreakBeforeConceptDeclarations: Always
 BreakBeforeInlineASMColon: OnlyMultiline
 BreakBeforeTernaryOperators: true

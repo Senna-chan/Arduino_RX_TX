@@ -138,7 +138,7 @@ int main(void)
   MX_SPI3_Init();
   MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
-  //MX_USB_DEVICE_Init();
+  MX_USB_DEVICE_Init();
   const char* str = "Initialized MX code.\n";
   HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 50);
   
