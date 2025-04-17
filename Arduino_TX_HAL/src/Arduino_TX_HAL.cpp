@@ -306,8 +306,13 @@ void handlePlotter(void* parameter) {
     chPlotter->setPlotState(false);
 
     while (true) {
-        Plotter.loop();
-        vTaskDelay((Plotter.getTransmitInterval() + 2) / portTICK_PERIOD_MS);
+        if (xSemaphoreTake(main_serial_mutex, 0xFF) == pdTRUE) {
+            Plotter.loop();
+            xSemaphoreGive(main_serial_mutex);
+            vTaskDelay((Plotter.getTransmitInterval() + 2) / portTICK_PERIOD_MS);
+        } else {
+            SerialPrint("PLOT, SemaphoreLocked");
+        }
     }
 }
 
@@ -534,8 +539,13 @@ void handleSerialControl(void* parameter) {
     scl.addVoidCallback("s", transmitSettingsToRX);
     scl.addVoidCallback("AUXc", getAuxChannels);
     while (true) {
-        scl.loop();
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        if (xSemaphoreTake(main_serial_mutex, 0xFF) == pdTRUE) {
+            scl.loop();
+            xSemaphoreGive(main_serial_mutex);
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+        } else {
+            SerialPrint("SC, SemaphoreLocked");
+        }
     }
 }
 
@@ -576,7 +586,7 @@ void setupCPP() {
 #endif
 
 #if ENABLE_PLOTTER
-    xTaskCreate(handlePlotter, "Plotter", 100, NULL, 4, &plotter_taskHandle);
+    xTaskCreate(handlePlotter, "Plotter", 256, NULL, 4, &plotter_taskHandle);
 #endif
 
 #if ENABLE_RADIO

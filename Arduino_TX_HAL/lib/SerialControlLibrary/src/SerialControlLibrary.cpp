@@ -6,17 +6,16 @@
 */
 
 #include "SerialControlLibrary.h"
-#include <cstring>
 #include <cstdlib>
-
-
+#include <cstring>
 
 #ifdef ARDUINO
-void SerialControlLibrary::init(HardwareSerial* serial, char endLine, uint16_t bufferSize){
+void SerialControlLibrary::init(HardwareSerial* serial, char endLine, uint16_t bufferSize) {
     this->serial = serial;
 #else
 void SerialControlLibrary::init(UART_HandleTypeDef* uart, char endLine, uint16_t bufSize) {
     this->uart = uart;
+    // this->serial = HardwareSerial::getInstance(uart);
 #endif
     this->endLine = endLine;
     buf = (char*)malloc(bufSize);
@@ -25,28 +24,24 @@ void SerialControlLibrary::init(UART_HandleTypeDef* uart, char endLine, uint16_t
     this->bufSize = bufSize;
 }
 
-void SerialControlLibrary::loop()
-{
+void SerialControlLibrary::loop() {
 #ifdef ARDUINO
-    while(serial->available())
-    {
+    while (serial->available()) {
         *bufPtr = (char)serial->read();
 #else
     HAL_StatusTypeDef status = HAL_UART_Receive(uart, (uint8_t*)bufPtr, 1, 0);
-    if (status == HAL_OK)
-    {
+    if (status == HAL_OK) {
 #endif
         if (*bufPtr == endLine) {
             // Serial.println("Got newline char");
             *bufPtr = 0;
             char* ptr = buf;
             serialCallbackMap* currentMap = &serialCallbacks;
-            for (ptr;ptr < bufPtr; ptr++) {
+            for (ptr; ptr < bufPtr; ptr++) {
                 char c = *ptr;
                 if (currentMap->find(c) == currentMap->end()) {
                     break;
-                }
-                else {
+                } else {
                     s_serialCallbacks* scb = currentMap->at(c);
                     if (scb->serialCallbacks.size() == 0) {
                         if (scb->callback.datacb != nullptr) {
@@ -59,11 +54,9 @@ void SerialControlLibrary::loop()
                             memcpy((uint8_t*)data, dataPtr, copyAmount);
                             scb->callback.datacb(data);
                             free(data);
-                        }
-                        else if (scb->callback.voidcb != nullptr) {
+                        } else if (scb->callback.voidcb != nullptr) {
                             scb->callback.voidcb();
-                        }
-                        else {
+                        } else {
                             SerialPrintf("NO CALLBACK: End of command '%c', buf '%s'\r\n", c, buf);
                         }
                         break;
@@ -73,16 +66,14 @@ void SerialControlLibrary::loop()
             }
             memset(buf, 0, bufSize);
             bufPtr = buf;
-        }
-        else {
+        } else {
             // Serial.printf("Got char '%c' H(0x%02X)\r\n", *bufPtr, *bufPtr);
             bufPtr++;
         }
     }
 }
 
-void SerialControlLibrary::addDataCallback(const char* serialData, serialCallbackFunction cb)
-{
+void SerialControlLibrary::addDataCallback(const char* serialData, serialCallbackFunction cb) {
     auto sdLen = strlen(serialData);
     serialCallbackMap* currentMap = &serialCallbacks;
     s_serialCallbacks* scb;
@@ -97,8 +88,7 @@ void SerialControlLibrary::addDataCallback(const char* serialData, serialCallbac
     scb->callback.datacb = cb;
 }
 
-void SerialControlLibrary::addVoidCallback(const char* serialData, serialCallbackFunctionVoid cb)
-{
+void SerialControlLibrary::addVoidCallback(const char* serialData, serialCallbackFunctionVoid cb) {
     auto sdLen = strlen(serialData);
     serialCallbackMap* currentMap = &serialCallbacks;
     s_serialCallbacks* scb;
