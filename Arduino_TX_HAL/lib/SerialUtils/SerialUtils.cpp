@@ -3,12 +3,14 @@
 //
 #include "SerialUtils.h"
 
-#include <queue>
-#include <string>
-#include <cstdint>
-#include <cstring>
+#include "../ArduinoBackport/HardwareSerial.h"
 #include "freertos.h"
 #include "usart.h"
+#include <cstdint>
+#include <cstring>
+#include <queue>
+#include <string>
+
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -38,6 +40,8 @@ void SerialPrint(const char* string) {
 
 void SerialPrintLen(const char* string, size_t length) {
     bool queueMessage = true;
+    Serial1.print(string);
+    return;
     BaseType_t inISR = xPortIsInsideInterrupt();
 
     if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED && !inISR) {
@@ -75,7 +79,7 @@ void SerialPrintf(const char* format, ...) {
 int SerialRead() {
     uint8_t buf[1];
     HAL_StatusTypeDef status = HAL_UART_Receive(&huart1, (uint8_t*)buf, 1, 0);
-    if(status == HAL_TIMEOUT) {
+    if (status == HAL_TIMEOUT) {
         return -1;
     }
     return buf[0];
@@ -83,7 +87,7 @@ int SerialRead() {
 
 int SerialRead(char* buffer, size_t length) {
     HAL_StatusTypeDef status = HAL_UART_Receive(&huart1, (uint8_t*)buffer, length, 0xFF);
-    if(status == HAL_TIMEOUT) {
+    if (status == HAL_TIMEOUT) {
         return -1;
     }
     return length;

@@ -562,8 +562,10 @@ void startFreeRTOS() {
 }
 
 void setupCPP() {
-    HAL_UART_RegisterCallback(&huart1, HAL_UART_TX_COMPLETE_CB_ID, UART1TXDone);
-    HAL_UART_RegisterCallback(&huart1, HAL_UART_ERROR_CB_ID, UART1Error);
+    // HAL_UART_RegisterCallback(&huart1, HAL_UART_TX_COMPLETE_CB_ID, UART1TXDone);
+    // HAL_UART_RegisterCallback(&huart1, HAL_UART_ERROR_CB_ID, UART1Error);
+    Serial1.create(&huart1);
+    Serial1.init();
     SerialPrint("setupCPP()\n");
 #if DEBUG_I2C
     scanI2C(&hi2c2);

@@ -17,473 +17,487 @@
 /*********************************** Public functions *************************************/
 /** Class costructor **/
 I2CEncoder::I2CEncoder(I2C_HandleTypeDef* hi2c, uint8_t add) {
-	_address = add;
-	_hi2c = hi2c;
+    _address = add;
+    _hi2c = hi2c;
 }
 
 /** Used for initialize the encoder **/
 bool I2CEncoder::begin(uint8_t conf) {
-	auto hal_status = HAL_I2C_IsDeviceReady(_hi2c, _address << 1, 3, 5);
-	if(hal_status != HAL_OK){
-		return false;
-	}
-	writeEncoder(REG_GCONF, (uint8_t) conf);
-	_gconf = conf;
-	return true;
+    auto hal_status = HAL_I2C_IsDeviceReady(_hi2c, _address << 1, 3, 5);
+    if (hal_status != HAL_OK) {
+        return false;
+    }
+    writeEncoder(REG_GCONF, (uint8_t)conf);
+    _gconf = conf;
+    return true;
 }
 
 void I2CEncoder::reset(void) {
-	writeEncoder(REG_GCONF, (uint8_t) 0x80);
-	HAL_Delay(10);
+    writeEncoder(REG_GCONF, (uint8_t)0x80);
+    HAL_Delay(10);
 }
 
 /** Call che attached callaback if it is defined. It's a prive function only **/
-void I2CEncoder::eventCaller(Callback *event) {
-	if (*event != NULL)
-		(*event)(this);
+void I2CEncoder::eventCaller(Callback* event) {
+    if (*event != NULL) {
+        (*event)(this);
+    }
 }
 
-/** Return true if the status of the econder changed, otherwise return false. 
+/** Return true if the status of the econder changed, otherwise return false.
  It's also call the callback, if attached **/
 bool I2CEncoder::updateStatus(void) {
 
-	_stat = readEncoderByte(REG_ESTATUS);
-	_stat2 = 0;
-	if (_stat == 0) {
-		return false;
-	}
+    _stat = readEncoderByte(REG_ESTATUS);
+    _stat2 = 0;
+    if (_stat == 0) {
+        return false;
+    }
 
-	if (_stat & PUSHR) {
-		eventCaller (&onButtonRelease);
-	}
-	if (_stat & PUSHP) {
-		eventCaller (&onButtonPush);
-	}
-	if (_stat & PUSHD) {
-		eventCaller (&onButtonDoublePush);
-	}
-	if (_stat & RINC) {
-		eventCaller (&onIncrement);
-		eventCaller (&onChange);
-	}
-	if (_stat & RDEC) {
-		eventCaller (&onDecrement);
-		eventCaller (&onChange);
-	}
-	if (_stat & RMAX) {
-		eventCaller (&onMax);
-		eventCaller (&onMinMax);
-	}
-	if (_stat & RMIN) {
-		eventCaller (&onMin);
-		eventCaller (&onMinMax);
-	}
+    if (_stat & PUSHR) {
+        eventCaller(&onButtonRelease);
+    }
+    if (_stat & PUSHP) {
+        eventCaller(&onButtonPush);
+    }
+    if (_stat & PUSHD) {
+        eventCaller(&onButtonDoublePush);
+    }
+    if (_stat & RINC) {
+        eventCaller(&onIncrement);
+        eventCaller(&onChange);
+    }
+    if (_stat & RDEC) {
+        eventCaller(&onDecrement);
+        eventCaller(&onChange);
+    }
+    if (_stat & RMAX) {
+        eventCaller(&onMax);
+        eventCaller(&onMinMax);
+    }
+    if (_stat & RMIN) {
+        eventCaller(&onMin);
+        eventCaller(&onMinMax);
+    }
 
-	if ((_stat & INT_2) != 0) {
-		_stat2 = readEncoderByte(REG_I2STATUS);
-		if (_stat2 == 0) {
-			return true;
-		}
+    if ((_stat & INT_2) != 0) {
+        _stat2 = readEncoderByte(REG_I2STATUS);
+        if (_stat2 == 0) {
+            return true;
+        }
 
-		if (_stat2 & GP1_POS) {
-			eventCaller (&onGP1Rise);
-		}
-		if (_stat2 & GP1_NEG) {
-			eventCaller (&onGP1Fall);
-		}
-		if (_stat2 & GP2_POS) {
-			eventCaller (&onGP2Rise);
-		}
-		if (_stat2 & GP2_NEG) {
-			eventCaller (&onGP2Fall);
-		}
-		if (_stat2 & GP3_POS) {
-			eventCaller (&onGP3Rise);
-		}
-		if (_stat2 & GP3_NEG) {
-			eventCaller (&onGP3Fall);
-		}
-		if (_stat2 & FADE_INT) {
-			eventCaller (&onFadeProcess);
-		}
-	}
+        if (_stat2 & GP1_POS) {
+            eventCaller(&onGP1Rise);
+        }
+        if (_stat2 & GP1_NEG) {
+            eventCaller(&onGP1Fall);
+        }
+        if (_stat2 & GP2_POS) {
+            eventCaller(&onGP2Rise);
+        }
+        if (_stat2 & GP2_NEG) {
+            eventCaller(&onGP2Fall);
+        }
+        if (_stat2 & GP3_POS) {
+            eventCaller(&onGP3Rise);
+        }
+        if (_stat2 & GP3_NEG) {
+            eventCaller(&onGP3Fall);
+        }
+        if (_stat2 & FADE_INT) {
+            eventCaller(&onFadeProcess);
+        }
+    }
 
-	return true;
+    return true;
 }
 
 /*********************************** Read functions *************************************/
 
 /** Return the GP1 Configuration**/
 uint8_t I2CEncoder::readGP1conf(void) {
-	return (readEncoderByte(REG_GP1CONF));
+    return (readEncoderByte(REG_GP1CONF));
 }
 
 /** Return the GP1 Configuration**/
 uint8_t I2CEncoder::readGP2conf(void) {
-	return (readEncoderByte(REG_GP2CONF));
+    return (readEncoderByte(REG_GP2CONF));
 }
 
 /** Return the GP1 Configuration**/
 uint8_t I2CEncoder::readGP3conf(void) {
-	return (readEncoderByte(REG_GP3CONF));
+    return (readEncoderByte(REG_GP3CONF));
 }
 
 /** Return the INT pin configuration**/
 uint8_t I2CEncoder::readInterruptConfig(void) {
-	return (readEncoderByte(REG_INTCONF));
+    return (readEncoderByte(REG_INTCONF));
 }
 
 /** Check if a particular status match, return true is match otherwise false. Before require updateStatus() **/
 bool I2CEncoder::readStatus(Int_Status s) {
-	if ((_stat & s) != 0) {
-		return true;
-	}
-	return false;
+    if ((_stat & s) != 0) {
+        return true;
+    }
+    return false;
 }
 
 /** Return the status of the encoder **/
 uint8_t I2CEncoder::readStatus(void) {
-	return _stat;
+    return _stat;
 }
 
 /** Check if a particular status of the Int2 match, return true is match otherwise false. Before require updateStatus() **/
 bool I2CEncoder::readInt2(Int2_Status s) {
-	if ((_stat2 & s) != 0) {
-		return true;
-	}
-	return false;
+    if ((_stat2 & s) != 0) {
+        return true;
+    }
+    return false;
 }
 
 /** Return the Int2 status of the encoder. Before require updateStatus()  **/
 uint8_t I2CEncoder::readInt2(void) {
-	return _stat2;
+    return _stat2;
 }
 
 /** Return Fade process status  **/
 uint8_t I2CEncoder::readFadeStatus(void) {
-	return readEncoderByte(REG_FSTATUS);
+    return readEncoderByte(REG_FSTATUS);
 }
 
 /** Check if a particular status of the Fade process match, return true is match otherwise false. **/
 bool I2CEncoder::readFadeStatus(Fade_Status s) {
-	if ((readEncoderByte(REG_FSTATUS) & s) == 1)
-		return true;
+    if ((readEncoderByte(REG_FSTATUS) & s) == 1) {
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 /** Return the PWM LED R value  **/
 uint8_t I2CEncoder::readLEDR(void) {
-	return ((uint8_t) readEncoderByte(REG_RLED));
+    return ((uint8_t)readEncoderByte(REG_RLED));
 }
 
 /** Return the PWM LED G value  **/
 uint8_t I2CEncoder::readLEDG(void) {
-	return ((uint8_t) readEncoderByte(REG_GLED));
+    return ((uint8_t)readEncoderByte(REG_GLED));
 }
 
 /** Return the PWM LED B value  **/
 uint8_t I2CEncoder::readLEDB(void) {
-	return ((uint8_t) readEncoderByte(REG_BLED));
+    return ((uint8_t)readEncoderByte(REG_BLED));
 }
 
 /** Return the 32 bit value of the encoder counter  **/
 float I2CEncoder::readCounterFloat(void) {
-	return (readEncoderFloat(REG_CVALB4));
+    return (readEncoderFloat(REG_CVALB4));
 }
 
 /** Return the 32 bit value of the encoder counter  **/
 int32_t I2CEncoder::readCounterLong(void) {
-	return ((int32_t) readEncoderLong(REG_CVALB4));
+    return ((int32_t)readEncoderLong(REG_CVALB4));
 }
 
 /** Return the 16 bit value of the encoder counter  **/
 int16_t I2CEncoder::readCounterInt(void) {
-	return ((int16_t) readEncoderInt(REG_CVALB2));
+    return ((int16_t)readEncoderInt(REG_CVALB2));
 }
 
 /** Return the 8 bit value of the encoder counter  **/
 int8_t I2CEncoder::readCounterByte(void) {
-	return ((int8_t) readEncoderByte(REG_CVALB1));
+    return ((int8_t)readEncoderByte(REG_CVALB1));
 }
 
 /** Return the Maximum threshold of the counter **/
 int32_t I2CEncoder::readMax(void) {
-	return ((int32_t) readEncoderLong(REG_CMAXB4));
+    return ((int32_t)readEncoderLong(REG_CMAXB4));
 }
 
 /** Return the Minimum threshold of the counter **/
 int32_t I2CEncoder::readMin(void) {
-	return ((int32_t) readEncoderLong(REG_CMINB4));
+    return ((int32_t)readEncoderLong(REG_CMINB4));
 }
 
 /** Return the Maximum threshold of the counter **/
 float I2CEncoder::readMaxFloat(void) {
-	return (readEncoderFloat(REG_CMAXB4));
+    return (readEncoderFloat(REG_CMAXB4));
 }
 
 /** Return the Minimum threshold of the counter **/
 float I2CEncoder::readMinFloat(void) {
-	return (readEncoderFloat(REG_CMINB4));
-
+    return (readEncoderFloat(REG_CMINB4));
 }
 
 /** Return the Steps increment **/
 int32_t I2CEncoder::readStep(void) {
-	return (readEncoderInt(REG_ISTEPB4));
+    return (readEncoderInt(REG_ISTEPB4));
 }
 
 /** Return the Steps increment, in float variable **/
 float I2CEncoder::readStepFloat(void) {
-	return (readEncoderFloat(REG_ISTEPB4));
-
+    return (readEncoderFloat(REG_ISTEPB4));
 }
 
 /** Read GP1 register value **/
 uint8_t I2CEncoder::readGP1(void) {
-	return (readEncoderByte(REG_GP1REG));
+    return (readEncoderByte(REG_GP1REG));
 }
 
 /** Read GP2 register value **/
 uint8_t I2CEncoder::readGP2(void) {
-	return (readEncoderByte(REG_GP2REG));
+    return (readEncoderByte(REG_GP2REG));
 }
 
 /** Read GP3 register value **/
 uint8_t I2CEncoder::readGP3(void) {
-	return (readEncoderByte(REG_GP3REG));
+    return (readEncoderByte(REG_GP3REG));
 }
 
 /** Read Anti-bouncing period register **/
 uint8_t I2CEncoder::readAntibouncingPeriod(void) {
-	return (readEncoderByte(REG_ANTBOUNC));
+    return (readEncoderByte(REG_ANTBOUNC));
 }
 
 /** Read Double push period register **/
 uint8_t I2CEncoder::readDoublePushPeriod(void) {
-	return (readEncoderByte(REG_DPPERIOD));
+    return (readEncoderByte(REG_DPPERIOD));
 }
 
 /** Read the fade period of the RGB LED**/
 uint8_t I2CEncoder::readFadeRGB(void) {
-	return (readEncoderByte(REG_FADERGB));
+    return (readEncoderByte(REG_FADERGB));
 }
 
 /** Read the fade period of the GP LED**/
 uint8_t I2CEncoder::readFadeGP(void) {
-	return (readEncoderByte(REG_FADEGP));
+    return (readEncoderByte(REG_FADEGP));
 }
 
 /** Read the EEPROM memory**/
 uint8_t I2CEncoder::readEEPROM(uint8_t add) {
-	if (add <= 0x7f) {
-		if ((_gconf & EEPROM_BANK1) != 0) {
-			_gconf = _gconf & 0xBF;
-			writeEncoder(REG_GCONF, _gconf);
-		}
-		return (readEncoderByte((REG_EEPROMS + add)));
-	} else {
-		if ((_gconf & EEPROM_BANK1) == 0) {
-			_gconf = _gconf | 0x40;
-			writeEncoder(REG_GCONF, _gconf);
-		}
-		return (readEncoderByte(add));
-	}
+    if (add <= 0x7f) {
+        if ((_gconf & EEPROM_BANK1) != 0) {
+            _gconf = _gconf & 0xBF;
+            writeEncoder(REG_GCONF, _gconf);
+        }
+        return (readEncoderByte((REG_EEPROMS + add)));
+    } else {
+        if ((_gconf & EEPROM_BANK1) == 0) {
+            _gconf = _gconf | 0x40;
+            writeEncoder(REG_GCONF, _gconf);
+        }
+        return (readEncoderByte(add));
+    }
 }
 
 /*********************************** Write functions *************************************/
 /** Write the GP1 configuration**/
 void I2CEncoder::writeGP1conf(uint8_t gp1) {
-	writeEncoder(REG_GP1CONF, (uint8_t) gp1);
+    writeEncoder(REG_GP1CONF, (uint8_t)gp1);
 }
 
 /** Write the GP2 configuration**/
 void I2CEncoder::writeGP2conf(uint8_t gp2) {
-	writeEncoder(REG_GP2CONF, (uint8_t) gp2);
+    writeEncoder(REG_GP2CONF, (uint8_t)gp2);
 }
 
 /** Write the GP3 configuration**/
 void I2CEncoder::writeGP3conf(uint8_t gp3) {
-	writeEncoder(REG_GP3CONF, (uint8_t) gp3);
+    writeEncoder(REG_GP3CONF, (uint8_t)gp3);
 }
 
 /** Write the interrupt configuration **/
 void I2CEncoder::writeInterruptConfig(uint8_t interrupt) {
-	writeEncoder(REG_INTCONF, (uint8_t) interrupt);
+    writeEncoder(REG_INTCONF, (uint8_t)interrupt);
 }
 
 /** Check if there is some attached callback and enable the corresponding interrupt **/
 void I2CEncoder::autoconfigInterrupt(void) {
-	uint8_t reg = 0;
+    uint8_t reg = 0;
 
-	if (onButtonRelease != NULL)
-		reg |= PUSHR;
+    if (onButtonRelease != NULL) {
+        reg |= PUSHR;
+    }
 
-	if (onButtonPush != NULL)
-		reg |= PUSHP;
+    if (onButtonPush != NULL) {
+        reg |= PUSHP;
+    }
 
-	if (onButtonDoublePush != NULL)
-		reg |= PUSHD;
+    if (onButtonDoublePush != NULL) {
+        reg |= PUSHD;
+    }
 
-	if (onIncrement != NULL)
-		reg |= RINC;
+    if (onIncrement != NULL) {
+        reg |= RINC;
+    }
 
-	if (onDecrement != NULL)
-		reg |= RDEC;
+    if (onDecrement != NULL) {
+        reg |= RDEC;
+    }
 
-	if (onChange != NULL) {
-		reg |= RINC;
-		reg |= RDEC;
-	}
+    if (onChange != NULL) {
+        reg |= RINC;
+        reg |= RDEC;
+    }
 
-	if (onMax != NULL)
-		reg |= RMAX;
+    if (onMax != NULL) {
+        reg |= RMAX;
+    }
 
-	if (onMin != NULL)
-		reg |= RMIN;
+    if (onMin != NULL) {
+        reg |= RMIN;
+    }
 
-	if (onMinMax != NULL) {
-		reg |= RMAX;
-		reg |= RMIN;
-	}
+    if (onMinMax != NULL) {
+        reg |= RMAX;
+        reg |= RMIN;
+    }
 
-	if (onGP1Rise != NULL)
-		reg |= INT_2;
+    if (onGP1Rise != NULL) {
+        reg |= INT_2;
+    }
 
-	if (onGP1Fall != NULL)
-		reg |= INT_2;
+    if (onGP1Fall != NULL) {
+        reg |= INT_2;
+    }
 
-	if (onGP2Rise != NULL)
-		reg |= INT_2;
+    if (onGP2Rise != NULL) {
+        reg |= INT_2;
+    }
 
-	if (onGP2Fall != NULL)
-		reg |= INT_2;
+    if (onGP2Fall != NULL) {
+        reg |= INT_2;
+    }
 
-	if (onGP3Rise != NULL)
-		reg |= INT_2;
+    if (onGP3Rise != NULL) {
+        reg |= INT_2;
+    }
 
-	if (onGP3Fall != NULL)
-		reg |= INT_2;
+    if (onGP3Fall != NULL) {
+        reg |= INT_2;
+    }
 
-	if (onFadeProcess != NULL)
-		reg |= INT_2;
+    if (onFadeProcess != NULL) {
+        reg |= INT_2;
+    }
 
-	writeEncoder(REG_INTCONF, (uint8_t) reg);
+    writeEncoder(REG_INTCONF, (uint8_t)reg);
 }
 
 /** Write the counter value **/
 void I2CEncoder::writeCounter(int32_t value) {
-	writeEncoder(REG_CVALB4, value);
+    writeEncoder(REG_CVALB4, value);
 }
 
 /** Write the counter value **/
 void I2CEncoder::writeCounter(float value) {
-	writeEncoder(REG_CVALB4, value);
+    writeEncoder(REG_CVALB4, value);
 }
 
 /** Write the maximum threshold value **/
 void I2CEncoder::writeMax(int32_t max) {
-	writeEncoder(REG_CMAXB4, max);
+    writeEncoder(REG_CMAXB4, max);
 }
 
 /** Write the maximum threshold value **/
 void I2CEncoder::writeMax(float max) {
-	writeEncoder(REG_CMAXB4, max);
+    writeEncoder(REG_CMAXB4, max);
 }
 
 /** Write the minimum threshold value **/
 void I2CEncoder::writeMin(int32_t min) {
-	writeEncoder(REG_CMINB4, min);
+    writeEncoder(REG_CMINB4, min);
 }
 
 /** Write the minimum threshold value **/
 void I2CEncoder::writeMin(float min) {
-	writeEncoder(REG_CMINB4, min);
+    writeEncoder(REG_CMINB4, min);
 }
 
 /** Write the Step increment value **/
 void I2CEncoder::writeStep(int32_t step) {
-	writeEncoder(REG_ISTEPB4, step);
+    writeEncoder(REG_ISTEPB4, step);
 }
 
 /** Write the Step increment value **/
 void I2CEncoder::writeStep(float step) {
-	writeEncoder(REG_ISTEPB4, step);
+    writeEncoder(REG_ISTEPB4, step);
 }
 
 /** Write the PWM value of the RGB LED red **/
 void I2CEncoder::writeLEDR(uint8_t rled) {
-	writeEncoder(REG_RLED, rled);
+    writeEncoder(REG_RLED, rled);
 }
 
 /** Write the PWM value of the RGB LED green **/
 void I2CEncoder::writeLEDG(uint8_t gled) {
-	writeEncoder(REG_GLED, gled);
+    writeEncoder(REG_GLED, gled);
 }
 
 /** Write the PWM value of the RGB LED blue **/
 void I2CEncoder::writeLEDB(uint8_t bled) {
-	writeEncoder(REG_BLED, bled);
+    writeEncoder(REG_BLED, bled);
 }
 
 /** Write 24bit color code **/
 void I2CEncoder::writeRGBCode(uint32_t rgb) {
-	writeEncoder24bit(REG_RLED, rgb);
+    writeEncoder24bit(REG_RLED, rgb);
 }
 
 /** Write GP1 register, used when GP1 is set to output or PWM **/
 void I2CEncoder::writeGP1(uint8_t gp1) {
-	writeEncoder(REG_GP1REG, gp1);
+    writeEncoder(REG_GP1REG, gp1);
 }
 
 /** Write GP2 register, used when GP2 is set to output or PWM **/
 void I2CEncoder::writeGP2(uint8_t gp2) {
-	writeEncoder(REG_GP2REG, gp2);
+    writeEncoder(REG_GP2REG, gp2);
 }
 
 /** Write GP3 register, used when GP3 is set to output or PWM **/
 void I2CEncoder::writeGP3(uint8_t gp3) {
-	writeEncoder(REG_GP3REG, gp3);
+    writeEncoder(REG_GP3REG, gp3);
 }
 
 /** Write Anti-bouncing period register **/
 void I2CEncoder::writeAntibouncingPeriod(uint8_t bounc) {
-	writeEncoder(REG_ANTBOUNC, bounc);
+    writeEncoder(REG_ANTBOUNC, bounc);
 }
 
 /** Write Anti-bouncing period register **/
 void I2CEncoder::writeDoublePushPeriod(uint8_t dperiod) {
-	writeEncoder(REG_DPPERIOD, dperiod);
+    writeEncoder(REG_DPPERIOD, dperiod);
 }
 
 /** Write Fade timing in ms **/
 void I2CEncoder::writeFadeRGB(uint8_t fade) {
-	writeEncoder(REG_FADERGB, fade);
+    writeEncoder(REG_FADERGB, fade);
 }
 
 /** Write Fade timing in ms **/
 void I2CEncoder::writeFadeGP(uint8_t fade) {
-	writeEncoder(REG_FADEGP, fade);
+    writeEncoder(REG_FADEGP, fade);
 }
 
 /** Write the EEPROM memory**/
 void I2CEncoder::writeEEPROM(uint8_t add, uint8_t data) {
 
-	if (add <= 0x7f) {
-		if ((_gconf & EEPROM_BANK1) != 0) {
-			_gconf = _gconf & 0xBF;
-			writeEncoder(REG_GCONF, _gconf);
-		}
-		writeEncoder((REG_EEPROMS + add), data);
-	} else {
-		if ((_gconf & EEPROM_BANK1) == 0) {
-			_gconf = _gconf | 0x40;
-			writeEncoder(REG_GCONF, _gconf);
-		}
-		writeEncoder(add, data);
-	}
+    if (add <= 0x7f) {
+        if ((_gconf & EEPROM_BANK1) != 0) {
+            _gconf = _gconf & 0xBF;
+            writeEncoder(REG_GCONF, _gconf);
+        }
+        writeEncoder((REG_EEPROMS + add), data);
+    } else {
+        if ((_gconf & EEPROM_BANK1) == 0) {
+            _gconf = _gconf | 0x40;
+            writeEncoder(REG_GCONF, _gconf);
+        }
+        writeEncoder(add, data);
+    }
 
-	HAL_Delay(5);
+    HAL_Delay(5);
 }
 
 /*********************************** Private functions *************************************/
@@ -492,99 +506,89 @@ void I2CEncoder::writeEEPROM(uint8_t add, uint8_t data) {
 /** Read 1 byte from the encoder **/
 uint8_t I2CEncoder::readEncoderByte(uint8_t reg) {
 
-	auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 1, 0xFF);
-	return _tem_data.bval[0];
+    auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 1, 0xFF);
+    if (hal_status != HAL_OK) {
+        Error_Handler();
+    }
+    return _tem_data.bval[0];
 }
 
 /** Read 2 bytes from the encoder **/
 int16_t I2CEncoder::readEncoderInt(uint8_t reg) {
-	auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 2, 0xFF);
-	// _wire->beginTransmission(_add);
-	// _wire->write(reg);
-	// _wire->endTransmission();
-	// _wire->requestFrom(_add, (uint8_t) 4);
-	// if (_wire->available()) {
-	// 	_tem_data.bval[1] = _wire->read();
-	// 	_tem_data.bval[0] = _wire->read();
-	// }
-	return ((int16_t) _tem_data.val);
+    auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 2, 0xFF);
+    if (hal_status != HAL_OK) {
+        Error_Handler();
+    }
+    return ((int16_t)_tem_data.val);
 }
 
 /** Read 4 bytes from the encoder **/
 int32_t I2CEncoder::readEncoderLong(uint8_t reg) {
 
-	auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 4, 0xFF);
-	// _wire->beginTransmission(_add);
-	// _wire->write(reg);
-	// _wire->endTransmission();
-	// _wire->requestFrom(_add, (uint8_t) 4);
-	// if (_wire->available()) {
-	// 	_tem_data.bval[3] = _wire->read();
-	// 	_tem_data.bval[2] = _wire->read();
-	// 	_tem_data.bval[1] = _wire->read();
-	// 	_tem_data.bval[0] = _wire->read();
-	// }
-	return ((int32_t) _tem_data.val);
+    auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 4, 0xFF);
+    if (hal_status != HAL_OK) {
+        Error_Handler();
+    }
+    return ((int32_t)_tem_data.val);
 }
 
 /** Read 4 bytes from the encoder **/
 float I2CEncoder::readEncoderFloat(uint8_t reg) {
 
-	auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 4, 0xFF);
-	// _wire->beginTransmission(_add);
-	// _wire->write(reg);
-	// _wire->endTransmission();
-	// _wire->requestFrom(_add, (uint8_t) 4);
-	// if (_wire->available()) {
-	// 	_tem_data.bval[3] = _wire->read();
-	// 	_tem_data.bval[2] = _wire->read();
-	// 	_tem_data.bval[1] = _wire->read();
-	// 	_tem_data.bval[0] = _wire->read();
-	// }
-	return ((float) _tem_data.fval);
+    auto hal_status = HAL_I2C_Mem_Read(_hi2c, _address << 1, reg, 1, _tem_data.bval, 4, 0xFF);
+    if (hal_status != HAL_OK) {
+        Error_Handler();
+    }
+    return ((float)_tem_data.fval);
 }
 
 /***************************** Write function to the encoder ********************************/
 /** Send to the encoder 1 byte **/
 void I2CEncoder::writeEncoder(uint8_t reg, uint8_t data) {
-	HAL_I2C_Mem_Write(_hi2c, _address << 1, reg, 1, &data, 1, 0xFF);
-	// _wire->beginTransmission(_add);
-	// _wire->write(reg);
-	// _wire->write(data);
-	// _wire->endTransmission();
+    auto hal_status = HAL_I2C_Mem_Write(_hi2c, _address << 1, reg, 1, &data, 1, 0xFF);
+    if (hal_status != HAL_OK) {
+        Error_Handler();
+    }
 }
 
 /** Send to the encoder 4 byte **/
 void I2CEncoder::writeEncoder(uint8_t reg, int32_t data) {
-	uint8_t temp[4];
-	_tem_data.val = data;
-	temp[0] = _tem_data.bval[3];
-	temp[1] = _tem_data.bval[2];
-	temp[2] = _tem_data.bval[1];
-	temp[3] = _tem_data.bval[0];
-	HAL_I2C_Mem_Write(_hi2c, _address << 1, reg, 1, temp, 4, 0xFF);
+    uint8_t temp[4];
+    _tem_data.val = data;
+    temp[0] = _tem_data.bval[3];
+    temp[1] = _tem_data.bval[2];
+    temp[2] = _tem_data.bval[1];
+    temp[3] = _tem_data.bval[0];
+    auto hal_status = HAL_I2C_Mem_Write(_hi2c, _address << 1, reg, 1, temp, 4, 0xFF);
+    if (hal_status != HAL_OK) {
+        Error_Handler();
+    }
 }
 
 /** Send to the encoder 4 byte for floating number **/
 void I2CEncoder::writeEncoder(uint8_t reg, float data) {
 
-	uint8_t temp[4];
-	_tem_data.fval = data;
-	temp[0] = _tem_data.bval[3];
-	temp[1] = _tem_data.bval[2];
-	temp[2] = _tem_data.bval[1];
-	temp[3] = _tem_data.bval[0];
-	HAL_I2C_Mem_Write(_hi2c, _address << 1, reg, 1, temp, 4, 0xFF);
-
+    uint8_t temp[4];
+    _tem_data.fval = data;
+    temp[0] = _tem_data.bval[3];
+    temp[1] = _tem_data.bval[2];
+    temp[2] = _tem_data.bval[1];
+    temp[3] = _tem_data.bval[0];
+    auto hal_status = HAL_I2C_Mem_Write(_hi2c, _address << 1, reg, 1, temp, 4, 0xFF);
+    if (hal_status != HAL_OK) {
+        Error_Handler();
+    }
 }
 
 /** Send to the encoder 3 byte **/
 void I2CEncoder::writeEncoder24bit(uint8_t reg, uint32_t data) {
-	uint8_t temp[3];
-	_tem_data.val = data;
-	temp[0] = _tem_data.bval[2];
-	temp[1] = _tem_data.bval[1];
-	temp[2] = _tem_data.bval[0];
-	HAL_I2C_Mem_Write(_hi2c, _address << 1, reg, 1, temp, 3, 0xFF);
-
+    uint8_t temp[3];
+    _tem_data.val = data;
+    temp[0] = _tem_data.bval[2];
+    temp[1] = _tem_data.bval[1];
+    temp[2] = _tem_data.bval[0];
+    auto hal_status = HAL_I2C_Mem_Write(_hi2c, _address << 1, reg, 1, temp, 3, 0xFF);
+    if (hal_status != HAL_OK) {
+        Error_Handler();
+    }
 }
