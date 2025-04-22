@@ -6,7 +6,7 @@
 
 #define ENABLE_USB                  0
 #define ENABLE_HMI                  0
-#define ENABLE_MCPIO                1
+#define ENABLE_MCPIO                0
 #define ENABLE_EEPROM               0
 #define ENABLE_ENCODER              0
 #define ENABLE_AUX_SERIAL           0
@@ -16,7 +16,7 @@
 #define ENABLE_SERIAL_CONTROL       1
 #define ENABLE_PLOTTER              1
 
-#define DEBUG_ADC   1
+#define DEBUG_ADC   0
 #define DEBUG_I2C   0
 #define DEBUG_WIRE  0
 #define DEBUG_MISC  0

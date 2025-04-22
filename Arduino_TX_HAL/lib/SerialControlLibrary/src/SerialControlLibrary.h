@@ -10,7 +10,7 @@
 
 #include "main.h"
 
-#include <HardwareSerial.h>
+#include <../../HardwareSerial/HardwareSerial.h>
 #include <functional>
 #include <map>
 

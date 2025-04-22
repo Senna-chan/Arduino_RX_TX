@@ -4,10 +4,9 @@
 
 #include "../../Core/Inc/main.h"
 #include "../../Core/Inc/usart.h"
-#include <HardwareSerial.h>
-#include <unity.h>
 #include "../include/Arduino_TX_HAL.h"
-
+#include <../../../lib/HardwareSerial/HardwareSerial.h>
+#include <unity.h>
 
 void setUp(void)
 {

@@ -51,7 +51,7 @@ void PlotterLib::transmitData() {
     free(dataBuf);
 }
 
-void PlotterLib::insertDataPtr(void* ptr, char* name, uint8_t dataSize) {
+void PlotterLib::insertDataPtr(void* ptr, const char* name, uint8_t dataSize) {
     if (strlen(name) > 20) {
         Error_Handler();
     }
@@ -86,10 +86,10 @@ void PlotterLib::serialSetPlotState(const char* data) {
 }
 
 #ifdef ARDUINO
-void PlotterLib::init(HardwareSerial* serial, char* plotname, SerialControlLibrary* serialControl) {
+void PlotterLib::init(HardwareSerial* serial, const char* plotname, SerialControlLibrary* serialControl) {
     this->serial = serial;
 #else
-void PlotterLib::init(UART_HandleTypeDef* uartTypeDef, char* plotname, SerialControlLibrary* serialControl) {
+void PlotterLib::init(UART_HandleTypeDef* uartTypeDef, const char* plotname, SerialControlLibrary* serialControl) {
     this->uart = uartTypeDef;
 #endif
     this->serialControl = serialControl;
@@ -152,7 +152,7 @@ void PlotterLib::retransmitAllPlotInfo() {
     }
 }
 
-PlotterLib* PlotterLib::addNewPlotter(char* plotname) {
+PlotterLib* PlotterLib::addNewPlotter(const char* plotname) {
     PlotterLib* plotter = this;
     while (true) {
         if (nextPlotter == nullptr) {

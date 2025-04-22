@@ -18,7 +18,7 @@ void enableExpender(MCP23017* expender, uint8_t address)
 {
     uint8_t fullAddress = 0x20 + address;
     while (!I2CDeviceConnected(&hi2c2, fullAddress)) {
-        printf("EXPANDER(0x%02X) not found\r\n", fullAddress);
+        SerialPrintf("EXPANDER(0x%02X) not found\r\n", fullAddress);
         HAL_Delay(500);
         // digitalWrite(LED_BUILTIN, LOW);
         // delay(500);
@@ -35,7 +35,10 @@ void enableExpender(MCP23017* expender, uint8_t address)
 
 void setupMCPChips()
 {
-    SerialPrintf("Expander1 %s Expander2 %s Calc %s\n", I2CDeviceConnected(&hi2c2, 0x20 + IOEXPANDER1_ADDR) ? "found" : "not found", I2CDeviceConnected(&hi2c2, 0x20 + IOEXPANDER2_ADDR) ? "found" : "not found", I2CDeviceConnected(&hi2c2, 0x20 + CALEXPENDER_ADDR) ? "found" : "not found");
+    bool io1Found =  I2CDeviceConnected(&hi2c2, 0x20 + IOEXPANDER1_ADDR);
+    bool io2Found =  I2CDeviceConnected(&hi2c2, 0x20 + IOEXPANDER2_ADDR);
+    bool calFound =  I2CDeviceConnected(&hi2c2, 0x20 + CALEXPENDER_ADDR);
+    SerialPrintf("Expander1 %s Expander2 %s Calc %s\n", io1Found ? "found" : "not found", io2Found ? "found" : "not found", calFound ? "found" : "not found");
     enableExpender(&IOExpander1, IOEXPANDER1_ADDR);
     enableExpender(&IOExpander2, IOEXPANDER2_ADDR);
     enableExpender(&calButtonExpender, CALEXPENDER_ADDR);

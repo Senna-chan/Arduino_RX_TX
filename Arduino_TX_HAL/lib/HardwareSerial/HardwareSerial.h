@@ -5,23 +5,30 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
+#include "freertos.h"
 #include "main.h"
 #include "usart.h"
 
-#include "Print.h"
+#include "../ArduinoBackport/Print.h"
+#include "../RingBuffer/RingBuffer.hpp"
 
 #include <functional>
 #include <queue>
+#include <utility>
 
 #ifndef SERIAL_DMA_BUFFER_SIZE
 #define SERIAL_DMA_BUFFER_SIZE 256
 #endif
 #define SERIAL_BUFFER_QUEUE_SIZE (SERIAL_DMA_BUFFER_SIZE * 8) // Max size of serial queue
 
-void UART_TX_Done(UART_HandleTypeDef* huart);
-void UART_RX_Done(UART_HandleTypeDef* huart);
 class HardwareSerial : public Print {
 public:
+    enum EventType {
+        RX_EVENT,
+        TX_EVENT,
+        ERROR_EVENT
+    };
+
     void create(UART_HandleTypeDef* huart);
     void init();
     // Overloads from Print
@@ -37,21 +44,22 @@ public:
     void waitForNewData();
     static HardwareSerial* getInstance(UART_HandleTypeDef* huart);
     // These functions are not for user use
-    void handleISR(bool rxEvent, uint16_t pos);
+    void handleISR(EventType eventType, uint16_t pos);
     void attachRXCallback(std::function<void(HardwareSerial*)> callback) {
-        onRX = callback;
+        onRX = std::move(callback);
     }
     void attachTXCallback(std::function<void(HardwareSerial*)> callback) {
-        onTX = callback;
+        onTX = std::move(callback);
     }
 
 private:
     void checkForTXPossible();
-
+    SemaphoreHandle_t queue_mutex; // Lock for everything Serial
     bool initialized = false;
-    UART_HandleTypeDef* _huart;
-    std::deque<uint8_t> tx_queue;
-    size_t currentTXPoint = 0;
+    UART_HandleTypeDef* _huart = nullptr;
+    RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> tx_queue = RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> {};
+    int lastTransmitTXPoint = 0;
+    int nextTransmitTXPoint = 0;
     std::deque<uint8_t> rx_queue;
     uint16_t currentRXPos = 0;
     uint16_t lastRXPos = 0;
@@ -59,8 +67,8 @@ private:
     bool DMA_TX_Done = true;       // When this is true we can send more data to DMA
     std::function<void(HardwareSerial*)> onTX = nullptr;
     std::function<void(HardwareSerial*)> onRX = nullptr;
-    uint8_t tx_dma_buf[SERIAL_DMA_BUFFER_SIZE];
-    uint8_t rx_dma_buf[SERIAL_DMA_BUFFER_SIZE];
+    uint8_t tx_dma_buf[SERIAL_DMA_BUFFER_SIZE] = { 0 };
+    uint8_t rx_dma_buf[SERIAL_DMA_BUFFER_SIZE] = { 0 };
 };
 
 #if defined(USART1)

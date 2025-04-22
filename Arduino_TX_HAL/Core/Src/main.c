@@ -139,8 +139,6 @@ int main(void)
 #if ENABLE_USB
     MX_USB_DEVICE_Init();
 #endif
-    const char* str = "Initialized MX code.\n";
-    HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), 50);
 
     NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
     setupCPP();

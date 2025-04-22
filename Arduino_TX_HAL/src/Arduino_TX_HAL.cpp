@@ -17,17 +17,35 @@
 #include "usart.h"
 #include <PlotterLib.h>
 #include <SerialControlLibrary.h>
-#include <SerialUtils.h>
 #include <cstring>
 #include <queue>
 #include <stdarg.h>
 #include <stdio.h>
 
-void UART1Error(UART_HandleTypeDef* huart) {
-#ifdef DEBUG
-    __BKPT(0);
+
+namespace std {
+#ifdef __cplusplus
+extern "C" {
 #endif
-    // Error in main serial so what now?
+
+    int _read(int file, char* ptr, int len) {
+        HAL_StatusTypeDef hstatus;
+        hstatus = HAL_UART_Receive(&huart1, (uint8_t*)ptr, 1, HAL_MAX_DELAY);
+        return hstatus == HAL_OK ? 0 : -1;
+    }
+
+    size_t _write(int fd, char* ptr, size_t len) {
+        SerialPrintLen(ptr, len);
+        return len;
+    }
+
+#ifdef __cplusplus
+}
+#endif
+}
+
+void __io_putchar(uint8_t ch) {
+    HAL_UART_Transmit(&huart1, &ch, 1, 1);
 }
 
 SerialControlLibrary scl;
@@ -306,13 +324,8 @@ void handlePlotter(void* parameter) {
     chPlotter->setPlotState(false);
 
     while (true) {
-        if (xSemaphoreTake(main_serial_mutex, 0xFF) == pdTRUE) {
-            Plotter.loop();
-            xSemaphoreGive(main_serial_mutex);
-            vTaskDelay((Plotter.getTransmitInterval() + 2) / portTICK_PERIOD_MS);
-        } else {
-            SerialPrint("PLOT, SemaphoreLocked");
-        }
+        Plotter.loop();
+        vTaskDelay((Plotter.getTransmitInterval() + 2) / portTICK_PERIOD_MS);
     }
 }
 
@@ -539,13 +552,8 @@ void handleSerialControl(void* parameter) {
     scl.addVoidCallback("s", transmitSettingsToRX);
     scl.addVoidCallback("AUXc", getAuxChannels);
     while (true) {
-        if (xSemaphoreTake(main_serial_mutex, 0xFF) == pdTRUE) {
-            scl.loop();
-            xSemaphoreGive(main_serial_mutex);
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-        } else {
-            SerialPrint("SC, SemaphoreLocked");
-        }
+        scl.loop();
+        vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
 
@@ -562,11 +570,13 @@ void startFreeRTOS() {
 }
 
 void setupCPP() {
-    // HAL_UART_RegisterCallback(&huart1, HAL_UART_TX_COMPLETE_CB_ID, UART1TXDone);
-    // HAL_UART_RegisterCallback(&huart1, HAL_UART_ERROR_CB_ID, UART1Error);
+    Serial4.create(&huart4);
+    Serial4.init();
+    Serial4.println("Hello World");
     Serial1.create(&huart1);
     Serial1.init();
-    SerialPrint("setupCPP()\n");
+    Serial1.println("Hello World");
+    Serial1.println("setupCPP()");
 #if DEBUG_I2C
     scanI2C(&hi2c2);
 #endif
@@ -617,23 +627,29 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     TaskStatus_t taskStatus;
     vTaskGetInfo(NULL, &taskStatus, pdTRUE, eInvalid);
     TaskHandle_t* taskToWake = nullptr;
-    if (GPIO_Pin == ENC_IRQ_Pin) {
-        SerialPrint("ENC IRQ ");
-        taskToWake = &encoder_taskHandle;
-    } else if (GPIO_Pin == NRF_IRQ_Pin) {
-        // printf("NRF IRQ\n");
+#if ENABLE_MCPIO
+    if (GPIO_Pin == MCP_IRQ_Pin) {
+        SerialPrint("IO IRQ ");
+        taskToWake = &io_taskHandle;
+        // xTaskNotifyFromISR(io_taskHandle, 1, eSetValueWithOverwrite, &xHigherPriorityTaskWoken);
+        // vTaskNotifyGiveFromISR(io_taskHandle, &xHigherPriorityTaskWoken);
+        // xTaskResumeFromISR(io_taskHandle);
     } else if (GPIO_Pin == CAL_IRQ_Pin) {
         SerialPrint("CAL IRQ ");
         taskToWake = &cal_taskHandle;
         // xTaskNotifyFromISR(cal_taskHandle, 1, eSetValueWithOverwrite, &xHigherPriorityTaskWoken);
         // vTaskNotifyGiveFromISR(cal_taskHandle, &xHigherPriorityTaskWoken);
         // xTaskResumeFromISR(cal_taskHandle);
-    } else if (GPIO_Pin == MCP_IRQ_Pin) {
-        SerialPrint("IO IRQ ");
-        taskToWake = &io_taskHandle;
-        // xTaskNotifyFromISR(io_taskHandle, 1, eSetValueWithOverwrite, &xHigherPriorityTaskWoken);
-        // vTaskNotifyGiveFromISR(io_taskHandle, &xHigherPriorityTaskWoken);
-        // xTaskResumeFromISR(io_taskHandle);
+    } else
+    #endif
+#if ENABLE_ENCODER
+    if (GPIO_Pin == ENC_IRQ_Pin) {
+        SerialPrint("ENC IRQ ");
+        taskToWake = &encoder_taskHandle;
+    } else
+#endif
+    if (GPIO_Pin == NRF_IRQ_Pin) {
+        // printf("NRF IRQ\n");
     } else if (GPIO_Pin == TOUCH_IRQ_Pin) {
         // printf("TOUCH IRQ\n");
     }
@@ -653,10 +669,26 @@ void Error_Handler_CPP(const char* file, int line) {
     while (1) {
         HAL_Delay(100);
         if (++printCount % 10 == 0) {
-            printf("Error in file '%s' Line %d, Task %s\n", file, line, taskStatus.pcTaskName);
+            char buffer[256];
+            int size = snprintf(buffer, 256, "Error in file '%s' Line %d, Task %s\n", file, line, taskStatus.pcTaskName);
+            HAL_UART_Transmit(&huart4, reinterpret_cast<const uint8_t*>(&buffer), size, 0xFF);
         }
         if (printCount == 100) {
             HAL_NVIC_SystemReset();
         }
     }
+}
+void SerialPrint(const char* string) {
+    Serial1.print(string);
+}
+void SerialPrintLen(const char* string, size_t length) {
+    Serial1.print(string);
+}
+void SerialPrintf(const char* format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    char buffer[256];
+    vsprintf(buffer, format, ap);
+    Serial1.print(buffer);
+    va_end(ap);
 }

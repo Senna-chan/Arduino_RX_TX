@@ -33,24 +33,24 @@ private:
     SerialControlLibrary* serialControl;
     bool enabled = true;
     void transmitData();
-    void insertDataPtr(void* ptr, char* name, uint8_t dataSize);
+    void insertDataPtr(void* ptr, const char* name, uint8_t dataSize);
     void serialSetPlotState(const char* data);
 
 public:
 #ifdef ARDUINO
-    void init(HardwareSerial* serial, char* plotname, SerialControlLibrary* serialControl = nullptr);
+    void init(HardwareSerial* serial, const char* plotname, SerialControlLibrary* serialControl = nullptr);
 #else
-    void init(UART_HandleTypeDef* uartTypeDef, char* plotname, SerialControlLibrary* serialControl = nullptr);
+    void init(UART_HandleTypeDef* uartTypeDef, const char* plotname, SerialControlLibrary* serialControl = nullptr);
 #endif
     void setPlotState(bool active);
     void loop();
     void transmitPlotInfo();
     void retransmitAllPlotInfo();
     template <std::integral T>
-    void addPlotData(T* dataPtr, char* name) {
+    void addPlotData(T* dataPtr, const char* name) {
         insertDataPtr(dataPtr, name, sizeof(T));
     };
-    PlotterLib* addNewPlotter(char* name);
+    PlotterLib* addNewPlotter(const char* name);
     void setTransmitInterval(uint32_t interval) {
         transmitInterval = interval;
     }
