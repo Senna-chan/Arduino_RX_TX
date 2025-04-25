@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define ENABLE_USB                  0
+#define ENABLE_USB                  1
 #define ENABLE_HMI                  0
 #define ENABLE_MCPIO                0
 #define ENABLE_EEPROM               0

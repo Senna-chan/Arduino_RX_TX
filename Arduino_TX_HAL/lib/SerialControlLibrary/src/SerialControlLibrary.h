@@ -10,7 +10,7 @@
 
 #include "main.h"
 
-#include <../../HardwareSerial/HardwareSerial.h>
+#include <HardwareSerial.h>
 #include <functional>
 #include <map>
 
@@ -36,7 +36,7 @@ private:
     HardwareSerial* serial;
 #elif defined(GTEST)
 #else
-    UART_HandleTypeDef* uart;
+    HardwareSerial* serial;
 #endif
     char endLine;
     char* buf;

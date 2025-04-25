@@ -42,10 +42,7 @@ void PlotterLib::transmitData() {
 #ifdef ARDUINO
     serial->write((uint8_t*)msgBuf, msgBufPtr - msgBuf);
 #else
-    HAL_StatusTypeDef status = HAL_UART_Transmit(uart, (uint8_t*)msgBuf, msgBufPtr - msgBuf, 1000);
-    if (status != HAL_OK) {
-        printf("ERROR TRANSMITTING PLOTDATA");
-    }
+    serial->write((uint8_t*)msgBuf, msgBufPtr - msgBuf);
 #endif
     free(msgBuf);
     free(dataBuf);
@@ -67,14 +64,14 @@ void PlotterLib::insertDataPtr(void* ptr, const char* name, uint8_t dataSize) {
 }
 void PlotterLib::serialSetPlotState(const char* data) {
     if (strlen(data) == 1) {
-        bool activate = data[0] == 1;
+        bool activate = data[0] == 1 || data[0] - '0' == 1;
         setPlotState(activate);
         if (nextPlotter != nullptr) {
             nextPlotter->serialSetPlotState(data);
         }
     } else {
         uint8_t plotNumber = data[0];
-        bool activate = data[1] == 1;
+        bool activate = data[1] == 1 || data[1] - '0' == 1;
         if (plotterNumber == plotNumber) {
             setPlotState(activate);
             return; // No need to check the other plotters
@@ -90,7 +87,7 @@ void PlotterLib::init(HardwareSerial* serial, const char* plotname, SerialContro
     this->serial = serial;
 #else
 void PlotterLib::init(UART_HandleTypeDef* uartTypeDef, const char* plotname, SerialControlLibrary* serialControl) {
-    this->uart = uartTypeDef;
+    this->serial = HardwareSerial::getInstance(uartTypeDef);
 #endif
     this->serialControl = serialControl;
     if (serialControl != nullptr) {
@@ -135,10 +132,11 @@ void PlotterLib::transmitPlotInfo() {
 #ifdef ARDUINO
     serial->write((uint8_t*)msgBuf, msgBufPtr - msgBuf);
 #else
-    HAL_StatusTypeDef status = HAL_UART_Transmit(uart, (uint8_t*)msgBuf, msgBufPtr - msgBuf, 1000);
-    if (status != HAL_OK) {
-        printf("ERROR TRANSMITTING PLOTINFO");
-    }
+    serial->write((uint8_t*)msgBuf, msgBufPtr - msgBuf);
+    // HAL_StatusTypeDef status = HAL_UART_Transmit(uart, (uint8_t*)msgBuf, msgBufPtr - msgBuf, 1000);
+    // if (status != HAL_OK) {
+    //     printf("ERROR TRANSMITTING PLOTINFO");
+    // }
 #endif
     free(msgBuf);
 
@@ -158,7 +156,7 @@ PlotterLib* PlotterLib::addNewPlotter(const char* plotname) {
         if (nextPlotter == nullptr) {
             nextPlotter = new PlotterLib();
             nextPlotter->plotterNumber = plotterNumber + 1;
-            nextPlotter->uart = this->uart;
+            nextPlotter->serial = this->serial;
 #ifdef ARDUINO
             nextPlotter->serial = this->serial;
 #endif

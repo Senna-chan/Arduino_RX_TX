@@ -22,22 +22,21 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-
 namespace std {
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    int _read(int file, char* ptr, int len) {
-        HAL_StatusTypeDef hstatus;
-        hstatus = HAL_UART_Receive(&huart1, (uint8_t*)ptr, 1, HAL_MAX_DELAY);
-        return hstatus == HAL_OK ? 0 : -1;
-    }
+int _read(int file, char* ptr, int len) {
+    HAL_StatusTypeDef hstatus;
+    hstatus = HAL_UART_Receive(&huart1, (uint8_t*)ptr, 1, HAL_MAX_DELAY);
+    return hstatus == HAL_OK ? 0 : -1;
+}
 
-    size_t _write(int fd, char* ptr, size_t len) {
-        SerialPrintLen(ptr, len);
-        return len;
-    }
+size_t _write(int fd, char* ptr, size_t len) {
+    SerialPrintLen(ptr, len);
+    return len;
+}
 
 #ifdef __cplusplus
 }
@@ -570,13 +569,13 @@ void startFreeRTOS() {
 }
 
 void setupCPP() {
-    Serial4.create(&huart4);
-    Serial4.init();
-    Serial4.println("Hello World");
     Serial1.create(&huart1);
     Serial1.init();
     Serial1.println("Hello World");
     Serial1.println("setupCPP()");
+    Serial4.create(&huart4);
+    Serial4.init();
+    Serial4.println("Hello World from Serial4");
 #if DEBUG_I2C
     scanI2C(&hi2c2);
 #endif
@@ -641,14 +640,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
         // vTaskNotifyGiveFromISR(cal_taskHandle, &xHigherPriorityTaskWoken);
         // xTaskResumeFromISR(cal_taskHandle);
     } else
-    #endif
+#endif
 #if ENABLE_ENCODER
-    if (GPIO_Pin == ENC_IRQ_Pin) {
+        if (GPIO_Pin == ENC_IRQ_Pin) {
         SerialPrint("ENC IRQ ");
         taskToWake = &encoder_taskHandle;
     } else
 #endif
-    if (GPIO_Pin == NRF_IRQ_Pin) {
+        if (GPIO_Pin == NRF_IRQ_Pin) {
         // printf("NRF IRQ\n");
     } else if (GPIO_Pin == TOUCH_IRQ_Pin) {
         // printf("TOUCH IRQ\n");

@@ -10,63 +10,28 @@
 #include "usart.h"
 
 #include "../ArduinoBackport/Print.h"
-#include "../RingBuffer/RingBuffer.hpp"
+#include "BaseSerial.h"
 
-#include <functional>
-#include <queue>
-#include <utility>
-
-#ifndef SERIAL_DMA_BUFFER_SIZE
-#define SERIAL_DMA_BUFFER_SIZE 256
-#endif
-#define SERIAL_BUFFER_QUEUE_SIZE (SERIAL_DMA_BUFFER_SIZE * 8) // Max size of serial queue
-
-class HardwareSerial : public Print {
+class HardwareSerial : public BaseSerial {
 public:
-    enum EventType {
-        RX_EVENT,
-        TX_EVENT,
-        ERROR_EVENT
-    };
-
     void create(UART_HandleTypeDef* huart);
     void init();
-    // Overloads from Print
-    int availableForWrite() override;
-    size_t write(const uint8_t* buffer, size_t size) override;
-    size_t write(uint8_t) override;
-
-    size_t availableForRead();
-    int read();
-    int peek();
-    void readBuffer(uint8_t* buffer, size_t size);
 
     void waitForNewData();
     static HardwareSerial* getInstance(UART_HandleTypeDef* huart);
     // These functions are not for user use
     void handleISR(EventType eventType, uint16_t pos);
-    void attachRXCallback(std::function<void(HardwareSerial*)> callback) {
-        onRX = std::move(callback);
-    }
-    void attachTXCallback(std::function<void(HardwareSerial*)> callback) {
-        onTX = std::move(callback);
-    }
+
+protected:
+    void checkForTXPossible() override;
 
 private:
-    void checkForTXPossible();
-    SemaphoreHandle_t queue_mutex; // Lock for everything Serial
+    UART_HandleTypeDef* _huart;
     bool initialized = false;
-    UART_HandleTypeDef* _huart = nullptr;
-    RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> tx_queue = RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> {};
-    int lastTransmitTXPoint = 0;
-    int nextTransmitTXPoint = 0;
-    std::deque<uint8_t> rx_queue;
-    uint16_t currentRXPos = 0;
-    uint16_t lastRXPos = 0;
+    uint16_t currentRXDMAPos = 0;
+    uint16_t lastRXDMAPos = 0;
     bool DMA_RX_Triggered = false; // Holds the flag if DMA has been triggered since the last read
     bool DMA_TX_Done = true;       // When this is true we can send more data to DMA
-    std::function<void(HardwareSerial*)> onTX = nullptr;
-    std::function<void(HardwareSerial*)> onRX = nullptr;
     uint8_t tx_dma_buf[SERIAL_DMA_BUFFER_SIZE] = { 0 };
     uint8_t rx_dma_buf[SERIAL_DMA_BUFFER_SIZE] = { 0 };
 };

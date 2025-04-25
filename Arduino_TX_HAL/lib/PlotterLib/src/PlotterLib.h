@@ -22,7 +22,7 @@ private:
 #ifdef ARDUINO
     HardwareSerial* serial;
 #endif
-    UART_HandleTypeDef* uart;
+    HardwareSerial* serial;
     std::vector<dataPtrStruct> dataPtrs;
     uint32_t lastTransmitTime = 0;
     uint32_t transmitInterval = 100;

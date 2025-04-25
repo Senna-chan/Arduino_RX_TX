@@ -14,8 +14,7 @@ void SerialControlLibrary::init(HardwareSerial* serial, char endLine, uint16_t b
     this->serial = serial;
 #else
 void SerialControlLibrary::init(UART_HandleTypeDef* uart, char endLine, uint16_t bufSize) {
-    this->uart = uart;
-    // this->serial = HardwareSerial::getInstance(uart);
+    this->serial = HardwareSerial::getInstance(uart);
 #endif
     this->endLine = endLine;
     buf = (char*)malloc(bufSize);
@@ -29,15 +28,15 @@ void SerialControlLibrary::loop() {
     while (serial->available()) {
         *bufPtr = (char)serial->read();
 #else
-    HAL_StatusTypeDef status = HAL_UART_Receive(uart, (uint8_t*)bufPtr, 1, 0);
-    if (status == HAL_OK) {
+    while (serial->availableForRead()) {
+        *bufPtr = static_cast<char>(serial->read());
 #endif
         if (*bufPtr == endLine) {
             // Serial.println("Got newline char");
             *bufPtr = 0;
             char* ptr = buf;
             serialCallbackMap* currentMap = &serialCallbacks;
-            for (ptr; ptr < bufPtr; ptr++) {
+            for (; ptr < bufPtr; ptr++) {
                 char c = *ptr;
                 if (currentMap->find(c) == currentMap->end()) {
                     break;
@@ -100,5 +99,6 @@ void SerialControlLibrary::addVoidCallback(const char* serialData, serialCallbac
         scb = currentMap->at(c);
         currentMap = &scb->serialCallbacks;
     }
+
     scb->callback.voidcb = cb;
 }
