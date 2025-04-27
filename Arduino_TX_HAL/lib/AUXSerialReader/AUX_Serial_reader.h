@@ -1,9 +1,10 @@
 #ifndef __AUX_SERIAL_READER_H
 #define __AUX_SERIAL_READER_H
 
-#include <ibus.h>
 #include "freertos.h"
 
+#include <ibus.h>
+#include <HardwareSerial.h>
 
 class Aux_Serial_Reader
 {
@@ -16,7 +17,7 @@ class Aux_Serial_Reader
         SBUS,     // Industry standard
         CUSTOM_TX // My own protocol
     };
-    void init(UART_HandleTypeDef *serial);
+    void init(HardwareSerial *serial);
     void begin();
     void end();
     void readData();
@@ -34,7 +35,7 @@ private:
     void processIBUS();
     void processSBUS();
     void processCUSTOM_TX();
-    UART_HandleTypeDef *aux_serial;
+    HardwareSerial *aux_serial;
     TaskHandle_t auxSerial_taskHandle;
     IBusBM ibus;
 };

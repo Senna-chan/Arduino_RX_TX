@@ -22,12 +22,17 @@
 
 class BaseSerial : public Print {
 public:
+    typedef std::function<void(BaseSerial*)> SerialCallback;
     enum EventType {
         RX_EVENT,
         TX_EVENT,
         ERROR_EVENT
     };
-
+    enum RX_CALLBACK_METHOD {
+        ANY_DATA,
+        LENGTH,
+        EQUALS_SEQUENCE
+    };
     // Overloads from Print
     int availableForWrite() override;
     size_t write(const uint8_t* buffer, size_t size) override;
@@ -38,20 +43,27 @@ public:
     int peek();
     void readBuffer(uint8_t* buffer, size_t size);
 
-    void attachRXCallback(std::function<void(BaseSerial*)> callback) {
-        onRX = std::move(callback);
+    void attachRXCallback(const SerialCallback& callback) {
+        rx_callbacks.push_back(callback);
     }
-    void attachTXCallback(std::function<void(BaseSerial*)> callback) {
-        onTX = std::move(callback);
+
+    void attachTXDoneCallback(const SerialCallback& callback) {
+        tx_done_callbacks.push_back(callback);
     }
 
 protected:
+
+    void createBuffers() {
+        tx_queue = RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> {};
+        rx_queue = RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> {};
+    }
+
     virtual void checkForTXPossible();
     bool initialized = false;
-    RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> tx_queue = RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> {};
-    RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> rx_queue = RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> {};
-    std::function<void(BaseSerial*)> onTX = nullptr;
-    std::function<void(BaseSerial*)> onRX = nullptr;
+    RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> tx_queue; // = RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> {};
+    RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> rx_queue; // = RingBuffer<uint8_t, SERIAL_BUFFER_QUEUE_SIZE> {};
+    std::vector<SerialCallback> tx_done_callbacks = std::vector<SerialCallback>();
+    std::vector<SerialCallback> rx_callbacks = std::vector<SerialCallback>();
 };
 
 #endif // BASESERIAL_H

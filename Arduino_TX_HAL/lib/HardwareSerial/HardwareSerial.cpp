@@ -36,14 +36,19 @@ void HardwareSerial::handleISR(EventType eventType, uint16_t pos) {
         HAL_UARTEx_ReceiveToIdle_DMA(_huart, rx_dma_buf, SERIAL_DMA_BUFFER_SIZE); // Directly restart reading
         DMA_RX_Triggered = true;
         lastRXDMAPos = currentRXDMAPos;
-        if (onRX != nullptr) {
-            onRX(this);
+
+        if (!rx_callbacks.empty()) {
+            for (auto& callback : rx_callbacks) {
+                callback(this);
+            }
         }
     } else if (eventType == TX_EVENT) {
         DMA_TX_Done = true;
         checkForTXPossible();
-        if (onTX != nullptr) {
-            onTX(this);
+        if (!tx_done_callbacks.empty()) {
+            for (auto& callback : tx_done_callbacks) {
+                callback(this);
+            }
         }
     } else if (eventType == ERROR_EVENT) {
         Error_Handler();
@@ -68,6 +73,7 @@ HardwareSerial* HardwareSerial::getInstance(UART_HandleTypeDef* huart) {
 
 void HardwareSerial::create(UART_HandleTypeDef* huart) {
     _huart = huart;
+    createBuffers();
 }
 
 void HardwareSerial::init() {
@@ -101,8 +107,6 @@ void HardwareSerial::checkForTXPossible() {
     if (!DMA_TX_Done) {
         return;
     }
-    volatile size_t space_used = tx_queue.space_used();
-    volatile size_t space_free = tx_queue.space_free();
     size_t amountToTransmit = min(static_cast<size_t>(SERIAL_DMA_BUFFER_SIZE), tx_queue.space_used());
 
     if (!amountToTransmit) {

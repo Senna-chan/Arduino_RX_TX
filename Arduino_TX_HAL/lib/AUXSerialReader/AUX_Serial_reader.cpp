@@ -5,8 +5,8 @@ void aux_serial_trigger_read(void* parameter){
     Aux_Serial_Reader *serialReader = (Aux_Serial_Reader*)parameter;
     while (true)
     {
-//        serialReader->readData();
-//        vTaskDelay(1 / portTICK_PERIOD_MS);
+        serialReader->readData();
+        vTaskDelay(1 / portTICK_PERIOD_MS);
     }
 }
 
@@ -22,7 +22,7 @@ void aux_serial_trigger_read(void* parameter){
 //    SerialPrintf("Error '%d' in AUX_Serial.\n", huart->ErrorCode);
 //}
 
-void Aux_Serial_Reader::init(UART_HandleTypeDef *serial)
+void Aux_Serial_Reader::init(HardwareSerial *serial)
 {
     aux_serial = serial;
 

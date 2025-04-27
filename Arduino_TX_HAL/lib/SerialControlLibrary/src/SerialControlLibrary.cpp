@@ -43,18 +43,20 @@ void SerialControlLibrary::loop() {
                 } else {
                     s_serialCallbacks* scb = currentMap->at(c);
                     if (scb->serialCallbacks.size() == 0) {
-                        if (scb->callback.datacb != nullptr) {
+                        if (scb->callback != nullptr) {
                             uint8_t* bufPtrU8 = (uint8_t*)buf;
                             uint8_t* dataPtr = (uint8_t*)ptr + 1;
                             uint32_t copyAmount = dataPtr - bufPtrU8;
-                            char* data = nullptr;
-                            data = (char*)malloc(copyAmount + 1); // Plus one because of the ending \0
-                            memset(data, 0, copyAmount + 1);
-                            memcpy((uint8_t*)data, dataPtr, copyAmount);
-                            scb->callback.datacb(data);
-                            free(data);
-                        } else if (scb->callback.voidcb != nullptr) {
-                            scb->callback.voidcb();
+                            if (copyAmount) {
+                                char* data = nullptr;
+                                data = (char*)malloc(copyAmount + 1); // Plus one because of the ending \0
+                                memset(data, 0, copyAmount + 1);
+                                memcpy(data, dataPtr, copyAmount);
+                                scb->callback(data);
+                                free(data);
+                            } else {
+                                scb->callback(nullptr);
+                            }
                         } else {
                             SerialPrintf("NO CALLBACK: End of command '%c', buf '%s'\r\n", c, buf);
                         }
@@ -72,7 +74,7 @@ void SerialControlLibrary::loop() {
     }
 }
 
-void SerialControlLibrary::addDataCallback(const char* serialData, serialCallbackFunction cb) {
+void SerialControlLibrary::addCallback(const char* serialData, serialCallbackFunction cb) {
     auto sdLen = strlen(serialData);
     serialCallbackMap* currentMap = &serialCallbacks;
     s_serialCallbacks* scb;
@@ -84,21 +86,5 @@ void SerialControlLibrary::addDataCallback(const char* serialData, serialCallbac
         scb = currentMap->at(c);
         currentMap = &scb->serialCallbacks;
     }
-    scb->callback.datacb = cb;
-}
-
-void SerialControlLibrary::addVoidCallback(const char* serialData, serialCallbackFunctionVoid cb) {
-    auto sdLen = strlen(serialData);
-    serialCallbackMap* currentMap = &serialCallbacks;
-    s_serialCallbacks* scb;
-    for (const char* ptr = serialData; ptr < serialData + sdLen; ptr++) {
-        char c = *ptr;
-        if (currentMap->find(c) == currentMap->end()) {
-            currentMap->insert(std::pair<char, s_serialCallbacks*>(c, new s_serialCallbacks));
-        }
-        scb = currentMap->at(c);
-        currentMap = &scb->serialCallbacks;
-    }
-
-    scb->callback.voidcb = cb;
+    scb->callback = cb;
 }

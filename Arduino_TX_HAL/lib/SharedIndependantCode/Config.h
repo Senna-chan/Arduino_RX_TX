@@ -6,11 +6,11 @@
 
 #define ENABLE_USB                  1
 #define ENABLE_HMI                  0
-#define ENABLE_MCPIO                0
-#define ENABLE_EEPROM               0
-#define ENABLE_ENCODER              0
-#define ENABLE_AUX_SERIAL           0
-#define ENABLE_RADIO                0
+#define ENABLE_MCPIO                1
+#define ENABLE_EEPROM               1
+#define ENABLE_ENCODER              1
+#define ENABLE_AUX_SERIAL           1
+#define ENABLE_RADIO                1
 #define ENABLE_CONTROLLER_COMPANION 1
 #define ENABLE_ADC                  1
 #define ENABLE_SERIAL_CONTROL       1

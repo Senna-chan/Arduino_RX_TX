@@ -45,7 +45,7 @@ public:
     void setPlotState(bool active);
     void loop();
     void transmitPlotInfo();
-    void retransmitAllPlotInfo();
+    void retransmitAllPlotInfo(char *data);
     template <std::integral T>
     void addPlotData(T* dataPtr, const char* name) {
         insertDataPtr(dataPtr, name, sizeof(T));

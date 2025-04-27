@@ -76,6 +76,8 @@ uint16_t interruptsToProcess = 0x0000; // Capture the interrupt pins that we did
 uint16_t CALIRQNotProcessedLoops = 0;
 uint16_t IOIRQNotProcessedLoops = 0;
 
+bool eepromFound = false;
+
 void readIOExpanders() {
     // xSemaphoreTake(i2c_mutex, portMAX_DELAY);
     vPortEnterCritical();
@@ -330,7 +332,7 @@ void handlePlotter(void* parameter) {
 
 #pragma region SerialControl Functions
 // TODO: mMake this function less complex
-void transmitSettingsToRX() {
+void transmitSettingsToRX(char* data) {
 #if 0
     vTaskSuspend(nrfTransit_taskHandle);
     saveSettings(); // Be sure that we have saved the settings to EEPROM. This will do an update(read and write if needed)
@@ -500,7 +502,7 @@ void transmitSettingsToRX() {
 #endif
 }
 
-void wipeEeprom() {
+void wipeEeprom(char* data) {
     SerialPrint("Wiping EEPROM\n");
     memset(&settings, 0, sizeof(Settings));
     generateDefaultSettings();
@@ -510,10 +512,10 @@ void wipeEeprom() {
     SerialPrint("Wipe done\n");
 }
 
-void resetMCU() {
+void resetMCU(char* data) {
     NVIC_SystemReset();
 }
-void setTransmitTest() {
+void setTransmitTest(char* data) {
 #if ENABLE_RADIO
 
     TaskStatus_t taskStatus;
@@ -528,7 +530,7 @@ void setTransmitTest() {
 #endif
 }
 
-void getAuxChannels() {
+void getAuxChannels(char* data) {
 #if ENABLE_AUX_SERIAL
     SerialPrint("Aux channel data\n");
     char buf[255] = { 0 };
@@ -545,11 +547,11 @@ void getAuxChannels() {
 
 void handleSerialControl(void* parameter) {
     scl.init(&huart1);
-    scl.addVoidCallback("*", resetMCU);
-    scl.addVoidCallback("t", setTransmitTest);
-    scl.addVoidCallback("w", wipeEeprom);
-    scl.addVoidCallback("s", transmitSettingsToRX);
-    scl.addVoidCallback("AUXc", getAuxChannels);
+    scl.addCallback("*", resetMCU);
+    scl.addCallback("t", setTransmitTest);
+    scl.addCallback("w", wipeEeprom);
+    scl.addCallback("s", transmitSettingsToRX);
+    scl.addCallback("AUXc", getAuxChannels);
     while (true) {
         scl.loop();
         vTaskDelay(10 / portTICK_PERIOD_MS);
@@ -576,10 +578,17 @@ void setupCPP() {
     Serial4.create(&huart4);
     Serial4.init();
     Serial4.println("Hello World from Serial4");
+
+#if ENABLE_AUX_SERIAL
+    Serial3.create(&huart3);
+    Serial3.init();
+#endif
 #if DEBUG_I2C
     scanI2C(&hi2c2);
 #endif
-
+#if ENABLE_EEPROM
+    eepromFound = HAL_I2C_IsDeviceReady(&hi2c2, 0x50 << 1, 2, 5) == HAL_OK;
+#endif
     loadSettings();
 
 #if ENABLE_ENCODER
@@ -616,6 +625,10 @@ void setupCPP() {
 #if ENABLE_ADC
     memset(&ADCDMABuffer, 0, DMABUFFERSIZE * 2);
     HAL_ADC_Start_DMA(&hadc1, reinterpret_cast<uint32_t*>(ADCDMABuffer), DMABUFFERSIZE);
+#endif
+
+#if ENABLE_AUX_SERIAL
+    AUX_Serial_reader.init(&Serial3);
 #endif
 
     xTaskCreate(MainLoop, "Main loop", 1280, NULL, 1, &main_taskHandle);

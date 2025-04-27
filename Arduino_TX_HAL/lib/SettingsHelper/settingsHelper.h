@@ -8,7 +8,6 @@
 #include <main.h>
 #include "Structs.h"
 
-
 bool readSettings();
 void saveSettings();
 

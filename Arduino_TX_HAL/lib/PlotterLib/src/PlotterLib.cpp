@@ -62,6 +62,7 @@ void PlotterLib::insertDataPtr(void* ptr, const char* name, uint8_t dataSize) {
     }
     SerialPrintf("Adding '%s' to plotter '%s'\r\n", dataPtr.name, plotName);
 }
+
 void PlotterLib::serialSetPlotState(const char* data) {
     if (strlen(data) == 1) {
         bool activate = data[0] == 1 || data[0] - '0' == 1;
@@ -92,8 +93,8 @@ void PlotterLib::init(UART_HandleTypeDef* uartTypeDef, const char* plotname, Ser
     this->serialControl = serialControl;
     if (serialControl != nullptr) {
         printf("Attaching serialcontrol callbacks");
-        serialControl->addVoidCallback("@PI", std::bind(&PlotterLib::retransmitAllPlotInfo, this));
-        serialControl->addDataCallback("@PE", std::bind(&PlotterLib::serialSetPlotState, this, std::placeholders::_1));
+        serialControl->addCallback("@PI", std::bind(&PlotterLib::retransmitAllPlotInfo, this, std::placeholders::_1));
+        serialControl->addCallback("@PE", std::bind(&PlotterLib::serialSetPlotState, this, std::placeholders::_1));
     }
     plotName = plotname;
     isMaster = true;
@@ -143,7 +144,7 @@ void PlotterLib::transmitPlotInfo() {
     return;
 }
 
-void PlotterLib::retransmitAllPlotInfo() {
+void PlotterLib::retransmitAllPlotInfo(char* data) {
     transmitPlotInfo();
     if (nextPlotter != nullptr) {
         nextPlotter->transmitPlotInfo();

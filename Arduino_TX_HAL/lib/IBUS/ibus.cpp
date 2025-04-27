@@ -25,8 +25,8 @@
     Checksum: DA F3 -> calculated by adding up all previous bytes, total must be FFFF
  */
 
-void IBusBM::begin(UART_HandleTypeDef *uart) {
-  this->_huart = uart;
+void IBusBM::begin(HardwareSerial *serial) {
+  this->_serial = serial;
   this->state = DISCARD;
   this->last = HAL_GetTick();
   this->ptr = 0;
@@ -37,16 +37,15 @@ void IBusBM::begin(UART_HandleTypeDef *uart) {
 
 // Called by user
 void IBusBM::loop(void){
-    uint8_t buf[1] = {0};
   // only process data already in our UART receive buffer
-  while (HAL_UART_Receive(_huart, buf, 1, 0) == HAL_OK) {
+  while (_serial->availableForRead() > 0) {
     // only consider a new data package if we have not heard anything for >3ms
     uint32_t now = HAL_GetTick();
     if (now - last >= PROTOCOL_TIMEGAP){
       state = GET_LENGTH;
     }
     last = now;
-    uint8_t v = buf[0];
+    uint8_t v = _serial->read();
     switch (state) {
       case GET_LENGTH:
         if (v <= PROTOCOL_LENGTH && v > PROTOCOL_OVERHEAD) {
@@ -135,7 +134,7 @@ void IBusBM::loop(void){
             if (adr>0) {
               txBuf[itxBuf++] = (chksum & 0x0ff);
               txBuf[itxBuf++] = (chksum >> 8);
-              HAL_UART_Transmit(_huart, txBuf, itxBuf, 0xFF);
+              _serial->write(txBuf, itxBuf);
             }
           }
         }

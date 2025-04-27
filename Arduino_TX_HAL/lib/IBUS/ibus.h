@@ -13,6 +13,7 @@
 
 #include <inttypes.h>
 #include "main.h"
+#include "HardwareSerial.h"
 
 // if you have an opentx transciever you can add additional sensor types here.
 // see https://github.com/cleanflight/cleanflight/blob/7cd417959b3cb605aa574fc8c0f16759943527ef/src/main/telemetry/ibus_shared.h
@@ -27,7 +28,7 @@
 class IBusBM {
 
 public:
-  void begin(UART_HandleTypeDef *huart);
+  void begin(HardwareSerial *serial);
   uint16_t readChannel(uint8_t channelNr); // read servo channel 0..9
   uint8_t addSensor(uint8_t type, uint8_t len=2); // add sensor type and data length (2 or 4), returns address
   void setSensorMeasurement(uint8_t adr, int32_t value);
@@ -52,7 +53,7 @@ private:
   static const uint8_t SENSORMAX = 10; // Max number of sensors
 
   uint8_t state;                        // state machine state for iBUS protocol
-  UART_HandleTypeDef *_huart;           // serial port
+  HardwareSerial *_serial;           // serial port
   uint32_t last;                        // milis() of prior message
   uint8_t buffer[PROTOCOL_LENGTH];      // message buffer
   uint8_t ptr;                          // pointer in buffer

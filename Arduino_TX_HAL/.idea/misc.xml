@@ -5,6 +5,29 @@
   </component>
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
+    <libraryRoots>
+      <file path="$PROJECT_DIR$/lib/AUXSerialReader" />
+      <file path="$PROJECT_DIR$/lib/ArduinoBackport" />
+      <file path="$PROJECT_DIR$/lib/CompanionControl" />
+      <file path="$PROJECT_DIR$/lib/FreeRTOS" />
+      <file path="$PROJECT_DIR$/lib/HardwareSerial" />
+      <file path="$PROJECT_DIR$/lib/I2CEncoder" />
+      <file path="$PROJECT_DIR$/lib/I2CHelpers" />
+      <file path="$PROJECT_DIR$/lib/IBUS" />
+      <file path="$PROJECT_DIR$/lib/LoggerLib" />
+      <file path="$PROJECT_DIR$/lib/MCP23017" />
+      <file path="$PROJECT_DIR$/lib/MiscHelpers" />
+      <file path="$PROJECT_DIR$/lib/PlotterLib" />
+      <file path="$PROJECT_DIR$/lib/RingBuffer" />
+      <file path="$PROJECT_DIR$/lib/STLinkedResources" />
+      <file path="$PROJECT_DIR$/lib/SerialControlLibrary" />
+      <file path="$PROJECT_DIR$/lib/SettingsHelper" />
+      <file path="$PROJECT_DIR$/lib/SharedCode" />
+      <file path="$PROJECT_DIR$/lib/SharedIndependantCode" />
+      <file path="$PROJECT_DIR$/lib/channelfunctions" />
+      <file path="$PROJECT_DIR$/lib/nrf24l01" />
+      <file path="$PROJECT_DIR$/lib/w25qxx" />
+    </libraryRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/.pio" />
       <file path="$PROJECT_DIR$/.vscode" />

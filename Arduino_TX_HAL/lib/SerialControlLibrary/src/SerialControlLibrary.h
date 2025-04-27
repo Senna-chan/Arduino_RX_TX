@@ -17,18 +17,13 @@
 class SerialControlLibrary {
 
 public:
-    typedef std::function<void(const char*)> serialCallbackFunction;
-    typedef std::function<void()> serialCallbackFunctionVoid;
+    typedef std::function<void(char*)> serialCallbackFunction;
 
 private:
     struct s_serialCallbacks;
     typedef std::map<char, s_serialCallbacks*> serialCallbackMap;
-    struct s_serialCallbackFunc {
-        serialCallbackFunction datacb;
-        serialCallbackFunctionVoid voidcb;
-    };
     struct s_serialCallbacks {
-        s_serialCallbackFunc callback;
+        serialCallbackFunction callback;
         serialCallbackMap serialCallbacks;
     }; // This is recursive
     serialCallbackMap serialCallbacks;
@@ -59,8 +54,7 @@ public:
     void init(UART_HandleTypeDef* uart, char endLine = '\n', uint16_t bufferSize = 255);
 #endif
     void loop();
-    void addDataCallback(const char* serialData, serialCallbackFunction cb);
-    void addVoidCallback(const char* serialData, serialCallbackFunctionVoid cb);
+    void addCallback(const char* serialData, serialCallbackFunction cb);
 };
 
 #endif

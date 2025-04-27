@@ -8,10 +8,7 @@
 #include <string.h>
 
 #include "SharedVars.h"
-
-#if ENABLE_EEPROM
-#include <eepromi2c_Anything.h>
-#endif
+#include "i2c.h"
 
 void PrintCalValues()
 {
@@ -38,7 +35,7 @@ bool readSettings()
     if (!eepromFound) {
         return false;
     }
-    eeRead(0, settings);
+    HAL_I2C_Mem_Read(&hi2c2, 0x50 << 1, 0, 1, reinterpret_cast<uint8_t*>(&settings), sizeof(settings), 0xFFFF);
     return true;
 #else
     return false;
@@ -51,7 +48,7 @@ void saveSettings()
     if (!eepromFound) {
         return;
     }
-    eeWrite(0, settings);
+    HAL_I2C_Mem_Write(&hi2c2, 0x50 << 1, 0, 1, reinterpret_cast<uint8_t*>(&settings), sizeof(settings), 0xFFFF);
 #endif
 }
 
